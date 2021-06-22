@@ -4,17 +4,15 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { createOrUpdateUser } from "../../functions/auth";
 
+//Since the whole app is wrapped in <BrowserRouter> we can do destructuring {history} its the same thing as using (props) >>> props.history.
 const RegisterComplete = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const { user } = useSelector((state) => ({ ...state }));
   let dispatch = useDispatch();
 
   useEffect(() => {
     setEmail(window.localStorage.getItem("emailForRegistration"));
-    // console.log(window.location.href);
-    // console.log(window.localStorage.getItem("emailForRegistration"));
   }, [history]);
 
   const handleSubmit = async (e) => {
@@ -35,7 +33,7 @@ const RegisterComplete = ({ history }) => {
         email,
         window.location.href
       );
-      //   console.log("RESULT", result);
+     
       if (result.user.emailVerified) {
         // remove user email fom local storage
         window.localStorage.removeItem("emailForRegistration");

@@ -1,3 +1,4 @@
+"use strict";
 import React, { useState, useEffect } from "react";
 import { auth } from "../../firebase";
 import { toast } from "react-toastify";
@@ -13,8 +14,9 @@ const Register = ({ history }) => {
   }, [user, history]);
 
   const handleSubmit = async (e) => {
+    //prevent page reload
     e.preventDefault();
-    // console.log("ENV --->", process.env.REACT_APP_REGISTER_REDIRECT_URL);
+ 
     const config = {
       url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
       handleCodeInApp: true,

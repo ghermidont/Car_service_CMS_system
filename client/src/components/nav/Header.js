@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import { Menu, Badge } from "antd";
-import {
-  AppstoreOutlined,
-  SettingOutlined,
-  UserOutlined,
-  UserAddOutlined,
-  LogoutOutlined,
-  ShoppingOutlined,
-  ShoppingCartOutlined,
-} from "@ant-design/icons";
+import {AppstoreOutlined, SettingOutlined, UserOutlined, UserAddOutlined, LogoutOutlined, ShoppingOutlined, ShoppingCartOutlined,} from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import firebase from "firebase";
 import { useDispatch, useSelector } from "react-redux";

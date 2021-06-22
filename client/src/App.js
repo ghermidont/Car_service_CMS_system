@@ -4,6 +4,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { auth } from "./firebase";
+
+//Dispatch is the entry point to the redux store.
 import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/auth";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -83,8 +85,7 @@ const App = () => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         const idTokenResult = await user.getIdTokenResult();
-        // console.log("user", user);
-
+      
         currentUser(idTokenResult.token)
           .then((res) => {
             dispatch({
@@ -101,7 +102,7 @@ const App = () => {
           .catch((err) => console.log(err));
       }
     });
-    // cleanup
+    // Cleanup. This function is returned one more time in order to prevent memory leaks.
     return () => unsubscribe();
   }, [dispatch]);
 

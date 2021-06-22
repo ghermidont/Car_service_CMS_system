@@ -5,12 +5,11 @@ import { useDispatch } from "react-redux";
 import { createOrUpdateUser } from "../../functions/auth";
 
 //Since the whole app is wrapped in <BrowserRouter> we can do destructuring {history} its the same thing as using (props) >>> props.history.
+//We ca use this kind of destructuring only in elements that are included as Route in App.js. In other elements we would have to import history and declare it as const etc
 const RegisterComplete = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   let dispatch = useDispatch();
-
   useEffect(() => {
     setEmail(window.localStorage.getItem("emailForRegistration"));
   }, [history]);

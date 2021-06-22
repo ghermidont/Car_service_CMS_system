@@ -24,6 +24,7 @@ const Header = () => {
 
   const logout = () => {
     firebase.auth().signOut();
+    //After logging out the user we must also update the redux state.
     dispatch({
       type: "LOGOUT",
       payload: null,

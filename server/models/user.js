@@ -23,4 +23,5 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// This model will be referred to as "User".
 module.exports = mongoose.model("User", userSchema);

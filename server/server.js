@@ -1,15 +1,15 @@
 const express = require("express");
-// MongoDB object modeling tool
+// MongoDB object modeling tool.
 const mongoose = require("mongoose");
-// HTTP request logger middleware
+// HTTP request logger middleware.
 const morgan = require("morgan");
-// Parse incoming request bodies in a middleware before the handlers
+// Parse incoming request bodies in a middleware before the handlers.
 const bodyParser = require("body-parser");
-// Enable CORS 
+// Enable CORS. 
 const cors = require("cors");
-// Synchronously read the contents of a given directory.  Returns an array with all the file names or objects in the directory.
+// Synchronously read the contents of a given directory. Returns an array with all the file names or objects in the directory.
 const { readdirSync } = require("fs");
-// Enable .env files
+// Enable .env files.
 require("dotenv").config();
 
 // app
@@ -34,6 +34,7 @@ app.use(bodyParser.json({ limit: "2mb" }));
 app.use(cors());
 
 // routes middleware
+//Instead of calling every route separately we use this syntax. Read the routes directory. Prefix with "/api".
 readdirSync("./routes").map((r) => app.use("/api", require("./routes/" + r)));
 
 // port

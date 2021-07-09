@@ -12,6 +12,7 @@ const Login = ({ history }) => {
   const [password, setPassword] = useState("gggggg");
   const [loading, setLoading] = useState(false);
 
+   //we use destructuring to get specific data from the states that are defined in the reducers/index.js file.
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {

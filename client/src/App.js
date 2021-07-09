@@ -80,7 +80,7 @@ const Payment = lazy(() => import("./pages/Payment"));
 const App = () => {
   const dispatch = useDispatch();
 
-  // to check firebase auth state
+  // User state change listener. To check firebase auth state.
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {

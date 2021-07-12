@@ -2,7 +2,7 @@ const User = require("../models/user");
 
 exports.createOrUpdateUser = async (req, res) => {
   const { name, picture, email } = req.user;
-
+  //Find and update the user in the database.
   const user = await User.findOneAndUpdate(
     { email },
     { name: email.split("@")[0], picture },

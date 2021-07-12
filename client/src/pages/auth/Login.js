@@ -42,14 +42,12 @@ const Login = ({ history }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    // console.table(email, password);
+    setLoading(true);   
     try {
-      const result = await auth.signInWithEmailAndPassword(email, password);
-      // console.log(result);
+      const result = await auth.signInWithEmailAndPassword(email, password);    
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
-
+      //This functions will give us the user token and we send it to the back end in the header as auth token.
       createOrUpdateUser(idTokenResult.token)
         .then((res) => {
           dispatch({
@@ -64,9 +62,7 @@ const Login = ({ history }) => {
           });
           roleBasedRedirect(res);
         })
-        .catch((err) => console.log(err));
-
-      // history.push("/");
+        .catch((err) => console.log(err));    
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -80,6 +76,7 @@ const Login = ({ history }) => {
       .then(async (result) => {
         const { user } = result;
         const idTokenResult = await user.getIdTokenResult();
+           //This functions will give us the user token and we send it to the back end in the header as auth token.
         createOrUpdateUser(idTokenResult.token)
           .then((res) => {
             dispatch({
@@ -94,8 +91,7 @@ const Login = ({ history }) => {
             });
             roleBasedRedirect(res);
           })
-          .catch((err) => console.log(err));
-        // history.push("/");
+          .catch((err) => console.log(err));      
       })
       .catch((err) => {
         console.log(err);

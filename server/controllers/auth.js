@@ -4,20 +4,26 @@ exports.createOrUpdateUser = async (req, res) => {
   const { name, picture, email } = req.user;
   //Find and update the user in the database.
   const user = await User.findOneAndUpdate(
+    //First arg is the search criteria. What we want to find.
     { email },
+    //Second is what we want to update. In this case is name and picture. 
     { name: email.split("@")[0], picture },
+    //This argument is optional. It returns the updated user information.
     { new: true }
   );
   if (user) {
-    console.log("USER UPDATED", user);
+    //If user exists, we get the user.
+    window.alert("USER UPDATED", user);
     res.json(user);
   } else {
+    //If not existing, we create the user.
     const newUser = await new User({
       email,
       name: email.split("@")[0],
       picture,
     }).save();
-    console.log("USER CREATED", newUser);
+    window.alert("USER CREATED", newUser);
+    //We send in the response the new user.
     res.json(newUser);
   }
 };

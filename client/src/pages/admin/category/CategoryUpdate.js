@@ -16,15 +16,14 @@ const CategoryUpdate = ({ history, match }) => {
   }, []);
 
   const loadCategory = () =>
-    getCategory(match.params.slug).then((c) => setName(c.data.name));
+    //pass the category name based on the URI parameter.
+    getCategory(match.params.slug).then((category) => setName(category.data.name));
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // console.log(name);
+    e.preventDefault();  
     setLoading(true);
     updateCategory(match.params.slug, { name }, user.token)
-      .then((res) => {
-        // console.log(res)
+      .then((res) => {       
         setLoading(false);
         setName("");
         toast.success(`"${res.data.name}" is updated`);

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
+//Handles the pop up messages.
 import { toast } from "react-toastify";
+//Access the Redux Store.
 import { useSelector } from "react-redux";
 import {
   createCategory,
@@ -18,26 +20,25 @@ const CategoryCreate = () => {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
-  // step 1
+  // search step 1. This is the user's search query.
   const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
     loadCategories();
   }, []);
 
-  const loadCategories = () =>
-    getCategories().then((c) => setCategories(c.data));
+  const loadCategories = () => getCategories().then((c) => setCategories(c.data));
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(name);
+    
     setLoading(true);
     createCategory({ name }, user.token)
-      .then((res) => {
-        // console.log(res)
+      .then((res) => {      
         setLoading(false);
         setName("");
         toast.success(`"${res.data.name}" is created`);
+        //After we create our categories, we reload our categories so out UI is updated.
         loadCategories();
       })
       .catch((err) => {
@@ -48,8 +49,7 @@ const CategoryCreate = () => {
   };
 
   const handleRemove = async (slug) => {
-    // let answer = window.confirm("Delete?");
-    // console.log(answer, slug);
+    //window.confirm method returns true or false. Double check with the user if the item should be deleted.
     if (window.confirm("Delete?")) {
       setLoading(true);
       removeCategory(slug, user.token)
@@ -67,8 +67,8 @@ const CategoryCreate = () => {
     }
   };
 
-  // step 4
-  const searched = (keyword) => (c) => c.name.toLowerCase().includes(keyword);
+  // search step 4. Check is the category name includes the key word.
+  const searched = (keyWord) => (category) => category.name.toLowerCase().includes(keyWord);
 
   return (
     <div className="container-fluid">
@@ -89,20 +89,20 @@ const CategoryCreate = () => {
             setName={setName}
           />
 
-          {/* step 2 and step 3 */}
+          {/* search step 2 and step 3 */}
           <LocalSearch keyword={keyword} setKeyword={setKeyword} />
 
-          {/* step 5 */}
-          {categories.filter(searched(keyword)).map((c) => (
-            <div className="alert alert-secondary" key={c._id}>
-              {c.name}
+          {/* search step 5. Map the correspondingg category */}
+          {categories.filter(searched(keyword)).map((category) => (
+            <div className="alert alert-secondary" key={category._id}>
+              {category.name}
               <span
-                onClick={() => handleRemove(c.slug)}
+                onClick={() => handleRemove(category.slug)}
                 className="btn btn-sm float-right"
               >
                 <DeleteOutlined className="text-danger" />
               </span>
-              <Link to={`/admin/category/${c.slug}`}>
+              <Link to={`/admin/category/${category.slug}`}>
                 <span className="btn btn-sm float-right">
                   <EditOutlined className="text-warning" />
                 </span>

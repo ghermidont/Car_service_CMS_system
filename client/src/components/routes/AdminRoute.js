@@ -6,23 +6,24 @@ import { currentAdmin } from "../../functions/auth";
 
 const AdminRoute = ({ children, ...rest }) => {
   const { user } = useSelector((state) => ({ ...state }));
-  const [ok, setOk] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
+  // When the users state changes it checks if the user is an administrator.
   useEffect(() => {
     if (user && user.token) {
       currentAdmin(user.token)
         .then((res) => {
           console.log("CURRENT ADMIN RES", res);
-          setOk(true);
+          setIsAdmin(true);
         })
         .catch((err) => {
           console.log("ADMIN ROUTE ERR", err);
-          setOk(false);
+          setIsAdmin(false);
         });
     }
   }, [user]);
 
-  return ok ? <Route {...rest} /> : <LoadingToRedirect />;
+  return isAdmin ? <Route {...rest} /> : <LoadingToRedirect />;
 };
 
 export default AdminRoute;

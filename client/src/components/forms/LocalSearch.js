@@ -1,3 +1,4 @@
+/** Local search form. */
 import React from "react";
 
 const LocalSearch = ({ keyword, setKeyword }) => {

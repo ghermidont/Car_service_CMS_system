@@ -47,7 +47,9 @@ const NewArrivals = () => {
         <nav className="col-md-4 offset-md-4 text-center pt-5 p-3">
           <Pagination
             current={page}
+            // This is the product total we get from the backend.
             total={(productsCount / 3) * 10}
+            //The value here represent the the page number the user chooses.
             onChange={(value) => setPage(value)}
           />
         </nav>

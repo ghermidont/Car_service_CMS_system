@@ -24,6 +24,6 @@ exports.remove = (req, res) => {
 
   cloudinary.uploader.destroy(image_id, (err, result) => {
     if (err) return res.json({ success: false, err });
-    res.send("ok");
+    res.send("Image removed");
   });
 };

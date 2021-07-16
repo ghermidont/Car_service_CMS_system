@@ -66,22 +66,21 @@ const ProductCreate = () => {
       })
       .catch((err) => {
         console.log(err);
-        // if (err.response.status === 400) toast.error(err.response.data);
         toast.error(err.response.data.err);
       });
   };
 
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-    // console.log(e.target.name, " ----- ", e.target.value);
+    //Dynamically update each of the initialState values by their name parameter.
+    setValues({ ...values, [e.target.name]: e.target.value });  
   };
 
-  const handleCatagoryChange = (e) => {
+  const eg= (e) => {
     e.preventDefault();
     console.log("CLICKED CATEGORY", e.target.value);
     setValues({ ...values, subs: [], category: e.target.value });
     getCategorySubs(e.target.value).then((res) => {
-      console.log("SUB OPTIONS ON CATGORY CLICK", res);
+      console.log("SUB OPTIONS ON CATEGORY CLICK", res);
       setSubOptions(res.data);
     });
     setShowSub(true);
@@ -117,7 +116,7 @@ const ProductCreate = () => {
             handleChange={handleChange}
             setValues={setValues}
             values={values}
-            handleCatagoryChange={handleCatagoryChange}
+            handleCategoryChange={handleCategoryChange}
             subOptions={subOptions}
             showSub={showSub}
           />

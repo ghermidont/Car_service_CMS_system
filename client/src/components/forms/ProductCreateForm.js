@@ -8,7 +8,7 @@ const ProductCreateForm = ({
   handleChange,
   setValues,
   values,
-  handleCatagoryChange,
+  handleCategoryChange,
   subOptions,
   showSub,
 }) => {
@@ -18,15 +18,15 @@ const ProductCreateForm = ({
     description,
     price,
     categories,
-    category,
+    //category,
     subs,
-    shipping,
+    //shipping,
     quantity,
-    images,
+    //images,
     colors,
     brands,
-    color,
-    brand,
+    //color,
+    //brand,
   } = values;
 
   return (
@@ -117,7 +117,7 @@ const ProductCreateForm = ({
         <select
           name="category"
           className="form-control"
-          onChange={handleCatagoryChange}
+          onChange={handleCategoryChange}
         >
           <option>Please select</option>
           {categories.length > 0 &&

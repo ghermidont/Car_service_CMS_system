@@ -7,14 +7,15 @@ import { Avatar, Badge } from "antd";
 const FileUpload = ({ values, setValues, setLoading }) => {
   const { user } = useSelector((state) => ({ ...state }));
 
-  const fileUploadAndResize = (e) => {
-    // console.log(e.target.files);
-    // resize
-    let files = e.target.files; // 3
+  const fileUploadAndResize = (e) => {  
+    /* In case we upload single file we would take the first element in the array with e.target.files[0]. 
+    In case o multiple upload we take all the files with e.target.files.*/
+    let files = e.target.files; 
     let allUploadedFiles = values.images;
 
     if (files) {
       setLoading(true);
+      //TODO Consider "for of"
       for (let i = 0; i < files.length; i++) {
         Resizer.imageFileResizer(
           files[i],
@@ -23,8 +24,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
           "JPEG",
           100,
           0,
-          (uri) => {
-            // console.log(uri);
+          (uri) => {           
             axios
               .post(
                 `${process.env.REACT_APP_API}/uploadimages`,
@@ -50,14 +50,11 @@ const FileUpload = ({ values, setValues, setLoading }) => {
           "base64"
         );
       }
-    }
-    // send back to server to upload to cloudinary
-    // set url to images[] in the parent component state - ProductCreate
+    }  
   };
 
   const handleImageRemove = (public_id) => {
-    setLoading(true);
-    // console.log("remove image", public_id);
+    setLoading(true);   
     axios
       .post(
         `${process.env.REACT_APP_API}/removeimage`,

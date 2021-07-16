@@ -31,6 +31,7 @@ const AdminProductCard = ({ product, handleRemove }) => {
     >
       <Meta
         title={title}
+        // We use substring to limit the number of characters from the description.
         description={`${description && description.substring(0, 40)}...`}
       />
     </Card>

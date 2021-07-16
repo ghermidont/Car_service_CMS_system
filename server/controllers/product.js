@@ -9,8 +9,7 @@ exports.create = async (req, res) => {
     const newProduct = await new Product(req.body).save();
     res.json(newProduct);
   } catch (err) {
-    console.log(err);
-    // res.status(400).send("Create product failed");
+    console.log(err);  
     res.status(400).json({
       err: err.message,
     });
@@ -59,8 +58,7 @@ exports.update = async (req, res) => {
     ).exec();
     res.json(updated);
   } catch (err) {
-    console.log("PRODUCT UPDATE ERROR ----> ", err);
-    // return res.status(400).send("Product update failed");
+    console.log("PRODUCT UPDATE ERROR ----> ", err);   
     res.status(400).json({
       err: err.message,
     });
@@ -87,14 +85,16 @@ exports.update = async (req, res) => {
 
 // WITH PAGINATION
 exports.list = async (req, res) => {
-  // console.table(req.body);
   try {
     // createdAt/updatedAt, desc/asc, 3
     const { sort, order, page } = req.body;
+    //the page number the user clicks
     const currentPage = page || 1;
+    //The number of items per page.
     const perPage = 3; // 3
 
     const products = await Product.find({})
+    //skipping the number of products from the page previous to the chosen page. 
       .skip((currentPage - 1) * perPage)
       .populate("category")
       .populate("subs")
@@ -108,6 +108,7 @@ exports.list = async (req, res) => {
   }
 };
 
+//Getting the total product count for the pagination.
 exports.productsCount = async (req, res) => {
   let total = await Product.find({}).estimatedDocumentCount().exec();
   res.json(total);

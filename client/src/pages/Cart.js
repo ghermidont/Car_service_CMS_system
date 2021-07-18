@@ -15,7 +15,7 @@ const Cart = ({ history }) => {
   };
 
   const saveOrderToDb = () => {
-    // console.log("cart", JSON.stringify(cart, null, 4));
+   
     userCart(cart, user.token)
       .then((res) => {
         console.log("CART POST RES", res);
@@ -25,7 +25,7 @@ const Cart = ({ history }) => {
   };
 
   const saveCashOrderToDb = () => {
-    // console.log("cart", JSON.stringify(cart, null, 4));
+    
     dispatch({
       type: "COD",
       payload: true,
@@ -53,8 +53,8 @@ const Cart = ({ history }) => {
         </tr>
       </thead>
 
-      {cart.map((p) => (
-        <ProductCardInCheckout key={p._id} p={p} />
+      {cart.map((product) => (
+        <ProductCardInCheckout key={product._id} p={product} />
       ))}
     </table>
   );

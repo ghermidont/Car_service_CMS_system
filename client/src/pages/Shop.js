@@ -152,13 +152,13 @@ const Shop = () => {
     }
 
     setCategoryIds(inTheState);
-    // console.log(inTheState);
+
     fetchProducts({ category: inTheState });
   };
 
   // 5. show products by star rating
   const handleStarClick = (num) => {
-    // console.log(num);
+   
     dispatch({
       type: "SEARCH_QUERY",
       payload: { text: "" },
@@ -196,8 +196,7 @@ const Shop = () => {
       </div>
     ));
 
-  const handleSub = (sub) => {
-    // console.log("SUB", sub);
+  const handleSub = (sub) => { 
     setSub(sub);
     dispatch({
       type: "SEARCH_QUERY",

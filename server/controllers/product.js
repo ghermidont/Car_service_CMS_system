@@ -38,6 +38,7 @@ exports.remove = async (req, res) => {
   }
 };
 
+//Gets the single product by the slug. //TODO use this to get single elements from the DB. 
 exports.read = async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug })
     .populate("category")

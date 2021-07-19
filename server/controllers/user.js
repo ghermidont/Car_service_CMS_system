@@ -36,14 +36,10 @@ exports.userCart = async (req, res) => {
     products.push(object);
   }
 
-  // console.log('products', products)
-
   let cartTotal = 0;
   for (let i = 0; i < products.length; i++) {
     cartTotal = cartTotal + products[i].price * products[i].count;
   }
-
-  // console.log("cartTotal", cartTotal);
 
   let newCart = await new Cart({
     products,

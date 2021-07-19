@@ -14,21 +14,25 @@ const Register = ({ history }) => {
 
   const handleSubmit = async (e) => {
     //prevent page reload
-    e.preventDefault();
+    e&&e.preventDefault();
  
     const config = {
       url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
       handleCodeInApp: true,
     };
-
-    await auth.sendSignInLinkToEmail(email, config);
-    toast.success(
-      `Email is sent to ${email}. Click the link to complete your registration.`
-    );
-    // save user email in local storage
-    window.localStorage.setItem("emailForRegistration", email);
-    // clear state
-    setEmail("");
+        try {
+            await auth.sendSignInLinkToEmail(email, config);
+            toast.success(
+                `Email is sent to ${email}. Click the link to complete your registration.`
+            );
+            // save user email in local storage
+            window.localStorage.setItem("emailForRegistration", email);
+            // clear state
+            setEmail("");
+            history.push("/");
+        }catch(err){
+            window.alert("this is an error from try and catch" . err)
+        }
   };
 
   const registerForm = () => (
@@ -53,7 +57,7 @@ const Register = ({ history }) => {
     <div className="container p-5">
       <div className="row">
         <div className="col-md-6 offset-md-3">
-          <h4>Register</h4>
+          <h4>Register form</h4>
           {registerForm()}
         </div>
       </div>

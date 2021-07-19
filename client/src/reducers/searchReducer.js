@@ -3,7 +3,7 @@
 
 export const searchReducer = (action, state = { text: "" }) => {
 
-  if (action.type==="SEARCH_QUERY") {
+  if (action&&action.type==="SEARCH_QUERY") {
 
     return { ...state, ...action.payload };
 

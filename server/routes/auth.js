@@ -5,7 +5,8 @@ const router = express.Router();
 // middlewares
 const { authCheck, adminCheck } = require("../middlewares/auth");
 
-// Controllers. In order not to write the functions in the body of the route, we create a separate folder with the functions you need to control the routes.
+// Controllers. In order not to write the functions in the body of the route,
+// we create a separate folder with the functions you need to control the routes.
 const { createOrUpdateUser, currentUser } = require("../controllers/auth");
 
 //We apply the middleware (in this case "authCheck") before the response we send.

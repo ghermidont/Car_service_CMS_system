@@ -9,6 +9,7 @@ import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/auth";
 import { LoadingOutlined } from "@ant-design/icons";
+import "tailwindcss/tailwind.css";
 
 // using lazy
 const Login = lazy(() => import("./pages/auth/Login"));
@@ -25,12 +26,8 @@ const AdminRoute = lazy(() => import("./components/routes/AdminRoute"));
 const Password = lazy(() => import("./pages/user/Password"));
 const Wishlist = lazy(() => import("./pages/user/Wishlist"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
-const CategoryCreate = lazy(() =>
-  import("./pages/admin/category/CategoryCreate")
-);
-const CategoryUpdate = lazy(() =>
-  import("./pages/admin/category/CategoryUpdate")
-);
+const CategoryCreate = lazy(() => import("./pages/admin/category/CategoryCreate"));
+const CategoryUpdate = lazy(() => import("./pages/admin/category/CategoryUpdate"));
 const SubCreate = lazy(() => import("./pages/admin/sub/SubCreate"));
 const SubUpdate = lazy(() => import("./pages/admin/sub/SubUpdate"));
 const ProductCreate = lazy(() => import("./pages/admin/product/ProductCreate"));
@@ -39,12 +36,9 @@ const ProductUpdate = lazy(() => import("./pages/admin/product/ProductUpdate"));
 const Product = lazy(() => import("./pages/Product"));
 const CategoryHome = lazy(() => import("./pages/category/CategoryHome"));
 const SubHome = lazy(() => import("./pages/sub/SubHome"));
-const Shop = lazy(() => import("./pages/Shop"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Checkout = lazy(() => import("./pages/Checkout"));
-const CreateCouponPage = lazy(() =>
-  import("./pages/admin/coupon/CreateCouponPage")
-);
+const CreateCouponPage = lazy(() => import("./pages/admin/coupon/CreateCouponPage"));
 const Payment = lazy(() => import("./pages/Payment"));
 
 const App = () => {
@@ -80,9 +74,8 @@ const App = () => {
     <Suspense
       fallback={
         <div className="col text-center p-5">
-          __ React Redux EC
+          Car service CMS is Loading...
           <LoadingOutlined />
-          MMERCE __
         </div>
       }
     >
@@ -119,7 +112,6 @@ const App = () => {
         <Route exact path="/product/:slug" component={Product} />
         <Route exact path="/category/:slug" component={CategoryHome} />
         <Route exact path="/sub/:slug" component={SubHome} />
-        <Route exact path="/shop" component={Shop} />
         <Route exact path="/cart" component={Cart} />
         <UserRoute exact path="/checkout" component={Checkout} />
         <AdminRoute exact path="/admin/coupon" component={CreateCouponPage} />

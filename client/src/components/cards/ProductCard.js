@@ -13,7 +13,7 @@ const ProductCard = ({ product }) => {
   const [tooltip, setTooltip] = useState("Click to add");
 
   // redux
-  const { user, cart } = useSelector((state) => ({ ...state }));
+  //const { user, cart } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
@@ -64,6 +64,7 @@ const ProductCard = ({ product }) => {
         cover={
           <img
             src={images && images.length ? images[0].url : laptop}
+            alt="some cover"
             style={{ height: "150px", objectFit: "cover" }}
             className="p-1"
           />
@@ -73,7 +74,7 @@ const ProductCard = ({ product }) => {
             <EyeOutlined className="text-warning" /> <br /> View Product
           </Link>,
           <Tooltip title={tooltip}>
-            <a onClick={handleAddToCart} disabled={product.quantity < 1}>
+            <a onClick={handleAddToCart}>
               <ShoppingCartOutlined className="text-danger" /> <br />
               {product.quantity < 1 ? "Out of stock" : "Add to Cart"}
             </a>
@@ -87,6 +88,6 @@ const ProductCard = ({ product }) => {
       </Card>
     </>
   );
-};
+}
 
 export default ProductCard;

@@ -8,8 +8,8 @@ import { Link } from "react-router-dom";
 import { createOrUpdateUser } from "../../functions/auth";
 
 const Login = ({ history }) => {
-  const [email, setEmail] = useState("gqlreactnode@gmail.com");
-  const [password, setPassword] = useState("gggggg");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
    //we use destructuring to get specific data from the states that are defined in the reducers/index.js file.
@@ -44,7 +44,7 @@ const Login = ({ history }) => {
     e.preventDefault();
     setLoading(true);   
     try {
-      const result = await auth.signInWithEmailAndPassword(email, password);    
+      const result = await auth.signInWithEmailAndPassword(email, password);
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
       //This functions will give us the user token and we send it to the back end in the header as auth token.

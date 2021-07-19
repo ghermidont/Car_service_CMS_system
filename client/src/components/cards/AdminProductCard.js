@@ -15,6 +15,7 @@ const AdminProductCard = ({ product, handleRemove }) => {
       cover={
         <img
           src={images && images.length ? images[0].url : laptop}
+          alt="some cover"
           style={{ height: "150px", objectFit: "cover" }}
           className="p-1"
         />
@@ -36,6 +37,6 @@ const AdminProductCard = ({ product, handleRemove }) => {
       />
     </Card>
   );
-};
+}
 
 export default AdminProductCard;

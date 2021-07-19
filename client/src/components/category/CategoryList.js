@@ -9,7 +9,7 @@ const CategoryList = () => {
   useEffect(() => {
     setLoading(true);
     getCategories().then((c) => {
-      setCategories(c.data);
+      c&&setCategories(c.data);
       setLoading(false);
     });
   }, []);

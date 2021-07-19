@@ -24,3 +24,6 @@ Render to PDF and download:
 
 <!-- Text editor component -->
 <https://www.npmjs.com/package/react-quilljs>
+
+Project schema:
+<https://www.figma.com/file/J6J4U3FlOpVDF1uFTWPIQB/autofficina-team-library>

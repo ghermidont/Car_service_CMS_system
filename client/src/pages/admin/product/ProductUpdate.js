@@ -87,8 +87,7 @@ const ProductUpdate = ({ match, history }) => {
   };
 
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-    // console.log(e.target.name, " ----- ", e.target.value);
+    setValues({ ...values, [e.target.name]: e.target.value });   
   };
 
   const handleCategoryChange = (e) => {
@@ -99,7 +98,7 @@ const ProductUpdate = ({ match, history }) => {
     setSelectedCategory(e.target.value);
 
     getCategorySubs(e.target.value).then((res) => {
-      console.log("SUB OPTIONS ON CATGORY CLICK", res);
+      console.log("SUB OPTIONS ON CATEGORY CLICK", res);
       setSubOptions(res.data);
     });
 

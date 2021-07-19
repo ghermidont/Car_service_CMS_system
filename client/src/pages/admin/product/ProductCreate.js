@@ -75,7 +75,7 @@ const ProductCreate = () => {
     setValues({ ...values, [e.target.name]: e.target.value });  
   };
 
-  const eg= (e) => {
+  const handleCategoryChange = (e) => {
     e.preventDefault();
     console.log("CLICKED CATEGORY", e.target.value);
     setValues({ ...values, subs: [], category: e.target.value });
@@ -84,7 +84,7 @@ const ProductCreate = () => {
       setSubOptions(res.data);
     });
     setShowSub(true);
-  };
+  };  
 
   return (
     <div className="container-fluid">
@@ -99,9 +99,7 @@ const ProductCreate = () => {
           ) : (
             <h4>Product create</h4>
           )}
-          <hr />
-
-          {/* {JSON.stringify(values.images)} */}
+          <hr />    
 
           <div className="p-3">
             <FileUpload

@@ -1,6 +1,7 @@
-const User = require("../models/user");
+const User = require("../models/CMSuserModel");
 
 exports.createOrUpdateUser = async (req, res) => {
+  //TODO destructure the request object
   const { email } = req.user;
   //Find and update the user in the database.
   const user = await User.findOneAndUpdate(

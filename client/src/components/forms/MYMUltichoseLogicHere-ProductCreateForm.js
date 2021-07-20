@@ -3,7 +3,7 @@ import { Select } from "antd";
 
 const { Option } = Select;
 
-const ProductCreateForm = ({
+const MYMUltichoseLogicHereProductCreateForm = ({
   handleSubmit,
   handleChange,
   setValues,
@@ -155,4 +155,4 @@ const ProductCreateForm = ({
   );
 };
 
-export default ProductCreateForm;
+export default MYMUltichoseLogicHereProductCreateForm;

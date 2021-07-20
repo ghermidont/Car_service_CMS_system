@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ProductCardInCheckout from "../components/cards/ProductCardInCheckout";
 import { userCart } from "../functions/user";
 
-const Cart = ({ history }) => {
+const TableLogicHereCart = ({ history }) => {
   const { cart, user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
@@ -123,4 +123,4 @@ const Cart = ({ history }) => {
   );
 };
 
-export default Cart;
+export default TableLogicHereCart;

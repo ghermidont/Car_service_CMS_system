@@ -1,4 +1,4 @@
-const Product = require("../models/product");
+const ServiceClientController = require("../models/product");
 const User = require("../models/user");
 const slugify = require("slugify");
 
@@ -6,7 +6,7 @@ exports.create = async (req, res) => {
   try {
     console.log(req.body);
     req.body.slug = slugify(req.body.title);
-    const newProduct = await new Product(req.body).save();
+    const newProduct = await new ServiceClientController(req.body).save();
     res.json(newProduct);
   } catch (err) {
     console.log(err);  
@@ -17,7 +17,7 @@ exports.create = async (req, res) => {
 };
 
 exports.listAll = async (req, res) => {
-  let products = await Product.find({})
+  let products = await ServiceClientController.find({})
     .limit(parseInt(req.params.count))
     .populate("category")
     .populate("subs")
@@ -28,7 +28,7 @@ exports.listAll = async (req, res) => {
 
 exports.remove = async (req, res) => {
   try {
-    const deleted = await Product.findOneAndRemove({
+    const deleted = await ServiceClientController.findOneAndRemove({
       slug: req.params.slug,
     }).exec();
     res.json(deleted);
@@ -40,7 +40,7 @@ exports.remove = async (req, res) => {
 
 //Gets the single product by the slug. //TODO use this to get single elements from the DB. 
 exports.read = async (req, res) => {
-  const product = await Product.findOne({ slug: req.params.slug })
+  const product = await ServiceClientController.findOne({ slug: req.params.slug })
     .populate("category")
     .populate("subs")
     .exec();
@@ -52,7 +52,7 @@ exports.update = async (req, res) => {
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
     }
-    const updated = await Product.findOneAndUpdate(
+    const updated = await ServiceClientController.findOneAndUpdate(
       { slug: req.params.slug },
       req.body,
       { new: true }
@@ -94,7 +94,7 @@ exports.list = async (req, res) => {
     //The number of items per page.
     const perPage = 3; // 3
 
-    const products = await Product.find({})
+    const products = await ServiceClientController.find({})
     //skipping the number of products from the page previous to the chosen page. 
       .skip((currentPage - 1) * perPage)
       .populate("category")
@@ -111,12 +111,12 @@ exports.list = async (req, res) => {
 
 //Getting the total product count for the pagination.
 exports.productsCount = async (req, res) => {
-  let total = await Product.find({}).estimatedDocumentCount().exec();
+  let total = await ServiceClientController.find({}).estimatedDocumentCount().exec();
   res.json(total);
 };
 
 exports.productStar = async (req, res) => {
-  const product = await Product.findById(req.params.productId).exec();
+  const product = await ServiceClientController.findById(req.params.productId).exec();
   const user = await User.findOne({ email: req.user.email }).exec();
   const { star } = req.body;
 
@@ -128,7 +128,7 @@ exports.productStar = async (req, res) => {
 
   // if user haven't left rating yet, push it
   if (existingRatingObject === undefined) {
-    let ratingAdded = await Product.findByIdAndUpdate(
+    let ratingAdded = await ServiceClientController.findByIdAndUpdate(
       product._id,
       {
         $push: { ratings: { star, postedBy: user._id } },
@@ -139,7 +139,7 @@ exports.productStar = async (req, res) => {
     res.json(ratingAdded);
   } else {
     // if user have already left rating, update it
-    const ratingUpdated = await Product.updateOne(
+    const ratingUpdated = await ServiceClientController.updateOne(
       {
         ratings: { $elemMatch: existingRatingObject },
       },
@@ -152,9 +152,9 @@ exports.productStar = async (req, res) => {
 };
 
 exports.listRelated = async (req, res) => {
-  const product = await Product.findById(req.params.productId).exec();
+  const product = await ServiceClientController.findById(req.params.productId).exec();
 
-  const related = await Product.find({
+  const related = await ServiceClientController.find({
     _id: { $ne: product._id },
     category: product.category,
   })
@@ -170,7 +170,7 @@ exports.listRelated = async (req, res) => {
 // SERACH / FILTER
 
 const handleQuery = async (req, res, query) => {
-  const products = await Product.find({ $text: { $search: query } })
+  const products = await ServiceClientController.find({ $text: { $search: query } })
     .populate("category", "_id name")
     .populate("subs", "_id name")
     .populate("postedBy", "_id name")
@@ -181,7 +181,7 @@ const handleQuery = async (req, res, query) => {
 
 const handlePrice = async (req, res, price) => {
   try {
-    let products = await Product.find({
+    let products = await ServiceClientController.find({
       price: {
         $gte: price[0],
         $lte: price[1],
@@ -200,7 +200,7 @@ const handlePrice = async (req, res, price) => {
 
 const handleCategory = async (req, res, category) => {
   try {
-    let products = await Product.find({ category })
+    let products = await ServiceClientController.find({ category })
       .populate("category", "_id name")
       .populate("subs", "_id name")
       .populate("postedBy", "_id name")
@@ -213,7 +213,7 @@ const handleCategory = async (req, res, category) => {
 };
 
 const handleStar = (req, res, stars) => {
-  Product.aggregate([
+  ServiceClientController.aggregate([
     {
       $project: {
         document: "$$ROOT",
@@ -228,7 +228,7 @@ const handleStar = (req, res, stars) => {
     .limit(12)
     .exec((err, aggregates) => {
       if (err) console.log("AGGREGATE ERROR", err);
-      Product.find({ _id: aggregates })
+      ServiceClientController.find({ _id: aggregates })
         .populate("category", "_id name")
         .populate("subs", "_id name")
         .populate("postedBy", "_id name")
@@ -240,7 +240,7 @@ const handleStar = (req, res, stars) => {
 };
 
 const handleSub = async (req, res, sub) => {
-  const products = await Product.find({ subs: sub })
+  const products = await ServiceClientController.find({ subs: sub })
     .populate("category", "_id name")
     .populate("subs", "_id name")
     .populate("postedBy", "_id name")
@@ -250,7 +250,7 @@ const handleSub = async (req, res, sub) => {
 };
 
 const handleShipping = async (req, res, shipping) => {
-  const products = await Product.find({ shipping })
+  const products = await ServiceClientController.find({ shipping })
     .populate("category", "_id name")
     .populate("subs", "_id name")
     .populate("postedBy", "_id name")
@@ -260,7 +260,7 @@ const handleShipping = async (req, res, shipping) => {
 };
 
 const handleColor = async (req, res, color) => {
-  const products = await Product.find({ color })
+  const products = await ServiceClientController.find({ color })
     .populate("category", "_id name")
     .populate("subs", "_id name")
     .populate("postedBy", "_id name")
@@ -270,7 +270,7 @@ const handleColor = async (req, res, color) => {
 };
 
 const handleBrand = async (req, res, brand) => {
-  const products = await Product.find({ brand })
+  const products = await ServiceClientController.find({ brand })
     .populate("category", "_id name")
     .populate("subs", "_id name")
     .populate("postedBy", "_id name")

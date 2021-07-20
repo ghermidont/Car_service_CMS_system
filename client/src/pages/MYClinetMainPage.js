@@ -1,8 +1,9 @@
+'use strict'
 import React from "react";
 import { Button, Row, Col } from 'antd';
 import {Link} from "react-router-dom";
 
-const Home = () => {
+const MYClinetMainPage = () => {
     const style = { background: 'darkgrey', color: "black", borderRadius:"5px", width: '500px', height: "100px"};
 
   return (
@@ -39,4 +40,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default MYClinetMainPage;

@@ -1,6 +1,6 @@
 import React from "react";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
-import ShowPaymentInfo from "../cards/ShowPaymentInfo";
+import DownloadPDFLogicHereShowPaymentInfo from "../cards/ShowPaymentInfo";
 
 const Orders = ({ orders, handleStatusChange }) => {
   const showOrderInTable = (order) => (
@@ -44,7 +44,7 @@ const Orders = ({ orders, handleStatusChange }) => {
       {orders.map((order) => (
         <div key={order._id} className="row pb-5">
           <div className="btn btn-block bg-light">
-            <ShowPaymentInfo order={order} showStatus={false} />
+            <DownloadPDFLogicHereShowPaymentInfo order={order} showStatus={false} />
 
             <div className="row">
               <div className="col-md-4">Delivery Status</div>

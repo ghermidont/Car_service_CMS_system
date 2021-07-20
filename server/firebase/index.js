@@ -1,10 +1,10 @@
-var admin = require("firebase-admin");
+const admin = require("firebase-admin");
 //Connect the file with the key form the FB
-var serviceAccount = require("../config/fbServiceAccountKey.json");
+const serviceAccount = require("../config/fbServiceAccountKey.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://ecommerce-225c8.firebaseio.com",
+  databaseURL: "https://carservicecms-default-rtdb.europe-west1.firebasedatabase.app",
 });
 
 module.exports = admin;

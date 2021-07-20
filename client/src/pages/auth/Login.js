@@ -50,6 +50,7 @@ const Login = ({ history }) => {
       //This functions will give us the user token and we send it to the back end in the header as auth token.
       createOrUpdateUser(idTokenResult.token)
         .then((res) => {
+          // Add data to the React Store.
           dispatch({
             type: "LOGGED_IN_USER",
             payload: {
@@ -64,7 +65,6 @@ const Login = ({ history }) => {
         })
         .catch((err) => console.log(err));    
     } catch (error) {
-      console.log(error);
       toast.error(error.message);
       setLoading(false);
     }

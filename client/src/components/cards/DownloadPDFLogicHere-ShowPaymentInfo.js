@@ -1,6 +1,6 @@
 import React from "react";
 
-const ShowPaymentInfo = ({ order, showStatus = true }) => (
+const DownloadPDFLogicHereShowPaymentInfo = ({ order, showStatus = true }) => (
   <div>
     <p>
       <span>Order Id: {order.paymentIntent.id}</span>
@@ -34,4 +34,4 @@ const ShowPaymentInfo = ({ order, showStatus = true }) => (
   </div>
 );
 
-export default ShowPaymentInfo;
+export default DownloadPDFLogicHereShowPaymentInfo;

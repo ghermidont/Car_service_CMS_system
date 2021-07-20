@@ -4,7 +4,7 @@ import ProductCard from "../cards/ProductCard";
 import LoadingCard from "../cards/LoadingCard";
 import { Pagination } from "antd";
 
-const NewArrivals = () => {
+const PaginationHereNewArrivals = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [productsCount, setProductsCount] = useState(0);
@@ -58,4 +58,4 @@ const NewArrivals = () => {
   );
 };
 
-export default NewArrivals;
+export default PaginationHereNewArrivals;

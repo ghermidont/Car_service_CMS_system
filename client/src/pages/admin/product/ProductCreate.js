@@ -3,7 +3,7 @@ import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { createProduct } from "../../../functions/product";
-import ProductCreateForm from "../../../components/forms/ProductCreateForm";
+import MYMUltichoseLogicHereProductCreateForm from "../../../components/forms/ProductCreateForm";
 import { getCategories, getCategorySubs } from "../../../functions/category";
 import FileUpload from "../../../components/forms/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -109,7 +109,7 @@ const ProductCreate = () => {
             />
           </div>
 
-          <ProductCreateForm
+          <MYMUltichoseLogicHereProductCreateForm
             handleSubmit={handleSubmit}
             handleChange={handleChange}
             setValues={setValues}

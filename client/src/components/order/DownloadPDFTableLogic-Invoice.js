@@ -8,7 +8,7 @@ import {
   DataTableCell,
 } from "@david.kucsai/react-pdf-table";
 
-const Invoice = ({ order }) => (
+const DownloadPDFTableLogicInvoice = ({ order }) => (
   <Document>
     <Page style={styles.body}>
       <Text style={styles.header} fixed>
@@ -117,4 +117,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Invoice;
+export default DownloadPDFTableLogicInvoice;

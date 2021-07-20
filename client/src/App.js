@@ -14,17 +14,17 @@ import "tailwindcss/tailwind.css";
 // using lazy
 const Login = lazy(() => import("./pages/auth/Login"));
 const Register = lazy(() => import("./pages/auth/Register"));
-const Home = lazy(() => import("./pages/Home"));
+const Home = lazy(() => import("./pages/MYClinetMainPage"));
 const Header = lazy(() => import("./components/nav/Header"));
 const SideDrawer = lazy(() => import("./components/drawer/SideDrawer"));
 
 const RegisterComplete = lazy(() => import("./pages/auth/RegisterComplete"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
-const History = lazy(() => import("./pages/user/History"));
+
 const UserRoute = lazy(() => import("./components/routes/UserRoute"));
 const AdminRoute = lazy(() => import("./components/routes/AdminRoute"));
 const Password = lazy(() => import("./pages/user/Password"));
-const Wishlist = lazy(() => import("./pages/user/Wishlist"));
+
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const CategoryCreate = lazy(() => import("./pages/admin/category/CategoryCreate"));
 const CategoryUpdate = lazy(() => import("./pages/admin/category/CategoryUpdate"));
@@ -35,8 +35,8 @@ const AllProducts = lazy(() => import("./pages/admin/product/AllProducts"));
 const ProductUpdate = lazy(() => import("./pages/admin/product/ProductUpdate"));
 const Product = lazy(() => import("./pages/Product"));
 const CategoryHome = lazy(() => import("./pages/category/CategoryHome"));
-const SubHome = lazy(() => import("./pages/sub/SubHome"));
-const Cart = lazy(() => import("./pages/Cart"));
+
+const Cart = lazy(() => import("./pages/TableLogicHere-Cart"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 const CreateCouponPage = lazy(() => import("./pages/admin/coupon/CreateCouponPage"));
 const Payment = lazy(() => import("./pages/Payment"));
@@ -90,28 +90,20 @@ const App = () => {
         <Route exact path="/forgot/password" component={ForgotPassword} />
         <UserRoute exact path="/user/history" component={History} />
         <UserRoute exact path="/user/password" component={Password} />
-        <UserRoute exact path="/user/wishlist" component={Wishlist} />
+
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
         <AdminRoute exact path="/admin/category" component={CategoryCreate} />
-        <AdminRoute
-          exact
-          path="/admin/category/:slug"
-          component={CategoryUpdate}
-        />
+        <AdminRoute exact path="/admin/category/:slug" component={CategoryUpdate} />
         <AdminRoute exact path="/admin/sub" component={SubCreate} />
         <AdminRoute exact path="/admin/sub/:slug" component={SubUpdate} />
         <AdminRoute exact path="/admin/product" component={ProductCreate} />
         <AdminRoute exact path="/admin/products" component={AllProducts} />
-        <AdminRoute
-          exact
-          path="/admin/product/:slug"
-          component={ProductUpdate}
-        />
+        <AdminRoute exact path="/admin/product/:slug" component={ProductUpdate} />
 
         {/* Displays single product */}
         <Route exact path="/product/:slug" component={Product} />
         <Route exact path="/category/:slug" component={CategoryHome} />
-        <Route exact path="/sub/:slug" component={SubHome} />
+
         <Route exact path="/cart" component={Cart} />
         <UserRoute exact path="/checkout" component={Checkout} />
         <AdminRoute exact path="/admin/coupon" component={CreateCouponPage} />

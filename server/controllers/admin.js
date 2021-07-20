@@ -11,8 +11,6 @@ exports.orders = async (req, res) => {
 };
 
 exports.orderStatus = async (req, res) => {
-  // console.log(req.body);
-  // return;
   const { orderId, orderStatus } = req.body;
 
   let updated = await Order.findByIdAndUpdate(

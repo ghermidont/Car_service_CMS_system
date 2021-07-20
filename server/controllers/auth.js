@@ -20,7 +20,7 @@ exports.createOrUpdateUser = async (req, res) => {
     //If not existing, we create the user.
     const newUser = await new User({
       email,
-      name: email.split("@")[0],
+      name,
       picture,
     }).save();
     window.alert("USER CREATED", newUser);

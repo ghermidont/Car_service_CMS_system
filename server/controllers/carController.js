@@ -1,5 +1,4 @@
 const carModel = require("../models/carModel");
-const CMSUserModel = require("../models/CMSuserModel");
 const Slugify = require("slugify");
 
 exports.createCar = async (req, res) => {
@@ -18,6 +17,7 @@ exports.createCar = async (req, res) => {
 exports.listAllCars = async (req, res) => {
     let DbCars = await carModel.find({})
         .limit(parseInt(req.params.count))
+        //TODO fill the populate params
         .populate("category", "", "", "")
         .sort([["createdAt", "desc"]])
         .exec();
@@ -40,6 +40,7 @@ exports.removeCar = async (req, res) => {
 exports.getSingleCar = async (req, res) => {
     const product = await carModel.findOne({ slug: req.params.slug })
         // .populate() is being used in order to bring only needed information.
+        //TODO modify the populate criteria.
         .populate("category")
         .populate("subs")
         .exec();
@@ -96,6 +97,7 @@ exports.carsListForPagination = async (req, res) => {
         const cars = await carModel.find({})
             //skipping the number of products from the page previous to the chosen page.
             .skip((currentPage - 1) * perPage)
+            //TODO modify the populate criteria.
             .populate("category")
             .populate("subs")
             .sort([[sort, order]])
@@ -118,6 +120,7 @@ exports.carsCount = async (req, res) => {
 
 const handleSearchQuery = async (req, res, query) => {
     const products = await carModel.find({ $text: { $search: query } })
+        //TODO modify the populates criteria.
         .populate("category", "_id name")
         .populate("subs", "_id name")
         .populate("postedBy", "_id name")
@@ -127,14 +130,7 @@ const handleSearchQuery = async (req, res, query) => {
 
 exports.searchFilters = async (req, res) => {
     const {
-        query,
-        price,
-        category,
-        stars,
-        sub,
-        shipping,
-        color,
-        brand,
+        query
     } = req.body;
 
     if (query) {

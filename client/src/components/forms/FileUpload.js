@@ -15,7 +15,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
 
     if (files) {
       setLoading(true);
-      //TODO Consider "for of"
+
       for (let i = 0; i < files.length; i++) {
         Resizer.imageFileResizer(
           files[i],

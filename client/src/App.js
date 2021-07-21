@@ -30,10 +30,10 @@ const CategoryCreate = lazy(() => import("./pages/admin/category/CategoryCreate"
 const CategoryUpdate = lazy(() => import("./pages/admin/category/CategoryUpdate"));
 const SubCreate = lazy(() => import("./pages/admin/sub/SubCreate"));
 const SubUpdate = lazy(() => import("./pages/admin/sub/SubUpdate"));
-const ProductCreate = lazy(() => import("./pages/admin/product/ProductCreate"));
-const AllProducts = lazy(() => import("./pages/admin/product/AllProducts"));
-const ProductUpdate = lazy(() => import("./pages/admin/product/ProductUpdate"));
-const Product = lazy(() => import("./pages/Product"));
+const ProductCreate = lazy(() => import("./pages/admin/product/CarCreate"));
+const AllProducts = lazy(() => import("./pages/admin/product/AllCars"));
+const ProductUpdate = lazy(() => import("./pages/admin/product/CarUpdate"));
+const Product = lazy(() => import("./pages/CarPage"));
 const CategoryHome = lazy(() => import("./pages/category/CategoryHome"));
 
 const Cart = lazy(() => import("./pages/TableLogicHere-Cart"));

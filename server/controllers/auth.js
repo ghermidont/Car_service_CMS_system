@@ -14,7 +14,7 @@ exports.createOrUpdateUser = async (req, res) => {
   );
   if (user) {
     //If user exists, we get the user.
-    window.alert("USER UPDATED", user);
+    window.alert("USER UPDATED");
     res.json(user);
   } else {
     //If not existing, we create the user.
@@ -23,7 +23,7 @@ exports.createOrUpdateUser = async (req, res) => {
       name,
       picture,
     }).save();
-    window.alert("USER CREATED", newUser);
+    window.alert("USER CREATED");
     //We send in the response the new user.
     res.json(newUser);
   }
@@ -31,7 +31,7 @@ exports.createOrUpdateUser = async (req, res) => {
 
 exports.currentUser = async (req, res) => {
   User.findOne({ email: req.user.email }).exec((err, user) => {
-    if (err) throw new Error(err);
+    if (err) throw new Error(JSON.stringify(err));
     res.json(user);
   });
 };

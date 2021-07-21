@@ -8,35 +8,9 @@ const TableLogicHereCart = ({ history }) => {
   const { cart, user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
-  const getTotal = () => {
-    return cart.reduce((currentValue, nextValue) => {
-      return currentValue + nextValue.count * nextValue.price;
-    }, 0);
-  };
 
-  const saveOrderToDb = () => {
-   
-    userCart(cart, user.token)
-      .then((res) => {
-        console.log("CART POST RES", res);
-        if (res.data.ok) history.push("/checkout");
-      })
-      .catch((err) => console.log("cart save err", err));
-  };
 
-  const saveCashOrderToDb = () => {
-    
-    dispatch({
-      type: "COD",
-      payload: true,
-    });
-    userCart(cart, user.token)
-      .then((res) => {
-        console.log("CART POST RES", res);
-        if (res.data.ok) history.push("/checkout");
-      })
-      .catch((err) => console.log("cart save err", err));
-  };
+
 
   const showCartItems = () => (
     <table className="table table-bordered">

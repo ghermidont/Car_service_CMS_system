@@ -6,7 +6,7 @@ import { removeProduct } from "../../../functions/product";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-const AllProducts = () => {
+const AllCars = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   // redux
@@ -74,4 +74,4 @@ const AllProducts = () => {
   );
 };
 
-export default AllProducts;
+export default AllCars;

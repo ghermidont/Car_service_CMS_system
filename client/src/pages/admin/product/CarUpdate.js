@@ -23,7 +23,7 @@ const initialState = {
   brand: "",
 };
 
-const ProductUpdate = ({ match, history }) => {
+const CarUpdate = ({ match, history }) => {
   // state
   const [values, setValues] = useState(initialState);
   const [categories, setCategories] = useState([]);
@@ -156,4 +156,4 @@ const ProductUpdate = ({ match, history }) => {
   );
 };
 
-export default ProductUpdate;
+export default CarUpdate;

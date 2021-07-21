@@ -1,196 +1,139 @@
-const User = require("../models/user");
-const Product = require("../models/product");
-const Cart = require("../models/cart");
-const uniqueId = require("uniqueid");
+const CMSUserModel = require("../models/CMSuserModel");
+const Slugify = require("slugify");
 
-exports.userCart = async (req, res) => {
-
-    const { cart } = req.body;
-    let products = [];
-    const user = await User.findOne({ email: req.user.email }).exec();
-
-    // check if cart with logged in user id already exist
-    let cartExistByThisUser = await Cart.findOne({ orderBy: user._id }).exec();
-
-    if (cartExistByThisUser) {
-        cartExistByThisUser.remove();
-        console.log("removed old cart");
+exports.createCar = async (req, res) => {
+    try {
+        req.body.slug = Slugify(req.body.title);
+        const newCar = await new CMSUserModel(req.body).save();
+        res.json(newCar);
+    } catch (err) {
+        window.alert(err);
+        res.status(400).json({
+            err: err.message,
+        });
     }
+};
 
-    for (let i = 0; i < cart.length; i++) {
-        let object = {};
+exports.listAllCars = async (req, res) => {
+    let DbCars = await CMSUserModel.find({})
+        .limit(parseInt(req.params.count))
+        .populate("category", "", "", "")
+        .sort([["createdAt", "desc"]])
+        .exec();
+    res.json(DbCars);
+};
 
-        object.product = cart[i]._id;
-        object.count = cart[i].count;
-        object.color = cart[i].color;
-        // get price for creating total
-        let productFromDb = await Product.findById(cart[i]._id)
-            .select("price")
+exports.removeCar = async (req, res) => {
+    try {
+        const carToDelete = await CMSUserModel.findOneAndRemove({
+            slug: req.params.slug,
+        }).exec();
+        res.json(carToDelete);
+    } catch (err) {
+        window.alert(err);
+        return res.status(400).send("Car deletion failed");
+    }
+};
+
+//Gets the single product by the slug. //TODO use this to get single elements from the DB.
+exports.getSingleCar = async (req, res) => {
+    const product = await CMSUserModel.findOne({ slug: req.params.slug })
+        // .populate() is being used in order to bring only needed information.
+        //TODO modify the populate criteria.
+        .populate("category")
+        .populate("subs")
+        .exec();
+    res.json(product);
+};
+
+exports.updateCar = async (req, res) => {
+    try {
+        if (req.body.title) {
+            req.body.slug = Slugify(req.body.title);
+        }
+        const updated = await CMSUserModel.findOneAndUpdate(
+            { slug: req.params.slug },
+            req.body,
+            { new: true }
+        ).exec();
+        res.json(updated);
+    } catch (err) {
+        console.log("CMS USER UPDATE ERROR ----> ", err);
+        res.status(400).json({
+            err: err.message,
+        });
+    }
+};
+
+// WITHOUT PAGINATION
+// exports.list = async (req, res) => {
+//   try {
+//     // createdAt/updatedAt, desc/asc, 3
+//     const { sort, order, limit } = req.body;
+//     const products = await Product.find({})
+//       .populate("category")
+//       .populate("subs")
+//       .sort([[sort, order]])
+//       .limit(limit)
+//       .exec();
+
+//     res.json(products);
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
+
+// WITH PAGINATION
+exports.carsListForPagination = async (req, res) => {
+    try {
+        // createdAt/updatedAt, desc/asc, 3
+        const { sort, order, page } = req.body;
+        //the page number the user clicks on
+        const currentPage = page || 1;
+        //The number of items per page.
+        const perPage = 3; // 3
+
+        const cars = await CMSUserModel.find({})
+            //skipping the number of products from the page previous to the chosen page.
+            .skip((currentPage - 1) * perPage)
+            //TODO modify the populate criteria.
+            .populate("category")
+            .populate("subs")
+            .sort([[sort, order]])
+            .limit(perPage)
             .exec();
-        object.price = productFromDb.price;
 
-        products.push(object);
+        res.json(cars);
+    } catch (err) {
+        window.log(err);
     }
+};
 
-    let cartTotal = 0;
-    for (let i = 0; i < products.length; i++) {
-        cartTotal = cartTotal + products[i].price * products[i].count;
+//Getting the total product count for the pagination.
+exports.carsCount = async (req, res) => {
+    let total = await CMSUserModel.find({}).estimatedDocumentCount().exec();
+    res.json(total);
+};
+
+// SEARCH / FILTER
+
+const handleSearchQuery = async (req, res, query) => {
+    const products = await CMSUserModel.find({ $text: { $search: query } })
+        //TODO modify the populates criteria.
+        .populate("category", "_id name")
+        .populate("subs", "_id name")
+        .populate("postedBy", "_id name")
+        .exec();
+    res.json(products);
+};
+
+exports.searchFilters = async (req, res) => {
+    const {
+        query
+    } = req.body;
+
+    if (query) {
+        console.log("query --->", query);
+        await handleSearchQuery(req, res, query);
     }
-
-    let newCart = await new Cart({
-        products,
-        cartTotal,
-        orderBy: user._id,
-    }).save();
-
-    console.log("new cart ----> ", newCart);
-    res.json({ ok: true });
-};
-
-exports.getUserCart = async (req, res) => {
-    const user = await User.findOne({ email: req.user.email }).exec();
-
-    let cart = await Cart.findOne({ orderBy: user._id })
-        .populate("products.product", "_id title price totalAfterDiscount")
-        .exec();
-
-    const { products, cartTotal, totalAfterDiscount } = cart;
-    res.json({ products, cartTotal, totalAfterDiscount });
-};
-
-exports.emptyCart = async (req, res) => {
-    console.log("empty cart");
-    const user = await User.findOne({ email: req.user.email }).exec();
-
-    const cart = await Cart.findOneAndRemove({ orderBy: user._id }).exec();
-    res.json(cart);
-};
-
-exports.saveAddress = async (req, res) => {
-    const userAddress = await User.findOneAndUpdate(
-        { email: req.user.email },
-        { address: req.body.address }
-    ).exec();
-
-    res.json({ ok: true });
-};
-
-exports.createOrder = async (req, res) => {
-    const { paymentIntent } = req.body.stripeResponse;
-
-    const user = await User.findOne({ email: req.user.email }).exec();
-
-    let { products } = await Cart.findOne({ orderdBy: user._id }).exec();
-
-    let newOrder = await new Order({
-        products,
-        paymentIntent,
-        orderdBy: user._id,
-    }).save();
-
-    // decrement quantity, increment sold
-    let bulkOption = products.map((item) => {
-        return {
-            updateOne: {
-                filter: { _id: item.product._id }, // IMPORTANT item.product
-                update: { $inc: { quantity: -item.count, sold: +item.count } },
-            },
-        };
-    });
-
-    let updated = await Product.bulkWrite(bulkOption, {});
-    console.log("PRODUCT QUANTITY-- AND SOLD++", updated);
-
-    console.log("NEW ORDER SAVED", newOrder);
-    res.json({ ok: true });
-};
-
-exports.orders = async (req, res) => {
-    let user = await User.findOne({ email: req.user.email }).exec();
-
-    let userOrders = await Order.find({ orderdBy: user._id })
-        .populate("products.product")
-        .exec();
-
-    res.json(userOrders);
-};
-
-// addToWishlist wishlist removeFromWishlist
-exports.addToWishlist = async (req, res) => {
-    const { productId } = req.body;
-
-    const user = await User.findOneAndUpdate(
-        { email: req.user.email },
-        { $addToSet: { wishlist: productId } }
-    ).exec();
-
-    res.json({ ok: true });
-};
-
-exports.wishlist = async (req, res) => {
-    const list = await User.findOne({ email: req.user.email })
-        .select("wishlist")
-        .populate("wishlist")
-        .exec();
-
-    res.json(list);
-};
-
-exports.removeFromWishlist = async (req, res) => {
-    const { productId } = req.params;
-    const user = await User.findOneAndUpdate(
-        { email: req.user.email },
-        { $pull: { wishlist: productId } }
-    ).exec();
-
-    res.json({ ok: true });
-};
-
-exports.createCashOrder = async (req, res) => {
-    const { COD, couponApplied } = req.body;
-    // if COD is true, create order with status of Cash On Delivery
-
-    if (!COD) return res.status(400).send("Create cash order failed");
-
-    const user = await User.findOne({ email: req.user.email }).exec();
-
-    let userCart = await Cart.findOne({ orderdBy: user._id }).exec();
-
-    let finalAmount = 0;
-
-    if (couponApplied && userCart.totalAfterDiscount) {
-        finalAmount = userCart.totalAfterDiscount * 100;
-    } else {
-        finalAmount = userCart.cartTotal * 100;
-    }
-
-    let newOrder = await new Order({
-        products: userCart.products,
-        paymentIntent: {
-            id: uniqueid(),
-            amount: finalAmount,
-            currency: "usd",
-            status: "Cash On Delivery",
-            created: Date.now(),
-            payment_method_types: ["cash"],
-        },
-        orderdBy: user._id,
-        orderStatus: "Cash On Delivery",
-    }).save();
-
-    // decrement quantity, increment sold
-    let bulkOption = userCart.products.map((item) => {
-        return {
-            updateOne: {
-                filter: { _id: item.product._id }, // IMPORTANT item.product
-                update: { $inc: { quantity: -item.count, sold: +item.count } },
-            },
-        };
-    });
-
-    let updated = await Product.bulkWrite(bulkOption, {});
-    console.log("PRODUCT QUANTITY-- AND SOLD++", updated);
-
-    console.log("NEW ORDER SAVED", newOrder);
-    res.json({ ok: true });
 };

@@ -1,35 +1,25 @@
 import React from "react";
 import { Select } from "antd";
-
 const { Option } = Select;
+//Get the multi-choice logic from here.
 
-const MYMUltichoseLogicHereProductCreateForm = ({
-  handleSubmit,
-  handleChange,
-  setValues,
-  values,
-  handleCategoryChange,
-  subOptions,
-  showSub,
-}) => {
-  // destructure
-  const {
-    title,
-    description,
-    price,
-    categories,
-    //category,
-    subs,
-    //shipping,
-    quantity,
-    //images,
-    colors,
-    brands,
-    //color,
-    //brand,
-  } = values;
+const CarCreateForm = ({handleSubmit, handleChange, carInfo, handleCarBrandChange}) => {
+      const { brands, model, registrationPlate, revisions, km, year, client, referenceToClient } = carInfo;
 
   return (
+      <>
+      <div className="form-group">
+          <label>Brand</label>
+          <select name="brand" className="form-control" onChange={handleChange}>
+              <option>Please select</option>
+              {brands.map((b) => (
+                  <option key={b} value={b}>
+                      {b}
+                  </option>
+              ))}
+          </select>
+      </div>
+
     <form onSubmit={handleSubmit}>
       <div className="form-group">
         <label>Title</label>
@@ -101,58 +91,26 @@ const MYMUltichoseLogicHereProductCreateForm = ({
       </div>
 
       <div className="form-group">
-        <label>Brand</label>
-        <select name="brand" className="form-control" onChange={handleChange}>
-          <option>Please select</option>
-          {brands.map((b) => (
-            <option key={b} value={b}>
-              {b}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="form-group">
-        <label>Category</label>
+        <label>Car brand</label>
         <select
           name="category"
           className="form-control"
-          onChange={handleCategoryChange}
+          onChange={handleCarBrandChange}
         >
-          <option>Please select</option>
-          {categories.length > 0 &&
-            categories.map((c) => (
-              <option key={c._id} value={c._id}>
-                {c.name}
+          <option>Select car brand:</option>
+          {brands.length > 0 &&
+            brands.map((b) => (
+              <option key={b._id} value={b._id}>
+                {b.name}
               </option>
             ))}
         </select>
       </div>
-
-      {showSub && (
-        <div>
-          <label>Sub Categories</label>
-          <Select
-            mode="multiple"
-            style={{ width: "100%" }}
-            placeholder="Please select"
-            value={subs}
-            onChange={(value) => setValues({ ...values, subs: value })}
-          >
-            {subOptions.length &&
-              subOptions.map((s) => (
-                <Option key={s._id} value={s._id}>
-                  {s.name}
-                </Option>
-              ))}
-          </Select>
-        </div>
-      )}
-
       <br />
       <button className="btn btn-outline-info">Save</button>
     </form>
+      </>
   );
 };
 
-export default MYMUltichoseLogicHereProductCreateForm;
+export default CarCreateForm;

@@ -43,10 +43,10 @@ const CarUpdate = ({ match, history }) => {
 
   const loadProduct = () => {
     getSingleCarFunction(slug).then((p) => {
-      // console.log("single product", p);
+      // console.log("single car", p);
       // 1 load single car
       setValues({ ...values, ...p.data });
-      // 2 load single product category subs
+      // 2 load single car category subs
       getCategorySubs(p.data.category._id).then((res) => {
         setSubOptions(res.data); // on first load, show default subs
       });

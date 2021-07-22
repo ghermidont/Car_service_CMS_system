@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Route } from "react-router-dom";
 import { useSelector } from "react-redux";
-import LoadingToRedirect from "./LoadingToRedirect";
+import CMSLoadingToRedirect from "./CMSLoadingToRedirect";
 import { currentAdmin } from "../../functions/auth";
 
-const AdminRoute = ({ children, ...rest }) => {
+const CMSAdminRoute = ({ children, ...rest }) => {
   const { user } = useSelector((state) => ({ ...state }));
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -23,7 +23,7 @@ const AdminRoute = ({ children, ...rest }) => {
     }
   }, [user]);
 
-  return isAdmin ? <Route {...rest} /> : <LoadingToRedirect />;
+  return isAdmin ? <Route {...rest} /> : <CMSLoadingToRedirect />;
 };
 
-export default AdminRoute;
+export default CMSAdminRoute;

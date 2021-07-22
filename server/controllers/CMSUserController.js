@@ -35,7 +35,7 @@ exports.removeCar = async (req, res) => {
     }
 };
 
-//Gets the single product by the slug. //TODO use this to get single elements from the DB.
+//Gets the single car by the slug. //TODO use this to get single elements from the DB.
 exports.getSingleCar = async (req, res) => {
     const product = await CMSUserModel.findOne({ slug: req.params.slug })
         // .populate() is being used in order to bring only needed information.
@@ -109,7 +109,7 @@ exports.carsListForPagination = async (req, res) => {
     }
 };
 
-//Getting the total product count for the pagination.
+//Getting the total car count for the pagination.
 exports.carsCount = async (req, res) => {
     let total = await CMSUserModel.find({}).estimatedDocumentCount().exec();
     res.json(total);

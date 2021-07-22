@@ -3,7 +3,7 @@ import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
-const ForgotPassword = ({ history }) => {
+const CMSForgotPasswordPage = ({ history }) => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -62,4 +62,4 @@ const ForgotPassword = ({ history }) => {
   );
 };
 
-export default ForgotPassword;
+export default CMSForgotPasswordPage;

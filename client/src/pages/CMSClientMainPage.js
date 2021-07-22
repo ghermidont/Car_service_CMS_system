@@ -3,7 +3,7 @@ import React from "react";
 import { Button, Row, Col } from 'antd';
 import {Link} from "react-router-dom";
 
-const MYClinetMainPage = () => {
+const CMSClientMainPage = () => {
     const style = { background: 'darkgrey', color: "black", borderRadius:"5px", width: '500px', height: "100px"};
 
   return (
@@ -40,4 +40,4 @@ const MYClinetMainPage = () => {
   );
 };
 
-export default MYClinetMainPage;
+export default CMSClientMainPage;

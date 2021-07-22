@@ -37,7 +37,7 @@ const SingleProduct = ({ product, onStarClick, star }) => {
       if (localStorage.getItem("cart")) {
         cart = JSON.parse(localStorage.getItem("cart"));
       }
-      // push new product to cart
+      // push new car to cart
       cart.push({
         ...product,
         count: 1,

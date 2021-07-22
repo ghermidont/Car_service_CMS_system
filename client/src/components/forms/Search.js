@@ -7,14 +7,14 @@ import { SearchOutlined } from "@ant-design/icons";
 const Search = () => {
   const dispatch = useDispatch();
   const { search } = useSelector((state) => ({ ...state }));
-  //text is the property/state we included in the searchReducer.js
+  //text is the property/state we included in the CMSsearchReducer.js
   const { text } = search;
 
   const history = useHistory();
 
   const handleChange = (e) => {
     dispatch({
-      // This is the action name we defined in the searchReducer.js
+      // This is the action name we defined in the CMSsearchReducer.js
       type: "SEARCH_QUERY",
       payload: { text: e.target.value },
     });

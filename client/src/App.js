@@ -12,28 +12,28 @@ import { LoadingOutlined } from "@ant-design/icons";
 import "tailwindcss/tailwind.css";
 
 // using lazy
-const Login = lazy(() => import("./pages/auth/Login"));
-const Register = lazy(() => import("./pages/auth/Register"));
-const Home = lazy(() => import("./pages/MYClinetMainPage"));
+const Login = lazy(() => import("./pages/auth/CMSLoginPage"));
+const Register = lazy(() => import("./pages/auth/CMSRegisterPage"));
+const Home = lazy(() => import("./pages/CMSClientMainPage"));
 const Header = lazy(() => import("./components/nav/Header"));
 const SideDrawer = lazy(() => import("./components/drawer/SideDrawer"));
 
-const RegisterComplete = lazy(() => import("./pages/auth/RegisterComplete"));
-const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
+const RegisterComplete = lazy(() => import("./pages/auth/CMSRegisterCompletePage"));
+const ForgotPassword = lazy(() => import("./pages/auth/CMSForgotPasswordPage"));
 
-const UserRoute = lazy(() => import("./components/routes/UserRoute"));
-const AdminRoute = lazy(() => import("./components/routes/AdminRoute"));
-const Password = lazy(() => import("./pages/user/Password"));
+const UserRoute = lazy(() => import("./components/routes/CMSUserRoute"));
+const AdminRoute = lazy(() => import("./components/routes/CMSAdminRoute"));
+const Password = lazy(() => import("./pages/user/CMSUpdatePasswordPage"));
 
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const CategoryCreate = lazy(() => import("./pages/admin/category/CategoryCreate"));
 const CategoryUpdate = lazy(() => import("./pages/admin/category/CategoryUpdate"));
 const SubCreate = lazy(() => import("./pages/admin/sub/SubCreate"));
 const SubUpdate = lazy(() => import("./pages/admin/sub/SubUpdate"));
-const ProductCreate = lazy(() => import("./pages/admin/product/CarCreate"));
-const AllProducts = lazy(() => import("./pages/admin/product/AllCars"));
-const ProductUpdate = lazy(() => import("./pages/admin/product/CarUpdate"));
-const Product = lazy(() => import("./pages/CarPage"));
+const ProductCreate = lazy(() => import("./pages/admin/car/CarCreate"));
+const AllProducts = lazy(() => import("./pages/admin/car/AllCars"));
+const ProductUpdate = lazy(() => import("./pages/admin/car/CarUpdate"));
+const Product = lazy(() => import("./pages/CMSCarPage"));
 const CategoryHome = lazy(() => import("./pages/category/CategoryHome"));
 
 const Cart = lazy(() => import("./pages/TableLogicHere-Cart"));
@@ -100,7 +100,7 @@ const App = () => {
         <AdminRoute exact path="/admin/products" component={AllProducts} />
         <AdminRoute exact path="/admin/product/:slug" component={ProductUpdate} />
 
-        {/* Displays single product */}
+        {/* Displays single car */}
         <Route exact path="/product/:slug" component={Product} />
         <Route exact path="/category/:slug" component={CategoryHome} />
 

@@ -9,7 +9,7 @@ import "antd/dist/antd.css";
 /**
  * Redux comments.
  * The "Provider" ensures that all components have access to the store
- * "rootReducer" is used to change the states
+ * "CMSrootReducer" is used to change the states
  *  The reducers are stored in the "src/reducers" folder
  */
 
@@ -17,10 +17,10 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 //This is the link to the general reduces file (index.js) from the reducers folder. The actual link is ./reducers/index.js. but since it the file name is index.js we can skip the specification it is done by default. 
-import rootReducer from "./reducers/rootReducer";
+import CMSrootReducer from "./reducers/CMSrootReducer";
 
 // initiate the Redux store
-const store = createStore(rootReducer, composeWithDevTools());
+const store = createStore(CMSrootReducer, composeWithDevTools());
 
 ReactDOM.render(
     <React.StrictMode>

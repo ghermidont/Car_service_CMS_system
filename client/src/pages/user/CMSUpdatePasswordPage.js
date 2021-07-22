@@ -3,7 +3,7 @@ import UserNav from "../../components/nav/UserNav";
 import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 
-const Password = () => {
+const CMSUpdatePasswordPage = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -17,7 +17,7 @@ const Password = () => {
       .then(() => {
         setLoading(false);
         setPassword("");
-        toast.success("Password updated");
+        toast.success("CMSUpdatePasswordPage updated");
       })
       .catch((err) => {
         setLoading(false);
@@ -66,4 +66,4 @@ const Password = () => {
   );
 };
 
-export default Password;
+export default CMSUpdatePasswordPage;

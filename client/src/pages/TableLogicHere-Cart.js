@@ -8,10 +8,6 @@ const TableLogicHereCart = ({ history }) => {
   const { cart, user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
-
-
-
-
   const showCartItems = () => (
     <table className="table table-bordered">
       <thead className="thead-light">
@@ -58,26 +54,10 @@ const TableLogicHereCart = ({ history }) => {
               </p>
             </div>
           ))}
-          <hr />
-          Total: <b>${getTotal()}</b>
-          <hr />
+
           {user ? (
             <>
-              <button
-                onClick={saveOrderToDb}
-                className="btn btn-sm btn-primary mt-2"
-                disabled={!cart.length}
-              >
-                Proceed to Checkout
-              </button>
-              <br />
-              <button
-                onClick={saveCashOrderToDb}
-                className="btn btn-sm btn-warning mt-2"
-                disabled={!cart.length}
-              >
-                Pay Cash on Delivery
-              </button>
+
             </>
           ) : (
             <button className="btn btn-sm btn-primary mt-2">

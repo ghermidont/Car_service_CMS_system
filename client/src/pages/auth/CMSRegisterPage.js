@@ -4,7 +4,7 @@ import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
-const Register = ({ history }) => {
+const CMSRegisterPage = ({ history }) => {
   const [email, setEmail] = useState("");
   const { user } = useSelector((state) => ({ ...state }));
   
@@ -65,4 +65,4 @@ const Register = ({ history }) => {
   );
 };
 
-export default Register;
+export default CMSRegisterPage;

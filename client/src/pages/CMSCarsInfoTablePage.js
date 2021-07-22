@@ -5,7 +5,7 @@ import {getSingleCarFunction, listAllCarsFunction, removeCarFunction} from "../f
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 
-const CarsInfoTablePage = () => {
+const CMSCarsInfoTablePage = () => {
     const [DbCars, setDbCars] = useState({});
     const { user } = useSelector((state) => ({ ...state }));
 
@@ -108,4 +108,4 @@ const CarsInfoTablePage = () => {
     );
 };
 
-export default CarsInfoTablePage;
+export default CMSCarsInfoTablePage;

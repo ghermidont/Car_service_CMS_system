@@ -1,4 +1,4 @@
-const GetSingleClinetorCarLogicProduct = require("../models/product");
+const GetSingleClinetorCarLogicProduct = require("../models/car");
 const User = require("../models/user");
 const slugify = require("slugify");
 
@@ -38,7 +38,7 @@ exports.remove = async (req, res) => {
     }
 };
 
-//Gets the single product by the slug. //TODO use this to get single elements from the DB.
+//Gets the single car by the slug. //TODO use this to get single elements from the DB.
 exports.read = async (req, res) => {
     const product = await GetSingleClinetorCarLogicProduct.findOne({ slug: req.params.slug })
         .populate("category")
@@ -109,7 +109,7 @@ exports.list = async (req, res) => {
     }
 };
 
-//Getting the total product count for the pagination.
+//Getting the total car count for the pagination.
 exports.productsCount = async (req, res) => {
     let total = await GetSingleClinetorCarLogicProduct.find({}).estimatedDocumentCount().exec();
     res.json(total);
@@ -121,7 +121,7 @@ exports.productStar = async (req, res) => {
     const { star } = req.body;
 
     // who is updating?
-    // check if currently logged in user have already added rating to this product?
+    // check if currently logged in user have already added rating to this car?
     let existingRatingObject = product.ratings.find(
         (ele) => ele.postedBy.toString() === user._id.toString()
     );

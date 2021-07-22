@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { createOrUpdateUser } from "../../functions/auth";
 
-const Login = ({ history }) => {
+const CMSLoginPage = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -170,4 +170,4 @@ const Login = ({ history }) => {
   );
 };
 
-export default Login;
+export default CMSLoginPage;

@@ -1,28 +1,29 @@
 "use strict";
 
 import React, { useEffect, useState } from "react";
-import { getSingleCarFunction, listAllCarsFunction } from "../functions/toCarRoute";
+import {getSingleCarFunction, listAllCarsFunction, removeCarFunction} from "../functions/toCarRoute";
 import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
 
-//TODO find the origin of match.
 const CarsInfoTablePage = () => {
-    const [car, setCar] = useState({});
     const [DbCars, setDbCars] = useState({});
-
-    const { brand, model, registrationPlate, revisions, km, year, client, referenceToClient } = car;
+    const { user } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
-        listAllCarsFunction().then();
+        listAllCarsFunction().then((res) => setDbCars(res.data));
     }, []);
 
     const loadSingleCar = (e) => {
-        //!!TODO find in the original cod the redirect to the single product page.
         getSingleCarFunction(e.target.name).then((res) => {
-            setCar(res.data);
+            setDbCars(res.data);
         });
     };
 
-    const showCartItems = () => (
+    const removeCarFromDB = (slug, authToken) => {
+        removeCarFunction(slug, authToken).then(()=>window.alert("Car removed successfully.")).catch(err=>window.alert(err));
+    }
+
+    const showOrderInTable = (order) => (
         <table className="table table-bordered">
             <thead className="thead-light">
             <tr>
@@ -36,6 +37,20 @@ const CarsInfoTablePage = () => {
                 <th scope="col">CLIENT</th>
             </tr>
             </thead>
+
+            <tbody>
+            {DbCars.map((carParam) => (
+                <tr key={carParam._id}>
+                    <td>{carParam._id}</td>
+                    <td>{carParam.brand}</td>
+                    <td>{carParam.model}</td>
+                    <td>{carParam.registrationPlate}</td>
+                    <td>{carParam.km}</td>
+                    <td>{carParam.year}</td>
+                    <td>{carParam.client}</td>
+                </tr>
+            ))}
+            </tbody>
         </table>
     );
 
@@ -45,9 +60,9 @@ const CarsInfoTablePage = () => {
                 <div className="container-fluid pt-2">
                     <div className="row">
                         <div className="col-md-8">
-                            <h4>Cart / {cart.length} Product</h4>
+                            <h4>Cart / {DbCars.length} Product</h4>
 
-                            {!cart.length ? (
+                            {!DbCars.length ? (
                                 <p>
                                     No products in cart. <Link to="/shop">Continue Shopping.</Link>
                                 </p>
@@ -59,7 +74,7 @@ const CarsInfoTablePage = () => {
                             <h4>Order Summary</h4>
                             <hr />
                             <p>Products</p>
-                            {cart.map((c, i) => (
+                            {DbCars.map((c, i) => (
                                 <div key={i}>
                                     <p>
                                         {c.title} x {c.count} = ${c.price * c.count}
@@ -67,38 +82,24 @@ const CarsInfoTablePage = () => {
                                 </div>
                             ))}
                             <hr />
-                            Total: <b>${getTotal()}</b>
+
                             <hr />
-                            {user ? (
-                                <>
+                           <Link to={`/car/${slug}`}>
                                     <button
-                                        onClick={saveOrderToDb}
                                         className="btn btn-sm btn-primary mt-2"
-                                        disabled={!cart.length}
+                                        disabled={!DbCars.length}
                                     >
                                         Proceed to Checkout
                                     </button>
+                           </Link>
                                     <br />
                                     <button
-                                        onClick={saveCashOrderToDb}
+                                        onClick={removeCarFromDB}
                                         className="btn btn-sm btn-warning mt-2"
-                                        disabled={!cart.length}
+                                        disabled={!DbCars.length}
                                     >
                                         Pay Cash on Delivery
                                     </button>
-                                </>
-                            ) : (
-                                <button className="btn btn-sm btn-primary mt-2">
-                                    <Link
-                                        to={{
-                                            pathname: "/login",
-                                            state: { from: "cart" },
-                                        }}
-                                    >
-                                        Login to Checkout
-                                    </Link>
-                                </button>
-                            )}
                         </div>
                     </div>
                 </div>
@@ -107,4 +108,4 @@ const CarsInfoTablePage = () => {
     );
 };
 
-export default CarPage;
+export default CarsInfoTablePage;

@@ -8,107 +8,97 @@ const CarCreateForm = ({handleSubmit, handleChange, carInfo, handleCarBrandChang
 
   return (
       <>
-      <div className="form-group">
-          <label>Brand</label>
-          <select name="brand" className="form-control" onChange={handleChange}>
-              <option>Please select</option>
-              {brands.map((b) => (
-                  <option key={b} value={b}>
-                      {b}
-                  </option>
-              ))}
-          </select>
-      </div>
+         <div className="form-group">
+            <label>Car brand</label>
+            <select name="brand" className="form-control" onChange={handleChange}>
+                <option>Please select the car brand:</option>
+                {brands.map((brand) => (
+                    <option key={brand} value={brand}>
+                        {brand}
+                    </option>
+                ))}
+            </select>
+        </div>
+        <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>model</label>
+          <input
+            type="text"
+            name="model"
+            className="form-control"
+            value={model}
+            onChange={handleChange}
+          />
+        </div>
 
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label>Title</label>
-        <input
-          type="text"
-          name="title"
-          className="form-control"
-          value={title}
-          onChange={handleChange}
-        />
-      </div>
+        <div className="form-group">
+          <label>Registration plate number</label>
+          <input
+            type="text"
+            name="registrationPlate"
+            className="form-control"
+            value={registrationPlate}
+            onChange={handleChange}
+          />
+        </div>
 
-      <div className="form-group">
-        <label>Description</label>
-        <input
-          type="text"
-          name="description"
-          className="form-control"
-          value={description}
-          onChange={handleChange}
-        />
-      </div>
+        <div className="form-group">
+          <label>Revisions</label>
+          <input
+            type="number"
+            name="revisions"
+            className="form-control"
+            value={revisions}
+            onChange={handleChange}
+          />
+        </div>
 
-      <div className="form-group">
-        <label>Price</label>
-        <input
-          type="number"
-          name="price"
-          className="form-control"
-          value={price}
-          onChange={handleChange}
-        />
-      </div>
+        <div className="form-group">
+          <label>KMf</label>
+          <input
+              type="number"
+              name="km"
+              className="form-control"
+              value={km}
+              onChange={handleChange}
+          />
+        </div>
 
-      <div className="form-group">
-        <label>Shipping</label>
-        <select
-          name="shipping"
-          className="form-control"
-          onChange={handleChange}
-        >
-          <option>Please select</option>
-          <option value="No">No</option>
-          <option value="Yes">Yes</option>
-        </select>
-      </div>
+        <div className="form-group">
+          <label>Revisions</label>
+          <input
+              type="number"
+              name="revisions"
+              className="form-control"
+              value={revisions}
+              onChange={handleChange}
+          />
+        </div>
 
-      <div className="form-group">
-        <label>Quantity</label>
-        <input
-          type="number"
-          name="quantity"
-          className="form-control"
-          value={quantity}
-          onChange={handleChange}
-        />
-      </div>
-
-      <div className="form-group">
-        <label>Color</label>
-        <select name="color" className="form-control" onChange={handleChange}>
-          <option>Please select</option>
-          {colors.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="form-group">
-        <label>Car brand</label>
-        <select
-          name="category"
-          className="form-control"
-          onChange={handleCarBrandChange}
-        >
-          <option>Select car brand:</option>
-          {brands.length > 0 &&
-            brands.map((b) => (
-              <option key={b._id} value={b._id}>
-                {b.name}
-              </option>
-            ))}
-        </select>
-      </div>
-      <br />
-      <button className="btn btn-outline-info">Save</button>
-    </form>
+        <div className="form-group">
+          <label>Year</label>
+          <input
+            type="number"
+            name="year"
+            className="form-control"
+            value={year}
+            onChange={handleChange}
+          />
+        </div>
+        {/*TODO figure out how to ge the client unique id.*/}
+        <div className="form-group">
+          <label>Client</label>
+          <input
+              type="text"
+              name="client"
+              className="form-control"
+              value={client}
+              onChange={handleChange}
+          />
+        </div>
+        <br />
+        <button className="btn btn-outline-info">Save</button>
+      </form>
       </>
   );
 };

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { getProduct, updateProduct } from "../../../functions/product";
+import { getSingleCarFunction, updateCarFunction } from "../../../functions/toCarRoute";
 import { getCategories, getCategorySubs } from "../../../functions/category";
 import FileUpload from "../../../components/forms/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
-import ProductUpdateForm from "../../../components/forms/ProductUpdateForm";
+import CarUpdateForm from "../../../components/forms/CarUpdateForm";
 
 const initialState = {
   title: "",
@@ -42,9 +42,9 @@ const CarUpdate = ({ match, history }) => {
   }, []);
 
   const loadProduct = () => {
-    getProduct(slug).then((p) => {
+    getSingleCarFunction(slug).then((p) => {
       // console.log("single product", p);
-      // 1 load single proudct
+      // 1 load single car
       setValues({ ...values, ...p.data });
       // 2 load single product category subs
       getCategorySubs(p.data.category._id).then((res) => {
@@ -73,7 +73,7 @@ const CarUpdate = ({ match, history }) => {
     values.subs = arrayOfSubs;
     values.category = selectedCategory ? selectedCategory : values.category;
 
-    updateProduct(slug, values, user.token)
+    updateCarFunction(slug, values, user.token)
       .then((res) => {
         setLoading(false);
         toast.success(`"${res.data.title}" is updated`);
@@ -137,7 +137,7 @@ const CarUpdate = ({ match, history }) => {
             />
           </div>
 
-          <ProductUpdateForm
+          <CarUpdateForm
             handleSubmit={handleSubmit}
             handleChange={handleChange}
             setValues={setValues}

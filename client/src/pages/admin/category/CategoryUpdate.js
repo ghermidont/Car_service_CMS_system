@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { getCategory, updateCategory } from "../../../functions/category";
 import CategoryForm from "../../../components/forms/CategoryForm";
 
+// We can directly destructure this two parameters without import because they are both part into the Route Object and the component where they are used is enclosed inside Route tags in App.js.
 const CategoryUpdate = ({ history, match }) => {
   const { user } = useSelector((state) => ({ ...state }));
 

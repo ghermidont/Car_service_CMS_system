@@ -39,6 +39,6 @@ export const getCarsListForPaginationFunction = async (sort, order, page) => {
 }
 
 
-export const fetchProductsByFilterFunction = async (arg) => {
+export const fetchCarByFilterFunction = async (arg) => {
   await axios.post(`${process.env.REACT_APP_API}/search/filters`, arg);
 }  

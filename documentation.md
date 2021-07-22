@@ -27,3 +27,14 @@ Render to PDF and download:
 
 Client Project schema:
 <https://www.figma.com/file/J6J4U3FlOpVDF1uFTWPIQB/autofficina-team-library>
+
+Deployment and DB links:
+<https://console.firebase.google.com/u/0/project/carservicecms/settings/general/web:OGMxNjIyNWYtZWJkNy00OWQyLTk2YTctOWMwMzJlMzJiYWM2>
+<https://account.mongodb.com/account/login?n=%2Fcharts%2F60e588e238b80168a125790c&nextHash=%23welcome>
+<https://cloudinary.com/console/c-f4c6f3086f4c195ed83370e61c9d26/getting-started>
+<https://ant.design/components/form/#header>
+
+Clarification:
+We can directly destructure this two parameters without import because they are both part into the Route Object and the component, where they are used, is enclosed inside Route tags in App.js.
+const CategoryUpdate = ({ history, match }) => {...}
+<https://reactrouter.com/web/api/match>

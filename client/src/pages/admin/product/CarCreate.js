@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { createCar } from "../../../functions/toCarRoute";
+import { createCarFunction } from "../../../functions/toCarRoute";
 import CarCreateForm from "../../../components/forms/CarCreateForm";
 import FileUpload from "../../../components/forms/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -27,7 +27,7 @@ const CarCreate = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createCar(carInfo, user.token)
+    createCarFunction(carInfo, user.token)
       .then(() => {
         window.alert( "Car added is created" );
         window.location.reload();

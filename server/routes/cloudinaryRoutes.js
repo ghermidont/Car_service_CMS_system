@@ -1,3 +1,4 @@
+//File contains endpoints for images manipulation requests.
 const express = require("express");
 const router = express.Router();
 
@@ -7,7 +8,7 @@ const { authCheck, adminCheck } = require("../middlewares/auth");
 // controllers
 const { upload, remove } = require("../controllers/cloudinary");
 
-router.post("/uploadimages", authCheck, adminCheck, upload);
-router.post("/removeimage", authCheck, adminCheck, remove);
+router.post("/upload-images", authCheck, adminCheck, upload);
+router.post("/remove-image", authCheck, adminCheck, remove);
 
 module.exports = router;

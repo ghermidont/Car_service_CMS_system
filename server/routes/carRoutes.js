@@ -1,3 +1,4 @@
+//File contains endpoints for car related requests.
 const express = require("express");
 const Router = express.Router();
 
@@ -12,14 +13,12 @@ const {
   getSingleCar,
   updateCar,
   carsListForPagination,
-  carsCount,
   searchFilters
 } = require("../controllers/carController");
 
 // routes
 Router.post("/car/new", authCheck, adminCheck, createCar);
-Router.get("/cars/total", carsCount);
-Router.get("/cars/:count", listAllCars);
+Router.get("/cars/total", listAllCars);
 Router.delete("/car/:slug", authCheck, adminCheck, removeCar);
 Router.get("/car/:slug", getSingleCar);
 Router.put("/car/:slug", authCheck, adminCheck, updateCar);

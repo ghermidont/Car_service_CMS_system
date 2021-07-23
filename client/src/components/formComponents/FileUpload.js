@@ -27,11 +27,11 @@ const FileUpload = ({ values, setValues, setLoading }) => {
           (uri) => {           
             axios
               .post(
-                `${process.env.REACT_APP_API}/uploadimages`,
+                `${process.env.REACT_APP_API}/upload-images`,
                 { image: uri },
                 {
                   headers: {
-                    authtoken: user ? user.token : "",
+                    authToken: user ? user.token : "",
                   },
                 }
               )
@@ -57,11 +57,11 @@ const FileUpload = ({ values, setValues, setLoading }) => {
     setLoading(true);   
     axios
       .post(
-        `${process.env.REACT_APP_API}/removeimage`,
+        `${process.env.REACT_APP_API}/remove-image`,
         { public_id },
         {
           headers: {
-            authtoken: user ? user.token : "",
+            authToken: user ? user.token : "",
           },
         }
       )

@@ -1,5 +1,5 @@
+//File contains endpoints for authentication related requests.
 const express = require("express");
-
 const router = express.Router();
 
 // middlewares

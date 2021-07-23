@@ -1,11 +1,12 @@
+//File contains endpoints for admin operation requests.
 const express = require("express");
 const { auth } = require("../firebase");
-
 const router = express.Router();
+
+//TODO include here the functionality to manage CMS users. Prohibit and accept access to the system.
 
 // middlewares
 const { authCheck, adminCheck } = require("../middlewares/auth");
-
 const { orders, orderStatus } = require("../controllers/admin");
 
 // routes

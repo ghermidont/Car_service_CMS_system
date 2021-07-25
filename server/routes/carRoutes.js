@@ -1,6 +1,6 @@
 //File contains endpoints for car related requests.
 const express = require("express");
-const Router = express.Router();
+const router = express.Router();
 
 // middlewares
 const { authCheckMiddleware, adminCheckMiddleware } = require("../middlewares/auth");
@@ -17,12 +17,12 @@ const {
 } = require("../controllers/carController");
 
 // routesController
-Router.post("/car/add-car", authCheckMiddleware, adminCheckMiddleware, createCarController);
-Router.get("/cars/total", listAllCarsController);
-Router.delete("/car/:slug", authCheckMiddleware, adminCheckMiddleware, removeCarController);
-Router.get("/car/:slug", getSingleCarController);
-Router.put("/car/:slug", authCheckMiddleware, adminCheckMiddleware, updateCarController);
-Router.post("/cars", carsListForPaginationController);
-Router.post("/search/filters", searchFiltersController);
+router.post("/car/add-car", authCheckMiddleware, adminCheckMiddleware, createCarController);
+router.get("/cars/total", listAllCarsController);
+router.delete("/car/:slug", authCheckMiddleware, adminCheckMiddleware, removeCarController);
+router.get("/car/:slug", getSingleCarController);
+router.put("/car/:slug", authCheckMiddleware, adminCheckMiddleware, updateCarController);
+router.post("/cars", carsListForPaginationController);
+router.post("/search/filters", searchFiltersController);
 
-module.exports = Router;
+module.exports = router;

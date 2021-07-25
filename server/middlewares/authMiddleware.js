@@ -1,4 +1,4 @@
-const admin = require("../firebase");
+const admin = require("../firebase/FireBaseSettings");
 const User = require("../models/user");
 
 // First layer of security. Checking the Firebase for the user.

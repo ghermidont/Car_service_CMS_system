@@ -7,7 +7,7 @@ import { auth } from "./firebase";
 
 //Dispatch is the entry point to the redux store.
 import { useDispatch } from "react-redux";
-import { currentUser } from "./functions/auth";
+import { currentUser } from "./functions/callsToAuthRoutes";
 import { LoadingOutlined } from "@ant-design/icons";
 import "tailwindcss/tailwind.css";
 

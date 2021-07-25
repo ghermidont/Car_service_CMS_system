@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import { CMSuserReducer } from "./CMSuserReducer";
-import { CMSsearchReducer } from "./CMSsearchReducer";
+import { searchReducer } from "./SearchReducer";
 
 const CMSrootReducer = combineReducers({
   user: CMSuserReducer,
-  search: CMSsearchReducer
+  search: searchReducer
 });
 
 export default CMSrootReducer;

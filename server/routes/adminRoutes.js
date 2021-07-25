@@ -1,6 +1,5 @@
 //File contains endpoints for admin operation requests.
 const express = require("express");
-const { auth } = require("../firebase");
 const router = express.Router();
 
 // middlewares

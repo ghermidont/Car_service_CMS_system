@@ -4,7 +4,7 @@
 Take the multi choice logic from the MYMUltichoseLogicHereProductCreateForm.js
 
 <!-- Image upload cloud backend -->
-<https://cloudinary.com/console/c-f4c6f3086f4c195ed83370e61c9d26/getting-started>
+<https://cloudinaryController.com/console/c-f4c6f3086f4c195ed83370e61c9d26/getting-started>
 
 <!-- Front end images resizing: -->
 <https://www.npmjs.com/package/react-image-file-resizer>
@@ -31,7 +31,7 @@ Client Project schema:
 Deployment and DB links:
 <https://console.firebase.google.com/u/0/project/carservicecms/settings/general/web:OGMxNjIyNWYtZWJkNy00OWQyLTk2YTctOWMwMzJlMzJiYWM2>
 <https://account.mongodb.com/account/login?n=%2Fcharts%2F60e588e238b80168a125790c&nextHash=%23welcome>
-<https://cloudinary.com/console/c-f4c6f3086f4c195ed83370e61c9d26/getting-started>
+<https://cloudinaryController.com/console/c-f4c6f3086f4c195ed83370e61c9d26/getting-started>
 <https://ant.design/components/form/#header>
 
 Clarification:

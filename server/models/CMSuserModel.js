@@ -74,4 +74,4 @@ const CMSUserSchema = new mongoose.Schema(
 );
 
 // This model will be referred to as "User".
-module.exports = mongoose.model("CMSUser", CMSUserSchema);
+module.exports = mongoose.model("CMSUserSchema", CMSUserSchema);

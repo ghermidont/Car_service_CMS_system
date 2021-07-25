@@ -1,28 +1,28 @@
 //File contains endpoints for client related requests.
 const express = require("express");
-const Router = express.Router();
+const router = express.Router();
 
 // middlewares
 const { authCheck, adminCheck } = require("../middlewares/auth");
 
 // controllers import
 const {
-  createClient,
-  listAllClients,
-  removeClient,
-  getSingleClient,
-  updateClient,
-  clientsListForPagination,
-  searchFilters
-} = require("../controllers/carController");
+  createClientController,
+  listAllClientsController,
+  deleteClientController,
+  getSingleClientController,
+  updateClientController,
+  clientsListForPaginationController,
+  searchFiltersController
+} = require("../controllers/serviceClientController");
 
 // routes
-Router.post("/client/new", authCheck, adminCheck, createClient);
-Router.get("/clients/total",  authCheck, adminCheck, listAllClients);
-Router.delete("/client/:slug", authCheck, adminCheck, removeClient);
-Router.get("/client/:slug", authCheck, adminCheck, getSingleClient);
-Router.put("/client/:slug", authCheck, adminCheck, updateClient);
-Router.post("/clients", authCheck, adminCheck, clientsListForPagination);
-Router.post("/search/filters", searchFilters);
+router.post("/client/new", authCheck, adminCheck, createClientController);
+router.get("/clients/total",  authCheck, adminCheck, listAllClientsController);
+router.delete("/client/:slug", authCheck, adminCheck, deleteClientController);
+router.get("/client/:slug", authCheck, adminCheck, getSingleClientController);
+router.put("/client/:slug", authCheck, adminCheck, updateClientController);
+router.post("/clients", authCheck, adminCheck, clientsListForPaginationController);
+router.post("/search/filters", searchFiltersController);
 
-module.exports = Router;
+module.exports = router;

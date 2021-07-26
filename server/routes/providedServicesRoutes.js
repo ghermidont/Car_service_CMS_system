@@ -1,3 +1,4 @@
+"use strict";
 //File contains endpoints for provided services manipulations requests.
 const express = require("express");
 const Router = express.Router();

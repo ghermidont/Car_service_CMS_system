@@ -24,7 +24,7 @@ exports.listAllCars = async (req, res) => {
     res.json(DbCars);
 };
 
-exports.removeCar = async (req, res) => {
+exports.deleteCar = async (req, res) => {
     try {
         const carToDelete = await carModel.findOneAndRemove({
             slug: req.params.slug,

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { createCarFunction } from "../../../functions/toCarRoute";
-import CarCreateForm from "../../../components/forms/CarCreateForm";
-import FileUpload from "../../../components/forms/FileUpload";
+import { createCarFunction } from "../../../functions/callsToCarRoutes";
+import CarCreateForm from "../../../components/formComponents/carFormsComponents/CarCreateForm";
+import FileUpload from "../../../components/formComponents/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
 
 const initialState = {
@@ -18,7 +18,7 @@ const initialState = {
   referenceToClient: "client id"
 };
 
-const CarCreate = () => {
+const CMSUserCreatePage = () => {
   const [carInfo, setValues] = useState(initialState);
   const [loading, setLoading] = useState(false);
 
@@ -84,4 +84,4 @@ const CarCreate = () => {
   );
 };
 
-export default CarCreate;
+export default CMSUserCreatePage;

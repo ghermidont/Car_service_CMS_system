@@ -9,37 +9,40 @@ import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/callsToAuthRoutes";
 import { LoadingOutlined } from "@ant-design/icons";
-import "tailwindcss/tailwind.css";
 
-// using lazy
-const Login = lazy(() => import("./pages/auth/CMSLoginPage"));
-const Register = lazy(() => import("./pages/auth/CMSRegisterPage"));
-const Home = lazy(() => import("./pages/CMSClientMainPage"));
-const Header = lazy(() => import("./components/nav/Header"));
-const SideDrawer = lazy(() => import("./components/drawer/SideDrawer"));
-
-const RegisterComplete = lazy(() => import("./pages/auth/CMSRegisterCompletePage"));
-const ForgotPassword = lazy(() => import("./pages/auth/CMSForgotPasswordPage"));
-
+//Custom routes
 const UserRoute = lazy(() => import("./components/routes/CMSUserRoute"));
 const AdminRoute = lazy(() => import("./components/routes/CMSAdminRoute"));
-const Password = lazy(() => import("./pages/user/CMSUpdatePasswordPage"));
 
-const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
-const CategoryCreate = lazy(() => import("./pages/admin/category/CategoryCreate"));
-const CategoryUpdate = lazy(() => import("./pages/admin/category/CategoryUpdate"));
-const SubCreate = lazy(() => import("./pages/admin/sub/SubCreate"));
-const SubUpdate = lazy(() => import("./pages/admin/sub/SubUpdate"));
-const ProductCreate = lazy(() => import("./pages/admin/car/CarCreate"));
-const AllProducts = lazy(() => import("./pages/admin/car/AllCars"));
-const ProductUpdate = lazy(() => import("./pages/admin/car/CarUpdate"));
-const Product = lazy(() => import("./pages/CMSCarPage"));
-const CategoryHome = lazy(() => import("./pages/category/CategoryHome"));
+//Login/Register pages
+const LoginPage = lazy(() => import("./pages/authPages/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/authPages/RegisterPage"));
+const RegisterCompletePage = lazy(() => import("./pages/authPages/RegisterCompletePage"));
+const ForgotPasswordPage = lazy(() => import("./pages/authPages/ForgotPasswordPage"));
 
-const Cart = lazy(() => import("./pages/TableLogicHere-Cart"));
-const Checkout = lazy(() => import("./pages/Checkout"));
-const CreateCouponPage = lazy(() => import("./pages/admin/coupon/CreateCouponPage"));
-const Payment = lazy(() => import("./pages/Payment"));
+//CMS User pages
+const CMSUserMainMenuPage = lazy(() => import("./pages/CMSUserMainPage"));
+const CMSUserProfilePage = lazy(() => import("./pages/CMSUserProfilePage"));
+const CMSUserUpdateProfilePage = lazy(() => import("./pages/CMSUserUpdateProfilePage"));
+const CMSUserUpdatePasswordPage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
+
+//Cars pages
+const CarCreatePage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
+const CarUpdatePage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
+const CarsListPage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
+
+//Provided services pages
+const ProvidedServiceCreatePage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
+const ProvidedServiceUpdatePage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
+const ProvidedServicesListPage  = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
+
+//Admin pages
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboardPage"));
+const CMSUsersApprovePage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
+const CMSUsersListPage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
+
+//Components
+const Header = lazy(() => import("./components/nav/Header"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -70,6 +73,7 @@ const App = () => {
     return () => unsubscribe();
   }, [dispatch]);
 
+  //!Finish the paths
   return (
     <Suspense
       fallback={
@@ -80,34 +84,45 @@ const App = () => {
       }
     >
       <Header />
-      <SideDrawer />
       <ToastContainer />
       <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/register/complete" component={RegisterComplete} />
-        <Route exact path="/forgot/password" component={ForgotPassword} />
+        {/*//TODO Group all routes to user and admin routes.*/}
+
+        <Route exact path="/login" component={LoginPage} />
+        <Route exact path="/register" component={RegisterPage} />
+
+        <UserRoute exact path="/user/register/complete" component={RegisterCompletePage} />
+        <UserRoute exact path="/user/forgot/password" component={ForgotPasswordPage} />
+
+        <UserRoute CMSUserMainMenuPage path="/user/menu" component={CMSUserMainMenuPage}/>
+        <UserRoute CMSUserProfilePage path="/user/profile" component={CMSUserProfilePage}/>
+        <UserRoute CMSUserUpdateProfilePage path="/user/update" component={CMSUserUpdateProfilePage}/>
+        <UserRoute CMSUserUpdatePasswordPage path="/user/update-password" component={CMSUserUpdatePasswordPage}/>
+
+        <UserRoute CarPage exact path="/user/car/:slug" component={CarPage}/>
+        <UserRoute CarCreatePage exact path="/user/car/create" component={CarCreatePage}/>
+        <UserRoute CarUpdatePage exact path="/user/car/update" component={CarUpdatePage}/>
+        <UserRoute CarsListPage exact path="/user/car/list" component={CarsListPage}/>
+
+        <UserRoute ProvidedServiceCreatePage exact path="/user/service/create" component={ProvidedServiceCreatePage}/>
+        <UserRoute ProvidedServiceUpdatePage exact path="/user/login" component={ProvidedServiceUpdatePage}/>
+        <UserRoute ProvidedServicesListPage exact path="/user/login" component={ProvidedServicesListPage}/>
+
+        <AdminRoute AdminDashboard exact path="/admin/dashboard" component={AdminDashboard}/>
+        <AdminRoute CMSUsersApprovePage exact path="/admin/cms-users-approve" component={CMSUsersApprovePage}/>
+        <AdminRoute CMSUsersListPage exact path="/admin/cms-users-list" component={CMSUsersListPage}/>
+
+
+        {/*//!old for reference*/}
         <UserRoute exact path="/user/history" component={History} />
         <UserRoute exact path="/user/password" component={Password} />
 
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
-        <AdminRoute exact path="/admin/category" component={CategoryCreate} />
-        <AdminRoute exact path="/admin/category/:slug" component={CategoryUpdate} />
-        <AdminRoute exact path="/admin/sub" component={SubCreate} />
-        <AdminRoute exact path="/admin/sub/:slug" component={SubUpdate} />
-        <AdminRoute exact path="/admin/product" component={ProductCreate} />
+        <AdminRoute exact path="/admin/product-create" component={ProductCreate} />
         <AdminRoute exact path="/admin/products" component={AllProducts} />
         <AdminRoute exact path="/admin/product/:slug" component={ProductUpdate} />
 
-        {/* Displays single car */}
         <Route exact path="/product/:slug" component={Product} />
-        <Route exact path="/category/:slug" component={CategoryHome} />
-
-        <Route exact path="/cart" component={Cart} />
-        <UserRoute exact path="/checkout" component={Checkout} />
-        <AdminRoute exact path="/admin/coupon" component={CreateCouponPage} />
-        <UserRoute exact path="/payment" component={Payment} />
       </Switch>
     </Suspense>
   );

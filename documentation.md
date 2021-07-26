@@ -38,3 +38,6 @@ Clarification:
 We can directly destructure this two parameters without import because they are both part into the Route Object and the component, where they are used, is enclosed inside Route tags in App.js.
 const CategoryUpdate = ({ history, match }) => {...}
 <https://reactrouter.com/web/api/match>
+
+cli for including "use strict" in files:
+<https://github.com/philidem/use-strict-cli>

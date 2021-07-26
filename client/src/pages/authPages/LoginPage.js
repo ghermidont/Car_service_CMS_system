@@ -5,9 +5,9 @@ import { Button } from "antd";
 import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { createOrUpdateUser } from "../../functions/auth";
+import { createOrUpdateUser } from "../../functions/callsToAuthRoutes";
 
-const CMSLoginPage = ({ history }) => {
+const LoginPage = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -170,4 +170,4 @@ const CMSLoginPage = ({ history }) => {
   );
 };
 
-export default CMSLoginPage;
+export default LoginPage;

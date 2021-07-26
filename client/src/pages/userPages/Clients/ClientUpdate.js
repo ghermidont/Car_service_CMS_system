@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { getSingleCarFunction, updateCarFunction } from "../../../functions/toCarRoute";
-import { getCategories, getCategorySubs } from "../../../functions/category";
-import FileUpload from "../../../components/forms/FileUpload";
+import { getSingleCarFunction, updateCarFunction } from "../../../functions/callsToCarRoutes";
+import FileUpload from "../../../components/formComponents/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
-import CarUpdateForm from "../../../components/forms/CarUpdateForm";
+import CarUpdateForm from "../../../components/formComponents/carFormsComponents/CarUpdateForm";
 
 const initialState = {
   title: "",
@@ -23,7 +22,7 @@ const initialState = {
   brand: "",
 };
 
-const CarUpdate = ({ match, history }) => {
+const ClientUpdate = ({ match, history }) => {
   // state
   const [values, setValues] = useState(initialState);
   const [categories, setCategories] = useState([]);
@@ -156,4 +155,4 @@ const CarUpdate = ({ match, history }) => {
   );
 };
 
-export default CarUpdate;
+export default ClientUpdate;

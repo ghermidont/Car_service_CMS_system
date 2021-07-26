@@ -1,9 +1,11 @@
+"use strict";
+
 //File contains endpoints for authentication related requests. Write user data to MongoBD database.
 const express = require("express");
 const router = express.Router();
 
 // middlewares
-const { authCheckMiddleware, adminCheckMiddleware } = require("../middlewares/auth");
+const { authCheckMiddleware, adminCheckMiddleware } = require("../middlewares/authMiddleware");
 
 // Controllers. In order not to write the functions in the body of the route,
 // we create a separate folder with the functions you need to control the routes.

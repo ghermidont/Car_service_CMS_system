@@ -1,4 +1,6 @@
+"use strict";
 //File contains endpoints for admin operation requests.
+
 const express = require("express");
 const router = express.Router();
 

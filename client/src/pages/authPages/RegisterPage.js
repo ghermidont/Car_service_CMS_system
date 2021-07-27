@@ -1,4 +1,3 @@
-"use strict";
 import React, { useState, useEffect } from "react";
 import { auth } from "../../firebase";
 import { toast } from "react-toastify";
@@ -31,7 +30,7 @@ const RegisterPage = ({ history }) => {
             setEmail("");
             history.push("/");
         }catch(err){
-            window.alert("this is an error from try and catch" . err)
+            window.alert(`This is an error from try and catch ${err}`);
         }
   };
 

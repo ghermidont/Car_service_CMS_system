@@ -6,7 +6,7 @@ import firebase from "firebase";
 //useSelector is used to get the data from the state.
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import Search from "../forms/Search";
+import Search from "../formComponents/Search";
 
 const { SubMenu, Item } = Menu;
 
@@ -45,7 +45,7 @@ const Header = () => {
 
       <Item key="cart" icon={<ShoppingCartOutlined />}>
         <Link to="/cart">
-          <Badge count={cart.length} offset={[9, 0]}>
+          <Badge count={cart?cart.length:0} offset={[9, 0]}>
             Cart
           </Badge>
         </Link>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { createOrUpdateUser } from "../../functions/auth";
+import { createOrUpdateUser } from "../../functions/callsToAuthRoutes";
 
 //Since the whole app is wrapped in <BrowserRouter> we can do destructuring {history} its the same thing as using (props) >>> props.history.
 //We ca use this kind of destructuring only in elements that are included as Route in App.js. In other elements we would have to import history and declare it as const etc

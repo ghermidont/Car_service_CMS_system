@@ -1,3 +1,5 @@
+"use strict";
+
 import React, { useState } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";

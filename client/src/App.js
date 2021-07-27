@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/callsToAuthRoutes";
 import { LoadingOutlined } from "@ant-design/icons";
 
+//!Add the correct paths
 //Custom routes
 const UserRoute = lazy(() => import("./components/routes/CMSUserRoute"));
 const AdminRoute = lazy(() => import("./components/routes/CMSAdminRoute"));
@@ -22,11 +23,12 @@ const ForgotPasswordPage = lazy(() => import("./pages/authPages/ForgotPasswordPa
 
 //CMS User pages
 const CMSUserMainMenuPage = lazy(() => import("./pages/CMSUserMainPage"));
-const CMSUserProfilePage = lazy(() => import("./pages/CMSUserProfilePage"));
-const CMSUserUpdateProfilePage = lazy(() => import("./pages/CMSUserUpdateProfilePage"));
+const CMSUserProfilePage = lazy(() => import("./pages/userPages/CMSUserProfilePage"));
+const CMSUserUpdateProfilePage = lazy(() => import("./pages/userPages/CMSUserUpdateProfilePage"));
 const CMSUserUpdatePasswordPage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
 
 //Cars pages
+const CarPage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
 const CarCreatePage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
 const CarUpdatePage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
 const CarsListPage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
@@ -73,7 +75,6 @@ const App = () => {
     return () => unsubscribe();
   }, [dispatch]);
 
-  //!Finish the paths
   return (
     <Suspense
       fallback={
@@ -86,43 +87,29 @@ const App = () => {
       <Header />
       <ToastContainer />
       <Switch>
-        {/*//TODO Group all routes to user and admin routes.*/}
-
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/register" component={RegisterPage} />
 
-        <UserRoute exact path="/user/register/complete" component={RegisterCompletePage} />
-        <UserRoute exact path="/user/forgot/password" component={ForgotPasswordPage} />
+        <UserRoute exact path="/register/complete" component={RegisterCompletePage} />
+        <UserRoute exact path="/forgot/password" component={ForgotPasswordPage} />
 
-        <UserRoute CMSUserMainMenuPage path="/user/menu" component={CMSUserMainMenuPage}/>
-        <UserRoute CMSUserProfilePage path="/user/profile" component={CMSUserProfilePage}/>
-        <UserRoute CMSUserUpdateProfilePage path="/user/update" component={CMSUserUpdateProfilePage}/>
-        <UserRoute CMSUserUpdatePasswordPage path="/user/update-password" component={CMSUserUpdatePasswordPage}/>
+        <UserRoute CMSUserMainMenuPage path="/user/menu" component={CMSUserMainMenuPage} />
+        <UserRoute CMSUserProfilePage path="/user/profile" component={CMSUserProfilePage} />
+        <UserRoute CMSUserUpdateProfilePage path="/user/update" component={CMSUserUpdateProfilePage} />
+        <UserRoute CMSUserUpdatePasswordPage path="/user/update-password" component={CMSUserUpdatePasswordPage} />
 
-        <UserRoute CarPage exact path="/user/car/:slug" component={CarPage}/>
-        <UserRoute CarCreatePage exact path="/user/car/create" component={CarCreatePage}/>
-        <UserRoute CarUpdatePage exact path="/user/car/update" component={CarUpdatePage}/>
-        <UserRoute CarsListPage exact path="/user/car/list" component={CarsListPage}/>
+        <UserRoute CarPage exact path="/car/:slug" component={CarPage} />
+        <UserRoute CarCreatePage exact path="/car/create" component={CarCreatePage} />
+        <UserRoute CarUpdatePage exact path="/car/update" component={CarUpdatePage} />
+        <UserRoute CarsListPage exact path="/car/list" component={CarsListPage} />
 
-        <UserRoute ProvidedServiceCreatePage exact path="/user/service/create" component={ProvidedServiceCreatePage}/>
-        <UserRoute ProvidedServiceUpdatePage exact path="/user/login" component={ProvidedServiceUpdatePage}/>
-        <UserRoute ProvidedServicesListPage exact path="/user/login" component={ProvidedServicesListPage}/>
+        <UserRoute ProvidedServiceCreatePage exact path="/service/service/create" component={ProvidedServiceCreatePage} />
+        <UserRoute ProvidedServiceUpdatePage exact path="/service/login" component={ProvidedServiceUpdatePage} />
+        <UserRoute ProvidedServicesListPage exact path="/service/login" component={ProvidedServicesListPage} />
 
-        <AdminRoute AdminDashboard exact path="/admin/dashboard" component={AdminDashboard}/>
-        <AdminRoute CMSUsersApprovePage exact path="/admin/cms-users-approve" component={CMSUsersApprovePage}/>
-        <AdminRoute CMSUsersListPage exact path="/admin/cms-users-list" component={CMSUsersListPage}/>
-
-
-        {/*//!old for reference*/}
-        <UserRoute exact path="/user/history" component={History} />
-        <UserRoute exact path="/user/password" component={Password} />
-
-        <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
-        <AdminRoute exact path="/admin/product-create" component={ProductCreate} />
-        <AdminRoute exact path="/admin/products" component={AllProducts} />
-        <AdminRoute exact path="/admin/product/:slug" component={ProductUpdate} />
-
-        <Route exact path="/product/:slug" component={Product} />
+        <AdminRoute AdminDashboard exact path="/admin/dashboard" component={AdminDashboard} />
+        <AdminRoute CMSUsersApprovePage exact path="/admin/cms-users-approve" component={CMSUsersApprovePage} />
+        <AdminRoute CMSUsersListPage exact path="/admin/cms-users-list" component={CMSUsersListPage} />
       </Switch>
     </Suspense>
   );

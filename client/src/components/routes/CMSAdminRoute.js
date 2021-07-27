@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CMSLoadingToRedirect from "./CMSLoadingToRedirect";
-import { currentAdmin } from "../../functions/auth";
+import { currentAdmin } from "../../functions/callsToAuthRoutes";
 
 const CMSAdminRoute = ({ children, ...rest }) => {
   const { user } = useSelector((state) => ({ ...state }));

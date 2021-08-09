@@ -1,4 +1,4 @@
-const User = require("../models/CMSuserModel");
+const User = require("../models/userModel");
 
 exports.createOrUpdateUser = async (req, res) => {
   //TODO destructure the request object

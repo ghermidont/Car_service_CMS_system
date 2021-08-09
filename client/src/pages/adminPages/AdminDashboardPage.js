@@ -1,6 +1,6 @@
 import React from "react";
 import AdminNav from "../../components/nav/AdminNav";
-import CMSUserList from "./CMSUsersPages/CMSUsersList";
+import AdminDashUsersList from "./AdminDashUsersList";
 
 const AdminDashboardPage = () => {
   return (
@@ -11,8 +11,8 @@ const AdminDashboardPage = () => {
         </div>
 
         <div className="col-md-10">
-          <h4>CMS Users</h4>
-         <CMSUserList />
+         <h4>CMS Users List:</h4>
+         <AdminDashUsersList />
         </div>
       </div>
     </div>

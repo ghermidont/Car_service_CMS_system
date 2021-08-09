@@ -2,8 +2,9 @@ import React from "react";
 import { Button, Row, Col } from 'antd';
 import {Link} from "react-router-dom";
 
-const CMSUserMainPage = () => {
+const UserMainPage = () => {
     const style = { background: 'darkgrey', color: "black", borderRadius:"5px", width: '500px', height: "100px"};
+    //TODO The User's menu page with 6 buttons
 
   return (
       <>
@@ -39,4 +40,4 @@ const CMSUserMainPage = () => {
   );
 };
 
-export default CMSUserMainPage;
+export default UserMainPage;

@@ -1,12 +1,12 @@
-const GetSingleClinetorCarLogicProduct = require("../models/car");
-const User = require("../models/user");
+const providedService = require("../models/providedServiceModel");
+const User = require("../models/userModel");
 const slugify = require("slugify");
 
 exports.create = async (req, res) => {
     try {
         console.log(req.body);
         req.body.slug = slugify(req.body.title);
-        const newProduct = await new GetSingleClinetorCarLogicProduct(req.body).save();
+        const newProduct = await new providedService(req.body).save();
         res.json(newProduct);
     } catch (err) {
         console.log(err);
@@ -17,7 +17,7 @@ exports.create = async (req, res) => {
 };
 
 exports.listAll = async (req, res) => {
-    let products = await GetSingleClinetorCarLogicProduct.find({})
+    let products = await providedService.find({})
         .limit(parseInt(req.params.count))
         .populate("category")
         .populate("subs")
@@ -28,7 +28,7 @@ exports.listAll = async (req, res) => {
 
 exports.remove = async (req, res) => {
     try {
-        const deleted = await GetSingleClinetorCarLogicProduct.findOneAndRemove({
+        const deleted = await providedService.findOneAndRemove({
             slug: req.params.slug,
         }).exec();
         res.json(deleted);
@@ -40,7 +40,7 @@ exports.remove = async (req, res) => {
 
 //Gets the single car by the slug. //TODO use this to get single elements from the DB.
 exports.read = async (req, res) => {
-    const product = await GetSingleClinetorCarLogicProduct.findOne({ slug: req.params.slug })
+    const product = await providedService.findOne({ slug: req.params.slug })
         .populate("category")
         .populate("subs")
         .exec();
@@ -52,7 +52,7 @@ exports.update = async (req, res) => {
         if (req.body.title) {
             req.body.slug = slugify(req.body.title);
         }
-        const updated = await GetSingleClinetorCarLogicProduct.findOneAndUpdate(
+        const updated = await providedService.findOneAndUpdate(
             { slug: req.params.slug },
             req.body,
             { new: true }
@@ -94,7 +94,7 @@ exports.list = async (req, res) => {
         //The number of items per page.
         const perPage = 3; // 3
 
-        const products = await GetSingleClinetorCarLogicProduct.find({})
+        const products = await providedService.find({})
             //skipping the number of products from the page previous to the chosen page.
             .skip((currentPage - 1) * perPage)
             .populate("category")
@@ -111,12 +111,12 @@ exports.list = async (req, res) => {
 
 //Getting the total car count for the pagination.
 exports.productsCount = async (req, res) => {
-    let total = await GetSingleClinetorCarLogicProduct.find({}).estimatedDocumentCount().exec();
+    let total = await providedService.find({}).estimatedDocumentCount().exec();
     res.json(total);
 };
 
 exports.productStar = async (req, res) => {
-    const product = await GetSingleClinetorCarLogicProduct.findById(req.params.productId).exec();
+    const product = await providedService.findById(req.params.productId).exec();
     const user = await User.findOne({ email: req.user.email }).exec();
     const { star } = req.body;
 
@@ -128,7 +128,7 @@ exports.productStar = async (req, res) => {
 
     // if user haven't left rating yet, push it
     if (existingRatingObject === undefined) {
-        let ratingAdded = await GetSingleClinetorCarLogicProduct.findByIdAndUpdate(
+        let ratingAdded = await providedService.findByIdAndUpdate(
             product._id,
             {
                 $push: { ratings: { star, postedBy: user._id } },
@@ -139,7 +139,7 @@ exports.productStar = async (req, res) => {
         res.json(ratingAdded);
     } else {
         // if user have already left rating, update it
-        const ratingUpdated = await GetSingleClinetorCarLogicProduct.updateOne(
+        const ratingUpdated = await providedService.updateOne(
             {
                 ratings: { $elemMatch: existingRatingObject },
             },
@@ -152,9 +152,9 @@ exports.productStar = async (req, res) => {
 };
 
 exports.listRelated = async (req, res) => {
-    const product = await GetSingleClinetorCarLogicProduct.findById(req.params.productId).exec();
+    const product = await providedService.findById(req.params.productId).exec();
 
-    const related = await GetSingleClinetorCarLogicProduct.find({
+    const related = await providedService.find({
         _id: { $ne: product._id },
         category: product.category,
     })
@@ -170,7 +170,7 @@ exports.listRelated = async (req, res) => {
 // SERACH / FILTER
 
 const handleQuery = async (req, res, query) => {
-    const products = await GetSingleClinetorCarLogicProduct.find({ $text: { $search: query } })
+    const products = await providedService.find({ $text: { $search: query } })
         .populate("category", "_id name")
         .populate("subs", "_id name")
         .populate("postedBy", "_id name")
@@ -181,7 +181,7 @@ const handleQuery = async (req, res, query) => {
 
 const handlePrice = async (req, res, price) => {
     try {
-        let products = await GetSingleClinetorCarLogicProduct.find({
+        let products = await providedService.find({
             price: {
                 $gte: price[0],
                 $lte: price[1],
@@ -200,7 +200,7 @@ const handlePrice = async (req, res, price) => {
 
 const handleCategory = async (req, res, category) => {
     try {
-        let products = await GetSingleClinetorCarLogicProduct.find({ category })
+        let products = await providedService.find({ category })
             .populate("category", "_id name")
             .populate("subs", "_id name")
             .populate("postedBy", "_id name")
@@ -213,7 +213,7 @@ const handleCategory = async (req, res, category) => {
 };
 
 const handleStar = (req, res, stars) => {
-    GetSingleClinetorCarLogicProduct.aggregate([
+    providedService.aggregate([
         {
             $project: {
                 document: "$$ROOT",
@@ -228,7 +228,7 @@ const handleStar = (req, res, stars) => {
         .limit(12)
         .exec((err, aggregates) => {
             if (err) console.log("AGGREGATE ERROR", err);
-            GetSingleClinetorCarLogicProduct.find({ _id: aggregates })
+            providedService.find({ _id: aggregates })
                 .populate("category", "_id name")
                 .populate("subs", "_id name")
                 .populate("postedBy", "_id name")
@@ -240,7 +240,7 @@ const handleStar = (req, res, stars) => {
 };
 
 const handleSub = async (req, res, sub) => {
-    const products = await GetSingleClinetorCarLogicProduct.find({ subs: sub })
+    const products = await providedService.find({ subs: sub })
         .populate("category", "_id name")
         .populate("subs", "_id name")
         .populate("postedBy", "_id name")
@@ -250,7 +250,7 @@ const handleSub = async (req, res, sub) => {
 };
 
 const handleShipping = async (req, res, shipping) => {
-    const products = await GetSingleClinetorCarLogicProduct.find({ shipping })
+    const products = await providedService.find({ shipping })
         .populate("category", "_id name")
         .populate("subs", "_id name")
         .populate("postedBy", "_id name")
@@ -260,7 +260,7 @@ const handleShipping = async (req, res, shipping) => {
 };
 
 const handleColor = async (req, res, color) => {
-    const products = await GetSingleClinetorCarLogicProduct.find({ color })
+    const products = await providedService.find({ color })
         .populate("category", "_id name")
         .populate("subs", "_id name")
         .populate("postedBy", "_id name")
@@ -270,7 +270,7 @@ const handleColor = async (req, res, color) => {
 };
 
 const handleBrand = async (req, res, brand) => {
-    const products = await GetSingleClinetorCarLogicProduct.find({ brand })
+    const products = await providedService.find({ brand })
         .populate("category", "_id name")
         .populate("subs", "_id name")
         .populate("postedBy", "_id name")

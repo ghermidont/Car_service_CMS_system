@@ -22,7 +22,7 @@ const initialState = {
   brand: "",
 };
 
-const CMSUserUpdatePage = ({ match, history }) => {
+const ClientUpdatePage = ({ match, history }) => {
   // state
   const [values, setValues] = useState(initialState);
   const [categories, setCategories] = useState([]);
@@ -155,4 +155,4 @@ const CMSUserUpdatePage = ({ match, history }) => {
   );
 };
 
-export default CMSUserUpdatePage;
+export default ClientUpdatePage;

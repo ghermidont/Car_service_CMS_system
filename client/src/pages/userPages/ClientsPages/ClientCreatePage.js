@@ -18,7 +18,7 @@ const initialState = {
   referenceToClient: "client id"
 };
 
-const ClientCreate = () => {
+const ClientCreatePage = () => {
   const [carInfo, setValues] = useState(initialState);
   const [loading, setLoading] = useState(false);
 
@@ -84,4 +84,4 @@ const ClientCreate = () => {
   );
 };
 
-export default ClientCreate;
+export default ClientCreatePage;

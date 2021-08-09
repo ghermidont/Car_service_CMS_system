@@ -6,7 +6,7 @@ import { getSingleCarFunction } from "../functions/toCarRoute";
 import {Link} from "react-router-dom";
 
 //match is a parameter of <Route> that gets parts of the Uri.
-const CMSCarPage = ({ match }) => {
+const IndividualCarPage = ({ match }) => {
   const [car, setCar] = useState({});
 //const { user } = useSelector((state) => ({ ...state }));
   const { slug } = match.params;
@@ -43,4 +43,4 @@ const CMSCarPage = ({ match }) => {
   );
 };
 
-export default CMSCarPage;
+export default IndividualCarPage;

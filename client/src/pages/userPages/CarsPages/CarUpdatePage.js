@@ -22,7 +22,7 @@ const initialState = {
   brand: "",
 };
 
-const ClientUpdate = ({ match, history }) => {
+const CarUpdatePage = ({ match, history }) => {
   // state
   const [values, setValues] = useState(initialState);
   const [categories, setCategories] = useState([]);
@@ -155,4 +155,4 @@ const ClientUpdate = ({ match, history }) => {
   );
 };
 
-export default ClientUpdate;
+export default CarUpdatePage;

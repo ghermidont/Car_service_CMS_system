@@ -1,3 +1,5 @@
+// noinspection JSCheckFunctionSignatures
+
 import React, { useEffect, lazy, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -10,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/callsToAuthRoutes";
 import { LoadingOutlined } from "@ant-design/icons";
 
-//!Add the correct paths
 //Custom routes
 const UserRoute = lazy(() => import("./components/routes/CMSUserRoute"));
 const AdminRoute = lazy(() => import("./components/routes/CMSAdminRoute"));
@@ -22,26 +23,29 @@ const RegisterCompletePage = lazy(() => import("./pages/authPages/RegisterComple
 const ForgotPasswordPage = lazy(() => import("./pages/authPages/ForgotPasswordPage"));
 
 //CMS User pages
-const CMSUserMainMenuPage = lazy(() => import("./pages/CMSUserMainPage"));
-const CMSUserProfilePage = lazy(() => import("./pages/userPages/CMSUserProfilePage"));
-const CMSUserUpdateProfilePage = lazy(() => import("./pages/userPages/CMSUserUpdateProfilePage"));
-const CMSUserUpdatePasswordPage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
+const UserMainMenuPage = lazy(() => import("./pages/userPages/UserMainPage"));
+const UserProfilePage = lazy(() => import("./pages/userPages/UserProfilePage"));
+const UserUpdateProfilePage = lazy(() => import("./pages/userPages/UserUpdateProfilePage"));
+const UserUpdatePasswordPage = lazy(() => import("./pages/userPages/UserUpdatePasswordPage"));
 
 //Cars pages
-const CarPage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
-const CarCreatePage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
-const CarUpdatePage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
-const CarsListPage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
+const IndividualCarPage = lazy(() => import("./pages/userPages/CarsPages/IndividualCarPage"));
+const CarCreatePage = lazy(() => import("./pages/userPages/CarsPages/CarCreatePage"));
+const CarUpdatePage = lazy(() => import("./pages/userPages/CarsPages/CarUpdatePage"));
+const CarsListPage = lazy(() => import("./pages/userPages/CarsPages/CarsListPage"));
+
+//Clients pages
+const ClientCreatePage = lazy(() => import("./pages/userPages/ClientsPages/ClientCreatePage"));
+const ClientUpdatePage = lazy(() => import("./pages/userPages/ClientsPages/ClientUpdatePage"));
+const ClientsListPage = lazy(() => import("./pages/userPages/ClientsPages/ClientsListPage"));
 
 //Provided services pages
-const ProvidedServiceCreatePage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
-const ProvidedServiceUpdatePage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
-const ProvidedServicesListPage  = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
+const ProvidedServiceCreatePage = lazy(() => import("./pages/userPages/ProvideServicesPages/ProvidedServiceCreatePage"));
+const ProvidedServiceUpdatePage = lazy(() => import("./pages/userPages/ProvideServicesPages/ProvidedServiceUpdatePage"));
+const ProvidedServicesListPage  = lazy(() => import("./pages/userPages/ProvideServicesPages/ProvidedServicesListPage"));
 
 //Admin pages
-const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboardPage"));
-const CMSUsersApprovePage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
-const CMSUsersListPage = lazy(() => import("./pages/userPages/CMSUserUpdatePasswordPage"));
+const AdminDashboard = lazy(() => import("./pages/adminPages/AdminDashboardPage"));
 
 //Components
 const Header = lazy(() => import("./components/nav/Header"));
@@ -93,23 +97,25 @@ const App = () => {
         <UserRoute exact path="/register/complete" component={RegisterCompletePage} />
         <UserRoute exact path="/forgot/password" component={ForgotPasswordPage} />
 
-        <UserRoute CMSUserMainMenuPage path="/user/menu" component={CMSUserMainMenuPage} />
-        <UserRoute CMSUserProfilePage path="/user/profile" component={CMSUserProfilePage} />
-        <UserRoute CMSUserUpdateProfilePage path="/user/update" component={CMSUserUpdateProfilePage} />
-        <UserRoute CMSUserUpdatePasswordPage path="/user/update-password" component={CMSUserUpdatePasswordPage} />
+        <UserRoute CMSUserMainMenuPage path="/user/menu" component={UserMainMenuPage} />
+        <UserRoute CMSUserProfilePage path="/user/profile" component={UserProfilePage} />
+        <UserRoute CMSUserUpdateProfilePage path="/user/update" component={UserUpdateProfilePage} />
+        <UserRoute CMSUserUpdatePasswordPage path="/user/update-password" component={UserUpdatePasswordPage} />
 
-        <UserRoute CarPage exact path="/car/:slug" component={CarPage} />
+        <UserRoute IndividualCarPage exact path="/car/:slug" component={IndividualCarPage} />
         <UserRoute CarCreatePage exact path="/car/create" component={CarCreatePage} />
         <UserRoute CarUpdatePage exact path="/car/update" component={CarUpdatePage} />
         <UserRoute CarsListPage exact path="/car/list" component={CarsListPage} />
+
+        <UserRoute ClientRegisterPage exact path="/client/create" component={ClientCreatePage} />
+        <UserRoute ClientUpdatePage exact path="/client/update" component={ClientUpdatePage} />
+        <UserRoute ClientsListPage exact path="/client/list" component={ClientsListPage} />
 
         <UserRoute ProvidedServiceCreatePage exact path="/service/service/create" component={ProvidedServiceCreatePage} />
         <UserRoute ProvidedServiceUpdatePage exact path="/service/login" component={ProvidedServiceUpdatePage} />
         <UserRoute ProvidedServicesListPage exact path="/service/login" component={ProvidedServicesListPage} />
 
         <AdminRoute AdminDashboard exact path="/admin/dashboard" component={AdminDashboard} />
-        <AdminRoute CMSUsersApprovePage exact path="/admin/cms-users-approve" component={CMSUsersApprovePage} />
-        <AdminRoute CMSUsersListPage exact path="/admin/cms-users-list" component={CMSUsersListPage} />
       </Switch>
     </Suspense>
   );

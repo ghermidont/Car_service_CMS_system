@@ -1,6 +1,6 @@
 //!Update all the functions here according to the routes calls.
 //! See what handleSearchQuery() does.
-const CMSUserSchema = require("../models/CMSuserModel");
+const CMSUserSchema = require("../models/userModel");
 const Slugify = require("slugify");
 
 exports.createCMSUserController = async (req, res) => {

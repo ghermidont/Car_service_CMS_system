@@ -76,7 +76,7 @@ const RegisterCompletePage = ({ history }) => {
         className="form-control"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder="CMSUserUpdatePasswordPage"
+        placeholder="UserUpdatePasswordPage"
         autoFocus
       />
       <br />

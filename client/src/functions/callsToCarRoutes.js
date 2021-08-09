@@ -7,9 +7,6 @@ export const createCarFunction = async (newCar, authToken) => {
   });
 };
 
-//Calling the backend end point for total number of products.
-export const getCarsCountFunction = async () => {await axios.get(`${process.env.REACT_APP_API}/cars/total`);}
-
 export const listAllCarsFunction = async (count) => {
   await axios.get(`${process.env.REACT_APP_API}/products`);
 };
@@ -32,6 +29,12 @@ export const updateCarFunction = async (slug, car, authToken) => {
       authToken,
     },
   });
+}
+
+//The following two calls are used for forming the pagination.
+//Calling the backend end point for total number of products.
+export const getCarsCountFunction = async () => {
+  await axios.get(`${process.env.REACT_APP_API}/cars/total`);
 }
 
 export const getCarsListForPaginationFunction = async (sort, order, page) => {

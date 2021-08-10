@@ -1,7 +1,7 @@
 "use strict";
 
 const admin = require("../firebase/FireBaseSettings");
-const User = require("../models/CMSuserModel");
+const User = require("../models/userModel");
 
 // First layer of security. Checking the Firebase for the user.
 exports.authCheck = async (req, res, next) => {

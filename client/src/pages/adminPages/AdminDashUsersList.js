@@ -1,29 +1,42 @@
 "use strict";
 
 import React, { useEffect, useState } from "react";
-import {getSingleCarFunction, listAllCarsFunction, removeCarFunction} from "../../functions/callsToAdminRoutes";
+
+import {
+    getSingleUserFunction,
+    getUsersListFunction,
+    deleteUserFunction,
+    toggleUserAccessFunction
+} from "../../functions/callsToAdminRoutes";
+
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 
-const CarsListPage = () => {
-    const [CarsFromDb, setCarsFromDb] = useState({});
+const AdminDashUsersList = () => {
+    const [UsersFromDb, setUsersFromDb] = useState({});
+
+    //Getting the current user from Redux Store.
     const { user } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
-        listAllCarsFunction().then((res) => setCarsFromDb(res.data));
+        getUsersListFunction().then((res) => setUsersFromDb(res.data));
     }, []);
 
-    const loadSingleCar = (e) => {
-        getSingleCarFunction(e.target.name).then((res) => {
-            setCarsFromDb(res.data);
+    const loadSingleUser = (e) => {
+        getSingleUserFunction(e.target.name).then((res) => {
+            setUsersFromDb(res.data);
         });
     };
 
     const removeCarFromDB = (slug, authToken) => {
-        removeCarFunction(slug, authToken).then(()=>window.alert("Car removed successfully.")).catch(err=>window.alert(err));
+        deleteUserFunction(slug, authToken)
+            .then(
+                ()=>window.alert("User removed successfully."))
+            .catch(err=>window.alert(err)
+            );
     }
 
-    const showCarsInTable = () => (
+    const showUsersInTable = () => (
         <table className="table table-bordered">
             <thead className="thead-light">
             <tr>
@@ -39,15 +52,15 @@ const CarsListPage = () => {
             </thead>
 
             <tbody>
-            {CarsFromDb.map((carParam) => (
-                <tr key={carParam._id}>
-                    <td>{carParam._id}</td>
-                    <td>{carParam.brand}</td>
-                    <td>{carParam.model}</td>
-                    <td>{carParam.registrationPlate}</td>
-                    <td>{carParam.km}</td>
-                    <td>{carParam.year}</td>
-                    <td>{carParam.client}</td>
+            {UsersFromDb.map((userParam) => (
+                <tr key={userParam._id}>
+                    <td>{userParam._id}</td>
+                    <td>{userParam.brand}</td>
+                    <td>{userParam.model}</td>
+                    <td>{userParam.registrationPlate}</td>
+                    <td>{userParam.km}</td>
+                    <td>{userParam.year}</td>
+                    <td>{userParam.client}</td>
                 </tr>
             ))}
             </tbody>
@@ -60,14 +73,14 @@ const CarsListPage = () => {
                 <div className="container-fluid pt-2">
                     <div className="row">
                         <div className="col-md-8">
-                            <h4>Cart / {CarsFromDb.length} Product</h4>
+                            <h4> {UsersFromDb.length} Users</h4>
 
-                            {!CarsFromDb.length ? (
+                            {!UsersFromDb.length ? (
                                 <p>
-                                    No products in cart. <Link to="/shop">Continue Shopping.</Link>
+                                    No users.
                                 </p>
                             ) : (
-                                showCarsInTable()
+                                showUsersInTable()
                             )}
                         </div>
                         <div className="col-md-4">
@@ -105,4 +118,4 @@ const CarsListPage = () => {
     );
 };
 
-export default CarsListPage;
+export default AdminDashUsersList;

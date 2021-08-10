@@ -4,17 +4,17 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Avatar, Badge } from "antd";
 
-const FileUpload = ({ values, setValues, setLoading }) => {
+const FileUpload = (props) => {
   const { user } = useSelector((state) => ({ ...state }));
 
   const fileUploadAndResize = (e) => {  
     /* In case we upload single file we would take the first element in the array with e.target.files[0]. 
     In case o multiple upload we take all the files with e.target.files.*/
     let files = e.target.files; 
-    let allUploadedFiles = values.images;
+    let allUploadedFiles = props.values.images;
 
     if (files) {
-      setLoading(true);
+      props.setLoading(true);
 
       for (let i = 0; i < files.length; i++) {
         Resizer.imageFileResizer(
@@ -37,13 +37,12 @@ const FileUpload = ({ values, setValues, setLoading }) => {
               )
               .then((res) => {
                 console.log("IMAGE UPLOAD RES DATA", res);
-                setLoading(false);
+                props.setLoading(false);
                 allUploadedFiles.push(res.data);
-
-                setValues({ ...values, images: allUploadedFiles });
+                props.setValues({ ...props.values, images: allUploadedFiles });
               })
               .catch((err) => {
-                setLoading(false);
+                props.setLoading(false);
                 console.log("CLOUDINARY UPLOAD ERR", err);
               });
           },
@@ -54,7 +53,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
   };
 
   const handleImageRemove = (public_id) => {
-    setLoading(true);   
+    props.setLoading(true);
     axios
       .post(
         `${process.env.REACT_APP_API}/remove-image`,
@@ -65,25 +64,25 @@ const FileUpload = ({ values, setValues, setLoading }) => {
           },
         }
       )
-      .then((res) => {
-        setLoading(false);
-        const { images } = values;
+      .then(() => {
+        props.setLoading(false);
+        const { images } = props.values;
         let filteredImages = images.filter((item) => {
           return item.public_id !== public_id;
         });
-        setValues({ ...values, images: filteredImages });
+        props.setValues({ ...props.values, images: filteredImages });
       })
       .catch((err) => {
         console.log(err);
-        setLoading(false);
+        props.setLoading(false);
       });
   };
 
   return (
     <>
       <div className="row">
-        {values.images &&
-          values.images.map((image) => (
+        {props.values.images &&
+          props.values.images.map((image) => (
             <Badge
               count="X"
               key={image.public_id}

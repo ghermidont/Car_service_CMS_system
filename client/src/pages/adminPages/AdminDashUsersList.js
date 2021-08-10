@@ -9,8 +9,9 @@ import {
     toggleUserAccessFunction
 } from "../../functions/callsToAdminRoutes";
 
-import {Link} from "react-router-dom";
+//import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
+import IndividualUserModalPage from "./individualUserModalPage";
 
 const AdminDashUsersList = () => {
     const [UsersFromDb, setUsersFromDb] = useState({});
@@ -22,13 +23,13 @@ const AdminDashUsersList = () => {
         getUsersListFunction().then((res) => setUsersFromDb(res.data));
     }, []);
 
-    const loadSingleUser = (e) => {
-        getSingleUserFunction(e.target.name).then((res) => {
-            setUsersFromDb(res.data);
-        });
-    };
+    // const loadSingleUser = (e) => {
+    //     getSingleUserFunction(e.target.name).then((res) => {
+    //         setUsersFromDb(res.data);
+    //     });
+    // };
 
-    const removeCarFromDB = (slug, authToken) => {
+    const deleteUserFromDB = (slug, authToken) => {
         deleteUserFunction(slug, authToken)
             .then(
                 ()=>window.alert("User removed successfully."))
@@ -36,31 +37,39 @@ const AdminDashUsersList = () => {
             );
     }
 
+    const toggleUserAccess = (userId, decision, authToken) => {
+        toggleUserAccessFunction(userId, decision, authToken)
+            .then(
+                ()=>window.alert("status updated."))
+            .catch(err=>window.alert(err))
+    }
+
     const showUsersInTable = () => (
         <table className="table table-bordered">
             <thead className="thead-light">
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">BRAND</th>
-                <th scope="col">MODEL</th>
-                <th scope="col">REGISTRATION PLATE NR.</th>
-                <th scope="col">REVISIONS</th>
-                <th scope="col">MILEAGE</th>
-                <th scope="col">YEAR</th>
-                <th scope="col">CLIENT</th>
+                <th scope="col">NAME</th>
+                <th scope="col">ADDRESS</th>
+                <th scope="col">FISCAL CODE</th>
+                <th scope="col">DATE OF BIRTH</th>
+                <th scope="col">DATE REGISTERED</th>
+                <th scope="col">STATUS</th>
+                <th scope="col">COMMENTS</th>
             </tr>
             </thead>
 
             <tbody>
             {UsersFromDb.map((userParam) => (
                 <tr key={userParam._id}>
-                    <td>{userParam._id}</td>
-                    <td>{userParam.brand}</td>
-                    <td>{userParam.model}</td>
-                    <td>{userParam.registrationPlate}</td>
-                    <td>{userParam.km}</td>
-                    <td>{userParam.year}</td>
-                    <td>{userParam.client}</td>
+                    {/*TODO Remove brackets after creating the object.*/}
+                    <td>{"userParam.name"}</td>
+                    <td>{"userParam.address"}</td>
+                    <td>{"userParam.fiscalCode"}</td>
+                    <td>{"userParam.birthDate"}</td>
+                    <td>{"userParam.dateRegistered"}</td>
+                    <td>{"userParam.status"}</td>
+                    <td>{"userParam.comments"}</td>
                 </tr>
             ))}
             </tbody>
@@ -73,8 +82,7 @@ const AdminDashUsersList = () => {
                 <div className="container-fluid pt-2">
                     <div className="row">
                         <div className="col-md-8">
-                            <h4> {UsersFromDb.length} Users</h4>
-
+                            <h4> {UsersFromDb.length} Users table:</h4>
                             {!UsersFromDb.length ? (
                                 <p>
                                     No users.
@@ -83,35 +91,30 @@ const AdminDashUsersList = () => {
                                 showUsersInTable()
                             )}
                         </div>
-                        <div className="col-md-4">
-                            <h4>Order Summary</h4>
-                            <hr />
-                            <p>Products</p>
-                            {CarsFromDb.map((c, i) => (
-                                <div key={i}>
-                                    <p>
-                                        {c.title} x {c.count} = ${c.price * c.count}
-                                    </p>
-                                </div>
-                            ))}
-                            <hr />
 
                             <hr />
                             {/*TODO see where to get the slug from*/}
-                            <Link to={`/car/${slug}`}>
+                            {/*<Link to={`/car/${slug}`}>*/}
                                 <button className="btn btn-sm btn-primary mt-2">
-                                    Car info
+                                    More info
                                 </button>
-                            </Link>
+                            {/*</Link>*/}
                             <br />
                             <button
-                                onClick={removeCarFromDB}
+                                onClick={deleteUserFromDB}
                                 className="btn btn-sm btn-warning mt-2"
                             >
-                                Remove car
+                                Delete user
                             </button>
-                        </div>
-                    </div>
+                            <button
+                                onClick={toggleUserAccess}
+                                className="btn btn-sm btn-warning mt-2"
+                            >
+                                Toggle user access
+                            </button>
+                            {/*TODO Pass the user params to the individual. Consult the individual product page.*/}
+                            <IndividualUserModalPage getSingleUserFunction={getSingleUserFunction}/>
+                       </div>
                 </div>
             </div>
         </div>

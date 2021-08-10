@@ -1,11 +1,11 @@
 "use strict";
 
 import React, { useEffect, useState } from "react";
-import { getSingleCarFunction } from "../functions/toCarRoute";
+import { getSingleCarFunction } from "../../../functions/callsToCarRoutes";
 //import { useSelector } from "react-redux";
-import {Link} from "react-router-dom";
+//import {Link} from "react-router-dom";
 
-//match is a parameter of <Route> that gets parts of the Uri.
+//"match" is a parameter of <Route> that gets parts of the Uri.
 const IndividualCarPage = ({ match }) => {
   const [car, setCar] = useState({});
 //const { user } = useSelector((state) => ({ ...state }));

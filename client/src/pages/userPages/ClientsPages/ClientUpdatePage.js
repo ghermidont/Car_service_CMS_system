@@ -2,28 +2,28 @@ import React, { useState, useEffect } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { getSingleCarFunction, updateCarFunction } from "../../../functions/callsToCarRoutes";
+import { getSingleClientFunction, updateClientFunction } from "../../../functions/callsToClientRoutes";
 import FileUpload from "../../../components/formComponents/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
-import CarUpdateForm from "../../../components/formComponents/carFormsComponents/CarUpdateForm";
+import ClientUpdateForm from "../../../components/formComponents/clientFormsComponents/ClientUpdateForm";
 
 const initialState = {
-  brand: "",
-  model: "",
-  license_plate: "",
-  revision: "",
-  km: 0,
-  year: 0,
-  client: "",
+  name: "",
+  surname: "",
+  date: Date,
+  fiscal_code: 0,
+  address: "",
+  city: "",
+  province: "",
+  notes: "",
+  mobile: 0,
+  email: "",
   slug: "",
-  identifier: 0
+  identifier: ""
 };
 
-
-const ClientUpdatePage = ({ match, history }) => {
-  //TODO Finish the client update page.
-
-  // state
+const ClientUpdatePage = ({ match }) => {
+  // states
   const [values, setValues] = useState(initialState);
   const [loading, setLoading] = useState(false);
 
@@ -31,14 +31,14 @@ const ClientUpdatePage = ({ match, history }) => {
   // router
   const { slug } = match.params;
 
-  const getCarsFromDBFunction = () => {
-    getSingleCarFunction(slug).then((car) => {
-      setValues({ ...values, ...car.data });
+  const getClientFromDBFunction = () => {
+    getSingleClientFunction(slug).then((client) => {
+      setValues({ ...values, ...client.data });
     });
   };
 
   useEffect(() => {
-    getCarsFromDBFunction();
+    getClientFromDBFunction();
   }, []);
 
   const handleSubmit = (e) => {
@@ -48,7 +48,7 @@ const ClientUpdatePage = ({ match, history }) => {
     updateClientFunction(slug, values, user.token)
         .then((res) => {
           setLoading(false);
-          toast.success(`"${res.data.title}" is updated`);
+          toast.success(`The client with id: ${res.data._id} is updated.`);
         })
         .catch((err) => {
           console.log(err);
@@ -85,7 +85,7 @@ const ClientUpdatePage = ({ match, history }) => {
               />
             </div>
 
-            <clientUpdateForm
+            <ClientUpdateForm
                 handleSubmit={handleSubmit}
                 handleChange={handleChange}
                 setValues={setValues}

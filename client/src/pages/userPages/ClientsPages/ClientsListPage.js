@@ -1,77 +1,93 @@
-// import React, { useEffect, useState } from "react";
-// import AdminNav from "../../../components/nav/AdminNav";
-// import { getProductsByCount } from "../../../functions/car";
-// import AdminProductCard from "../../../components/cards/AdminProductCard";
-// import { removeProduct } from "../../../functions/car";
-// import { useSelector } from "react-redux";
-// import { toast } from "react-toastify";
-//
-// const AllCars = () => {
-//   const [products, setProducts] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   // redux
-//   const { user } = useSelector((state) => ({ ...state }));
-//
-//   useEffect(() => {
-//     loadAllProducts();
-//   }, []);
-//
-//   const loadAllProducts = () => {
-//     setLoading(true);
-//     getProductsByCount(100)
-//       .then((res) => {
-//         setProducts(res.data);
-//         setLoading(false);
-//       })
-//       .catch((err) => {
-//         setLoading(false);
-//         console.log(err);
-//       });
-//   };
-//
-//   const handleRemove = (slug) => {
-//     // let answer = window.confirm("Delete?");
-//     if (window.confirm("Delete?")) {
-//       // console.log("send delete request", slug);
-//       removeProduct(slug, user.token)
-//         .then((res) => {
-//           loadAllProducts();
-//           toast.error(`${res.data.title} is deleted`);
-//         })
-//         .catch((err) => {
-//           if (err.response.status === 400) toast.error(err.response.data);
-//           console.log(err);
-//         });
-//     }
-//   };
-//
-//   return (
-//     <div className="container-fluid">
-//       <div className="row">
-//         <div className="col-md-2">
-//           <AdminNav />
-//         </div>
-//
-//         <div className="col">
-//           {loading ? (
-//             <h4 className="text-danger">Loading...</h4>
-//           ) : (
-//             <h4>All Products</h4>
-//           )}
-//           <div className="row">
-//             {products.map((car) => (
-//               <div key={car._id} className="col-md-4 pb-3">
-//                 <AdminProductCard
-//                   car={car}
-//                   handleRemove={handleRemove}
-//                 />
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-//
-// export default AllCars;
+"use strict";
+
+import React, { useEffect, useState } from "react";
+import {listAllClientsFunction, removeClientFunction} from "../../../functions/callsToCarRoutes";
+import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
+
+const CarsListPage = () => {
+    const [ClientsFromDb, setClientsFromDb] = useState({});
+    const { user } = useSelector((state) => ({ ...state }));
+
+    useEffect(() => {
+        listAllCarsFunction().then((res) => setClientsFromDb(res.data));
+    }, []);
+
+    const removeCarFromDB = (slug, plate) => {
+        removeCarFunction(slug, user.token)
+            .then(()=>window.alert(`Car with registration palate ${plate} removed successfully.`))
+            .catch(err=>window.alert(err));
+    }
+
+    const showCarsInTable = () => (
+        <table className="table table-bordered">
+            <thead className="thead-light">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">BRAND</th>
+                <th scope="col">MODEL</th>
+                <th scope="col">REGISTRATION PLATE NR.</th>
+                <th scope="col">REVISIONS</th>
+                <th scope="col">MILEAGE</th>
+                <th scope="col">YEAR</th>
+                <th scope="col">CLIENT</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {ClientsFromDb.map((carParam) => (
+                <tr key={carParam._id}>
+                    <td>{carParam._id}</td>
+                    <td>{carParam.brand}</td>
+                    <td>{carParam.model}</td>
+                    <td>{carParam.registrationPlate}</td>
+                    <td>{carParam.km}</td>
+                    <td>{carParam.year}</td>
+                    <td>{carParam.client}</td>
+                </tr>
+            ))}
+            </tbody>
+        </table>
+    );
+
+    return (
+        <div className="container-fluid">
+            <div className="row pt-4">
+                <div className="container-fluid pt-2">
+                    <div className="row">
+                        <div className="col-md-8">
+                            <p>Cars list:</p>
+                            {!ClientsFromDb.length ? (
+                                <p>
+                                    No cars to display.
+                                </p>
+                            ) : (
+                                showCarsInTable()
+                            )}
+                        </div>
+                        <div className="col-md-4">
+                            {ClientsFromDb.map((car) => (
+                                <>
+                                    <Link to={`/car/${car.slug}`}>
+                                        <button className="btn btn-sm btn-primary mt-2">
+                                            Car info
+                                        </button>
+                                    </Link>
+                                    <br />
+                                    <button
+                                        onClick={()=>removeCarFromDB(car.slug, car.registrationPlate)}
+                                        className="btn btn-sm btn-warning mt-2"
+                                    >
+                                        Remove car
+                                    </button>
+                                </>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default CarsListPage;

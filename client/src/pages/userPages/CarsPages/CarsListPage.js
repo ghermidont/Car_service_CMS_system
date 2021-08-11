@@ -1,7 +1,7 @@
 "use strict";
 
 import React, { useEffect, useState } from "react";
-import {getSingleCarFunction, listAllCarsFunction, removeCarFunction} from "../../../functions/callsToCarRoutes";
+import {listAllCarsFunction, removeCarFunction} from "../../../functions/callsToCarRoutes";
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 
@@ -13,14 +13,10 @@ const CarsListPage = () => {
         listAllCarsFunction().then((res) => setCarsFromDb(res.data));
     }, []);
 
-    const loadSingleCar = (e) => {
-        getSingleCarFunction(e.target.name).then((res) => {
-            setCarsFromDb(res.data);
-        });
-    };
-
-    const removeCarFromDB = (slug, authToken) => {
-        removeCarFunction(slug, authToken).then(()=>window.alert("Car removed successfully.")).catch(err=>window.alert(err));
+    const removeCarFromDB = (slug, plate) => {
+        removeCarFunction(slug, user.token)
+            .then(()=>window.alert(`Car with registration palate ${plate} removed successfully.`))
+            .catch(err=>window.alert(err));
     }
 
     const showCarsInTable = () => (
@@ -60,43 +56,32 @@ const CarsListPage = () => {
                 <div className="container-fluid pt-2">
                     <div className="row">
                         <div className="col-md-8">
-                            <h4>Cart / {CarsFromDb.length} Product</h4>
-
+                            <p>Cars list:</p>
                             {!CarsFromDb.length ? (
                                 <p>
-                                    No products in cart. <Link to="/shop">Continue Shopping.</Link>
+                                    No cars to display.
                                 </p>
                             ) : (
                                 showCarsInTable()
                             )}
                         </div>
                         <div className="col-md-4">
-                            <h4>Order Summary</h4>
-                            <hr />
-                            <p>Products</p>
-                            {CarsFromDb.map((c, i) => (
-                                <div key={i}>
-                                    <p>
-                                        {c.title} x {c.count} = ${c.price * c.count}
-                                    </p>
-                                </div>
+                            {CarsFromDb.map((car) => (
+                                <>
+                                    <Link to={`/car/${car.slug}`}>
+                                        <button className="btn btn-sm btn-primary mt-2">
+                                            Car info
+                                        </button>
+                                    </Link>
+                                    <br />
+                                    <button
+                                        onClick={()=>removeCarFromDB(car.slug, car.registrationPlate)}
+                                        className="btn btn-sm btn-warning mt-2"
+                                    >
+                                        Remove car
+                                    </button>
+                                </>
                             ))}
-                            <hr />
-
-                            <hr />
-                            {/*TODO see where to get the slug from*/}
-                            <Link to={`/car/${slug}`}>
-                                <button className="btn btn-sm btn-primary mt-2">
-                                    Car info
-                                </button>
-                            </Link>
-                            <br />
-                            <button
-                                onClick={removeCarFromDB}
-                                className="btn btn-sm btn-warning mt-2"
-                            >
-                                Remove car
-                            </button>
                         </div>
                     </div>
                 </div>

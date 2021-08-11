@@ -8,7 +8,9 @@ export const createClientFunction = async (newClient, authToken) => {
 };
 
 //Calling the backend end point for total number of clients.
-export const getClientsCountFunction = async () => {await axios.get(`${process.env.REACT_APP_API}/clients/total`);}
+export const getClientsCountFunction = async () => {
+    await axios.get(`${process.env.REACT_APP_API}/clients/total`);
+}
 
 export const listAllClientsFunction = async (count) => {
     await axios.get(`${process.env.REACT_APP_API}/clients`);

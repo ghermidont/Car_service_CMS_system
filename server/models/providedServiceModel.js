@@ -11,13 +11,8 @@ const providedServiceSchema= new mongoose.Schema(
             lowercase: true,
             index: true,
         },
-        identifier: [
-            {
-                type: ObjectId,
-                ref: "identifier",
-            },
-        ],
-        license_plate: {
+        data: Date,
+        licensePlate: {
             type: String,
             trim: true,
             required: true,
@@ -45,6 +40,54 @@ const providedServiceSchema= new mongoose.Schema(
             maxlength: 32,
             text: true,
         },
+        operator: {
+            type: String,
+            trim: true,
+            required: true,
+            maxlength: 32,
+            text: true
+        },
+        anomalies: {
+            type: String,
+            trim: true,
+            required: true,
+            maxlength: 32,
+            text: true
+        },
+        checks: {
+            type: String,
+            trim: true,
+            required: true,
+            maxlength: 32,
+            text: true
+        },
+        actions: {
+            type: String,
+            trim: true,
+            required: true,
+            maxlength: 32,
+            text: true
+        },
+        note: {
+            type: String,
+            trim: true,
+            required: true,
+            maxlength: 32,
+            text: true
+        },
+        damage: {
+            type: String,
+            trim: true,
+            required: true,
+            maxlength: 32,
+            text: true
+        },
+        identifier: [
+            {
+                type: ObjectId,
+                ref: "identifier",
+            },
+        ],
     },
     { timestamps: true }
 );

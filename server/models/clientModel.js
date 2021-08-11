@@ -1,5 +1,6 @@
 "use strict";
-
+//!Start here~!!!!
+//TODO find in documentation the validation options.
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
@@ -55,13 +56,14 @@ const productSchema = new mongoose.Schema(
           required: true,
           index: true,
       },
+      cars: [],
       slug: {
           type: String,
           unique: true,
           lowercase: true,
           index: true,
       },
-      identifier: [
+      _id: [
           {
               type: ObjectId,
               ref: "identifier",

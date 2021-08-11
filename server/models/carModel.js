@@ -18,7 +18,7 @@ const carSchema = new mongoose.Schema({
         maxlength: 32,
         text: true,
     },
-    license_plate: {
+    licensePlate: {
         type: String,
         trim: true,
         required: true,
@@ -47,7 +47,7 @@ const carSchema = new mongoose.Schema({
         lowercase: true,
         index: true,
     },
-    identifier: [
+    _id: [
     {
         type: ObjectId,
         ref: "identifier",

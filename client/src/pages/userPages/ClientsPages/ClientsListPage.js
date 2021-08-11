@@ -1,49 +1,44 @@
 "use strict";
 
 import React, { useEffect, useState } from "react";
-import {listAllClientsFunction, removeClientFunction} from "../../../functions/callsToCarRoutes";
+import {listAllClientsFunction, removeClientFunction} from "../../../functions/callsToClientRoutes";
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 
-const CarsListPage = () => {
+const ClientsListPage = () => {
     const [ClientsFromDb, setClientsFromDb] = useState({});
     const { user } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
-        listAllCarsFunction().then((res) => setClientsFromDb(res.data));
+        listAllClientsFunction().then((res) => setClientsFromDb(res.data));
     }, []);
 
-    const removeCarFromDB = (slug, plate) => {
-        removeCarFunction(slug, user.token)
-            .then(()=>window.alert(`Car with registration palate ${plate} removed successfully.`))
+    const removeClientFromDB = (slug, id) => {
+        removeClientFunction(slug, user.token)
+            .then(()=>window.alert(`Client with id: ${id} removed successfully.`))
             .catch(err=>window.alert(err));
     }
 
-    const showCarsInTable = () => (
+    const showClientsInTable = () => (
         <table className="table table-bordered">
             <thead className="thead-light">
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">BRAND</th>
-                <th scope="col">MODEL</th>
-                <th scope="col">REGISTRATION PLATE NR.</th>
-                <th scope="col">REVISIONS</th>
-                <th scope="col">MILEAGE</th>
-                <th scope="col">YEAR</th>
-                <th scope="col">CLIENT</th>
+                <th scope="col">NAME</th>
+                <th scope="col">SURNAME</th>
+                <th scope="col">MOBILE PHONE</th>
+                <th scope="col">LIST OF CARS</th>
             </tr>
             </thead>
 
             <tbody>
-            {ClientsFromDb.map((carParam) => (
-                <tr key={carParam._id}>
-                    <td>{carParam._id}</td>
-                    <td>{carParam.brand}</td>
-                    <td>{carParam.model}</td>
-                    <td>{carParam.registrationPlate}</td>
-                    <td>{carParam.km}</td>
-                    <td>{carParam.year}</td>
-                    <td>{carParam.client}</td>
+            {ClientsFromDb.map((clientParam) => (
+                <tr key={clientParam._id}>
+                    <td>{clientParam._id}</td>
+                    <td>{clientParam.name}</td>
+                    <td>{clientParam.surname}</td>
+                    <td>{clientParam.mobile}</td>
+                    <td>{clientParam.cars.length>0?clientParam.cars.map((car)=><Link to={`car/${car.slug}`}>{car.licensePlate}</Link>):<p>No registered cars</p>}</td>
                 </tr>
             ))}
             </tbody>
@@ -59,26 +54,26 @@ const CarsListPage = () => {
                             <p>Cars list:</p>
                             {!ClientsFromDb.length ? (
                                 <p>
-                                    No cars to display.
+                                    No clients to display.
                                 </p>
                             ) : (
-                                showCarsInTable()
+                                showClientsInTable()
                             )}
                         </div>
                         <div className="col-md-4">
-                            {ClientsFromDb.map((car) => (
+                            {ClientsFromDb.map((client) => (
                                 <>
-                                    <Link to={`/car/${car.slug}`}>
+                                    <Link to={`/client/${client.slug}`}>
                                         <button className="btn btn-sm btn-primary mt-2">
                                             Car info
                                         </button>
                                     </Link>
                                     <br />
                                     <button
-                                        onClick={()=>removeCarFromDB(car.slug, car.registrationPlate)}
+                                        onClick={()=>removeClientFromDB(client.slug, client._id)}
                                         className="btn btn-sm btn-warning mt-2"
                                     >
-                                        Remove car
+                                        Remove client
                                     </button>
                                 </>
                             ))}
@@ -90,4 +85,4 @@ const CarsListPage = () => {
     );
 };
 
-export default CarsListPage;
+export default ClientsListPage;

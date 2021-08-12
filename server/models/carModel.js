@@ -1,4 +1,5 @@
 "use strict";
+// Schema options here: https://mongoosejs.com/docs/schematypes.html#strings
 
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
@@ -47,12 +48,7 @@ const carSchema = new mongoose.Schema({
         lowercase: true,
         index: true,
     },
-    _id: [
-    {
-        type: ObjectId,
-        ref: "identifier",
-    }
-    ]
+    _id: ObjectId
 },
     { timestamps: true }
 );

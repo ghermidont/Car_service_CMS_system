@@ -20,8 +20,7 @@ const initialState = {
       actions: "",
       note: "",
       damage: "",
-      identifier: "",
-      timestamp: ""
+      _id: 0
 };
 
 const ProvidedServiceUpdatePage = ({ match }) => {

@@ -1,10 +1,10 @@
 "use strict";
-//!Start here~!!!!
-//TODO find in documentation the validation options.
+// Schema options here: https://mongoosejs.com/docs/schematypes.html#strings
+
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
-const productSchema = new mongoose.Schema(
+const clientSchema = new mongoose.Schema(
   {
       name: {
           type: String,
@@ -63,14 +63,9 @@ const productSchema = new mongoose.Schema(
           lowercase: true,
           index: true,
       },
-      _id: [
-          {
-              type: ObjectId,
-              ref: "identifier",
-          }
-      ]
+      _id: ObjectId
   },
     { timestamps: true }
 );
 
-module.exports = mongoose.model("serviceClientModel", productSchema);
+module.exports = mongoose.model("clientModel", clientSchema);

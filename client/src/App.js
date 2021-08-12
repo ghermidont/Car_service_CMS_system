@@ -12,6 +12,13 @@ import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/callsToAuthRoutes";
 import { LoadingOutlined } from "@ant-design/icons";
 
+// Import Parse minified version
+import Parse from 'parse/dist/parse.min.js';
+
+// Parse initialization configuration:
+Parse.initialize(process.env.PARSE_APPLICATION_ID, process.env.PARSE_JAVASCRIPT_KEY);
+Parse.serverURL = process.env.PARSE_HOST_URL;
+
 //Custom routes
 const UserRoute = lazy(() => import("./components/routes/CMSUserRoute"));
 const AdminRoute = lazy(() => import("./components/routes/CMSAdminRoute"));
@@ -91,7 +98,7 @@ const App = () => {
       <Header />
       <ToastContainer />
       <Switch>
-        <Route exact path="/login" component={LoginPage} />
+        <Route exact path="/" component={LoginPage} />
         <Route exact path="/register" component={RegisterPage} />
 
         <UserRoute exact path="/register/complete" component={RegisterCompletePage} />

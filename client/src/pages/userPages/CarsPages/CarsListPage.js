@@ -1,5 +1,3 @@
-"use strict";
-
 import React, { useEffect, useState } from "react";
 import {listAllCarsFunction, removeCarFunction} from "../../../functions/callsToCarRoutes";
 import {Link} from "react-router-dom";

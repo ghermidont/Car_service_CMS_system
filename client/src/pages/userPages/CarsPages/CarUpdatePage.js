@@ -10,22 +10,22 @@ import CarUpdateForm from "../../../components/formComponents/carFormsComponents
 const initialState = {
   brand: "",
   model: "",
-  license_plate: "",
-  revision: "",
+  licensePlate: "",
+  revisions: "",
   km: 0,
   year: 0,
   client: "",
   slug: "",
-  identifier: 0
+  _id: 0
+  //Use .toString() method to convert _id ObjectId output to string.
 };
 
 const CarUpdatePage = ({ match, history }) => {
-  // state
+  // states
   const [values, setValues] = useState(initialState);
   const [loading, setLoading] = useState(false);
 
   const { user } = useSelector((state) => ({ ...state }));
-  // router
   const { slug } = match.params;
 
   const getCarsFromDBFunction = () => {
@@ -41,12 +41,10 @@ const CarUpdatePage = ({ match, history }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-
       updateCarFunction(slug, values, user.token)
       .then((res) => {
         setLoading(false);
-        toast.success(`"${res.data.title}" is updated`);
-        history.push("/admin/products");
+        toast.success(`The car "${res.data.licensePlate}" has been updated.`);
       })
       .catch((err) => {
         console.log(err);

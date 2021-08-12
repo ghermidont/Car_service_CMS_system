@@ -1,7 +1,9 @@
+// Schema options here: https://mongoosejs.com/docs/schematypes.html#strings
+
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
-const CMSUserSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
       name: {
           type: String,
@@ -53,25 +55,19 @@ const CMSUserSchema = new mongoose.Schema(
           required: true,
           index: true,
     },
-    role: {
-      type: String,
-      default: "ordinary",
-    },
-    slug: {
-      type: String,
-      unique: true,
-      lowercase: true,
-      index: true,
-    },
-    identifier: [
-      {
-        type: ObjectId,
-        ref: "identifier",
-       }
-    ]
+      role: {
+          type: String,
+          default: "ordinary",
+        },
+      slug: {
+          type: String,
+          unique: true,
+          lowercase: true,
+          index: true,
+        },
+      _id: ObjectId
   },
   { timestamps: true }
 );
 
-// This model will be referred to as "User".
-module.exports = mongoose.model("CMSUserSchema", CMSUserSchema);
+module.exports = mongoose.model("userSchema", userSchema);

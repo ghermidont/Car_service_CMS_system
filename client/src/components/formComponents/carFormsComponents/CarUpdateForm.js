@@ -1,52 +1,94 @@
-import React from "react";
-import { Select } from "antd";
-import {onLog} from "firebase";
+import React, {useState} from "react";
+import Parse from 'parse/dist/parse.min.js';
+// import { Select } from "antd";
+// import {onLog} from "firebase";
+//!start here!!! Find length in the source in chrome error.
+/*Use the the Ant cascader for cars select.
+https://ant.design/components/cascader/*/
 
-const { Option } = Select;
+//const { Option } = Select;
+//{ handleSubmit, handleChange, setValues, values }
+const CarUpdateForm = () => {
+  // const {
+  //   brand,
+  //   model,
+  //   registrationPlate,
+  //   revisions,
+  //   km,
+  //   year,
+  //   client
+  // } = values;
 
-//TODO finish the update form.
-const CarUpdateForm = ({
-  handleSubmit,
-  handleChange,
-  setValues,
-  values,
-  handleCategoryChange,
-  categories,
-  subOptions,
-  arrayOfSubs,
-  setArrayOfSubs,
-  selectedCategory,
-}) => {
-  const { brand, model, registrationPlate, revisions, km, year, client, referenceToClient } = values;
+  const [person, setPerson] = useState(null);
+
+  async function addPerson() {
+    try {
+      // create a new Parse Object instance
+      const Person = new Parse.Object('Person');
+      // define the attributes you want for your Object
+      Person.set('name', 'John');
+      Person.set('email', 'john@back4app.com');
+      // save it on Back4App Data Store
+      await Person.save();
+      alert('Person saved!');
+    } catch (error) {
+      console.log('Error saving new person: ', error);
+    }
+  }
+
+  async function fetchPerson() {
+    // create your Parse Query using the Person Class you've created
+    const query = new Parse.Query('Person');
+    // use the equalTo filter to look for user which the name is John. this filter can be used in any data type
+    query.equalTo('name', 'John');
+    // run the query
+    const Person = await query.first();
+    // access the Parse Object attributes
+    console.log('person name: ', Person.get('name'));
+    console.log('person email: ', Person.get('email'));
+    console.log('person id: ', Person.id);
+    setPerson(Person);
+  }
 
   return (
+      <div>
+        <button onClick={addPerson}>Add Person</button>
+        <button onClick={fetchPerson}>Fetch Person</button>
+        {person !== null && (
+            <div>
+              <p>{`Name: ${person.get('name')}`}</p>
+              <p>{`Email: ${person.get('email')}`}</p>
+            </div>
+        )}
+      </div>
+
     // <form onSubmit={handleSubmit}>
     //   <div className="form-group">
-    //     <label>Title</label>
+    //     <label>Brand</label>
     //     <input
     //       type="text"
-    //       name="title"
+    //       name="brand"
     //       className="form-control"
-    //       value={title}
+    //       value={brand}
     //       onChange={handleChange}
     //     />
     //   </div>
     //
     //   <div className="form-group">
-    //     <label>Description</label>
+    //     <label>Model</label>
     //     <input
     //       type="text"
-    //       name="description"
+    //       name="model"
     //       className="form-control"
-    //       value={description}
+    //       value={model}
     //       onChange={handleChange}
     //     />
     //   </div>
     //
     //   <div className="form-group">
-    //     <label>Price</label>
+    //     <label>License plate</label>
     //     <input
-    //       type="number"
+    //       type="text"
     //       name="price"
     //       className="form-control"
     //       value={price}
@@ -146,10 +188,58 @@ const CarUpdateForm = ({
     //   </div>
     //
     //   <br />
-    //   <button className="btn btn-outline-info">Save</button>
+    //   <button className="btn btn-outline-info">Save changes</button>
     // </form>
-      console.log("Car update form")
+
   )
 };
 
 export default CarUpdateForm;
+
+//##########################################
+
+// import { Cascader } from 'antd';
+//
+// const options = [
+//   {
+//     value: 'zhejiang',
+//     label: 'Zhejiang',
+//     children: [
+//       {
+//         value: 'hangzhou',
+//         label: 'Hangzhou',
+//         children: [
+//           {
+//             value: 'xihu',
+//             label: 'West Lake',
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     value: 'jiangsu',
+//     label: 'Jiangsu',
+//     children: [
+//       {
+//         value: 'nanjing',
+//         label: 'Nanjing',
+//         children: [
+//           {
+//             value: 'zhonghuamen',
+//             label: 'Zhong Hua Men',
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ];
+//
+// function onChange(value) {
+//   console.log(value);
+// }
+//
+// ReactDOM.render(
+//     <Cascader options={options} onChange={onChange} placeholder="Please select" />,
+//     mountNode,
+// );

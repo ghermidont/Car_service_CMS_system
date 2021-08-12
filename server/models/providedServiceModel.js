@@ -1,4 +1,5 @@
 "use strict";
+// Schema options here: https://mongoosejs.com/docs/schematypes.html#strings
 
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
@@ -33,7 +34,7 @@ const providedServiceSchema= new mongoose.Schema(
             maxlength: 32,
             text: true,
         },
-       state: {
+        state: {
             type: String,
             trim: true,
             required: true,
@@ -51,43 +52,38 @@ const providedServiceSchema= new mongoose.Schema(
             type: String,
             trim: true,
             required: true,
-            maxlength: 32,
+            maxlength: 200,
             text: true
         },
         checks: {
             type: String,
             trim: true,
             required: true,
-            maxlength: 32,
+            maxlength: 200,
             text: true
         },
         actions: {
             type: String,
             trim: true,
             required: true,
-            maxlength: 32,
+            maxlength: 200,
             text: true
         },
         note: {
             type: String,
             trim: true,
             required: true,
-            maxlength: 32,
+            maxlength: 200,
             text: true
         },
         damage: {
             type: String,
             trim: true,
             required: true,
-            maxlength: 32,
+            maxlength: 200,
             text: true
         },
-        identifier: [
-            {
-                type: ObjectId,
-                ref: "identifier",
-            },
-        ],
+        _id: ObjectId
     },
     { timestamps: true }
 );

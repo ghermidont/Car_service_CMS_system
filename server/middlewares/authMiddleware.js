@@ -4,7 +4,7 @@ const admin = require("../firebase/FireBaseSettings");
 const User = require("../models/userModel");
 
 // First layer of security. Checking the Firebase for the user.
-exports.authCheck = async (req, res, next) => {
+exports.authCheckMiddleware = async (req, res, next) => {
   //We send the auth token in the request headers (req.headers.authToken).
     try {
         // Write the current user from the Firebase to the request object.
@@ -20,7 +20,7 @@ exports.authCheck = async (req, res, next) => {
 };
 
 // Second layer of security. Check in the MongoDB database if the user is admin.
-exports.adminCheck = async (req, res, next) => {
+exports.adminCheckMiddleware = async (req, res, next) => {
   const { email } = req.user;
   const adminUser = await User.findOne({ email }).exec();
   if (adminUser.role !== "admin") {

@@ -5,13 +5,13 @@ const express = require("express");
 const router = express.Router();
 
 // middlewares
-const { authCheckMiddleware, adminCheckMiddleware } = require("../middlewares/auth");
+const { authCheckMiddleware, adminCheckMiddleware } = require("../middlewares/authMiddleware");
 
 // controllers import
 const {
   createCarController,
   listAllCarsController,
-  removeCarController,
+  deleteCarController,
   getSingleCarController,
   updateCarController,
   carsListForPaginationController,
@@ -21,7 +21,7 @@ const {
 // routesController
 router.post("/car/add-car", authCheckMiddleware, adminCheckMiddleware, createCarController);
 router.get("/cars/total", listAllCarsController);
-router.delete("/car/:slug", authCheckMiddleware, adminCheckMiddleware, removeCarController);
+router.delete("/car/:slug", authCheckMiddleware, adminCheckMiddleware, deleteCarController);
 router.get("/car/:slug", getSingleCarController);
 router.put("/car/:slug", authCheckMiddleware, adminCheckMiddleware, updateCarController);
 router.post("/cars", carsListForPaginationController);

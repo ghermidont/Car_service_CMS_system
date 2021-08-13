@@ -49,4 +49,3 @@ cli for including "use strict" in files:
 
 Mongoose schemas parameters:
 <https://mongoosejs.com/docs/schematypes.html#strings>
-

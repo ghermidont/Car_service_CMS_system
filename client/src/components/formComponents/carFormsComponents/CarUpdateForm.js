@@ -44,16 +44,16 @@ const CarUpdateForm = () => {
     // run the query
     const Person = await query.first();
     // access the Parse Object attributes
-    console.log('person name: ', Person.get('name'));
-    console.log('person email: ', Person.get('email'));
-    console.log('person id: ', Person.id);
+   // console.log('person name: ', Person.get('name'));
+   // console.log('person email: ', Person.get('email'));
+   // console.log('person id: ', Person.id);
     setPerson(Person);
   }
 
   return (
       <div>
-        <button onClick={addPerson}>Add Person</button>
-        <button onClick={fetchPerson}>Fetch Person</button>
+        <button onClick={()=>addPerson()}>Add Person</button>
+        <button onClick={()=>fetchPerson()}>Fetch Person</button>
         {person !== null && (
             <div>
               <p>{`Name: ${person.get('name')}`}</p>

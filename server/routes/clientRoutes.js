@@ -5,7 +5,7 @@ const express = require("express");
 const router = express.Router();
 
 // middlewares
-const { authCheck, adminCheck } = require("../middlewares/auth");
+const { authCheckMiddleware, adminCheckMiddleware } = require("../middlewares/authMiddleware");
 
 // controllers import
 const {
@@ -16,15 +16,15 @@ const {
   updateClientController,
   clientsListForPaginationController,
   searchFiltersController
-} = require("../controllers/serviceClientController");
+} = require("../controllers/clientController");
 
 // routes
-router.post("/client/new", authCheck, adminCheck, createClientController);
-router.get("/clients/total",  authCheck, adminCheck, listAllClientsController);
-router.delete("/client/:slug", authCheck, adminCheck, deleteClientController);
-router.get("/client/:slug", authCheck, adminCheck, getSingleClientController);
-router.put("/client/:slug", authCheck, adminCheck, updateClientController);
-router.post("/clients", authCheck, adminCheck, clientsListForPaginationController);
+router.post("/client/new", authCheckMiddleware, adminCheckMiddleware, createClientController);
+router.get("/clients/total",  authCheckMiddleware, adminCheckMiddleware, listAllClientsController);
+router.delete("/client/:slug", authCheckMiddleware, adminCheckMiddleware, deleteClientController);
+router.get("/client/:slug", authCheckMiddleware, adminCheckMiddleware, getSingleClientController);
+router.put("/client/:slug", authCheckMiddleware, adminCheckMiddleware, updateClientController);
+router.post("/clients", authCheckMiddleware, adminCheckMiddleware, clientsListForPaginationController);
 router.post("/search/filters", searchFiltersController);
 
 module.exports = router;

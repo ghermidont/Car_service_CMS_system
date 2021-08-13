@@ -1,6 +1,6 @@
 const User = require("../models/userModel");
 
-exports.createOrUpdateUser = async (req, res) => {
+exports.createOrUpdateUserController = async (req, res) => {
   //TODO destructure the request object
   const { email } = req.user;
   //Find and update the user in the database.
@@ -29,7 +29,7 @@ exports.createOrUpdateUser = async (req, res) => {
   }
 };
 
-exports.currentUser = async (req, res) => {
+exports.currentUserController = async (req, res) => {
   User.findOne({ email: req.user.email }).exec((err, user) => {
     if (err) throw new Error(JSON.stringify(err));
     res.json(user);

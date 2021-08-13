@@ -1,44 +1,45 @@
-const carModel = require("../models/carModel");
+const serviceModel = require("../models/serviceModel");
 const Slugify = require("slugify");
 
-exports.createCarController = async (req, res) => {
+exports.createServiceController = async (req, res) => {
     try {
         req.body.slug = Slugify(req.body.title);
-        const newCar = await new carModel(req.body).save();
-        res.json(newCar);
+        const newService = await new serviceModel(req.body).save();
+        res.json(newService);
     } catch (err) {
-       window.alert(err);
+        window.alert(err);
         res.status(400).json({
             err: err.message,
         });
     }
 };
 
-exports.listAllCarsController = async (req, res) => {
-    let DbCars = await carModel.find({})
+exports.listAllServicesController = async (req, res) => {
+    let DbServices = await serviceModel.find({})
         .limit(parseInt(req.params.count))
         //TODO fill the populate params
         .populate("category", "", "", "")
         .sort([["createdAt", "desc"]])
         .exec();
-    res.json(DbCars);
+    res.json(DbServices);
 };
 
-exports.deleteCarController = async (req, res) => {
+exports.deleteServiceController = async (req, res) => {
     try {
-        const carToDelete = await carModel.findOneAndRemove({
+        const serviceToDelete = await serviceModel.findOneAndRemove({
             slug: req.params.slug,
         }).exec();
-        res.json(carToDelete);
+        res.json(serviceToDelete);
     } catch (err) {
         window.alert(err);
-        return res.status(400).send("Car deletion failed");
+        return res.status(400).send("Service deletion failed");
     }
 };
 
-//Gets the single car by the slug. //TODO use this to get single elements from the DB.
-exports.getSingleCarController = async (req, res) => {
-    const product = await carModel.findOne({ slug: req.params.slug })
+//Gets the single service by the slug.
+// TODO use this to get single elements from the DB.
+exports.getSingleServiceController = async (req, res) => {
+    const product = await serviceModel.findOne({ slug: req.params.slug })
         // .populate() is being used in order to bring only needed information.
         //TODO modify the populate criteria.
         .populate("category")
@@ -47,19 +48,19 @@ exports.getSingleCarController = async (req, res) => {
     res.json(product);
 };
 
-exports.updateCarController = async (req, res) => {
+exports.updateServiceController = async (req, res) => {
     try {
         if (req.body.title) {
             req.body.slug = Slugify(req.body.title);
         }
-        const updated = await carModel.findOneAndUpdate(
+        const updated = await serviceModel.findOneAndUpdate(
             { slug: req.params.slug },
             req.body,
             { new: true }
         ).exec();
         res.json(updated);
     } catch (err) {
-        console.log("CAR UPDATE ERROR ----> ", err);
+        console.log("SERVICE UPDATE ERROR ----> ", err);
         res.status(400).json({
             err: err.message,
         });
@@ -85,7 +86,7 @@ exports.updateCarController = async (req, res) => {
 // };
 
 // WITH PAGINATION
-exports.carsListForPaginationController = async (req, res) => {
+exports.servicesListForPaginationController = async (req, res) => {
     try {
         // createdAt/updatedAt, desc/asc, 3
         const { sort, order, page } = req.body;
@@ -94,7 +95,7 @@ exports.carsListForPaginationController = async (req, res) => {
         //The number of items per page.
         const perPage = 3; // 3
 
-        const cars = await carModel.find({})
+        const services = await serviceModel.find({})
             //skipping the number of products from the page previous to the chosen page.
             .skip((currentPage - 1) * perPage)
             //TODO modify the populate criteria.
@@ -104,22 +105,22 @@ exports.carsListForPaginationController = async (req, res) => {
             .limit(perPage)
             .exec();
 
-        res.json(cars);
+        res.json(services);
     } catch (err) {
         window.log(err);
     }
 };
 
-//Getting the total car count for the pagination.
-exports.carsCountController = async (req, res) => {
-    let total = await carModel.find({}).estimatedDocumentCount().exec();
+//Getting the total services count for the pagination.
+exports.serviceCountController = async (req, res) => {
+    let total = await serviceModel.find({}).estimatedDocumentCount().exec();
     res.json(total);
 };
 
 // SEARCH / FILTER
 
 const handleSearchQueryController = async (req, res, query) => {
-    const clients = await carModel.find({ $text: { $search: query } })
+    const clients = await serviceModel.find({ $text: { $search: query } })
         //TODO modify the populates criteria.
         .populate("category", "_id name")
         .populate("subs", "_id name")
@@ -135,6 +136,6 @@ exports.searchFiltersController = async (req, res) => {
 
     if (query) {
         console.log("query --->", query);
-        await handleSearchQuery(req, res, query);
+        await handleSearchQueryController(req, res, query);
     }
 };

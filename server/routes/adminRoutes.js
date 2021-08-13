@@ -7,20 +7,20 @@ const router = express.Router();
 // middlewares
 const { authCheckMiddleware, adminCheckMiddleware } = require("../middlewares/authMiddleware");
 const {
-    deleteCMSUserController,
-    toggleCMSUserAccessController,
-    listAllCMSUsersController,
-    CMSUsersForPaginationController,
-    getSingleCMSUserController,
+    deleteUserController,
+    toggleUserAccessController,
+    listAllUsersController,
+    usersForPaginationController,
+    getSingleUserController,
     searchFiltersController
 } = require("../controllers/adminController");
 
 // routes
-router.delete("/admin/user/delete/:slug", authCheckMiddleware, adminCheckMiddleware, deleteCMSUserController);
-router.get("/admin/user/:slug", authCheckMiddleware, adminCheckMiddleware, getSingleCMSUserController);
-router.put("/admin/user/access/:slug", authCheckMiddleware, adminCheckMiddleware, toggleCMSUserAccessController);
-router.get("/admin/users",  authCheckMiddleware, adminCheckMiddleware, listAllCMSUsersController);
-router.post("/admin/users/pagination", authCheckMiddleware, adminCheckMiddleware, CMSUsersForPaginationController);
+router.delete("/admin/user/delete/:slug", authCheckMiddleware, adminCheckMiddleware, deleteUserController);
+router.get("/admin/user/:slug", authCheckMiddleware, adminCheckMiddleware, getSingleUserController);
+router.put("/admin/user/access/:slug", authCheckMiddleware, adminCheckMiddleware, toggleUserAccessController);
+router.get("/admin/users",  authCheckMiddleware, adminCheckMiddleware, listAllUsersController);
+router.post("/admin/users/pagination", authCheckMiddleware, adminCheckMiddleware, usersForPaginationController);
 router.post("/search/filters", searchFiltersController);
 
 module.exports = router;

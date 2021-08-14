@@ -25,6 +25,7 @@ function IndividualUserModalPage({getSingleUserFunction, match}) {
 
     useEffect(() => {
         loadSingleProduct();
+        // eslint-disable-next-line
     }, [slug]);
 
     const loadSingleProduct = () => {

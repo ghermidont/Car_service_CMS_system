@@ -1,5 +1,3 @@
-"use strict";
-
 import React, { useEffect, useState } from "react";
 
 import {
@@ -10,14 +8,14 @@ import {
 } from "../../functions/callsToAdminRoutes";
 
 //import {Link} from "react-router-dom";
-import {useSelector} from "react-redux";
+//import {useSelector} from "react-redux";
 import IndividualUserModalPage from "./individualUserModalPage";
 
 const AdminDashUsersList = () => {
     const [UsersFromDb, setUsersFromDb] = useState({});
 
     //Getting the current user from Redux Store.
-    const { user } = useSelector((state) => ({ ...state }));
+    //const { user } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
         getUsersListFunction().then((res) => setUsersFromDb(res.data));

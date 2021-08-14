@@ -1,11 +1,10 @@
 import React from "react";
-import { Select } from "antd";
-const { Option } = Select;
+//import { Select } from "antd";
+//const { Option } = Select;
 //Get the multi-choice logic from here.
-
-const ClientCreateForm = ({handleSubmit, handleChange, carInfo, handleCarBrandChange}) => {
-      const { brands, model, registrationPlate, revisions, km, year, client, referenceToClient } = carInfo;
-
+const ClientCreateForm = ({ handleSubmit, handleChange, values }) => {
+      const { name, surname, date, fiscal_code, address, city, province, notes, mobile, email, cars, slug } = values;
+//! start here. Make the form fields.
   return (
       <>
          <div className="form-group">

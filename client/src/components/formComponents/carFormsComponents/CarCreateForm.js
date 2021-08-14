@@ -1,10 +1,11 @@
 import React from "react";
-import { Select } from "antd";
-const { Option } = Select;
+//import { Select } from "antd";
+//const { Option } = Select;
 //Get the multi-choice logic from here.
 
-const CarCreateForm = ({handleSubmit, handleChange, carInfo, handleCarBrandChange}) => {
-      const { brands, model, registrationPlate, revisions, km, year, client, referenceToClient } = carInfo;
+const CarCreateForm = ({handleSubmit, handleChange, values, handleCarBrandChange}) => {
+
+      const { brands, model, registrationPlate, revisions, km, year, client } = values;
 
   return (
       <>

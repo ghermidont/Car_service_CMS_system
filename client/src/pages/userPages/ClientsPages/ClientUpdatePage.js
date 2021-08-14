@@ -10,7 +10,7 @@ import ClientUpdateForm from "../../../components/formComponents/clientFormsComp
 const initialState = {
   name: "",
   surname: "",
-  date: Date,
+  date: "",
   fiscal_code: 0,
   address: "",
   city: "",
@@ -18,8 +18,9 @@ const initialState = {
   notes: "",
   mobile: 0,
   email: "",
+  cars: [],
   slug: "",
-  identifier: ""
+  _id: ""
 };
 
 const ClientUpdatePage = ({ match }) => {
@@ -39,6 +40,7 @@ const ClientUpdatePage = ({ match }) => {
 
   useEffect(() => {
     getClientFromDBFunction();
+    // eslint-disable-next-line
   }, []);
 
   const handleSubmit = (e) => {

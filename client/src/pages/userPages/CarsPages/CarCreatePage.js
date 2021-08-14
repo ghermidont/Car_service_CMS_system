@@ -19,7 +19,7 @@ const initialState = {
 };
 
 const CarCreatePage = () => {
-  const [carInfo, setValues] = useState(initialState);
+  const [values, setValues] = useState(initialState);
   const [loading, setLoading] = useState(false);
 
   // GEt the user from Redux Store
@@ -27,7 +27,7 @@ const CarCreatePage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createCarFunction(carInfo, user.token)
+    createCarFunction(values, user.token)
       .then(() => {
         window.alert( "Car added is created" );
         window.location.reload();
@@ -39,13 +39,13 @@ const CarCreatePage = () => {
 
   const handleChange = (e) => {
     //Dynamically update each of the initialState values by their name parameter.
-    setValues({ ...carInfo, [e.target.name]: e.target.value });
+    setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   const handleCarBrandChange = (e) => {
     e.preventDefault();
     console.log("Clicked car brand: ", e.target.value);
-    setValues({ ...carInfo, brand: e.target.value });
+    setValues({ ...values, brand: e.target.value });
   };  
 
   return (
@@ -65,7 +65,7 @@ const CarCreatePage = () => {
 
           <div className="p-3">
             <FileUpload
-              values={carInfo}
+              values={values}
               setValues={setValues}
               setLoading={setLoading}
             />
@@ -75,7 +75,7 @@ const CarCreatePage = () => {
             handleSubmit={handleSubmit}
             handleChange={handleChange}
             setValues={setValues}
-            carInfo={carInfo}
+            values={values}
             handleCarBrandChange={handleCarBrandChange}
           />
         </div>

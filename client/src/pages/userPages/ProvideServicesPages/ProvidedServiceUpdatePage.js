@@ -41,6 +41,7 @@ const ProvidedServiceUpdatePage = ({ match }) => {
   useEffect(() => {
     //Call the function on the component mount.
     getServiceFromDBFunction ();
+      // eslint-disable-next-line
   }, []);
 
   const handleSubmit = (e) => {

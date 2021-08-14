@@ -1,5 +1,3 @@
-"use strict";
-
 import React, { useEffect, useState } from "react";
 import { getSingleCarFunction } from "../../../functions/callsToCarRoutes";
 //import { useSelector } from "react-redux";
@@ -11,17 +9,20 @@ const IndividualCarPage = ({ match }) => {
 //const { user } = useSelector((state) => ({ ...state }));
   const { slug } = match.params;
 
-  const { brand, model, registrationPlate, revisions, km, year, client, referenceToClient } = car;
-
-  useEffect(() => {
-    loadSingleCar();
-  }, [slug]);
+//  const { brand, model, registrationPlate, revisions, km, year, client, referenceToClient } = car;
 
   const loadSingleCar = () => {
     getSingleCarFunction(slug).then((res) => {
       setCar(res.data);
     });
   };
+
+  useEffect(() => {
+    loadSingleCar();
+    // eslint-disable-next-line
+  }, [slug]);
+
+
 
   return (
     <div className="container-fluid">

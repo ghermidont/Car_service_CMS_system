@@ -1,23 +1,12 @@
-import React from "react";
-import { Select } from "antd";
-import {onLog} from "firebase";
+//import React from "react";
+//import { Select } from "antd";
+//import {onLog} from "firebase";
 
-const { Option } = Select;
+//const { Option } = Select;
 
 //TODO finish the update form.
-const ClientUpdateForm = ({
-  handleSubmit,
-  handleChange,
-  setValues,
-  values,
-  handleCategoryChange,
-  categories,
-  subOptions,
-  arrayOfSubs,
-  setArrayOfSubs,
-  selectedCategory,
-}) => {
-  const { brand, model, registrationPlate, revisions, km, year, client, referenceToClient } = values;
+const ClientUpdateForm = ({values}) => {
+  //const { brand, model, registrationPlate, revisions, km, year, client, referenceToClient } = values;
 
   return (
     // <form onSubmit={handleSubmit}>

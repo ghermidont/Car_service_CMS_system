@@ -36,6 +36,7 @@ const CarUpdatePage = ({ match, history }) => {
 
   useEffect(() => {
     getCarsFromDBFunction();
+    // eslint-disable-next-line
   }, []);
 
   const handleSubmit = (e) => {

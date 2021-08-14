@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 
 const ClientsListPage = () => {
-    const [ClientsFromDb, setClientsFromDb] = useState({});
+    const [clientsFromDb, setClientsFromDb] = useState({});
     const { user } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const ClientsListPage = () => {
             </thead>
 
             <tbody>
-            {ClientsFromDb.map((clientParam) => (
+            {clientsFromDb.map((clientParam) => (
                 <tr key={clientParam._id}>
                     <td>{clientParam._id}</td>
                     <td>{clientParam.name}</td>
@@ -50,7 +50,7 @@ const ClientsListPage = () => {
                     <div className="row">
                         <div className="col-md-8">
                             <p>Cars list:</p>
-                            {!ClientsFromDb.length ? (
+                            {!clientsFromDb.length ? (
                                 <p>
                                     No clients to display.
                                 </p>
@@ -59,7 +59,7 @@ const ClientsListPage = () => {
                             )}
                         </div>
                         <div className="col-md-4">
-                            {ClientsFromDb.map((client) => (
+                            {clientsFromDb.map((client) => (
                                 <>
                                     <Link to={`/client/${client.slug}`}>
                                         <button className="btn btn-sm btn-primary mt-2">

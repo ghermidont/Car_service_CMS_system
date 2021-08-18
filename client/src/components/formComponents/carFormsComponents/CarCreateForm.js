@@ -3,6 +3,12 @@ import React from "react";
 //const { Option } = Select;
 //Get the multi-choice logic from here.
 
+/*Use the the Ant cascader for cars select.
+https://ant.design/components/cascader/*/
+
+//Cars DB API: https://parse-dashboard.back4app.com/apps/7e730946-c9c1-4aca-90f3-87f9abc2842c/browser/Carmodels_Car_Model_List
+//https://www.back4app.com/docs/react/quickstart
+
 const CarCreateForm = ({handleSubmit, handleChange, values, handleCarBrandChange}) => {
 
       const { brands, model, registrationPlate, revisions, km, year, client } = values;

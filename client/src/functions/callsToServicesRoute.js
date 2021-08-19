@@ -16,7 +16,7 @@ export const listAllServicesFunction = async (count) => {
     await axios.get(`${process.env.REACT_APP_API}/services`);
 };
 
-export const removeServiceFunction = async (slug, authToken) => {
+export const deleteServiceFunction = async (slug, authToken) => {
     await axios.delete(`${process.env.REACT_APP_API}/service/${slug}`, {
         headers: {
             authToken

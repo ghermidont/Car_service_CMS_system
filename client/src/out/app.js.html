@@ -64,7 +64,7 @@ const CarsListPage = lazy(() => import("./pages/userPages/UserUpdatePasswordPage
 
 //Provided services pages
 const ProvidedServiceCreatePage = lazy(() => import("./pages/userPages/UserUpdatePasswordPage"));
-const ProvidedServiceUpdatePage = lazy(() => import("./pages/userPages/UserUpdatePasswordPage"));
+const ServiceUpdatePage = lazy(() => import("./pages/userPages/UserUpdatePasswordPage"));
 const ProvidedServicesListPage  = lazy(() => import("./pages/userPages/UserUpdatePasswordPage"));
 
 //Admin pages
@@ -133,7 +133,7 @@ const App = () => {
         &lt;UserRoute CarsListPage exact path="/car/list" component={CarsListPage} />
 
         &lt;UserRoute ProvidedServiceCreatePage exact path="/service/service/create" component={ProvidedServiceCreatePage} />
-        &lt;UserRoute ProvidedServiceUpdatePage exact path="/service/login" component={ProvidedServiceUpdatePage} />
+        &lt;UserRoute ServiceUpdatePage exact path="/service/login" component={ServiceUpdatePage} />
         &lt;UserRoute ProvidedServicesListPage exact path="/service/login" component={ProvidedServicesListPage} />
 
         &lt;AdminRoute AdminDashboard exact path="/admin/dashboard" component={AdminDashboard} />

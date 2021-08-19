@@ -2,28 +2,23 @@ import React, { useState, useEffect } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { getSingleServiceFunction, updateServiceFunction } from "../../../functions/callsToProvidedServicesRoute";
+import { getSingleServiceFunction, updateServiceFunction } from "../../../functions/callsToServicesRoute";
 import FileUpload from "../../../components/formComponents/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
 import ServiceUpdateForm from "../../../components/formComponents/clientFormsComponents/ClientUpdateForm";
 
 const initialState = {
-      slug: "",
-      data: "",
-      license_plate: "",
-      brand: "",
-      model: "",
-      state: "",
-      operator: "",
-      anomalies: "",
-      checks: "",
-      actions: "",
-      note: "",
-      damage: "",
-      _id: 0
+    brand: "",
+    model: "",
+    registrationPlate: "",
+    revisions: "",
+    km: "",
+    year: "",
+    client: "",
+    referenceToClient: ""
 };
 
-const ProvidedServiceUpdatePage = ({ match }) => {
+const ServiceUpdatePage = ({ match }) => {
   // states
   const [values, setValues] = useState(initialState);
   const [loading, setLoading] = useState(false);
@@ -91,7 +86,6 @@ const ProvidedServiceUpdatePage = ({ match }) => {
             <ServiceUpdateForm
                 handleSubmit={handleSubmit}
                 handleChange={handleChange}
-                setValues={setValues}
                 values={values}
             />
             <hr />
@@ -101,4 +95,4 @@ const ProvidedServiceUpdatePage = ({ match }) => {
   );
 };
 
-export default ProvidedServiceUpdatePage;
+export default ServiceUpdatePage;

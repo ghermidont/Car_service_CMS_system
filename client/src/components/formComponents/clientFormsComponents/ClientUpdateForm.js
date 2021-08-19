@@ -1,9 +1,6 @@
-import React, {useState} from "react";
-//import { Select } from "antd";
-//import {onLog} from "firebase";
+import React, {useEffect, useState} from "react";
 
-//const { Option } = Select;
-
+//TODO implement the cascader.
 /*Use the the Ant cascader for cars select.
 https://ant.design/components/cascader/*/
 
@@ -11,7 +8,7 @@ https://ant.design/components/cascader/*/
 //https://www.back4app.com/docs/react/quickstart
 
 //The params are sent from the ClientUpdatePage.js component.
-const ClientUpdateForm = ({values, setValues, handleSubmit, handleChange}) => {
+const ClientUpdateForm = ({handleSubmit, handleChange, values}) => {
 
   const[dateOfBirth, setDateOfBirth] = useState();
 
@@ -26,22 +23,23 @@ const ClientUpdateForm = ({values, setValues, handleSubmit, handleChange}) => {
     notes,
     mobile,
     email,
-    cars,
-    // ??? See the slug logic
-    // ??? See the id logic
+    cars
   } = values;
 
   //Call this function in the useEffect hook to format the date.
-  function formattedDate(rawDate){
-    let formattedDate;
-    if(rawDate===undefined){
-      setDateOfBirth("Date of birth not set");
-    }else{
+  const formattedDate = (rawDate)=>{
+    if(rawDate===undefined)
+      return setDateOfBirth("Date of birth not set");
+
       let now = new Date(rawDate);
-      formattedDate =  date.format(now, "ddd, MMM DD YYYY");
-    }
-    return setDateOfBirth(formattedDate);
+      return setDateOfBirth(date.format(now, "ddd, MMM DD YYYY"));
   }
+
+  useEffect(() => {
+    formattedDate(values.date);
+    // eslint-disable-next-line
+  }, [values]);
+
 
   return (
       <>
@@ -131,8 +129,7 @@ const ClientUpdateForm = ({values, setValues, handleSubmit, handleChange}) => {
                 rows="4"
                 maxLength="1000"
                 onChange={handleChange}
-            >
-				</textarea>
+            > </textarea>
           </div>
 
           <div className="form-group">
@@ -165,7 +162,10 @@ const ClientUpdateForm = ({values, setValues, handleSubmit, handleChange}) => {
             <select name="brand" className="form-control" onChange={handleChange}>
               <option>Please select the car brand:</option>
               {cars.map((brand) => (
-                  <option key={brand} value={brand}>
+                  <option
+                      key={brand}
+                      value={brand}
+                  >
                     {brand}
                   </option>
               ))}

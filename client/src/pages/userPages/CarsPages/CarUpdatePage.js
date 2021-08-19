@@ -7,10 +7,12 @@ import FileUpload from "../../../components/formComponents/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
 import CarUpdateForm from "../../../components/formComponents/carFormsComponents/CarUpdateForm";
 
+//TODO START HERE figure out why values is undefined.
+
 const initialState = {
   brand: "",
   model: "",
-  licensePlate: "",
+  registrationPlate: "",
   revisions: "",
   km: 0,
   year: 0,
@@ -20,22 +22,21 @@ const initialState = {
   //Use .toString() method to convert _id ObjectId output to string.
 };
 
-const CarUpdatePage = ({ match, history }) => {
+const CarUpdatePage = ({ match }) => {
   // states
   const [values, setValues] = useState(initialState);
   const [loading, setLoading] = useState(false);
-
   const { user } = useSelector((state) => ({ ...state }));
   const { slug } = match.params;
 
-  const getCarsFromDBFunction = () => {
+  const getCarFromDBFunction = () => {
     getSingleCarFunction(slug).then((car) => {
       setValues({ ...values, ...car.data });
     });
   };
 
   useEffect(() => {
-    getCarsFromDBFunction();
+    getCarFromDBFunction();
     // eslint-disable-next-line
   }, []);
 
@@ -85,7 +86,6 @@ const CarUpdatePage = ({ match, history }) => {
           <CarUpdateForm
             handleSubmit={handleSubmit}
             handleChange={handleChange}
-            setValues={setValues}
             values={values}
           />
           <hr />

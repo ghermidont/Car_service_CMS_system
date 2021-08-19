@@ -72,7 +72,6 @@ const ClientCreatePage = () => {
           <ClientCreateForm
             handleSubmit={handleSubmit}
             handleChange={handleChange}
-            setValues={setValues}
             values={values}
           />
         </div>

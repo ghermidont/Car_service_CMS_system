@@ -8,11 +8,11 @@ export const createCarFunction = async (newCar, authToken) => {
 };
 
 export const listAllCarsFunction = async (count) => {
-  await axios.get(`${process.env.REACT_APP_API}/products`);
+  await axios.get(`${process.env.REACT_APP_API}/cars`);
 };
 
 export const removeCarFunction = async (slug, authToken) => {
-  await axios.delete(`${process.env.REACT_APP_API}/product/${slug}`, {
+  await axios.delete(`${process.env.REACT_APP_API}/car/${slug}`, {
     headers: {
       authToken,
     },

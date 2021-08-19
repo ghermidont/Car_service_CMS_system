@@ -47,9 +47,9 @@ const ClientUpdatePage = lazy(() => import("./pages/userPages/ClientsPages/Clien
 const ClientsListPage = lazy(() => import("./pages/userPages/ClientsPages/ClientsListPage"));
 
 //Provided services pages
-const ProvidedServiceCreatePage = lazy(() => import("./pages/userPages/ProvideServicesPages/ProvidedServiceCreatePage"));
-const ProvidedServiceUpdatePage = lazy(() => import("./pages/userPages/ProvideServicesPages/ProvidedServiceUpdatePage"));
-const ProvidedServicesListPage  = lazy(() => import("./pages/userPages/ProvideServicesPages/ProvidedServicesListPage"));
+const ProvidedServiceCreatePage = lazy(() => import("./pages/userPages/ServicesPages/ServiceCreatePage"));
+const ProvidedServiceUpdatePage = lazy(() => import("./pages/userPages/ServicesPages/ServiceUpdatePage"));
+const ProvidedServicesListPage  = lazy(() => import("./pages/userPages/ServicesPages/ServicesListPage"));
 
 //Admin pages
 const AdminDashboard = lazy(() => import("./pages/adminPages/AdminDashboardPage"));
@@ -121,6 +121,7 @@ const App = () => {
         <UserRoute ProvidedServiceCreatePage exact path="/service/service/create" component={ProvidedServiceCreatePage} />
         <UserRoute ProvidedServiceUpdatePage exact path="/service/login" component={ProvidedServiceUpdatePage} />
         <UserRoute ProvidedServicesListPage exact path="/service/login" component={ProvidedServicesListPage} />
+        {/*Create individual service page with slug*/}
 
         <AdminRoute AdminDashboard exact path="/admin/dashboard" component={AdminDashboard} />
       </Switch>

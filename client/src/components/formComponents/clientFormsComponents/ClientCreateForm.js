@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 //import { Select } from "antd";
 //const { Option } = Select;
 //Get the multi-choice logic from here.
 
+//TODO implement the cascader.
 /*Use the the Ant cascader for cars select.
 https://ant.design/components/cascader/*/
 
@@ -23,22 +24,21 @@ const ClientCreateForm = ({ handleSubmit, handleChange, values }) => {
           notes,
           mobile,
           email,
-          cars,
-          // ??? See the slug logic
-          // ??? See the id logic
+          cars
       } = values;
 
-      //Call this function in the useEffect hook to format the date.
-      function formattedDate(rawDate){
-          let formattedDate;
-          if(rawDate===undefined){
-                 setDateOfBirth("Date of birth not set");
-             }else{
-                 let now = new Date(rawDate);
-                 formattedDate =  date.format(now, "ddd, MMM DD YYYY");
-             }
-          return setDateOfBirth(formattedDate);
-      }
+      const formattedDate = (rawDate)=>{
+        if(rawDate===undefined)
+            return setDateOfBirth("Date of birth not set");
+
+        let now = new Date(rawDate);
+        return setDateOfBirth(date.format(now, "ddd, MMM DD YYYY"));
+    }
+
+    useEffect(() => {
+        formattedDate(date);
+        // eslint-disable-next-line
+    }, [values]);
 
   return (
       <>

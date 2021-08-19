@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { getSingleClientFunction, updateClientFunction } from "../../../functions/callsToClientRoutes";
+import {
+  getSingleClientFunction,
+  updateClientFunction
+} from "../../../functions/callsToClientRoutes";
 import FileUpload from "../../../components/formComponents/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
 import ClientUpdateForm from "../../../components/formComponents/clientFormsComponents/ClientUpdateForm";
@@ -27,11 +30,12 @@ const initialState = {
 };
 
 const ClientUpdatePage = ({ match }) => {
-  // states
+   // states
   const [values, setValues] = useState(initialState);
   const [loading, setLoading] = useState(false);
 
   const { user } = useSelector((state) => ({ ...state }));
+
   // router
   const { slug } = match.params;
   console.log(match.params);
@@ -94,7 +98,6 @@ const ClientUpdatePage = ({ match }) => {
             <ClientUpdateForm
                 handleSubmit={handleSubmit}
                 handleChange={handleChange}
-                setValues={setValues}
                 values={values}
             />
             <hr />

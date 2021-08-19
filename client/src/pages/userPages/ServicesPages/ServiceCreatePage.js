@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { createCarFunction } from "../../../functions/callsToCarRoutes";
-import CarCreateForm from "../../../components/formComponents/carFormsComponents/CarCreateForm";
+import { createServiceFunction } from "../../../functions/callsToServicesRoute";
+import ServiceCreateForm from "../../../components/formComponents/carFormsComponents/CarCreateForm";
 import FileUpload from "../../../components/formComponents/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
 
@@ -19,7 +19,7 @@ const initialState = {
 };
 
 const CarCreate = () => {
-  const [carInfo, setValues] = useState(initialState);
+  const [values, setValues] = useState(initialState);
   const [loading, setLoading] = useState(false);
 
   // GEt the user from Redux Store
@@ -27,9 +27,9 @@ const CarCreate = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createCarFunction(carInfo, user.token)
+    createServiceFunction(values, user.token)
       .then(() => {
-        window.alert( "Car added is created" );
+        window.alert( "Service added is created" );
         window.location.reload();
       })
       .catch((err) => {
@@ -39,14 +39,8 @@ const CarCreate = () => {
 
   const handleChange = (e) => {
     //Dynamically update each of the initialState values by their name parameter.
-    setValues({ ...carInfo, [e.target.name]: e.target.value });
+    setValues({ ...values, [e.target.name]: e.target.value });
   };
-
-  const handleCarBrandChange = (e) => {
-    e.preventDefault();
-    console.log("Clicked car brand: ", e.target.value);
-    setValues({ ...carInfo, brand: e.target.value });
-  };  
 
   return (
     <div className="container-fluid">
@@ -59,24 +53,22 @@ const CarCreate = () => {
           {loading ? (
             <LoadingOutlined className="text-danger h1" />
           ) : (
-            <h4>Add new vehicle:</h4>
+            <h4>Add new service:</h4>
           )}
           <hr />    
 
           <div className="p-3">
             <FileUpload
-              values={carInfo}
+              values={values}
               setValues={setValues}
               setLoading={setLoading}
             />
           </div>
 
-          <CarCreateForm
+          <ServiceCreateForm
             handleSubmit={handleSubmit}
             handleChange={handleChange}
-            setValues={setValues}
-            carInfo={carInfo}
-            handleCarBrandChange={handleCarBrandChange}
+            values={values}
           />
         </div>
       </div>

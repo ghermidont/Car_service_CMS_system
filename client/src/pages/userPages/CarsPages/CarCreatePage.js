@@ -45,12 +45,6 @@ const CarCreatePage = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const handleCarBrandChange = (e) => {
-    e.preventDefault();
-    console.log("Clicked car brand: ", e.target.value);
-    setValues({ ...values, brand: e.target.value });
-  };  
-
   return (
     <div className="container-fluid">
       <div className="row">
@@ -77,9 +71,7 @@ const CarCreatePage = () => {
           <CarCreateForm
             handleSubmit={handleSubmit}
             handleChange={handleChange}
-            setValues={setValues}
             values={values}
-            handleCarBrandChange={handleCarBrandChange}
           />
         </div>
       </div>

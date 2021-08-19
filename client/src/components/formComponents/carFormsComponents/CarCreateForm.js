@@ -1,15 +1,13 @@
 import React from "react";
-//import { Select } from "antd";
-//const { Option } = Select;
-//Get the multi-choice logic from here.
 
+//TODO implement the cascader.
 /*Use the the Ant cascader for cars select.
 https://ant.design/components/cascader/*/
 
 //Cars DB API: https://parse-dashboard.back4app.com/apps/7e730946-c9c1-4aca-90f3-87f9abc2842c/browser/Carmodels_Car_Model_List
 //https://www.back4app.com/docs/react/quickstart
 
-const CarCreateForm = ({handleSubmit, handleChange, values, handleCarBrandChange}) => {
+const CarCreateForm = ({handleSubmit, handleChange, values}) => {
 
       const { brands, model, registrationPlate, revisions, km, year, client } = values;
 
@@ -52,7 +50,7 @@ const CarCreateForm = ({handleSubmit, handleChange, values, handleCarBrandChange
         <div className="form-group">
           <label>Revisions</label>
           <input
-            type="number"
+            type="text"
             name="revisions"
             className="form-control"
             value={revisions}
@@ -61,23 +59,12 @@ const CarCreateForm = ({handleSubmit, handleChange, values, handleCarBrandChange
         </div>
 
         <div className="form-group">
-          <label>KMf</label>
+          <label>KM</label>
           <input
               type="number"
               name="km"
               className="form-control"
               value={km}
-              onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Revisions</label>
-          <input
-              type="number"
-              name="revisions"
-              className="form-control"
-              value={revisions}
               onChange={handleChange}
           />
         </div>
@@ -92,6 +79,7 @@ const CarCreateForm = ({handleSubmit, handleChange, values, handleCarBrandChange
             onChange={handleChange}
           />
         </div>
+
         {/*TODO figure out how to ge the client unique id.*/}
         <div className="form-group">
           <label>Client</label>
@@ -104,7 +92,9 @@ const CarCreateForm = ({handleSubmit, handleChange, values, handleCarBrandChange
           />
         </div>
         <br />
+
         <button className="btn btn-outline-info">Save</button>
+
       </form>
       </>
   );

@@ -1,16 +1,22 @@
 const express = require("express");
+
+// Enable ..env files.
+require("dotenv").config();
+
 // MongoDB object modeling tool.
 const mongoose = require("mongoose");
+
 // HTTP request logger middleware.
 const morgan = require("morgan");
+
 // Parse incoming request bodies in a middleware before the handlers.
 const bodyParser = require("body-parser");
-// Enable CORS. 
+
+// Enable CORS.
 const cors = require("cors");
+
 // Synchronously read the contents of a given directory. Returns an array with all the file names or objects in the directory.
 const { readdirSync } = require("fs");
-// Enable .env files.
-require("dotenv").config();
 
 // app
 const app = express();
@@ -38,6 +44,6 @@ app.use(cors());
 readdirSync("./routes").map((route) => app.use("/api", require("./routes/" + route)));
 
 // port
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8001;
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));

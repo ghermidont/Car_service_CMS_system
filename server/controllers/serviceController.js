@@ -1,9 +1,13 @@
 const serviceModel = require("../models/serviceModel");
-const Slugify = require("slugify");
+const slugify = require("slugify");
 
 exports.createServiceController = async (req, res) => {
     try {
-        req.body.slug = Slugify(req.body.title);
+        req.body.slug = slugify(req.body.title, {
+            replacement: '-',
+            remove: /[*+~.()'"!:@]/g,
+            trim: true
+        });
         const newService = await new serviceModel(req.body).save();
         res.json(newService);
     } catch (err) {
@@ -51,7 +55,7 @@ exports.getSingleServiceController = async (req, res) => {
 exports.updateServiceController = async (req, res) => {
     try {
         if (req.body.title) {
-            req.body.slug = Slugify(req.body.title);
+            req.body.slug = slugify(req.body.title);
         }
         const updated = await serviceModel.findOneAndUpdate(
             { slug: req.params.slug },

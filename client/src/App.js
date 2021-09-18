@@ -55,7 +55,7 @@ const ProvidedServicesListPage  = lazy(() => import("./pages/userPages/ServicesP
 const AdminDashboard = lazy(() => import("./pages/adminPages/AdminDashboardPage"));
 
 //Components
-const Header = lazy(() => import("./components/nav/Header"));
+const Header = lazy(() => import("./components/oldComponents/nav/Header"));
 
 const App = () => {
   const dispatch = useDispatch();

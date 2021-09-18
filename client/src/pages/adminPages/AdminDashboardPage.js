@@ -1,5 +1,5 @@
 import React from "react";
-import AdminNav from "../../components/nav/AdminNav";
+import AdminNav from "../../components/oldComponents/nav/AdminNav";
 import AdminDashUsersList from "./AdminDashUsersList";
 
 const AdminDashboardPage = () => {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AdminNav from "../../../components/nav/AdminNav";
+import AdminNav from "../../../components/oldComponents/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { createClientFunction } from "../../../functions/callsToClientRoutes";

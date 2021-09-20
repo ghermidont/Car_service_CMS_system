@@ -3,8 +3,8 @@ import AdminNav from "../../../components/oldComponents/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { createClientFunction } from "../../../functions/callsToClientRoutes";
-import ClientCreateForm from "../../../components/formComponents/clientFormsComponents/ClientCreateForm";
-import FileUpload from "../../../components/formComponents/FileUpload";
+import ClientCreateForm from "../../../components/oldComponents/formComponents/clientFormsComponents/ClientCreateForm";
+import FileUpload from "../../../components/oldComponents/formComponents/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
 
 const initialState = {

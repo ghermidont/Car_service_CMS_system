@@ -14,6 +14,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 
 // Import Parse minified version
 import Parse from 'parse/dist/parse.min.js';
+import Footer from "./components/Footer/Footer";
 
 // Parse initialization configuration:
 Parse.initialize(process.env.PARSE_APPLICATION_ID, process.env.PARSE_JAVASCRIPT_KEY);
@@ -97,35 +98,37 @@ const App = () => {
     >
       <Header />
       <ToastContainer />
-      <Switch>
-        <Route exact path="/" component={LoginPage} />
-        <Route exact path="/register" component={RegisterPage} />
+        <Switch>
+          <Route exact path="/" component={LoginPage} />
+          <Route exact path="/register" component={RegisterPage} />
 
-        <UserRoute exact path="/register/complete" component={RegisterCompletePage} />
-        <UserRoute exact path="/forgot/password" component={ForgotPasswordPage} />
+          <UserRoute exact path="/register/complete" component={RegisterCompletePage} />
+          <UserRoute exact path="/forgot/password" component={ForgotPasswordPage} />
 
-        <UserRoute CMSUserMainMenuPage path="/user/menu" component={UserMainMenuPage} />
-        <UserRoute CMSUserProfilePage path="/user/profile" component={UserProfilePage} />
-        <UserRoute CMSUserUpdateProfilePage path="/user/update" component={UserUpdateProfilePage} />
-        <UserRoute CMSUserUpdatePasswordPage path="/user/update-password" component={UserUpdatePasswordPage} />
+          <UserRoute CMSUserMainMenuPage path="/user/menu" component={UserMainMenuPage} />
+          <UserRoute CMSUserProfilePage path="/user/profile" component={UserProfilePage} />
+          <UserRoute CMSUserUpdateProfilePage path="/user/update" component={UserUpdateProfilePage} />
+          <UserRoute CMSUserUpdatePasswordPage path="/user/update-password" component={UserUpdatePasswordPage} />
 
-        <UserRoute IndividualCarPage exact path="/car/:slug" component={IndividualCarPage} />
-        <UserRoute CarCreatePage exact path="/car/create" component={CarCreatePage} />
-        <UserRoute CarUpdatePage exact path="/car/update" component={CarUpdatePage} />
-        <UserRoute CarsListPage exact path="/car/list" component={CarsListPage} />
+          <UserRoute IndividualCarPage exact path="/car/:slug" component={IndividualCarPage} />
+          <UserRoute CarCreatePage exact path="/car/create" component={CarCreatePage} />
+          <UserRoute CarUpdatePage exact path="/car/update" component={CarUpdatePage} />
+          <UserRoute CarsListPage exact path="/car/list" component={CarsListPage} />
 
-        <UserRoute ClientRegisterPage exact path="/client/create" component={ClientCreatePage} />
-        <UserRoute ClientUpdatePage exact path="/client/update" component={ClientUpdatePage} />
-        <UserRoute ClientsListPage exact path="/client/list" component={ClientsListPage} />
+          <UserRoute ClientRegisterPage exact path="/client/create" component={ClientCreatePage} />
+          <UserRoute ClientUpdatePage exact path="/client/update" component={ClientUpdatePage} />
+          <UserRoute ClientsListPage exact path="/client/list" component={ClientsListPage} />
 
-        <UserRoute ProvidedServiceCreatePage exact path="/service/service/create" component={ProvidedServiceCreatePage} />
-        <UserRoute ProvidedServiceUpdatePage exact path="/service/login" component={ProvidedServiceUpdatePage} />
-        <UserRoute ProvidedServicesListPage exact path="/service/login" component={ProvidedServicesListPage} />
-        {/*Create individual service page with slug*/}
+          <UserRoute ProvidedServiceCreatePage exact path="/service/service/create" component={ProvidedServiceCreatePage} />
+          <UserRoute ProvidedServiceUpdatePage exact path="/service/login" component={ProvidedServiceUpdatePage} />
+          <UserRoute ProvidedServicesListPage exact path="/service/login" component={ProvidedServicesListPage} />
+          {/*Create individual service page with slug*/}
 
-        <AdminRoute AdminDashboard exact path="/admin/dashboard" component={AdminDashboard} />
-      </Switch>
+          <AdminRoute AdminDashboard exact path="/admin/dashboard" component={AdminDashboard} />
+        </Switch>
+      <Footer/>
     </Suspense>
+
   );
 };
 

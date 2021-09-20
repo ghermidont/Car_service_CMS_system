@@ -6,9 +6,9 @@ import {
   getSingleClientFunction,
   updateClientFunction
 } from "../../../functions/callsToClientRoutes";
-import FileUpload from "../../../components/formComponents/FileUpload";
+import FileUpload from "../../../components/oldComponents/formComponents/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
-import ClientUpdateForm from "../../../components/formComponents/clientFormsComponents/ClientUpdateForm";
+import ClientUpdateForm from "../../../components/oldComponents/formComponents/clientFormsComponents/ClientUpdateForm";
 
 //Cars DB API: https://parse-dashboard.back4app.com/apps/7e730946-c9c1-4aca-90f3-87f9abc2842c/browser/Carmodels_Car_Model_List
 //https://www.back4app.com/docs/react/quickstart

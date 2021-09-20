@@ -6,7 +6,7 @@ import firebase from "firebase";
 //useSelector is used to get the data from the state.
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import Search from "../../formComponents/Search";
+import Search from "../formComponents/Search";
 
 const { SubMenu, Item } = Menu;
 

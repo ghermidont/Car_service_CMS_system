@@ -3,9 +3,9 @@ import AdminNav from "../../../components/oldComponents/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { getSingleCarFunction, updateCarFunction } from "../../../functions/callsToCarRoutes";
-import FileUpload from "../../../components/formComponents/FileUpload";
+import FileUpload from "../../../components/oldComponents/formComponents/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
-import CarUpdateForm from "../../../components/formComponents/carFormsComponents/CarUpdateForm";
+import CarUpdateForm from "../../../components/oldComponents/formComponents/carFormsComponents/CarUpdateForm";
 
 //TODO START HERE figure out why values is undefined.
 

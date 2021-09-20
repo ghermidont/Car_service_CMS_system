@@ -3,9 +3,9 @@ import AdminNav from "../../../components/oldComponents/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { getSingleServiceFunction, updateServiceFunction } from "../../../functions/callsToServicesRoute";
-import FileUpload from "../../../components/formComponents/FileUpload";
+import FileUpload from "../../../components/oldComponents/formComponents/FileUpload";
 import { LoadingOutlined } from "@ant-design/icons";
-import ServiceUpdateForm from "../../../components/formComponents/clientFormsComponents/ClientUpdateForm";
+import ServiceUpdateForm from "../../../components/oldComponents/formComponents/clientFormsComponents/ClientUpdateForm";
 
 const initialState = {
     brand: "",

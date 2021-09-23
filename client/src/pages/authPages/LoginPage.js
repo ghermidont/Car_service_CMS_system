@@ -1,17 +1,14 @@
+// noinspection DuplicatedCode
 import React, { useState, useEffect } from "react";
 import { auth, googleAuthProvider } from "../../firebase";
 import { toast } from "react-toastify";
-import { Button } from "antd";
-import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { createOrUpdateUser } from "../../functions/callsToAuthRoutes";
-import CarUpdateForm from "../../components/oldComponents/formComponents/carFormsComponents/CarUpdateForm";
 
 const LoginPage = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
 
    //we use destructuring to get specific data from the states that are defined in the reducers/index.js file.
   const { user } = useSelector((state) => ({ ...state }));
@@ -43,7 +40,6 @@ const LoginPage = ({ history }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);   
     try {
       const result = await auth.signInWithEmailAndPassword(email, password);
       const { user } = result;
@@ -67,7 +63,6 @@ const LoginPage = ({ history }) => {
         .catch((err) => console.log(err));    
     } catch (error) {
       toast.error(error.message);
-      setLoading(false);
     }
   };
 
@@ -100,75 +95,61 @@ const LoginPage = ({ history }) => {
       });
   };
 
-  const loginForm = () => (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <input
-          type="email"
-          className="form-control"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Your email"
-          autoFocus
-        />
-      </div>
-
-      <div className="form-group">
-        <input
-          type="password"
-          className="form-control"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Your password"
-        />
-      </div>
-
-      <br />
-      <Button
-        onClick={handleSubmit}
-        type="primary"
-        className="mb-3"
-        block
-        shape="round"
-        icon={<MailOutlined />}
-        size="large"
-        disabled={!email || password.length < 6}
-      >
-        Login with Email/Password
-      </Button>
-    </form>
-  );
-
   return (
-    <div className="container p-5">
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
-          {loading ? (
-            <h4 className="text-danger">Loading...</h4>
-          ) : (
-            <h4>Login</h4>
-          )}
-          {loginForm()}
+      <div className="container mx-auto h-screen flex justify-center items-center">
+        <form
+            action="#"
+            autoComplete="off"
+            className='max-w-600 w-100% bg-grayL px-12 pt-8 pb-14 shadow-shadow rounded'
+            onSubmit={handleSubmit}
+        >
+          <label
+              className='block mb-2 text-xl'>
+            User name
+            <input
+                className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email"
+                autoFocus
+            />
+          </label>
+          <label className='block mb-20 text-xl'>
+            Password
+            <input
+                type="password"
+                className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Your password"
+            />
+          </label>
+          <div className='text-xl text-white flex justify-between'>
+            <button
+                disabled={!email || password.length < 6}
+                className='bg-green w-200 py-3 rounded transition duration-300 hover:opacity-70'
+                onClick={handleSubmit}
+            >
+              Login
+            </button>
 
-          <Button
-            onClick={googleLogin}
-            type="danger"
-            className="mb-3"
-            block
-            shape="round"
-            icon={<GoogleOutlined />}
-            size="large"
-          >
-            Login with Google
-          </Button>
+            <button disabled={!email || password.length < 6} className='bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'>
+              <Link to="/forgot/password" className="float-right text-danger">
+                Recover pass
+              </Link>
+            </button>
 
-          <Link to="/forgot/password" className="float-right text-danger">
-            Forgot Password
-          </Link>
-        </div>
+            <button
+                disabled={!email || password.length < 6}
+                className='bg-green w-200 py-3 rounded transition duration-300 hover:opacity-70'
+                onClick={googleLogin}
+            >
+              Login with Google
+            </button>
+          </div>
+        </form>
       </div>
-      <CarUpdateForm />
-    </div>
   );
 };
 

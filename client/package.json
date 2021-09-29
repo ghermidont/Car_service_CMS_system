@@ -4,7 +4,10 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
+    "@craco/craco": "^6.3.0",
     "@david.kucsai/react-pdf-table": "^0.3.0",
+    "@headlessui/react": "^1.4.1",
+    "@heroicons/react": "^1.0.4",
     "@react-pdf/renderer": "^1.6.11",
     "@stripe/react-stripe-js": "^1.1.2",
     "@stripe/stripe-js": "^1.9.0",
@@ -14,10 +17,12 @@
     "antd": "^4.5.4",
     "axios": "^0.21.1",
     "browserslist": "^4.17.1",
+    "dotenv": "^8.6.0",
     "firebase": "^9.1.0",
     "glob-parent": "^6.0.1",
     "lodash": "^4.17.21",
     "react": "^16.13.1",
+    "react-bootstrap": "^1.6.4",
     "react-datepicker": "^3.2.2",
     "react-dom": "^16.13.1",
     "react-image-file-resizer": "^0.3.7",
@@ -30,10 +35,9 @@
     "redux-devtools-extension": "^2.13.8"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -49,5 +53,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.8.7",
+    "postcss": "^7.0.38",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.16"
   }
 }

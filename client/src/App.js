@@ -13,12 +13,12 @@ import { currentUser } from "./functions/callsToAuthRoutes";
 import { LoadingOutlined } from "@ant-design/icons";
 
 // Import Parse minified version
-import Parse from 'parse/dist/parse.min.js';
+//import Parse from 'parse/dist/parse.min.js';
 import Footer from "./components/Footer/Footer";
 
 // Parse initialization configuration:
-Parse.initialize(process.env.PARSE_APPLICATION_ID, process.env.PARSE_JAVASCRIPT_KEY);
-Parse.serverURL = process.env.PARSE_HOST_URL;
+//Parse.initialize(process.env.PARSE_APPLICATION_ID, process.env.PARSE_JAVASCRIPT_KEY);
+//Parse.serverURL = process.env.PARSE_HOST_URL;
 
 //Custom routes
 const UserRoute = lazy(() => import("./components/routes/CMSUserRoute"));

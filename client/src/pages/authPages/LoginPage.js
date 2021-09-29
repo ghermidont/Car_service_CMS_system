@@ -1,6 +1,6 @@
 // noinspection DuplicatedCode
 import React, { useState, useEffect } from "react";
-import { auth, googleAuthProvider } from "../../firebase";
+import { auth /*, googleAuthProvider*/ } from "../../firebase";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -66,34 +66,34 @@ const LoginPage = ({ history }) => {
     }
   };
 
-  const googleLogin = async () => {
-    auth
-      .signInWithPopup(googleAuthProvider)
-      .then(async (result) => {
-        const { user } = result;
-        const idTokenResult = await user.getIdTokenResult();
-           //This functions will give us the user token and we send it to the back end in the header as auth token.
-        createOrUpdateUser(idTokenResult.token)
-          .then((res) => {
-            dispatch({
-              type: "LOGGED_IN_USER",
-              payload: {
-                name: res.data.name,
-                email: res.data.email,
-                token: idTokenResult.token,
-                role: res.data.role,
-                _id: res.data._id,
-              },
-            });
-            roleBasedRedirect(res);
-          })
-          .catch((err) => console.log(err));      
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err.message);
-      });
-  };
+  // const googleLogin = async () => {
+  //   auth
+  //     .signInWithPopup(googleAuthProvider)
+  //     .then(async (result) => {
+  //       const { user } = result;
+  //       const idTokenResult = await user.getIdTokenResult();
+  //          //This functions will give us the user token and we send it to the back end in the header as auth token.
+  //       createOrUpdateUser(idTokenResult.token)
+  //         .then((res) => {
+  //           dispatch({
+  //             type: "LOGGED_IN_USER",
+  //             payload: {
+  //               name: res.data.name,
+  //               email: res.data.email,
+  //               token: idTokenResult.token,
+  //               role: res.data.role,
+  //               _id: res.data._id,
+  //             },
+  //           });
+  //           roleBasedRedirect(res);
+  //         })
+  //         .catch((err) => console.log(err));
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       toast.error(err.message);
+  //     });
+  // };
 
   return (
       <div className="container mx-auto h-screen flex justify-center items-center">
@@ -140,13 +140,13 @@ const LoginPage = ({ history }) => {
               </Link>
             </button>
 
-            <button
-                disabled={!email || password.length < 6}
-                className='bg-green w-200 py-3 rounded transition duration-300 hover:opacity-70'
-                onClick={googleLogin}
-            >
-              Login with Google
-            </button>
+            {/*<button*/}
+            {/*    disabled={!email || password.length < 6}*/}
+            {/*    className='bg-green w-200 py-3 rounded transition duration-300 hover:opacity-70'*/}
+            {/*    onClick={googleLogin}*/}
+            {/*>*/}
+            {/*  Login with Google*/}
+            {/*</button>*/}
           </div>
         </form>
       </div>

@@ -1,6 +1,9 @@
 //!Refactor the code to firebase compact style: <https://firebase.google.com/docs/web/modular-upgrade>
 // import* as firebase from "firebase";
-import firebase from "firebase/compat/app";
+//import firebase from "firebase/compat/app";
+
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -16,8 +19,10 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+//firebase.initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
 
 // export
-export const auth = firebase.auth;
+export const auth = getAuth(firebaseApp);
+//export const auth = firebase.auth;
 //export const googleAuthProvider = new firebase.auth.GoogleAuthProvider;

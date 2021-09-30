@@ -5,6 +5,7 @@ import { Switch, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 
 //Dispatch is the entry point to the redux store.
@@ -63,10 +64,9 @@ const App = () => {
 
   // User state change listener. To check firebase auth state.
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const idTokenResult = await user.getIdTokenResult();
-      
         currentUser(idTokenResult.token)
           .then((res) => {
             dispatch({

@@ -1,29 +1,81 @@
-import React from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import {Route, Switch} from "react-router";
 import {HashRouter} from "react-router-dom";
 
+//Custom routes
+const UserRoute = lazy(() => import("./components/routes/userRoute"));
+const AdminRoute = lazy(() => import("./components/routes/adminRoute"));
+
+//Popup notifications window package.
+//import { ToastContainer } from "react-toastify";
+//import "react-toastify/dist/ReactToastify.css";
+
+//import { onAuthStateChanged } from "firebase/auth";
+//import { auth } from "./firebase";
+
+//Dispatch is the entry point to the redux store.
+//import { useDispatch } from "react-redux";
+//import { currentUser } from "./functions/callsToAuthRoutes";
+
+import { LoadingOutlined } from "@ant-design/icons";
 //Pages import
-import LoginPage from "./pages/loginPage";
-import MainMenu from "./pages/mainMenu";
-import AddClient from "./pages/addClient";
-import AddUser from "./pages/addUser";
-import CarsList from "./pages/carsList";
-import ServicesList from "./pages/servicesList";
-import CarsArchive from "./pages/carsArchive";
-import AddService from "./pages/addService";
-import AddCar from "./pages/addCar";
-import UserPage from "./pages/userPage";
-import ClientsList from "./pages/clientsList";
+const LoginPage = lazy(() => import("./pages/loginPage"));
+const MainMenu = lazy(() => import("./pages/mainMenu"));
+const AddClient = lazy(() => import("./pages/addClient"));
+const AddUser = lazy(() => import("./pages/addUser"));
+const CarsList = lazy(() => import("./pages/carsList"));
+const ServicesList = lazy(() => import("./pages/servicesList"));
+const CarsArchive = lazy(() => import("./pages/carsArchive"));
+const AddService = lazy(() => import("./pages/addService"));
+const AddCar = lazy(() => import("./pages/addCar"));
+const UserPage = lazy(() => import("./pages/userPage"));
+const ClientsList = lazy(() => import("./pages/clientsList"));
 
 //Components
-import Header from "./components/header/Header";
-import Footer from "./components/footer/Footer";
+const Header = lazy(() => import("./components/header/Header"));
+const Footer = lazy(() => import("./components/footer/Footer"));
 
 export default function App() {
+
+    const dispatch = useDispatch();
+
+    // User state change listener. To check firebase auth state.
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const idTokenResult = await user.getIdTokenResult();
+                currentUser(idTokenResult.token)
+                    .then((res) => {
+                        dispatch({
+                            type: "LOGGED_IN_USER",
+                            payload: {
+                                name: res.data.name,
+                                email: res.data.email,
+                                token: idTokenResult.token,
+                                role: res.data.role,
+                                _id: res.data._id,
+                            },
+                        });
+                    })
+                    .catch((err) => console.log(err));
+            }
+        });
+        // Cleanup. This function is returned one more time in order to prevent memory leaks.
+        return () => unsubscribe();
+    }, [dispatch]);
+
   return (
     <HashRouter>
+        <Suspense
+            fallback={
+                <div className="col text-center p-5">
+                    Car service CMS is Loading...
+                    <LoadingOutlined />
+                </div>
+            }
+        >
       <Header />
-
+k  <ToastContainer />
       <Switch>
         <Route exact path="/" component={LoginPage}/>
         <Route exact path="/main_menu" component={MainMenu}/>
@@ -39,7 +91,7 @@ export default function App() {
       </Switch>
       
       <Footer />
-      
+        </Suspense>
     </HashRouter>    
   );
 }

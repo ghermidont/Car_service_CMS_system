@@ -15,22 +15,23 @@ import { currentUser } from "./functions/callsToAuthRoutes";
 
 import { LoadingOutlined } from "@ant-design/icons";
 
-//Custom routes
-const UserRoute = lazy(() => import("./components/routes/userRoute"));
-const AdminRoute = lazy(() => import("./components/routes/adminRoute"));
+//Custom routes. Restrict route access for non logged in users or non admins.
+//const UserRoute = lazy(() => import("./components/routes/userRoute"));
+//const AdminRoute = lazy(() => import("./components/routes/adminRoute"));
 
 //Pages import
-const LoginPage = lazy(() => import("./pages/loginPagePage"));
-const MainMenu = lazy(() => import("./pages/mainMenuPage"));
-const AddClient = lazy(() => import("./pages/addClientPage"));
-const AddUser = lazy(() => import("./pages/addUserPage"));
-const CarsList = lazy(() => import("./pages/carsListPage"));
-const ServicesList = lazy(() => import("./pages/servicesListPage"));
-const CarsArchive = lazy(() => import("./pages/carsArchivePage"));
-const AddService = lazy(() => import("./pages/addServicePage"));
-const AddCar = lazy(() => import("./pages/addCarPage"));
-const UserPage = lazy(() => import("./pages/userPage"));
-const ClientsList = lazy(() => import("./pages/clientsListPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const MainMenu = lazy(() => import("./pages/MainMenuPage"));
+const AddClientPage = lazy(() => import("./pages/AddClientPage"));
+const RegisterUserPage = lazy(() => import("./pages/RegisterUserPage"));
+const CarsListPage = lazy(() => import("./pages/CarsListPage"));
+const ServicesListPage = lazy(() => import("./pages/ServicesListPage"));
+const CarsArchivePage = lazy(() => import("./pages/CarsArchivePage"));
+const AddServicePage = lazy(() => import("./pages/AddServicePage"));
+const AddCarPage = lazy(() => import("./pages/AddCarPage"));
+const UserPage = lazy(() => import("./pages/UserPage"));
+const ClientsListPage = lazy(() => import("./pages/ClientsListPage"));
+const PswRecoverPage = lazy(() => import("./pages/PswRecoverPage"));
 
 //Components
 const Header = lazy(() => import("./components/header/Header"));
@@ -76,18 +77,20 @@ export default function App() {
             }
         >
           <Header />
-    k     <ToastContainer />
+          <ToastContainer />
+          {/*//TODO After finishing the logic implementation integrate the user and admin routes.  */}
           <Switch>
             <Route exact path="/" component={LoginPage}/>
+            <Route exact path="/psw_recover" component={PswRecoverPage}/>
             <Route exact path="/main_menu" component={MainMenu}/>
-            <Route exact path="/add_client" component={AddClient}/>
-            <Route exact path="/add_user" component={AddUser}/>
-            <Route exact path="/clients_list" component={ClientsList}/>
-            <Route exact path="/cars_list" component={CarsList}/>
-            <Route exact path="/services_list" component={ServicesList}/>
-            <Route exact path="/cars_archive" component={CarsArchive}/>
-            <Route exact path="/add_service" component={AddService}/>
-            <Route exact path="/add_car" component={AddCar}/>
+            <Route exact path="/add_client" component={AddClientPage}/>
+            <Route exact path="/register_user" component={RegisterUserPage}/>
+            <Route exact path="/clients_list" component={ClientsListPage}/>
+            <Route exact path="/cars_list" component={CarsListPage}/>
+            <Route exact path="/services_list" component={ServicesListPage}/>
+            <Route exact path="/cars_archive" component={CarsArchivePage}/>
+            <Route exact path="/add_service" component={AddServicePage}/>
+            <Route exact path="/add_car" component={AddCarPage}/>
             <Route exact path="/user_page" component={UserPage}/>
           </Switch>
           <Footer />

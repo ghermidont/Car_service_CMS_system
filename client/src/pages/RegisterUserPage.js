@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function addUserPage() {
+export default function registerUserPage() {
   return (
     <>
       <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>

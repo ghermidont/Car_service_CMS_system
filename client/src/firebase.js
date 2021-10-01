@@ -1,9 +1,9 @@
-//!Refactor the code to firebase compact style: <https://firebase.google.com/docs/web/modular-upgrade>
-// import* as firebase from "firebase";
+/** The code was refactored according to the new firebase compact style: <https://firebase.google.com/docs/web/modular-upgrade> */
+// Old style - import* as firebase from "firebase";
 //import firebase from "firebase/compat/app";
 
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -19,10 +19,10 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-//firebase.initializeApp(firebaseConfig);
+// Old style - firebase.initializeApp(firebaseConfig);
 const firebaseApp = initializeApp(firebaseConfig);
 
 // export
 export const auth = getAuth(firebaseApp);
-//export const auth = firebase.auth;
-//export const googleAuthProvider = new firebase.auth.GoogleAuthProvider;
+//Old style - export const auth = firebase.auth;
+export const googleAuthProvider = new GoogleAuthProvider();

@@ -1,15 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function registerUserPage() {
+export default function RegisterUserPage() {
   return (
     <>
       <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
         <Link to="/cars_archive">
             Click to go to &rArr; Cars Archive Page
-        </Link>
+.        </Link>
       </label>  
-       <h1>addUser.js</h1>
+      <h1>registerUser.js</h1>
       
       <div className='h-screen flex flex-col justify-between'>            
         <main className='flex items-center'>
@@ -24,34 +24,40 @@ export default function registerUserPage() {
                 <label className='font-normal uppercase mb-3 max-w-400 w-100%'>Sede Operativa
                   <input
                     className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
-                    type="text"/>
+                    type="text"
+                  />
                 </label>
                 <label className='font-normal uppercase mb-3 max-w-400 w-100%'>Citta
                   <input
                     className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
-                    type="text"/>
+                    type="text"
+                  />
                 </label>
                 <label className='font-normal uppercase mb-3 max-w-400 w-100%'>Provincia
                   <input
                     className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
-                    type="text"/>
+                    type="text"
+                  />
                 </label>
               </div>
               <div className='flex justify-between mt-6'>
                 <label className='font-normal uppercase mb-3 max-w-400 w-100%'>Sede Sociale
                   <input
                     className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
-                    type="text"/>
+                    type="text"
+                  />
                 </label>
                 <label className='font-normal uppercase mb-3 max-w-400 w-100%'>Citta
                   <input
                     className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
-                    type="text"/>
+                    type="text"
+                  />
                 </label>
                 <label className='font-normal uppercase mb-3 max-w-400 w-100%'>Provincia
                   <input
                     className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
-                    type="text"/>
+                    type="text"
+                  />
                 </label>
               </div>
               <div className='flex justify-between'>

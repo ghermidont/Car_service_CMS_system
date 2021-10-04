@@ -49,3 +49,9 @@ cli for including "use strict" in files:
 
 Mongoose schemas parameters:
 <https://mongoosejs.com/docs/schematypes.html#strings>
+
+04.10 Chrome URLs:
+<https://www.figma.com/file/J6J4U3FlOpVDF1uFTWPIQB/autofficina-team-library?node-id=312%3A689>
+<https://mongoosejs.com/docs/schematypes.html#objectids>
+<https://www.back4app.com/#>
+<https://firebase.google.com/docs/auth/web/google-signin>

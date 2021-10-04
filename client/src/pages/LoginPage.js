@@ -156,6 +156,12 @@ export default function LoginPage({ history }){
                           </Link>
                       </button>
 
+                      <button className='bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'>
+                          <Link to="/check_email">
+                              Register
+                          </Link>
+                      </button>
+
                       {/*// For login with Google*/}
                       {/*<button className='bg-red w-200 py-3 rounded transition duration-300 hover:opacity-70'>*/}
                       {/*    <Link to="/main_menu">*/}

@@ -12,9 +12,9 @@ const { authCheckMiddleware, adminCheckMiddleware } = require("../middlewares/au
 const { createOrUpdateUserController, currentUserController } = require("../controllers/authController");
 
 //We apply the middleware (in this case "authCheck") before the response we send.
-router.post("/create-or-update-user", authCheckMiddleware, createOrUpdateUserController);
-router.post("/current-user", authCheckMiddleware, currentUserController);
+router.post("/auth/create-update-user", authCheckMiddleware, createOrUpdateUserController);
+router.post("/auth/current-user", authCheckMiddleware, currentUserController);
 //Here we called two middlewares after we return the user.
-router.post("/current-admin", authCheckMiddleware, adminCheckMiddleware, currentUserController);
+router.post("/auth/current-admin", authCheckMiddleware, adminCheckMiddleware, currentUserController);
 
 module.exports = router;

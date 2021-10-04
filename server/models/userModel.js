@@ -1,5 +1,4 @@
 // Schema options here: https://mongoosejs.com/docs/schematypes.html#strings
-
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 

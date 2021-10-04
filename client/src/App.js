@@ -14,16 +14,17 @@ import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/callsToAuthRoutes";
 
 import { LoadingOutlined } from "@ant-design/icons";
+import checkEmailPage from "./pages/registerUser/checkEmailPage";
 
-//Custom routes. Restrict route access for non logged in users or non admins.
-//const UserRoute = lazy(() => import("./components/routes/userRoute"));
-//const AdminRoute = lazy(() => import("./components/routes/adminRoute"));
+// Custom routes. Restrict route access for non logged in users or non admins.
+// const UserRoute = lazy(() => import("./components/routes/userRoute"));
+// const AdminRoute = lazy(() => import("./components/routes/adminRoute"));
 
-//Pages import
+// Pages import
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const MainMenu = lazy(() => import("./pages/MainMenuPage"));
 const AddClientPage = lazy(() => import("./pages/AddClientPage"));
-const RegisterUserPage = lazy(() => import("./pages/RegisterUserPage"));
+const RegisterUserPage = lazy(() => import("./pages/registerUser/RegisterUserPage"));
 const CarsListPage = lazy(() => import("./pages/CarsListPage"));
 const ServicesListPage = lazy(() => import("./pages/ServicesListPage"));
 const CarsArchivePage = lazy(() => import("./pages/CarsArchivePage"));
@@ -32,8 +33,9 @@ const AddCarPage = lazy(() => import("./pages/AddCarPage"));
 const UserPage = lazy(() => import("./pages/UserPage"));
 const ClientsListPage = lazy(() => import("./pages/ClientsListPage"));
 const PswRecoverPage = lazy(() => import("./pages/PswRecoverPage"));
+const CheckEmailPage = lazy(() => import("./pages/registerUser/CheckEmailPage"));
 
-//Components
+// Components
 const Header = lazy(() => import("./components/header/Header"));
 const Footer = lazy(() => import("./components/footer/Footer"));
 
@@ -81,6 +83,7 @@ export default function App() {
           {/*//TODO After finishing the logic implementation integrate the user and admin routes.  */}
           <Switch>
             <Route exact path="/" component={LoginPage}/>
+            <Route exact path="/check_email" component={CheckEmailPage}/>
             <Route exact path="/psw_recover" component={PswRecoverPage}/>
             <Route exact path="/main_menu" component={MainMenu}/>
             <Route exact path="/add_client" component={AddClientPage}/>

@@ -16,11 +16,11 @@ const {
 } = require("../controllers/adminController");
 
 // routes
-router.delete("/admin/user/delete/:slug", authCheckMiddleware, adminCheckMiddleware, deleteUserController);
+router.delete("/admin/user-delete/:slug", authCheckMiddleware, adminCheckMiddleware, deleteUserController);
 router.get("/admin/user/:slug", authCheckMiddleware, adminCheckMiddleware, getSingleUserController);
-router.put("/admin/user/access/:slug", authCheckMiddleware, adminCheckMiddleware, toggleUserAccessController);
+router.put("/admin/user-access/:slug", authCheckMiddleware, adminCheckMiddleware, toggleUserAccessController);
 router.get("/admin/users",  authCheckMiddleware, adminCheckMiddleware, listAllUsersController);
-router.post("/admin/users/pagination", authCheckMiddleware, adminCheckMiddleware, usersForPaginationController);
+router.post("/admin/users-pagination", authCheckMiddleware, adminCheckMiddleware, usersForPaginationController);
 router.post("/search/filters", searchFiltersController);
 
 module.exports = router;

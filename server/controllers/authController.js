@@ -1,8 +1,8 @@
+//Const
 const User = require("../models/userModel");
 
 exports.createOrUpdateUserController = async (req, res) => {
-  //TODO destructure the request object
-  const { email } = req.user;
+   const { email, name, surname, date, fiscal_code, address, city, province, notes, mobile, role, slug } = req.user;
   //Find and update the user in the database.
   const user = await User.findOneAndUpdate(
     //First arg is the search criteria. What we want to find.
@@ -12,6 +12,7 @@ exports.createOrUpdateUserController = async (req, res) => {
     //This argument is optional. It returns the updated user information.
     { new: true }
   );
+
   if (user) {
     //If user exists, we get the user.
     window.alert("USER UPDATED");
@@ -19,12 +20,23 @@ exports.createOrUpdateUserController = async (req, res) => {
   } else {
     //If not existing, we create the user.
     const newUser = await new User({
-      email,
-      name,
-      picture,
+        name,
+        surname,
+        date,
+        fiscal_code,
+        address,
+        city,
+        province,
+        notes,
+        mobile,
+        email,
+        role,
+        slug,
     }).save();
+
     window.alert("USER CREATED");
-    //We send in the response the new user.
+
+    //We send in the response the new user object.
     res.json(newUser);
   }
 };

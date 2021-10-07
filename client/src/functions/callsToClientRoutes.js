@@ -1,4 +1,4 @@
-//This file contains Axios request to the backend related to clients manipulations.
+/** Functions that trigger the calls to client manipulation related backend routes. */
 import axios from "axios";
 
 export const createClientFunction = async (newClient, authToken) => {

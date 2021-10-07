@@ -1,4 +1,4 @@
-//This file contains Axios request to the backend related to cars manipulations.
+/** Functions that trigger the calls to cars manipulation related backend routes. */
 import axios from "axios";
 
 export const createCarFunction = async (newCar, authToken) => {

@@ -14,7 +14,6 @@ import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/callsToAuthRoutes";
 
 import { LoadingOutlined } from "@ant-design/icons";
-import checkEmailPage from "./pages/registerUser/checkEmailPage";
 
 // Custom routes. Restrict route access for non logged in users or non admins.
 // const UserRoute = lazy(() => import("./components/routes/userRoute"));

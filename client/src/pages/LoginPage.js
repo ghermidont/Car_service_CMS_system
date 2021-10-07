@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 //useSelector is used to get the data from the state.
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { createOrUpdateUser } from "../functions/callsToAuthRoutes";
+import { createUser } from "../functions/callsToAuthRoutes";
 
 export default function LoginPage({ history }){
     const [email, setEmail] = useState("");
@@ -46,7 +46,7 @@ export default function LoginPage({ history }){
             const { user } = result;
             const idTokenResult = await user.getIdTokenResult();
             //This functions will give us the user token and we send it to the back end in the header as auth token.
-            createOrUpdateUser(idTokenResult.token)
+            createUser(idTokenResult.token)
                 .then((res) => {
                     // Add data to the React Store.
                     dispatch({

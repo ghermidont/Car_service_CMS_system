@@ -1,10 +1,9 @@
-//This file contains Axios request to the backend related to provided services manipulations.
+/** Functions that trigger the calls to services manipulation related backend routes. */
+
 import axios from "axios";
 
 export const createServiceFunction = async (newCar, authToken) => {
-    await axios.post(`${process.env.REACT_APP_API}/service/new`, newCar, {
-        headers: {authToken}
-    });
+    await axios.post(`${process.env.REACT_APP_API}/service/new`, newCar,{headers: {authToken}});
 };
 
 //Calling the backend end point for total number of products.
@@ -17,11 +16,7 @@ export const listAllServicesFunction = async (count) => {
 };
 
 export const deleteServiceFunction = async (slug, authToken) => {
-    await axios.delete(`${process.env.REACT_APP_API}/service/${slug}`, {
-        headers: {
-            authToken
-        },
-    });
+    await axios.delete(`${process.env.REACT_APP_API}/service/${slug}`,{headers: {authToken}});
 };
 
 export const getSingleServiceFunction = async (slug) => {
@@ -29,11 +24,7 @@ export const getSingleServiceFunction = async (slug) => {
 }
 
 export const updateServiceFunction = async (slug, car, authToken) => {
-    await axios.put(`${process.env.REACT_APP_API}/service/${slug}`, car, {
-        headers: {
-            authToken
-        },
-    });
+    await axios.put(`${process.env.REACT_APP_API}/service/${slug}`, car, {headers: {authToken}});
 }
 
 export const getServicesListForPaginationFunction = async (sort, order, page) => {

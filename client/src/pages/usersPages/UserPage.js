@@ -1,5 +1,5 @@
 import React from "react";
-import ClientPhoto from "../images/usr_avatar.png";
+import ClientPhoto from "../../images/usr_avatar.png";
 import { Link } from "react-router-dom";
 
 export default function userPage() {

@@ -9,7 +9,7 @@ export default function RegisterUserPage() {
             Click to go to &rArr; Cars Archive Page
 .        </Link>
       </label>  
-      <h1>registerUser.js</h1>
+      <h1>RegisterUserPage.js</h1>
       
       <div className='h-screen flex flex-col justify-between'>            
         <main className='flex items-center'>

@@ -41,7 +41,7 @@ export default function AddCarPage() {
         });
     };
 
-    const handleInput = (event) => {
+    const handleUserInput = (event) => {
       // Dynamically update each of the initialState values by their name parameter.
       setCarParamsState({ ...carParamsState, [event.target.name]: event.target.value });
     };
@@ -55,7 +55,7 @@ export default function AddCarPage() {
 
          <CarCreateForm
            handleSubmit={handleSubmit}
-           handleInput={handleInput}
+           handleUserInput={handleUserInput}
            carParamsState={carParamsState}
            setCarParamsState={setCarParamsState}
          />

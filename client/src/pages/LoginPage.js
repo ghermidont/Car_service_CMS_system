@@ -138,7 +138,7 @@ export default function LoginPage({ history }){
                   <div className='text-xl text-white flex justify-between'>
 
                       <button
-                          className='bg-green w-200 py-3 rounded transition duration-300 hover:opacity-70'
+                          className='mr-1 bg-green w-200 py-3 rounded transition duration-300 hover:opacity-70'
                           disabled={!email || password.length < 6}
                           onClick={handleSubmit}
                       >
@@ -148,7 +148,7 @@ export default function LoginPage({ history }){
                       </button>
 
                       <button
-                          className='bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'
+                          className='mr-1 ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'
                           disabled={!email || password.length < 6}
                       >
                           <Link to="/psw_recover">
@@ -156,7 +156,7 @@ export default function LoginPage({ history }){
                           </Link>
                       </button>
 
-                      <button className='bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'>
+                      <button className='ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'>
                           <Link to="/check_email">
                               Register
                           </Link>

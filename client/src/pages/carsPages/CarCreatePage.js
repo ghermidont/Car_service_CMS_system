@@ -23,7 +23,7 @@ const initialState = {
   referenceToClient: "Client id"
 };
 
-export default function AddCarPage() {
+export default function CarCreatePage() {
     const [carParamsState, setCarParamsState] = useState(initialState);
 
     // Get the user from Redux Store

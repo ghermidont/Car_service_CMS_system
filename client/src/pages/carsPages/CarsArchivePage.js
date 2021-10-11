@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function carArchive() {
+export default function CarArchivePage() {
   return (  
       <main className='mb-12'>
          <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
@@ -9,7 +9,7 @@ export default function carArchive() {
               Click to go to &rArr; Cars List Page
           </Link>
         </label>
-         <h1>carArchive.js</h1>
+         <h1>CarArchivePage.js</h1>
         
         <div className="container mx-auto">
           <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>

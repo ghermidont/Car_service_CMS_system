@@ -22,13 +22,13 @@ import { LoadingOutlined } from "@ant-design/icons";
 // Pages import
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const MainMenu = lazy(() => import("./pages/MainMenuPage"));
-const AddClientPage = lazy(() => import("./pages/clientsPages/AddClientPage"));
+const AddClientPage = lazy(() => import("./pages/clientsPages/ClientCreatePage"));
 const RegisterUserPage = lazy(() => import("./pages/usersPages/RegisterUserPage"));
 const CarsListPage = lazy(() => import("./pages/carsPages/CarsListPage"));
 const ServicesListPage = lazy(() => import("./pages/servicesPages/ServicesListPage"));
 const CarsArchivePage = lazy(() => import("./pages/carsPages/CarsArchivePage"));
-const AddServicePage = lazy(() => import("./pages/servicesPages/AddServicePage"));
-const AddCarPage = lazy(() => import("./pages/carsPages/AddCarPage"));
+const AddServicePage = lazy(() => import("./pages/servicesPages/ServiceCreatePage"));
+const AddCarPage = lazy(() => import("./pages/carsPages/CarCreatePage"));
 const UserPage = lazy(() => import("./pages/usersPages/UserPage"));
 const ClientsListPage = lazy(() => import("./pages/clientsPages/ClientsListPage"));
 const PswRecoverPage = lazy(() => import("./pages/PswRecoverPage"));

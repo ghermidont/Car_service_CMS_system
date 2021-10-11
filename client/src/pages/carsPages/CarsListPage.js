@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function carsListPage() {
+export default function CarsListPage() {
   return (   
       <main className='mb-12'>
          <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
@@ -9,7 +9,7 @@ export default function carsListPage() {
                 Click to go to &rArr; Clients List Page
             </Link>
         </label>
-        <h1>carsList.js</h1>
+        <h1>CarsListPage.js</h1>
         
         <div className="container mx-auto">
           <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>

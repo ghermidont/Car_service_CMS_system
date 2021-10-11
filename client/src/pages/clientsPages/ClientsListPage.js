@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function clientsListPage() {
+export default function ClientsListPage() {
   return (   
       <main className='mb-12'>
         <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
@@ -9,7 +9,7 @@ export default function clientsListPage() {
               Click to go to &rArr; Services List Page
           </Link>
         </label>
-         <h1>clientsList.js</h1>
+         <h1>ClientsListPage.js</h1>
 
         <div className="container mx-auto">
           <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>

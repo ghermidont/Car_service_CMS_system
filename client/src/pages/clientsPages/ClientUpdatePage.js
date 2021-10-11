@@ -1,11 +1,10 @@
 //!IMPLEMENTED
-
 import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import CarUpdateForm from "../../components/forms/carFormsComponents/CarCreateForm";
+import ClientUpdateForm from "../../components/forms/clientFormsComponents/ClientCreateForm";
 import { useSelector } from "react-redux";
-import {getSingleCarFunction, updateCarFunction} from "../../functions/callsToCarRoutes";
+import {getSingleClientFunction, updateClientFunction} from "../../functions/callsToClientRoutes";
 
 // TODO implement the cascader.
 /* Use the the Ant cascader for cars select. https://ant.design/components/cascader/ */
@@ -14,39 +13,41 @@ import {getSingleCarFunction, updateCarFunction} from "../../functions/callsToCa
 //https://www.back4app.com/docs/react/quickstart
 
 const initialState = {
-    brand: "",
-    model: "",
-    registrationPlate: "",
-    revisions: "",
-    km: "",
-    year: "",
-    client: "",
-    referenceToClient: ""
+    name: "",
+    surname: "",
+    date: "",
+    fiscalCode: "",
+    address: "",
+    city: "",
+    province: "",
+    notes: "",
+    mobile: "",
+    email: ""
 };
 
-export default function UpdateCarPage({match}) {
-    const [currentCarParamsState, setCurrentCarParamsState] = useState(initialState);
+export default function ClientUpdatePage({match}) {
+    const [currentClientParamsState, setCurrentClientParamsState] = useState(initialState);
 
     const { slug } = match.params;
     // Get the user from Redux Store
     const { user } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
-        loadProduct();
+        loadClientDbInfo();
     }, []);
 
-    const loadProduct = () => {
-        getSingleCarFunction(slug).then((car) => {
-            console.log("single car", car);
-            setCurrentCarParamsState({ ...currentCarParamsState, ...car.data });
+    const loadClientDbInfo = () => {
+        getSingleClientFunction(slug).then((client) => {
+            console.log("Single client ", client);
+            setCurrentClientParamsState({ ...currentClientParamsState, ...client.data });
         });
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        updateCarFunction(slug, currentCarParamsState, user.token)
+        updateClientFunction(slug, currentClientParamsState, user.token)
             .then(() => {
-                window.alert( "Car info is updated successfully." );
+                window.alert( "Client info is updated successfully." );
                 window.location.reload();
             })
             .catch((error) => {
@@ -56,7 +57,7 @@ export default function UpdateCarPage({match}) {
 
     const handleUserInput = (event) => {
         // Dynamically update each of the initialState values by their name parameter.
-        setCurrentCarParamsState({ ...currentCarParamsState, [event.target.name]: event.target.value });
+        setCurrentClientParamsState({ ...currentClientParamsState, [event.target.name]: event.target.value });
     };
 
     return (
@@ -64,13 +65,13 @@ export default function UpdateCarPage({match}) {
             <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
                 <Link to="/">Click to go to &rArr; Home Page</Link>
             </label>
-            <h1>UpdateCarPage.js</h1>
+            <h1>UpdateClientPage.js</h1>
 
-            <CarUpdateForm
+            <ClientUpdateForm
                 handleSubmit={handleSubmit}
                 handleUserInput={handleUserInput}
-                currentCarParamsState={currentCarParamsState}
-                setCurrentCarParamsState={setCurrentCarParamsState}
+                currentCarParamsState={currentClientParamsState}
+                setCurrentCarParamsState={setCurrentClientParamsState}
             />
         </main>
     );

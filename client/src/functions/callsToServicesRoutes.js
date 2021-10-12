@@ -2,8 +2,8 @@
 
 import axios from "axios";
 
-export const createServiceFunction = async (newCar, authToken) => {
-    await axios.post(`${process.env.REACT_APP_API}/service/new`, newCar,{headers: {authToken}});
+export const createServiceFunction = async (newService, authToken) => {
+    await axios.post(`${process.env.REACT_APP_API}/service/new`, newService,{headers: {authToken}});
 };
 
 //Calling the backend end point for total number of products.

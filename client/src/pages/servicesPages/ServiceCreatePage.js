@@ -1,22 +1,37 @@
+//!IMPLEMENTED
+
 import React, {useState} from "react";
 import { Link } from "react-router-dom";
-import CarUpdateForm from "../../components/forms/carFormsComponents/CarCreateForm";
 import {useSelector} from "react-redux";
-import {createCarFunction} from "../../functions/callsToCarRoutes";
+import {createServiceFunction} from "../../functions/callsToServicesRoutes";
 import {toast} from "react-toastify";
-import CarCreateForm from "../../components/forms/carFormsComponents/CarCreateForm";
+import ServiceCreateForm from "../../components/forms/servicesFormComponents/ServiceCreateForm";
+
+const initialState = {
+    date: "dd/mm/yyyy",
+    registrationPlate: "GH9999",
+    brand: "Car brand",
+    model: "Car model",
+    state: "done",
+    operator: "Donald Duck",
+    anomalies: " Broken steering system",
+    checks: "On 07.09.2021",
+    performedRepairs: "Steering system repair",
+    notes: "breaking system close to wearing out.",
+    damage: "No accidents registered."
+}
 
 export default function ServiceCreatePage() {
-    const [serviceParamsState, serviceCarParamsState] = useState(initialState);
+    const [serviceParamsState, setServiceParamsState] = useState(initialState);
 
     // Get the user from Redux Store
     const { user } = useSelector((state) => ({ ...state }));
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        createCarFunction(serviceParamsState, user.token)
+        createServiceFunction(serviceParamsState, user.token)
             .then(() => {
-                window.alert( "Car added is created" );
+                window.alert( "Service added is created" );
                 window.location.reload();
             })
             .catch((error) => {
@@ -26,7 +41,7 @@ export default function ServiceCreatePage() {
 
     const handleUserInput = (event) => {
         // Dynamically update each of the initialState values by their name parameter.
-        setCarParamsState({ ...carParamsState, [event.target.name]: event.target.value });
+        setServiceParamsState({ ...serviceParamsState, [event.target.name]: event.target.value });
     };
 
     return (
@@ -34,13 +49,13 @@ export default function ServiceCreatePage() {
             <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
                 <Link to="/add_client">Click to go to &rArr; Add Client Page</Link>
             </label>
-            <h1>AddCarPage.js</h1>
+            <h1>ServiceCreatePage.js</h1>
 
-            <CarCreateForm
+            <ServiceCreateForm
                 handleSubmit={handleSubmit}
                 handleUserInput={handleUserInput}
-                carParamsState={carParamsState}
-                setCarParamsState={setCarParamsState}
+                serviceParamsState={serviceParamsState}
+                setServiceParamsState={setServiceParamsState}
             />
 
         </main>

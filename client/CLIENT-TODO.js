@@ -1,6 +1,8 @@
 //14.08.2021
-//TODO See how slugs are formed.
+//DONE See how slugs are formed.
 //08.10.2021
-//TODO Continue from the client register and update form.
+//DONE Continue from the client register and update form.
 //11.10.2021
-// Start from service create page.
+//DONE Start from service create page.
+//13.10.2021
+//TODO Finish the CarPage.js. Finish the CarsList.js page.

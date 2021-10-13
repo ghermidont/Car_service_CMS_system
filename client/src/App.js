@@ -29,6 +29,7 @@ const ServicesListPage = lazy(() => import("./pages/servicesPages/ServicesListPa
 const CarsArchivePage = lazy(() => import("./pages/carsPages/CarsArchivePage"));
 const ServiceCreatePage = lazy(() => import("./pages/servicesPages/ServiceCreatePage"));
 const CarCreatePage = lazy(() => import("./pages/carsPages/CarCreatePage"));
+const CarPage = lazy(() => import("./pages/carsPages/CarPage"));
 const UserPage = lazy(() => import("./pages/usersPages/UserPage"));
 const ClientsListPage = lazy(() => import("./pages/clientsPages/ClientsListPage"));
 const PswRecoverPage = lazy(() => import("./pages/PswRecoverPage"));
@@ -94,6 +95,7 @@ export default function App() {
             <Route exact path="/add_service" component={ServiceCreatePage}/>
             <Route exact path="/add_car" component={CarCreatePage}/>
             <Route exact path="/user_page" component={UserPage}/>
+            <Route exact path="/car/:slug" component={CarPage}/>
           </Switch>
           <Footer />
         </Suspense>

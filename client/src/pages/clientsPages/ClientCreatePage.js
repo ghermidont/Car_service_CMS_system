@@ -13,16 +13,16 @@ import { createClientFunction } from "../../functions/callsToClientRoutes";
 //https://www.back4app.com/docs/react/quickstart
 
 const initialState = {
-    Nome: "Nome",
-    Cognome: "Cognome",
-    Data: "Data",
-    CF: "CF",
-    Address: "Address",
-    Citta: "Citta",
-    Provincia: "Provincia",
-    Note: "Note",
-    Cellulare: "Cellulare",
-    Email: "Email"
+    name: "name",
+    surname: "surname",
+    date: "date",
+    fiscalCode: "fiscalCode",
+    address: "address",
+    city: "city",
+    province: "province",
+    notes: "notes",
+    mobile: "5674552333",
+    email: "email@email.com"
 };
 
 export default function ClientCreatePage() {

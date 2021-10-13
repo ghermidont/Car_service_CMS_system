@@ -1,9 +1,12 @@
+// noinspection DuplicatedCode
+
 const carModel = require("../models/carModel");
 const Slugify = require("slugify");
 
 exports.createCarController = async (req, res) => {
     try {
-        req.body.slug = Slugify(req.body.title);
+        //Create and add the slug to the request body. the slug is formed from the registration plate and formatted with Slugify.
+        req.body.slug = Slugify(req.body.registrationPlate);
         const newCar = await new carModel(req.body).save();
         res.json(newCar);
     } catch (err) {

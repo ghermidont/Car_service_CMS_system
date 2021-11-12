@@ -134,7 +134,7 @@ const ClientUpdateForm = ({ handleSubmit, handleUserInput, values }) => {
                                     value={notes}
                                     onChange={handleUserInput}
                                 >
-                              </textarea>
+                                </textarea>
                             </label>
                             <div className='flex justify-between items-end'>
                                 <div>

@@ -13,14 +13,14 @@ import { createCarFunction } from "../../functions/callsToCarRoutes";
 //https://www.back4app.com/docs/react/quickstart
 
 const initialState = {
-  brand: "Car brand",
-  model: "Car model",
-  registrationPlate: "999999",
-  revisions: "Revisions info",
-  km: "999",
-  year: "9999",
-  client: "Client name",
-  referenceToClient: "Client id"
+    brand: "Car brand",
+    model: "Car model",
+    registrationPlate: "999999",
+    revisions: "Revisions info",
+    km: "999",
+    year: "9999",
+    client: "Client name",
+    referenceToClient: "Client id"
 };
 
 export default function CarCreatePage() {
@@ -30,36 +30,36 @@ export default function CarCreatePage() {
     const { user } = useSelector((state) => ({ ...state }));
 
     const handleSubmit = (event) => {
-      event.preventDefault();
-      createCarFunction(carParamsState, user.token)
-        .then(() => {
-          window.alert( "Car added is created" );
-          window.location.reload();
-        })
-        .catch((error) => {
-          toast.error(error.response.data.err);
-        });
+        event.preventDefault();
+        createCarFunction(carParamsState, user.token)
+            .then(() => {
+                window.alert( "Car added is created" );
+                window.location.reload();
+            })
+            .catch((error) => {
+                toast.error(error.response.data.err);
+            });
     };
 
     const handleUserInput = (event) => {
-      // Dynamically update each of the initialState values by their name parameter.
-      setCarParamsState({ ...carParamsState, [event.target.name]: event.target.value });
+        // Dynamically update each of the initialState values by their name parameter.
+        setCarParamsState({ ...carParamsState, [event.target.name]: event.target.value });
     };
 
-  return (
-      <main>
-        <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
-          <Link to="/add_client">Click to go to &rArr; Add Client Page</Link>
-        </label>
-         <h1>AddCarPage.js</h1>
+    return (
+        <main>
+            <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
+                <Link to="/add_client">Click to go to &rArr; Add Client Page</Link>
+            </label>
+            <h1>AddCarPage.js</h1>
 
-         <CarCreateForm
-           handleSubmit={handleSubmit}
-           handleUserInput={handleUserInput}
-           carParamsState={carParamsState}
-           setCarParamsState={setCarParamsState}
-         />
+            <CarCreateForm
+                handleSubmit={handleSubmit}
+                handleUserInput={handleUserInput}
+                carParamsState={carParamsState}
+                setCarParamsState={setCarParamsState}
+            />
 
-      </main>
-  );
+        </main>
+    );
 }

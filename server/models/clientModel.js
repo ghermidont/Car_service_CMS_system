@@ -63,7 +63,7 @@ const clientSchema = new mongoose.Schema(
           lowercase: true,
           index: true,
       },
-      _id: ObjectId
+      relation: { type: ObjectId, ref: "userModel" },
   },
     { timestamps: true }
 );

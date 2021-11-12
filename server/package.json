@@ -24,5 +24,28 @@
     "slugify": "^1.6.0",
     "stripe": "^8.170.0",
     "uniqueid": "^1.0.0"
+  },
+  "eslintConfig": {
+    "rules": {
+      "indent": [
+        "error",
+        4
+      ],
+      "linebreak-style": [
+        "error",
+        "unix"
+      ],
+      "quotes": [
+        "error",
+        "double"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ]
+    }
+  },
+  "devDependencies": {
+    "eslint": "^8.2.0"
   }
 }

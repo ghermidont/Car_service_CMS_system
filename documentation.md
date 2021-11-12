@@ -2,7 +2,7 @@
 <https://github.com/jsdoc/jsdoc>
 <https://jsdoc.app/>
 
-Take the multi choice logic from the MYMUltichoseLogicHereProductCreateForm.js
+Take the multi choice logic from the MyMultichooseLogicHereProductCreateForm.js
 
 <!-- Image upload cloud backend -->
 <https://cloudinaryController.com/console/c-f4c6f3086f4c195ed83370e61c9d26/getting-started>
@@ -16,7 +16,7 @@ Take the multi choice logic from the MYMUltichoseLogicHereProductCreateForm.js
 <!-- Implement the pagination from here -->
 E:\PROGRAMMING\FreelanceWork\Car_service_CMS_system\client\src\components\home\PaginationHereNewArrivals.js
 
-Use the controllers/GetSingleClinetorCarLogic-clientModel.js read function to get single client or car details.
+Use the controllers/GetSingleClientOrCarLogic-clientModel.js read function to get single client or car details.
 
 Get the table logic from the pages/TableLogicHereCart.js and the user/History.js also components/cards/DownloadPDFLogicHere-ShowPaymentInfo.js also order/invoice.js
 Render to PDF and download:

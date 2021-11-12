@@ -1,4 +1,4 @@
-//!IMPLEMENTED
+
 import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -22,7 +22,8 @@ const initialState = {
     province: "province",
     notes: "notes",
     mobile: "5674552333",
-    email: "email@email.com"
+    email: "email@email.com",
+    role: "Basic"
 };
 
 export default function ClientCreatePage() {
@@ -48,11 +49,11 @@ export default function ClientCreatePage() {
         setClientInfoState({ ...clientInfoState, [event.target.name]: event.target.value });
     };
 
-    return (  
+    return (
         <>
             <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
                 <Link to="/add_service">Click to go to &rArr; Add Service Page </Link>
-            </label>   
+            </label>
             <h1>ClientCreatePage.js</h1>
 
             <ClientCreateForm

@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-//Connect the file with the key from the Fire Base
+//Connect the file with the private key gotten from the Fire Base
 const serviceAccount = require("../configurationFiles/fbServiceAccountKey.json");
 
 admin.initializeApp({

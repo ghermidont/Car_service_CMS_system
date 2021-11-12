@@ -1,68 +1,29 @@
-const CMSUserModel = require("../models/CMSuserModel");
+const userModel = require("../models/userModel");
 const Slugify = require("slugify");
 
-exports.createCar = async (req, res) => {
-    try {
-        req.body.slug = Slugify(req.body.title);
-        const newCar = await new CMSUserModel(req.body).save();
-        res.json(newCar);
-    } catch (err) {
-        window.alert(err);
-        res.status(400).json({
-            err: err.message,
-        });
-    }
+//INFORMATION populate() gets extra fields information from the same document in the same answer without making any other extra requests.
+
+exports.listAllUsers = async (req, res) => {
+    let dbUsers = await userModel.find({}).exec();
+    res.json(dbUsers);
 };
 
-exports.listAllCars = async (req, res) => {
-    let DbCars = await CMSUserModel.find({})
-        .limit(parseInt(req.params.count))
-        .populate("category", "", "", "")
-        .sort([["createdAt", "desc"]])
-        .exec();
-    res.json(DbCars);
-};
-
-exports.removeCar = async (req, res) => {
+exports.removeUser = async (req, res) => {
     try {
-        const carToDelete = await CMSUserModel.findOneAndRemove({
+        const userToDelete = await userModel.findOneAndRemove({
             slug: req.params.slug,
         }).exec();
-        res.json(carToDelete);
+        res.json(userToDelete);
     } catch (err) {
         window.alert(err);
-        return res.status(400).send("Car deletion failed");
+        return res.status(400).send("User deletion failed");
     }
 };
 
 //Gets the single car by the slug. //TODO use this to get single elements from the DB.
-exports.getSingleCar = async (req, res) => {
-    const product = await CMSUserModel.findOne({ slug: req.params.slug })
-        // .populate() is being used in order to bring only needed information.
-        //TODO modify the populate criteria.
-        .populate("category")
-        .populate("subs")
-        .exec();
+exports.getSingleUser = async (req, res) => {
+    const product = await userModel.findOne({ slug: req.params.slug }).exec();
     res.json(product);
-};
-
-exports.updateCar = async (req, res) => {
-    try {
-        if (req.body.title) {
-            req.body.slug = Slugify(req.body.title);
-        }
-        const updated = await CMSUserModel.findOneAndUpdate(
-            { slug: req.params.slug },
-            req.body,
-            { new: true }
-        ).exec();
-        res.json(updated);
-    } catch (err) {
-        console.log("CMS USER UPDATE ERROR ----> ", err);
-        res.status(400).json({
-            err: err.message,
-        });
-    }
 };
 
 // WITHOUT PAGINATION
@@ -84,41 +45,38 @@ exports.updateCar = async (req, res) => {
 // };
 
 // WITH PAGINATION
-exports.carsListForPagination = async (req, res) => {
+exports.usersListForPagination = async (req, res) => {
     try {
         // createdAt/updatedAt, desc/asc, 3
         const { sort, order, page } = req.body;
         //the page number the user clicks on
         const currentPage = page || 1;
         //The number of items per page.
-        const perPage = 3; // 3
+        const perPage = 10;
 
-        const cars = await CMSUserModel.find({})
+        const users = await userModel.find({})
             //skipping the number of products from the page previous to the chosen page.
             .skip((currentPage - 1) * perPage)
-            //TODO modify the populate criteria.
-            .populate("category")
-            .populate("subs")
             .sort([[sort, order]])
             .limit(perPage)
             .exec();
 
-        res.json(cars);
+        res.json(users);
     } catch (err) {
         window.log(err);
     }
 };
 
-//Getting the total car count for the pagination.
-exports.carsCount = async (req, res) => {
-    let total = await CMSUserModel.find({}).estimatedDocumentCount().exec();
+//Getting the total users count for the pagination.
+exports.usersCount = async (req, res) => {
+    let total = await userModel.find({}).estimatedDocumentCount().exec();
     res.json(total);
 };
 
 // SEARCH / FILTER
 
 const handleSearchQuery = async (req, res, query) => {
-    const products = await CMSUserModel.find({ $text: { $search: query } })
+    const products = await userModel.find({ $text: { $search: query } })
         //TODO modify the populates criteria.
         .populate("category", "_id name")
         .populate("subs", "_id name")

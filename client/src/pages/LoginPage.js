@@ -97,81 +97,81 @@ export default function LoginPage({ history }){
     //     });
     // };
 
-  return(
-    <>
-      <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
-        <Link to="/main_menu">
+    return(
+        <>
+            <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
+                <Link to="/main_menu">
             Click to go to &rArr; Main Menu Page
-        </Link>
-      </label>
-       <h1>loginPage.js</h1>
+                </Link>
+            </label>
+            <h1>loginPage.js</h1>
 
-      <main>
-          <div className="container mx-auto h-screen flex justify-center items-center">
-              <form
-                  action="#"
-                  autoComplete="off"
-                  className='max-w-600 w-100% bg-grayL px-12 pt-8 pb-14 shadow-shadow rounded'
-                  onSubmit={handleSubmit}
-              >
-                  <label className='block mb-2 text-xl'>
+            <main>
+                <div className="container mx-auto h-screen flex justify-center items-center">
+                    <form
+                        action="#"
+                        autoComplete="off"
+                        className='max-w-600 w-100% bg-grayL px-12 pt-8 pb-14 shadow-shadow rounded'
+                        onSubmit={handleSubmit}
+                    >
+                        <label className='block mb-2 text-xl'>
                       User name
-                      <input
-                        className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Your email"
-                        autoFocus
-                      />
-                  </label>
-                  <label className='block mb-20 text-xl'>
+                            <input
+                                className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Your email"
+                                autoFocus
+                            />
+                        </label>
+                        <label className='block mb-20 text-xl'>
                       Password
-                      <input
-                          type="password"
-                          className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          placeholder="Your password"
-                      />
-                  </label>
-                  <div className='text-xl text-white flex justify-between'>
+                            <input
+                                type="password"
+                                className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Your password"
+                            />
+                        </label>
+                        <div className='text-xl text-white flex justify-between'>
 
-                      <button
-                          className='mr-1 bg-green w-200 py-3 rounded transition duration-300 hover:opacity-70'
-                          disabled={!email || password.length < 6}
-                          onClick={handleSubmit}
-                      >
-                          <Link to="/main_menu">
+                            <button
+                                className='mr-1 bg-green w-200 py-3 rounded transition duration-300 hover:opacity-70'
+                                disabled={!email || password.length < 6}
+                                onClick={handleSubmit}
+                            >
+                                <Link to="/main_menu">
                               Login
-                          </Link>
-                      </button>
+                                </Link>
+                            </button>
 
-                      <button
-                          className='mr-1 ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'
-                          disabled={!email || password.length < 6}
-                      >
-                          <Link to="/psw_recover">
+                            <button
+                                className='mr-1 ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'
+                                disabled={!email || password.length < 6}
+                            >
+                                <Link to="/psw_recover">
                             Recover pass
-                          </Link>
-                      </button>
+                                </Link>
+                            </button>
 
-                      <button className='ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'>
-                          <Link to="/check_email">
+                            <button className='ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'>
+                                <Link to="/check_email">
                               Register
-                          </Link>
-                      </button>
+                                </Link>
+                            </button>
 
-                      {/*// For login with Google*/}
-                      {/*<button className='bg-red w-200 py-3 rounded transition duration-300 hover:opacity-70'>*/}
-                      {/*    <Link to="/main_menu">*/}
-                      {/*        Google sign-in*/}
-                      {/*    </Link>*/}
-                      {/*</button>*/}
-                  </div>
-              </form>
-          </div>
-      </main>    
-    </>
-  );
+                            {/*// For login with Google*/}
+                            {/*<button className='bg-red w-200 py-3 rounded transition duration-300 hover:opacity-70'>*/}
+                            {/*    <Link to="/main_menu">*/}
+                            {/*        Google sign-in*/}
+                            {/*    </Link>*/}
+                            {/*</button>*/}
+                        </div>
+                    </form>
+                </div>
+            </main>    
+        </>
+    );
 }

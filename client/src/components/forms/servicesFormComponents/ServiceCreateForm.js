@@ -29,84 +29,84 @@ export default function ServiceCreateForm ({ handleUserInput, handleSubmit, serv
                 <div className='my-20'>
                     <table className='mx-auto'>
                         <thead>
-                        <tr>
-                            <th className='px-1 py-1.5 w-75 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                            <tr>
+                                <th className='px-1 py-1.5 w-75 bg-blue border border-border text-2xl text-white font-normal uppercase'>
                                 Data
-                            </th>
-                            <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                </th>
+                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
                                 Targa
-                            </th>
-                            <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                </th>
+                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
                                 Marca
-                            </th>
-                            <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                </th>
+                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
                                 Modello
-                            </th>
-                            <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                </th>
+                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
                                 Stato
-                            </th>
-                            <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                </th>
+                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
                                 Operatore
-                            </th>
-                        </tr>
+                                </th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td className="border border-border px-3">
-                                <input
-                                    className="block container px-2 py-1 outline-none mt-1.5"
-                                    type="text"
-                                    name="date"
-                                    value={date}
-                                    onChange={handleUserInput}
-                                />
-                            </td>
-                            <td className='border border-border px-3'>
-                                <input
-                                    className="block container px-2 py-1 outline-none mt-1.5"
-                                    type="text"
-                                    name="registrationPlate"
-                                    value={registrationPlate}
-                                    onChange={handleUserInput}
-                                />
-                            </td>
-                            <td className='border border-border px-3'>
-                                <input
-                                    className="block container px-2 py-1 outline-none mt-1.5"
-                                    type="text"
-                                    name="brand"
-                                    value={brand}
-                                    onChange={handleUserInput}
-                                />
-                            </td>
-                            <td className='border border-border px-3'>
-                                 <input
-                                    className="block container px-2 py-1 outline-none mt-1.5"
-                                    type="text"
-                                    name="model"
-                                    value={model}
-                                    onChange={handleUserInput}
-                                />
-                            </td>
-                            <td className='border border-border px-3'>
-                                 <input
-                                    className="block container px-2 py-1 outline-none mt-1.5"
-                                    type="text"
-                                    name="state"
-                                    value={state}
-                                    onChange={handleUserInput}
-                                />
-                            </td>
-                            <td className='border border-border px-3'>
-                                 <input
-                                    className="block container px-2 py-1 outline-none mt-1.5"
-                                    type="text"
-                                    name="operator"
-                                    value={operator}
-                                    onChange={handleUserInput}
-                                />
-                            </td>
-                        </tr>
+                            <tr>
+                                <td className="border border-border px-3">
+                                    <input
+                                        className="block container px-2 py-1 outline-none mt-1.5"
+                                        type="text"
+                                        name="date"
+                                        value={date}
+                                        onChange={handleUserInput}
+                                    />
+                                </td>
+                                <td className='border border-border px-3'>
+                                    <input
+                                        className="block container px-2 py-1 outline-none mt-1.5"
+                                        type="text"
+                                        name="registrationPlate"
+                                        value={registrationPlate}
+                                        onChange={handleUserInput}
+                                    />
+                                </td>
+                                <td className='border border-border px-3'>
+                                    <input
+                                        className="block container px-2 py-1 outline-none mt-1.5"
+                                        type="text"
+                                        name="brand"
+                                        value={brand}
+                                        onChange={handleUserInput}
+                                    />
+                                </td>
+                                <td className='border border-border px-3'>
+                                    <input
+                                        className="block container px-2 py-1 outline-none mt-1.5"
+                                        type="text"
+                                        name="model"
+                                        value={model}
+                                        onChange={handleUserInput}
+                                    />
+                                </td>
+                                <td className='border border-border px-3'>
+                                    <input
+                                        className="block container px-2 py-1 outline-none mt-1.5"
+                                        type="text"
+                                        name="state"
+                                        value={state}
+                                        onChange={handleUserInput}
+                                    />
+                                </td>
+                                <td className='border border-border px-3'>
+                                    <input
+                                        className="block container px-2 py-1 outline-none mt-1.5"
+                                        type="text"
+                                        name="operator"
+                                        value={operator}
+                                        onChange={handleUserInput}
+                                    />
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -122,7 +122,7 @@ export default function ServiceCreateForm ({ handleUserInput, handleSubmit, serv
                                 onChange={handleUserInput}
                                 rows="4"
                             >
-                </textarea>
+                            </textarea>
                         </label>
                         <label className='block mb-6 text-xl uppercase'>
                             Controlli
@@ -133,7 +133,7 @@ export default function ServiceCreateForm ({ handleUserInput, handleSubmit, serv
                                 onChange={handleUserInput}
                                 rows="2"
                             >
-                </textarea>
+                            </textarea>
                         </label>
                         <label className='block mb-6 text-xl uppercase'>
                             Lavori Fatti
@@ -144,7 +144,7 @@ export default function ServiceCreateForm ({ handleUserInput, handleSubmit, serv
                                 onChange={handleUserInput}
                                 rows="2"
                             >
-                </textarea>
+                            </textarea>
                         </label>
                         <div className='flex justify-between'>
                             <div className='w-45%'>
@@ -157,7 +157,7 @@ export default function ServiceCreateForm ({ handleUserInput, handleSubmit, serv
                                         onChange={handleUserInput}
                                         rows="8"
                                     >
-                </textarea>
+                                    </textarea>
                                 </label>
                             </div>
                             <div className='w-45%'>
@@ -170,7 +170,7 @@ export default function ServiceCreateForm ({ handleUserInput, handleSubmit, serv
                                         onChange={handleUserInput}
                                         rows="8"
                                     >
-                    </textarea>
+                                    </textarea>
                                 </label>
                             </div>
                         </div>

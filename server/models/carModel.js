@@ -48,9 +48,9 @@ const carSchema = new mongoose.Schema({
         lowercase: true,
         index: true,
     },
-    _id: ObjectId
+    relation: { type: ObjectId, ref: "clientModel" }
 },
     { timestamps: true }
 );
 
-module.exports = mongoose.model("carSchema", carSchema);
+module.exports = mongoose.model("carModel", carSchema);

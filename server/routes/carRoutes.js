@@ -5,7 +5,7 @@ const express = require("express");
 const router = express.Router();
 
 // middlewares
-const { authCheckMiddleware, adminCheckMiddleware } = require("../middlewares/authMiddleware");
+const { fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware } = require("../middlewares/authMiddleware");
 
 // controllers import
 const {
@@ -19,11 +19,11 @@ const {
 } = require("../controllers/carController");
 
 // routesController
-router.post("/car/add-car", authCheckMiddleware, adminCheckMiddleware, createCarController);
+router.post("/car/add-car", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, createCarController);
 router.get("/cars/total", listAllCarsController);
-router.delete("/car/:slug", authCheckMiddleware, adminCheckMiddleware, deleteCarController);
+router.delete("/car/:slug", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, deleteCarController);
 router.get("/car/:slug", getSingleCarController);
-router.put("/car/:slug", authCheckMiddleware, adminCheckMiddleware, updateCarController);
+router.put("/car/:slug", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, updateCarController);
 router.post("/cars", carsListForPaginationController);
 router.post("/search/filters", searchFiltersController);
 

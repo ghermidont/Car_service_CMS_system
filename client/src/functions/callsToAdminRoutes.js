@@ -26,7 +26,7 @@ export const getUsersListForPaginationFunction = async (sort, order, page, authT
 
 export const getUsersCountFunction = async () => {
     await axios.get(`${process.env.REACT_APP_API}admin/users/total`);
-}
+};
 
 //! Check the type of POST verb?
 export const fetchUserByFilterFunction = async (arg) => {

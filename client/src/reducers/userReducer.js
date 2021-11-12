@@ -1,12 +1,12 @@
 //the initial state will be null in our case and after the action it will be assigned the payload.
 export const userReducer = (state=null, action) => {
-  switch (action.type) {
+    switch (action.type) {
     case "LOGGED_IN_USER":
-       // the payload is the user information we pass in.
-      return action.payload;
+        // the payload is the user information we pass in.
+        return action.payload;
     case "LOGOUT":     
-      return action.payload;
+        return action.payload;
     default:
-      return state;
-  }
+        return state;
+    }
 };                                                                           

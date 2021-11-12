@@ -2,7 +2,6 @@
 import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import CarUpdateForm from "../../components/forms/carFormsComponents/CarCreateForm";
 import { useSelector } from "react-redux";
 import {getSingleCarFunction, updateCarFunction} from "../../functions/callsToCarRoutes";
 
@@ -13,18 +12,28 @@ import {getSingleCarFunction, updateCarFunction} from "../../functions/callsToCa
 //https://www.back4app.com/docs/react/quickstart
 
 const initialState = {
-    brand: "",
-    model: "",
-    registrationPlate: "",
-    revisions: "",
-    km: "",
-    year: "",
-    client: "",
-    referenceToClient: ""
+    brand: "the brand",
+    model: "the model",
+    registrationPlate: "9999",
+    revisions: "revision info",
+    km: "99999",
+    year: "3021",
+    client: "some client name",
+    referenceToClient: "client ID from the DB"
 };
 
 export default function CarUpdatePage({match}) {
     const [currentCarParamsState, setCurrentCarParamsState] = useState(initialState);
+
+    const {
+        brand,
+        model,
+        registrationPlate,
+        revisions,
+        km,
+        year,
+        client
+    } = currentCarParamsState;
 
     const { slug } = match.params;
     // Get the user from Redux Store
@@ -38,14 +47,6 @@ export default function CarUpdatePage({match}) {
         getSingleCarFunction(slug).then((car) => {
             console.log("single car", car);
             setCurrentCarParamsState({ ...currentCarParamsState, ...car.data });
-        });
-    };
-
-    const loadSingleCar = () => {
-        getProduct(slug).then((res) => {
-            setProduct(res.data);
-            // load related
-            getRelated(res.data._id).then((res) => setRelated(res.data));
         });
     };
 

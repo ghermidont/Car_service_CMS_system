@@ -1,4 +1,5 @@
-/**This form is called in the ClientCreatePage.ls*/
+/**This form is called in the UserUpdatePage.ls*/
+// noinspection DuplicatedCode
 // noinspection DuplicatedCode
 
 import React from "react";
@@ -13,7 +14,8 @@ https://ant.design/components/cascader/*/
 
 //Cars DB API: https://parse-dashboard.back4app.com/apps/7e730946-c9c1-4aca-90f3-87f9abc2842c/browser/Carmodels_Car_Model_List
 //https://www.back4app.com/docs/react/quickstart
-const ClientCreateForm = ({ handleSubmit, handleUserInput, clientInfoState }) => {
+
+const ClientUpdateForm = ({ handleSubmit, handleUserInput, values }) => {
     //states
     const {
         name,
@@ -25,8 +27,8 @@ const ClientCreateForm = ({ handleSubmit, handleUserInput, clientInfoState }) =>
         province,
         notes,
         mobile,
-        email
-    } = clientInfoState;
+        email,
+    } = values;
 
     //For implementing the date:
     //   const formattedDate = (rawDate)=>{
@@ -168,7 +170,7 @@ const ClientCreateForm = ({ handleSubmit, handleUserInput, clientInfoState }) =>
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"> </path>
                             </svg>
                             <Link to="clients_list">
-                              Salva
+                                Salva
                             </Link>
                         </button>
 
@@ -176,14 +178,14 @@ const ClientCreateForm = ({ handleSubmit, handleUserInput, clientInfoState }) =>
                             <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"> </path>
                             </svg>
-                          Stampa
+                            Stampa
                         </button>
 
                         <button className="flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70">
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"> </path>
                             </svg>
-                          Download
+                            Download
                         </button>
                     </div>
 
@@ -193,4 +195,4 @@ const ClientCreateForm = ({ handleSubmit, handleUserInput, clientInfoState }) =>
     );
 };
 
-export default ClientCreateForm;
+export default ClientUpdateForm;

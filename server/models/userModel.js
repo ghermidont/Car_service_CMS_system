@@ -1,6 +1,5 @@
 // Schema options here: https://mongoosejs.com/docs/schematypes.html#strings
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
 
 const userSchema = new mongoose.Schema(
   {
@@ -56,17 +55,16 @@ const userSchema = new mongoose.Schema(
     },
       role: {
           type: String,
-          default: "ordinary",
+          default: "basic",
         },
       slug: {
           type: String,
           unique: true,
           lowercase: true,
           index: true,
-        },
-      _id: ObjectId
+        }
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("userSchema", userSchema);
+module.exports = mongoose.model("userModel", userSchema);

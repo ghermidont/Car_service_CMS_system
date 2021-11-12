@@ -19,7 +19,7 @@ const initialState = {
     performedRepairs: "",
     notes: "",
     damage: ""
-}
+};
 
 export default function ServiceUpdatePage({match}) {
     const [currentServiceParamsState, setCurrentServiceParamsState] = useState(initialState);

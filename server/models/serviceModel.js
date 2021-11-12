@@ -4,7 +4,7 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
-const providedServiceSchema= new mongoose.Schema(
+const serviceSchema= new mongoose.Schema(
     {
         slug: {
             type: String,
@@ -83,9 +83,9 @@ const providedServiceSchema= new mongoose.Schema(
             maxlength: 200,
             text: true
         },
-        _id: ObjectId
+        relation: { type: ObjectId, ref: "clientModel" }
     },
     { timestamps: true }
 );
 
-module.exports = mongoose.model("providedServiceSchema", providedServiceSchema);
+module.exports = mongoose.model("serviceModel", serviceSchema);

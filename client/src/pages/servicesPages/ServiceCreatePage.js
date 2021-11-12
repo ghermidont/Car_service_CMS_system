@@ -19,7 +19,7 @@ const initialState = {
     performedRepairs: "Steering system repair",
     notes: "breaking system close to wearing out.",
     damage: "No accidents registered."
-}
+};
 
 export default function ServiceCreatePage() {
     const [serviceParamsState, setServiceParamsState] = useState(initialState);
@@ -59,5 +59,5 @@ export default function ServiceCreatePage() {
             />
 
         </main>
-  );
+    );
 }

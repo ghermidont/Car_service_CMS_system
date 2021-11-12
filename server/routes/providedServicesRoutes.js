@@ -4,7 +4,7 @@ const express = require("express");
 const Router = express.Router();
 
 // middlewares
-const { authCheckMiddleware, adminCheckMiddleware } = require("../middlewares/authMiddleware");
+const { fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware } = require("../middlewares/authMiddleware");
 
 // controllers import
 const {
@@ -18,11 +18,11 @@ const {
 } = require("../controllers/serviceController");
 
 // routes
-Router.post("/service/new", authCheckMiddleware, adminCheckMiddleware, createServiceController);
-Router.get("/services/total", authCheckMiddleware, adminCheckMiddleware, listAllServicesController);
-Router.delete("/service/:slug", authCheckMiddleware, adminCheckMiddleware, deleteServiceController);
-Router.get("/service/:slug", authCheckMiddleware, adminCheckMiddleware, getSingleServiceController);
-Router.put("/service/:slug", authCheckMiddleware, adminCheckMiddleware, updateServiceController);
+Router.post("/service/new", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, createServiceController);
+Router.get("/services/total", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, listAllServicesController);
+Router.delete("/service/:slug", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, deleteServiceController);
+Router.get("/service/:slug", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, getSingleServiceController);
+Router.put("/service/:slug", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, updateServiceController);
 Router.post("/services", servicesListForPaginationController);
 Router.post("/search/filters", searchFiltersController);
 

@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-export default function CheckEmailPage({ history }){
+export default function UserCheckEmailPage({ history }){
     const [email, setEmail] = useState("");
     //we use destructuring to get specific data from the states that are defined in the reducers/index.js file.
     const { user } = useSelector((state) => ({ ...state }));

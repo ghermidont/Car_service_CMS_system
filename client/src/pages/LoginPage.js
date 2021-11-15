@@ -1,11 +1,13 @@
 //!IMPLEMENTED
 import React, { useState, useEffect } from "react";
-import { auth /*googleAuthProvider*/ } from "../firebase";
-import { toast } from "react-toastify";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+//import { auth /*googleAuthProvider*/ } from "../firebase";
+//import { toast } from "react-toastify";
 //useSelector is used to get the data from the state.
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { createUser } from "../functions/callsToAuthRoutes";
+const auth = getAuth();
 
 export default function LoginPage({ history }){
     const [email, setEmail] = useState("");
@@ -19,7 +21,7 @@ export default function LoginPage({ history }){
         if (intended) {
             return;
         } else {
-            if (user && user.token) history.push("/");
+            if (user && user.token) history.push("/main_menu");
         }
     }, [user, history]);
 
@@ -32,9 +34,9 @@ export default function LoginPage({ history }){
             history.push(intended.from);
         } else {
             if (res.data.role === "admin") {
-                history.push("/admin/dashboard");
+                history.push("/admin_dashboard");
             } else {
-                history.push("/user/history");
+                history.push("/user_page");
             }
         }
     };
@@ -42,8 +44,17 @@ export default function LoginPage({ history }){
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const result = await auth.signInWithEmailAndPassword(email, password);
-            const { user } = result;
+            let user;
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Signed in
+                    user = userCredential.user;
+                }).catch((error) => {
+                    console.log(error.code);
+                    console.log(error.message);
+                });
+            //const result = await auth.signInWithEmailAndPassword(email, password);
+            //const { user } = result;
             const idTokenResult = await user.getIdTokenResult();
             //This functions will give us the user token and we send it to the back end in the header as auth token.
             createUser(idTokenResult.token)
@@ -63,7 +74,8 @@ export default function LoginPage({ history }){
                 })
                 .catch((err) => console.log(err));
         } catch (error) {
-            toast.error(error.message);
+            console.log(error.message);
+            //toast.error(error.message);
         }
     };
 
@@ -101,7 +113,7 @@ export default function LoginPage({ history }){
         <>
             <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
                 <Link to="/main_menu">
-            Click to go to &rArr; Main Menu Page
+                    Click to go to &rArr; Main Menu Page
                 </Link>
             </label>
             <h1>loginPage.js</h1>
@@ -126,7 +138,7 @@ export default function LoginPage({ history }){
                             />
                         </label>
                         <label className='block mb-20 text-xl'>
-                      Password
+                            Password
                             <input
                                 type="password"
                                 className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
@@ -142,9 +154,7 @@ export default function LoginPage({ history }){
                                 disabled={!email || password.length < 6}
                                 onClick={handleSubmit}
                             >
-                                <Link to="/main_menu">
                               Login
-                                </Link>
                             </button>
 
                             <button
@@ -152,7 +162,7 @@ export default function LoginPage({ history }){
                                 disabled={!email || password.length < 6}
                             >
                                 <Link to="/psw_recover">
-                            Recover pass
+                                    Recover pass
                                 </Link>
                             </button>
 

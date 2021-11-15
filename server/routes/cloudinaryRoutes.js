@@ -8,9 +8,9 @@ const router = express.Router();
 const { fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware } = require("../middlewares/authMiddleware");
 
 // controllers
-const { upload, remove } = require("../controllers/cloudinaryController");
+const { imageUploadController, imageRemoveController } = require("../controllers/cloudinaryController");
 
-router.post("/upload-images", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, upload);
-router.post("/remove-image", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, remove);
+router.post("/upload_images", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, imageUploadController);
+router.post("/remove_image", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, imageRemoveController);
 
 module.exports = router;

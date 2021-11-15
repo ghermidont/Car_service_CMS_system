@@ -6,7 +6,8 @@ const router = express.Router();
 
 // middlewares
 const { fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware } = require("../middlewares/authMiddleware");
-const { currentUserController } = require("../controllers/authController");
+const { updateUserController } = require("../controllers/userController");
+
 // routes
 router.put("/user/update-user/:slug", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, updateUserController);
 

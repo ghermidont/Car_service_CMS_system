@@ -55,3 +55,6 @@ Mongoose schemas parameters:
 <https://mongoosejs.com/docs/schematypes.html#objectids>
 <https://www.back4app.com/#>
 <https://firebase.google.com/docs/auth/web/google-signin>
+
+Mongoose populate:
+<https://mongoosejs.com/docs/populate.html>

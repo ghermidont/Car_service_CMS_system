@@ -41,6 +41,7 @@ export default function CarUpdatePage({match}) {
 
     useEffect(() => {
         loadCarDbInfo();
+        // eslint-disable-next-line
     }, []);
 
     const loadCarDbInfo = () => {

@@ -18,20 +18,18 @@ exports.createCarController = async (req, res) => {
 };
 
 exports.listAllCarsController = async (req, res) => {
-    let DbCars = await carModel.find({})
+    let DbCars = await carModel
+        .find({})
         .limit(parseInt(req.params.count))
-        //TODO fill the populate params
-        .populate("category", "", "", "")
-        .sort([["createdAt", "desc"]])
         .exec();
     res.json(DbCars);
 };
 
 exports.deleteCarController = async (req, res) => {
     try {
-        const carToDelete = await carModel.findOneAndRemove({
-            slug: req.params.slug,
-        }).exec();
+        const carToDelete = await carModel
+            .findOneAndRemove({slug: req.params.slug,})
+            .exec();
         res.json(carToDelete);
     } catch (err) {
         window.alert(err);
@@ -41,11 +39,8 @@ exports.deleteCarController = async (req, res) => {
 
 //Gets the single car by the slug. //TODO use this to get single elements from the DB.
 exports.getSingleCarController = async (req, res) => {
-    const product = await carModel.findOne({ slug: req.params.slug })
-        // .populate() is being used in order to bring only needed information.
-        //TODO modify the populate criteria.
-        .populate("category")
-        .populate("subs")
+    const product = await carModel
+        .findOne({ slug: req.params.slug })
         .exec();
     res.json(product);
 };
@@ -55,11 +50,9 @@ exports.updateCarController = async (req, res) => {
         if (req.body.title) {
             req.body.slug = Slugify(req.body.title);
         }
-        const updated = await carModel.findOneAndUpdate(
-            { slug: req.params.slug },
-            req.body,
-            { new: true }
-        ).exec();
+        const updated = await carModel
+            .findOneAndUpdate({ slug: req.params.slug }, req.body,{ new: true })
+            .exec();
         res.json(updated);
     } catch (err) {
         console.log("CAR UPDATE ERROR ----> ", err);
@@ -100,13 +93,8 @@ exports.carsListForPaginationController = async (req, res) => {
         const cars = await carModel.find({})
             //skipping the number of products from the page previous to the chosen page.
             .skip((currentPage - 1) * perPage)
-            //TODO modify the populate criteria.
-            .populate("category")
-            .populate("subs")
-            .sort([[sort, order]])
             .limit(perPage)
             .exec();
-
         res.json(cars);
     } catch (err) {
         window.log(err);
@@ -115,26 +103,24 @@ exports.carsListForPaginationController = async (req, res) => {
 
 //Getting the total car count for the pagination.
 exports.carsCountController = async (req, res) => {
-    let total = await carModel.find({}).estimatedDocumentCount().exec();
+    let total = await carModel
+        .find({})
+        .estimatedDocumentCount()
+        .exec();
     res.json(total);
 };
 
 // SEARCH / FILTER
 
 const handleSearchQueryController = async (req, res, query) => {
-    const clients = await carModel.find({ $text: { $search: query } })
-        //TODO modify the populates criteria.
-        .populate("category", "_id name")
-        .populate("subs", "_id name")
-        .populate("postedBy", "_id name")
+    const clients = await carModel
+        .find({ $text: { $search: query } })
         .exec();
     res.json(clients);
 };
 
 exports.searchFiltersController = async (req, res) => {
-    const {
-        query
-    } = req.body;
+    const { query } = req.body;
 
     if (query) {
         console.log("query --->", query);

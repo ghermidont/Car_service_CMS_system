@@ -1,5 +1,3 @@
-"use strict";
-
 const admin = require("../firebase/fireBaseSettings");
 const User = require("../models/userModel");
 

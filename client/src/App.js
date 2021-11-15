@@ -11,7 +11,7 @@ import { auth } from "./firebase";
 
 //Dispatch is the entry point to the redux store.
 import { useDispatch } from "react-redux";
-import { currentUser } from "./functions/callsToAuthRoutes";
+import { getCurrentUser } from "./functions/callsToAuthRoutes";
 
 import { LoadingOutlined } from "@ant-design/icons";
 
@@ -23,7 +23,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const MainMenu = lazy(() => import("./pages/MainMenuPage"));
 const ClientCreatePage = lazy(() => import("./pages/clientsPages/ClientCreatePage"));
-const RegisterUserPage = lazy(() => import("./pages/usersPages/UserRegistePage"));
+const RegisterUserPage = lazy(() => import("./pages/usersPages/UserRegisterPage"));
 const CarsListPage = lazy(() => import("./pages/carsPages/CarsListPage"));
 const ServicesListPage = lazy(() => import("./pages/servicesPages/ServicesListPage"));
 const CarsArchivePage = lazy(() => import("./pages/carsPages/CarsArchivePage"));
@@ -34,6 +34,7 @@ const UserPage = lazy(() => import("./pages/usersPages/UserPage"));
 const ClientsListPage = lazy(() => import("./pages/clientsPages/ClientsListPage"));
 const PswRecoverPage = lazy(() => import("./pages/PswRecoverPage"));
 const CheckEmailPage = lazy(() => import("./pages/usersPages/UserCheckEmailPage"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 
 // Components
 const Header = lazy(() => import("./components/header/Header"));
@@ -48,7 +49,7 @@ export default function App() {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const idTokenResult = await user.getIdTokenResult();
-                currentUser(idTokenResult.token)
+                getCurrentUser(idTokenResult.token)
                     .then((res) => {
                         dispatch({
                             type: "LOGGED_IN_USER",
@@ -61,7 +62,7 @@ export default function App() {
                             },
                         });
                     })
-                    .catch((err) => console.log(err));
+                    .catch((err) => console.log("Could not get the current user data. ".err));
             }
         });
         // Cleanup. This function is returned one more time in order to prevent memory leaks.
@@ -83,6 +84,7 @@ export default function App() {
                 {/*//TODO After finishing the logic implementation integrate the user and admin routes.  */}
                 <Switch>
                     <Route exact path="/" component={LoginPage}/>
+                    <Route exact path="/admin_dashboard" component={AdminDashboard}/>
                     <Route exact path="/check_email" component={CheckEmailPage}/>
                     <Route exact path="/psw_recover" component={PswRecoverPage}/>
                     <Route exact path="/main_menu" component={MainMenu}/>

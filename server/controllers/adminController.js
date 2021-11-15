@@ -1,13 +1,14 @@
-//!Update all the functions here according to the routes calls.
-//! See what handleSearchQuery() does.
+//TODO Update all the functions here according to the routes calls.
+//TODO See what handleSearchQuery() does.
+
 const userSchema = require("../models/userModel");
 const Slugify = require("slugify");
 
 exports.deleteUserController = async (req, res) => {
     try {
-      const CMSUserToDelete = await userSchema.findOneAndRemove({
-        slug: req.params.slug,
-      }).exec();
+      const CMSUserToDelete = await userSchema
+          .findOneAndRemove({slug: req.params.slug,})
+          .exec();
       res.json(CMSUserToDelete);
     } catch (err) {
       window.alert(err);
@@ -54,13 +55,8 @@ exports.toggleUserAccessController = async (req, res) => {
       const user = await userSchema.find({})
           //skipping the number of products from the page previous to the chosen page.
           .skip((currentPage - 1) * perPage)
-          //TODO modify the populate criteria.
-          .populate("category")
-          .populate("subs")
-          .sort([[sort, order]])
           .limit(perPage)
           .exec();
-
       res.json(user);
     } catch (err) {
       window.log(err);
@@ -68,28 +64,21 @@ exports.toggleUserAccessController = async (req, res) => {
   };
 
   exports.getSingleUserController = async (req, res) => {
-    const product = await userSchema.findOne({ slug: req.params.slug })
-        // .populate() is being used in order to bring only needed information.
-        //TODO modify the populate criteria.
-        .populate("category")
-        .populate("subs")
+    const user = await userSchema
+        .findOne({ slug: req.params.slug })
         .exec();
-    res.json(product);
+    res.json(user);
   };
 
   exports.handleSearchQuery = async (req, res, query) => {
-    const searchResults = await userSchema.find({ $text: { $search: query } })
-        //TODO modify the populates criteria .
-        .populate("category", "_id name")
-        .populate("subs", "_id name")
-        .populate("postedBy", "_id name")
+    const searchResults = await userSchema
+        .find({ $text: { $search: query } })
         .exec();
     res.json(searchResults);
   };
 
   exports.searchFiltersController = async (req, res) => {
     const { query } = req.body;
-
     if (query) {
       console.log("query --->", query);
       await handleSearchQuery(req, res, query);

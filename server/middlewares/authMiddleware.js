@@ -11,9 +11,8 @@ exports.fireBaseAuthCheckMiddleware = async (req, res, next) => {
       .verifyIdToken(req.headers.authToken);
        next();
   } catch (err) {  
-    res.status(401).json({
-      err: "Invalid or expired token",
-    });
+    res.status(401)
+       .json({ err: "Invalid or expired token", });
   }
 };
 

@@ -48,20 +48,22 @@ export default function App() {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const idTokenResult = await user.getIdToken();
-                getCurrentUser(idTokenResult.token)
-                    .then((res) => {
-                        dispatch({
-                            type: "LOGGED_IN_USER",
-                            payload: {
-                                name: res.data.name,
-                                email: res.data.email,
-                                token: idTokenResult.token,
-                                role: res.data.role,
-                                _id: res.data._id,
-                            },
-                        });
-                    })
-                    .catch((err) => console.log("Could not get the current user data. ".err));
+                if(idTokenResult) {
+                    getCurrentUser(idTokenResult.token)
+                        .then((res) => {
+                            dispatch({
+                                type: "LOGGED_IN_USER",
+                                payload: {
+                                    name: res.data.name,
+                                    email: res.data.email,
+                                    token: idTokenResult.token,
+                                    role: res.data.role,
+                                    _id: res.data._id,
+                                },
+                            });
+                        })
+                        .catch((err) => console.log("Could not get the current user data. ".err));
+                }
             }
         });
         // Cleanup. This function is returned one more time in order to prevent memory leaks.

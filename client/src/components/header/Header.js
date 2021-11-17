@@ -4,19 +4,18 @@ import Logo from "../../images/logo.png";
 import UsrAvatar from "../../images/usr_avatar.png";
 import { Link } from "react-router-dom";
 import {LogoutOutlined} from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch  } from "react-redux";
 //import firebase from "firebase";
-import { getAuth, signOut } from "firebase/auth";
-
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
 
 export default function Header() {
-
+    const FBuser = auth.currentUser;
     let history = useHistory();
     let dispatch = useDispatch();
-    let { user } = useSelector((state) => ({ ...state }));
+    //let { user } = useSelector((state) => ({ ...state }));
 
     const logout = () => {
-        const auth = getAuth();
         signOut(auth).then(() => {
             // Sign-out successful.
         }).catch((error) => {
@@ -103,7 +102,7 @@ export default function Header() {
                             </span>
                         </div>
                         <div>
-                            { user &&
+                            { FBuser &&
                                 <button
                                     className='flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'
                                     onClick={logout}

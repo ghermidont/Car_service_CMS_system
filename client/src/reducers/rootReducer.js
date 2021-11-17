@@ -3,8 +3,8 @@ import { userReducer } from "./userReducer";
 import { searchReducer } from "./searchReducer";
 
 const rootReducer = combineReducers({
-    user: userReducer,
-    search: searchReducer
+    userReducerData: userReducer,
+    searchReducerData: searchReducer
 });
 
 export default rootReducer;

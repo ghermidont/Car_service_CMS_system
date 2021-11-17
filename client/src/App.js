@@ -43,12 +43,11 @@ const Footer = lazy(() => import("./components/footer/Footer"));
 export default function App() {
 
     const dispatch = useDispatch();
-
     // User state change listener. To check firebase auth state.
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const idTokenResult = await user.getIdTokenResult();
+                const idTokenResult = await user.getIdToken();
                 getCurrentUser(idTokenResult.token)
                     .then((res) => {
                         dispatch({

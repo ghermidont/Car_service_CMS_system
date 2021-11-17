@@ -10,7 +10,7 @@ exports.createCarController = async (req, res) => {
         const newCar = await new carModel(req.body).save();
         res.json(newCar);
     } catch (err) {
-       window.alert(err);
+        window.alert(err);
         res.status(400).json({
             err: err.message,
         });

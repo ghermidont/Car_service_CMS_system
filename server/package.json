@@ -26,6 +26,12 @@
     "uniqueid": "^1.0.0"
   },
   "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 2017
+    },
+    "env": {
+      "es6": true
+    },
     "rules": {
       "indent": [
         "error",

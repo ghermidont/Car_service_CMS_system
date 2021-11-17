@@ -26,7 +26,7 @@ export default function Header() {
             type: "LOGOUT",
             payload: null,
         });
-        history.push("/login");
+        history.push("/");
     };
 
     return (

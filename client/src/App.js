@@ -45,23 +45,34 @@ export default function App() {
     const dispatch = useDispatch();
     // User state change listener. To check firebase auth state.
     useEffect(() => {
+        console.log("App.js useEffect worked!");
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const idTokenResult = await user.getIdToken();
+                //TODO start here try user. access token
+                console.log("This is the user from App.js: ", user);
+                const idTokenResult = await user.getIdTokenResult();
                 getCurrentUser(idTokenResult.token)
                     .then((res) => {
                         dispatch({
                             type: "LOGGED_IN_USER",
                             payload: {
-                                name: res.data.name,
                                 email: res.data.email,
+                                name: res.data.name,
+                                surname: res.data.surname,
+                                date: res.data.date,
+                                fiscal_code: res.data.fiscal_code,
+                                address: res.data.address,
+                                city: res.data.city,
+                                province: res.data.province,
+                                notes: res.data.notes,
+                                mobile: res.data.mobile,
                                 token: idTokenResult.token,
                                 role: res.data.role,
                                 _id: res.data._id,
                             },
                         });
                     })
-                    .catch((err) => console.log("Could not get the current user data. ".err));
+                    .catch((err) => console.log("Could not get the current user data. ", err));
             }
         });
         // Cleanup. This function is returned one more time in order to prevent memory leaks.

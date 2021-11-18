@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LoadingToRedirect from "./loadingToRedirect";
-import { getCurrentAdmin } from "../../functions/callsToAuthRoutes";
+import { mongoDBGetCurrentAdminFunction } from "../../functions/callsToAuthRoutes";
 
 const AdminRoute = ({ children, ...rest }) => {
     const { user } = useSelector((state) => ({ ...state }));
@@ -11,7 +11,7 @@ const AdminRoute = ({ children, ...rest }) => {
     // When the users state changes it checks if the user is an administrator.
     useEffect(() => {
         if (user && user.token) {
-            getCurrentAdmin(user.token)
+            mongoDBGetCurrentAdminFunction(user.token)
                 .then((res) => {
                     console.log("CURRENT ADMIN RES", res);
                     setIsAdmin(true);

@@ -8,10 +8,10 @@ const { fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware } = require("..
 
 // Controllers. In order not to write the functions in the body of the route,
 // we create a separate folder with the functions you need to control the routes.
-const { createUserController, mongoDBGetCurrentUserController } = require("../controllers/authController");
+const { mongoDBCreateNewUserController, mongoDBGetCurrentUserController } = require("../controllers/authController");
 
 //Apply the middleware (in this case "authCheck") before the response we send.
-router.post("/auth/create-user", createUserController);
+router.post("/auth/create-user", mongoDBCreateNewUserController);
 router.get("/auth/get-current-user", fireBaseAuthCheckMiddleware, mongoDBGetCurrentUserController);
 //Called two middlewares after we return the user.
 router.get("/auth/get-current-admin", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, mongoDBGetCurrentUserController);

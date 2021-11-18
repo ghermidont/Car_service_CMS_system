@@ -4,22 +4,23 @@ import Logo from "../../images/logo.png";
 import UsrAvatar from "../../images/usr_avatar.png";
 import { Link } from "react-router-dom";
 import {LogoutOutlined} from "@ant-design/icons";
-import { useDispatch  } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 //import firebase from "firebase";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
+import { toast } from "react-toastify";
 
 export default function Header() {
-    const FBuser = auth.currentUser;
+    //const FBUser = auth.currentUser;
     let history = useHistory();
     let dispatch = useDispatch();
-    //let { user } = useSelector((state) => ({ ...state }));
+    let { user } = useSelector((state) => ({ ...state }));
 
     const logout = () => {
         signOut(auth).then(() => {
-            // Sign-out successful.
+            toast.success("User signed out." );
         }).catch((error) => {
-            // An error happened.
+            toast.error("Error signing out.", error );
         });
         // old version --> firebase.auth().signOut();
         dispatch({
@@ -91,18 +92,20 @@ export default function Header() {
                                 </svg>
                             </Link>
                         </div>
-                        <div className='flex items-center mx-14'>
-                            <div className='w-60 h-14 rounded-full overflow-hidden mr-4'>
-                                <img className=' bg-green rounded' src={UsrAvatar} alt=""/>
+                        {user &&
+                            <div className='flex items-center mx-14'>
+                                <div className='w-60 h-14 rounded-full overflow-hidden mr-4'>
+                                    <img className=' bg-green rounded' src={UsrAvatar} alt=""/>
+                                </div>
+                                <span className='font-normal uppercase hover:opacity-70 focus:opacity-70'>
+                                    <Link to="/user_page">
+                                            My Data
+                                    </Link>
+                                </span>
                             </div>
-                            <span className='font-normal uppercase hover:opacity-70 focus:opacity-70'>
-                                <Link to="/user_page">
-                                    My Data
-                                </Link>
-                            </span>
-                        </div>
+                        }
                         <div>
-                            { FBuser &&
+                            { user &&
                                 <button
                                     className='flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'
                                     onClick={logout}

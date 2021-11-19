@@ -25,15 +25,19 @@ exports.mongoDBCreateNewUserController = async (req, res) => {
     }
 };
 
-exports.mongoDBGetCurrentUserController = async (req, res) => {
+exports.mongoDBGetCurrentUserController = async ( req, res ) => {
     User
-        .findOne({ email: req.body.user.email })
-        .exec((err, user) => {
-            if (err) {
-                throw new Error(JSON.stringify(err));
-                res.json(err);
-            }else {
-                res.json(user);
+        .findOne({ email: req.user.email })
+        .exec(( err, user ) => {
+            if ( err ) {
+                throw new Error( JSON.stringify( err ) );
+                console.log( "err: ", err );
+                res.json( err );
+            } else {
+                console.log( "user: ", user );
+                res.send(user);
+//                res.json( user );
+
             }
         });
 };

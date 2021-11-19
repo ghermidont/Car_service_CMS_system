@@ -36,7 +36,7 @@ export default function LoginPage({ history }){
         if (intended) {
             history.push(intended.from);
         } else {
-            if (res.data.role === "admin") {
+            if (res.user.role === "admin") {
                 history.push("/admin_dashboard");
             } else {
                 history.push("/user_page");
@@ -53,26 +53,26 @@ export default function LoginPage({ history }){
             const idTokenResult = await getIdTokenResult(user, false);
             console.log("Login Page getIdTokenResult.token: ", idTokenResult.token);
             //This functions will give us the user token and we send it to the back end in the header as auth token.
-            mongoDBGetCurrentUserFunction(idTokenResult.token)
+            mongoDBGetCurrentUserFunction(idTokenResult.token, user)
                 .then((res) => {
-                    console.log("LoginPage.js mongoDBGetCurrentUserFunction() :", res);
+                    console.log("LoginPage.js mongoDBGetCurrentUserFunction() email :", res.user.email);
                     // Add data to the React Store.
                     dispatch({
                         type: "LOGGED_IN_USER",
                         payload: {
-                            email: res.data.email,
-                            name: res.data.name,
-                            surname: res.data.surname,
-                            date: res.data.date,
-                            fiscal_code: res.data.fiscal_code,
-                            address: res.data.address,
-                            city: res.data.city,
-                            province: res.data.province,
-                            notes: res.data.notes,
-                            mobile: res.data.mobile,
-                            token: idTokenResult.token,
-                            role: res.data.role,
-                            _id: res.data._id,
+                            //email: res.data.email,
+                            //name: res.data.name,
+                            // surname: res.data.surname,
+                            // date: res.data.date,
+                            // fiscal_code: res.data.fiscal_code,
+                            // address: res.data.address,
+                            // city: res.data.city,
+                            // province: res.data.province,
+                            // notes: res.data.notes,
+                            // mobile: res.data.mobile,
+                            // token: idTokenResult.token,
+                            // role: res.data.role,
+                            // _id: res.data._id,
                         },
                     });
                     roleBasedRedirect(res);

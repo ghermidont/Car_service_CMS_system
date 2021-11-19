@@ -54,7 +54,7 @@ export default function App() {
                 console.log("This is the idTokenResult from App.js: ", idTokenResult);
                 mongoDBGetCurrentUserFunction(idTokenResult.token, user)
                     .then((res) => {
-                        console.log("The res from App.js useEffect: ", res);
+                        console.log("The res from App.js useEffect: ", JSON.stringify(res));
                         // dispatch({
                         //     type: "LOGGED_IN_USER",
                         //     payload: {

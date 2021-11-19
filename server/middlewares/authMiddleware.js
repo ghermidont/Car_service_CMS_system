@@ -9,7 +9,7 @@ exports.fireBaseAuthCheckMiddleware = async (req, res, next) => {
         const firebaseUser = await admin
             .auth()
             .verifyIdToken(req.headers.authtoken);
-        console.log("FIREBASE USER IN AUTHCHECK", firebaseUser);
+        console.log("FIREBASE USER IN AUTHCHECK", firebaseUser, " end user.");
         req.user = firebaseUser;
         next();
     } catch (err) {  

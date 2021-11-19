@@ -5,7 +5,8 @@ import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { mongoDBCreateUserFunction } from "../../functions/callsToAuthRoutes";
-import { getIdTokenResult } from "firebase/auth";
+import { getIdTokenResult, signInWithEmailLink, isSignInWithEmailLink } from "firebase/auth";
+
 //Since the whole app is wrapped in <BrowserRouter> we can do destructuring {history} its the same thing as using (props) >>> props.history.
 const FinishRegisterAfterEmailCheck = ({ history }) => {
     const [email, setEmail] = useState("");
@@ -14,74 +15,92 @@ const FinishRegisterAfterEmailCheck = ({ history }) => {
     let dispatch = useDispatch();
 
     useEffect(() => {
+        console.log("UseEffect email from LS: ", email);
         setEmail(window.localStorage.getItem("emailForRegistration"));
-    }, [history]);
+    }, [history, email]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         // validation
-        if (!email || !password) {
+        if ( !password ) {
             toast.error("Email and password is required");
             return;
         }
 
-        if (password.length < 6) {
+        if ( password.length < 6 ) {
             toast.error("Password must be at least 6 characters long");
             return;
         }
 
         try {
-            const result = await auth.signInWithEmailLink(
-                email,
-                window.location.href
-            );
+            console.log(window.location.href);
+            if (isSignInWithEmailLink(auth, window.location.href)) {
+                //Signing in the new user with email link.
+                setEmail(window.localStorage.getItem("emailForRegistration"));
 
-            if (result.user.emailVerified) {
-                // remove user email fom local storage
-                window.localStorage.removeItem("emailForRegistration");
-                // get user id token
-                let user = auth.currentUser;
-                await user.updatePassword(password);
-                const idTokenResult = await getIdTokenResult(user, false);
-                // redux store
-                console.log("user", user, "idTokenResult", idTokenResult);
-                // On this stage the new user is created and in Mongo DB and then the data is also written in the redux store with dispatch function.
-                mongoDBCreateUserFunction(idTokenResult.token)
-                    .then((res) => {
-                        dispatch({
-                            type: "LOGGED_IN_USER",
-                            payload: {
-                                email: res.data.email,
-                                name: res.data.name,
-                                surname: res.data.surname,
-                                date: res.data.date,
-                                fiscal_code: res.data.fiscal_code,
-                                address: res.data.address,
-                                city: res.data.city,
-                                province: res.data.province,
-                                notes: res.data.notes,
-                                mobile: res.data.mobile,
-                                token: idTokenResult.token,
-                                role: res.data.role,
-                                _id: res.data._id,
-                            },
-                        });
+                const result = await signInWithEmailLink(auth, email, window.location.href)
+                    .then(() => {
+                        console.log("Done the signInWithEmailLink()");
                     })
-                    .catch((err) => console.log(err));
+                    .catch(err => {
+                        console.log("signInWithEmailLink ", err);
+                    });
 
-                // redirect
-                history.push("/user_page");
+                //console.log("EmailVerified: ", result.user.emailVerified);
+
+                if (result) {
+                    // remove user email fom local storage
+                    window.localStorage.removeItem("emailForRegistration");
+                    // get user id token
+                    let user = auth.currentUser;
+                    await user.updatePassword(password);
+                    const idTokenResult = await getIdTokenResult(user, false);
+                    // redux store
+                    console.log("user", user, "idTokenResult", idTokenResult);
+                    // On this stage the new user is created and in Mongo DB and then the data is also written in the redux store with dispatch function.
+                    mongoDBCreateUserFunction(idTokenResult.token)
+                        .then((res) => {
+                            dispatch({
+                                type: "LOGGED_IN_USER",
+                                payload: {
+                                    email: res.data.email,
+                                    name: res.data.name,
+                                    surname: res.data.surname,
+                                    date: res.data.date,
+                                    fiscal_code: res.data.fiscal_code,
+                                    address: res.data.address,
+                                    city: res.data.city,
+                                    province: res.data.province,
+                                    notes: res.data.notes,
+                                    mobile: res.data.mobile,
+                                    token: idTokenResult.token,
+                                    role: res.data.role,
+                                    _id: res.data._id,
+                                },
+                            });
+                        })
+                        .catch((err) => console.log("mongoDBCreateUserFunction() error: ", err));
+
+                    // redirect
+                    history.push("/user_page");
+                }
+            }else{
+                throw("isSignInWithEmailLink() is: ", isSignInWithEmailLink(auth, window.location.href));
             }
         } catch (error) {
-            console.log(error);
+            console.log("handleSubmit try catch error: ", error);
             toast.error(error.message);
         }
     };
 
     const completeRegistrationForm = () => (
         <form onSubmit={handleSubmit}>
-            <input type="email" className="form-control" value={email} disabled />
-
+            <input
+                type="email"
+                className="form-control"
+                value={email}
+                disabled
+            />
             <input
                 type="password"
                 className="form-control"

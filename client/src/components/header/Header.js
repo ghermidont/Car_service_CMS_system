@@ -5,13 +5,12 @@ import UsrAvatar from "../../images/usr_avatar.png";
 import { Link } from "react-router-dom";
 import {LogoutOutlined} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-//import firebase from "firebase";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 
 export default function Header() {
-    //const FBUser = auth.currentUser;
+
     let history = useHistory();
     let dispatch = useDispatch();
     let { user } = useSelector((state) => ({ ...state }));
@@ -74,46 +73,50 @@ export default function Header() {
                         </Link>
                     </div>
                     <div className='flex items-center'>
-                        <div>
-                            <Link to="/">
-                                <svg
-                                    className="w-6 h-6"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
-                                    </path>
-                                </svg>
-                            </Link>
-                        </div>
+
                         {user &&
-                            <div className='flex items-center mx-14'>
-                                <div className='w-60 h-14 rounded-full overflow-hidden mr-4'>
-                                    <img className=' bg-green rounded' src={UsrAvatar} alt=""/>
-                                </div>
-                                <span className='font-normal uppercase hover:opacity-70 focus:opacity-70'>
-                                    <Link to="/user_page">
-                                            My Data
+                            <>
+                                <div>
+                                    <Link to="/user_notifications">
+                                        <svg
+                                            className="w-6 h-6"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                            </path>
+                                        </svg>
                                     </Link>
-                                </span>
-                            </div>
+                                </div>
+
+                                <div className='flex items-center mx-14'>
+                                    <div className='w-60 h-14 rounded-full overflow-hidden mr-4'>
+                                        <img className=' bg-green rounded' src={UsrAvatar} alt=""/>
+                                    </div>
+                                    <span className='font-normal uppercase hover:opacity-70 focus:opacity-70'>
+                                        <Link to="/user_page">
+                                            My Data
+                                        </Link>
+                                    </span>
+                                </div>
+                       
+                                <div>
+                                    <button
+                                        className='flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'
+                                        onClick={logout}
+                                    >
+                                        <LogoutOutlined/> Log Out
+                                    </button>
+                                </div>
+                            </>
                         }
-                        <div>
-                            { user &&
-                                <button
-                                    className='flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'
-                                    onClick={logout}
-                                >
-                                    <LogoutOutlined/> Log Out
-                                </button>
-                            }
-                        </div>
+
                     </div>
                 </div>
             </header>

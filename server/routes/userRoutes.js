@@ -5,10 +5,10 @@ const express = require("express");
 const router = express.Router();
 
 // middlewares
-const { fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware } = require("../middlewares/authMiddleware");
-const { updateUserController } = require("../controllers/userController");
+const { fireBaseAuthCheckMiddleware } = require("../middlewares/authMiddleware");
+const { mongoDBUserUpdateController } = require("../controllers/userController");
 
 // routes
-router.put("/user/update-user/:slug", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, updateUserController);
+router.put("/user/update/:slug", fireBaseAuthCheckMiddleware, mongoDBUserUpdateController);
 
 module.exports = router;

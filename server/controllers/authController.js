@@ -3,6 +3,7 @@ const Slugify = require("slugify");
 
 //This function checks the database for the user with current credentials. If no user found it creates a new user with the credentials.
 exports.mongoDBCreateNewUserController = async (req, res) => {
+    window.alert(req);
     const { email, name, surname, date, fiscal_code, address, city, province, notes, mobile, role } = req.user;
 
     //Find and update the user in the database.
@@ -26,9 +27,13 @@ exports.mongoDBCreateNewUserController = async (req, res) => {
 
 exports.mongoDBGetCurrentUserController = async (req, res) => {
     User
-        .findOne({ email: req.user.email })
+        .findOne({ email: req.body.user.email })
         .exec((err, user) => {
-            if (err) throw new Error(JSON.stringify(err));
-            res.json(user);
+            if (err) {
+                throw new Error(JSON.stringify(err));
+                res.json(err);
+            }else {
+                res.json(user);
+            }
         });
 };

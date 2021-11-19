@@ -9,7 +9,7 @@ exports.listAllUsers = async (req, res) => {
     res.json(dbUsers);
 };
 
-exports.updateUserController = async (req, res) => {
+exports.mongoDBUserUpdateController = async (req, res) => {
     const { email, name, surname, date, fiscal_code, address, city, province, notes, mobile, role } = req.user;
 
     //Find and update the user in the database.

@@ -1,14 +1,23 @@
 /** Functions that trigger the calls to the authentication related backend routes. */
 import axios from "axios";
 
-export const mongoDBCreateUserFunction = async (authToken, newUser) => {
-    await axios.post(`${process.env.REACT_APP_API}/auth/create-user`, newUser,{ headers: {authToken}});
+export const mongoDBCreateUserFunction = async (authToken, user) => {
+    await axios.post(`${process.env.REACT_APP_API}/auth/user/create`, {
+        headers: {authToken},
+        user: user
+    });
 };
 
-export const mongoDBGetCurrentUserFunction = async (authToken) => {
-    await axios.get(`${process.env.REACT_APP_API}/auth/get-current-user`,{},{ headers: { authToken }});
+export const mongoDBGetCurrentUserFunction = async (authToken, user) => {
+    await axios.get(`${process.env.REACT_APP_API}/auth/user/current`, {
+        headers: { authToken },
+        params: user
+    });
 };
 
-export const mongoDBGetCurrentAdminFunction = async (authToken) => {
-    await axios.get(`${process.env.REACT_APP_API}/auth/get-current-admin`,{},{ headers: { authToken }});
+export const mongoDBGetCurrentAdminFunction = async (authToken, user) => {
+    await axios.get(`${process.env.REACT_APP_API}/auth/admin/current`,{
+        headers: { authToken },
+        params: user
+    });
 };

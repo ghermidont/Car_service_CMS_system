@@ -55,6 +55,7 @@ export default function LoginPage({ history }){
             //This functions will give us the user token and we send it to the back end in the header as auth token.
             mongoDBGetCurrentUserFunction(idTokenResult.token)
                 .then((res) => {
+                    console.log("LoginPage.js mongoDBGetCurrentUserFunction() :", res);
                     // Add data to the React Store.
                     dispatch({
                         type: "LOGGED_IN_USER",
@@ -75,7 +76,7 @@ export default function LoginPage({ history }){
                         },
                     });
                     roleBasedRedirect(res);
-                }).catch((err) => console.log("Login page create user error: " + err));
+                }).catch((err) => console.log("Login page get user info error: ", err));
         } catch (error) {
             console.log("Login page submit error: " + error.message);
             //toast.error(error.message);
@@ -114,12 +115,7 @@ export default function LoginPage({ history }){
 
     return(
         <>
-            <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
-                <Link to="/main_menu">
-                    Click to go to &rArr; Main Menu Page
-                </Link>
-            </label>
-            <h1>loginPage.js</h1>
+            <h1>LoginPage.js</h1>
 
             <main>
                 <div className="container mx-auto h-screen flex justify-center items-center">

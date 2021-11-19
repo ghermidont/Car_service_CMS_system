@@ -49,29 +49,30 @@ export default function App() {
         console.log("App.js useEffect worked!");
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                console.log("This is the user from App.js: ", user);
+                console.log("This is the user from App.js onAuthStateChanged(): ", user);
                 const idTokenResult = await getIdTokenResult(user, false);
                 console.log("This is the idTokenResult from App.js: ", idTokenResult);
-                mongoDBGetCurrentUserFunction(idTokenResult.token)
+                mongoDBGetCurrentUserFunction(idTokenResult.token, user)
                     .then((res) => {
-                        dispatch({
-                            type: "LOGGED_IN_USER",
-                            payload: {
-                                email: res.data.email,
-                                name: res.data.name,
-                                surname: res.data.surname,
-                                date: res.data.date,
-                                fiscal_code: res.data.fiscal_code,
-                                address: res.data.address,
-                                city: res.data.city,
-                                province: res.data.province,
-                                notes: res.data.notes,
-                                mobile: res.data.mobile,
-                                token: idTokenResult.token,
-                                role: res.data.role,
-                                _id: res.data._id,
-                            },
-                        });
+                        console.log("The res from App.js useEffect: ", res);
+                        // dispatch({
+                        //     type: "LOGGED_IN_USER",
+                        //     payload: {
+                        //         email: res.data.email,
+                        //         name: res.data.name,
+                        //         surname: res.data.surname,
+                        //         date: res.data.date,
+                        //         fiscal_code: res.data.fiscal_code,
+                        //         address: res.data.address,
+                        //         city: res.data.city,
+                        //         province: res.data.province,
+                        //         notes: res.data.notes,
+                        //         mobile: res.data.mobile,
+                        //         token: idTokenResult.token,
+                        //         role: res.data.role,
+                        //         _id: res.data._id,
+                        //     },
+                        // });
                     })
                     .catch((err) => console.log("Could not get the user data. ", err));
             }
@@ -95,10 +96,8 @@ export default function App() {
                 {/*//TODO After finishing the logic implementation integrate the user and admin routes.  */}
                 <Switch>
                     <Route exact path="/" component={LoginPage}/>
-                    FinishRegisterAfterEmailCheck
                     <Route exact path="/finish_register" component={FinishRegisterAfterEmailCheck}/>
                     <Route exact path="/admin_dashboard" component={AdminDashboard}/>
-
                     <Route exact path="/psw_recover" component={PswRecoverPage}/>
                     <Route exact path="/main_menu" component={MainMenu}/>
                     <Route exact path="/add_client" component={ClientCreatePage}/>

@@ -2,8 +2,10 @@
 const express = require("express");
 const router = express.Router();
 
-// middlewares
+// Middlewares import
 const { fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware } = require("../middlewares/authMiddleware");
+
+// Controllers import
 const {
     deleteUserController,
     toggleUserAccessController,
@@ -13,44 +15,45 @@ const {
     searchFiltersController
 } = require("../controllers/adminController");
 
-// routes
+//Routes
 router.delete(
-    "/admin/delete-user/:slug",
+    "/admin/user/delete/:slug",
     fireBaseAuthCheckMiddleware,
     mongoDbAdminCheckMiddleware,
     deleteUserController
 );
 
 router.get(
-    "/admin/get-single-user/:slug",
+    "/admin/user/get/:slug",
     fireBaseAuthCheckMiddleware,
     mongoDbAdminCheckMiddleware,
     getSingleUserController
 );
 
-router.put(
-    "/admin/user-access-manager/:slug",
+router.post(
+    "/admin/user/access/:slug",
     fireBaseAuthCheckMiddleware,
     mongoDbAdminCheckMiddleware,
     toggleUserAccessController
 );
 
 router.get(
-    "/admin/list-all-users",
+    "/admin/users/total",
     fireBaseAuthCheckMiddleware,
     mongoDbAdminCheckMiddleware,
     listAllUsersController
 );
 
 router.get(
-    "/admin/users-pagination",
+    "/admin/users/pagination",
     fireBaseAuthCheckMiddleware,
     mongoDbAdminCheckMiddleware,
     usersForPaginationController
 );
 
 router.get(
-    "/search/users-search-filter",
+    "/search/users/search",
+    mongoDbAdminCheckMiddleware,
     searchFiltersController
 );
 

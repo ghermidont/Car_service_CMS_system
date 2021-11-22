@@ -1,6 +1,5 @@
 import React, { useEffect, lazy, Suspense } from "react";
 import {Route, Switch} from "react-router";
-import {HashRouter} from "react-router-dom";
 
 //Popup notifications window package.
 import { ToastContainer } from "react-toastify";
@@ -41,7 +40,6 @@ const Header = lazy(() => import("./components/header/Header"));
 const Footer = lazy(() => import("./components/footer/Footer"));
 
 export default function App() {
-
     const dispatch = useDispatch();
 
     // User state change listener. To check firebase auth state.
@@ -51,68 +49,68 @@ export default function App() {
             if (user) {
                 console.log("This is the user from App.js onAuthStateChanged(): ", user);
                 const idTokenResult = await getIdTokenResult(user, false);
-                console.log("This is the idTokenResult from App.js: ", idTokenResult);
+                //console.log("This is the idTokenResult from App.js: ", idTokenResult);
                 mongoDBGetCurrentUserFunction(idTokenResult.token, user)
                     .then((res) => {
-                        console.log("The res from App.js useEffect: ", JSON.stringify(res));
-                        // dispatch({
-                        //     type: "LOGGED_IN_USER",
-                        //     payload: {
-                        //         email: res.data.email,
-                        //         name: res.data.name,
-                        //         surname: res.data.surname,
-                        //         date: res.data.date,
-                        //         fiscal_code: res.data.fiscal_code,
-                        //         address: res.data.address,
-                        //         city: res.data.city,
-                        //         province: res.data.province,
-                        //         notes: res.data.notes,
-                        //         mobile: res.data.mobile,
-                        //         token: idTokenResult.token,
-                        //         role: res.data.role,
-                        //         _id: res.data._id,
-                        //     },
-                        // });
-                    })
-                    .catch((err) => console.log("Could not get the user data. ", err));
+                        // Add data to the React Store.
+                        dispatch({
+                            type: "LOGGED_IN_USER",
+                            payload: {
+                                email: res.data.email,
+                                name: res.data.name ? res.data.name : "Default name value",
+                                surname: res.data.surname ? res.data.surname : "Default surname value",
+                                date: res.data.date ? res.data.date : "Default date value",
+                                fiscal_code: res.data.fiscal_code ? res.data.fiscal_code : "Default fiscal_code value",
+                                address: res.data.address ? res.data.address : "Default address value",
+                                city: res.data.city ? res.data.city : "Default city value",
+                                province: res.data.province ? res.data.province : "Default province value",
+                                notes: res.data.notes ? res.data.notes : "Default notes value",
+                                mobile: res.data.mobile ? res.data.mobile : "Default mobile value",
+                                token: idTokenResult.token,
+                                role: res.data.role,
+                                _id: res.data._id,
+
+                            },
+                        });
+                    }).catch((err) => console.log("App.js get user info error: ", err));
             }
         });
         // Cleanup. This function is returned one more time in order to prevent memory leaks.
         return () => unsubscribe();
+        
     }, [dispatch]);
 
     return (
-        <HashRouter>
-            <Suspense
-                fallback={
-                    <div className="col text-center p-5">
+        <Suspense
+            fallback={
+                <div className="col text-center p-5">
                     Car service CMS is Loading...
-                        <LoadingOutlined />
-                    </div>
-                }
-            >
-                <Header />
-                <ToastContainer />
-                {/*//TODO After finishing the logic implementation integrate the user and admin routes.  */}
-                <Switch>
-                    <Route exact path="/" component={LoginPage}/>
-                    <Route exact path="/finish_register" component={FinishRegisterAfterEmailCheck}/>
-                    <Route exact path="/admin_dashboard" component={AdminDashboard}/>
-                    <Route exact path="/psw_recover" component={PswRecoverPage}/>
-                    <Route exact path="/main_menu" component={MainMenu}/>
-                    <Route exact path="/add_client" component={ClientCreatePage}/>
-                    <Route exact path="/register_user" component={UserRegisterPage}/>
-                    <Route exact path="/clients_list" component={ClientsListPage}/>
-                    <Route exact path="/cars_list" component={CarsListPage}/>
-                    <Route exact path="/services_list" component={ServicesListPage}/>
-                    <Route exact path="/cars_archive" component={CarsArchivePage}/>
-                    <Route exact path="/add_service" component={ServiceCreatePage}/>
-                    <Route exact path="/add_car" component={CarCreatePage}/>
-                    <Route exact path="/user_page" component={UserPage}/>
-                    <Route exact path="/car/:slug" component={CarPage}/>
-                </Switch>
-                <Footer />
-            </Suspense>
-        </HashRouter>    
+                    <LoadingOutlined />
+                </div>
+            }
+        >
+            <Header />
+            <ToastContainer />
+            {/*//TODO After finishing the logic implementation integrate the user and admin routes.  */}
+            <Switch>
+                <Route exact path="/" component={LoginPage}/>
+                <Route exact path="/finish_register" component={FinishRegisterAfterEmailCheck}/>
+                <Route exact path="/admin_dashboard" component={AdminDashboard}/>
+                <Route exact path="/psw_recover" component={PswRecoverPage}/>
+                <Route exact path="/main_menu" component={MainMenu}/>
+                <Route exact path="/add_client" component={ClientCreatePage}/>
+                <Route exact path="/register_user" component={UserRegisterPage}/>
+                <Route exact path="/clients_list" component={ClientsListPage}/>
+                <Route exact path="/cars_list" component={CarsListPage}/>
+                <Route exact path="/services_list" component={ServicesListPage}/>
+                <Route exact path="/cars_archive" component={CarsArchivePage}/>
+                <Route exact path="/add_service" component={ServiceCreatePage}/>
+                <Route exact path="/add_car" component={CarCreatePage}/>
+                <Route exact path="/user_page" component={UserPage}/>
+                <Route exact path="/car/:slug" component={CarPage}/>
+            </Switch>
+            <Footer />
+        </Suspense>
+       
     );
 }

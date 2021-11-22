@@ -7,12 +7,12 @@ exports.mongoDBCreateNewUserController = async (req, res) => {
     const { email, name, surname, date, fiscal_code, address, city, province, notes, mobile, role } = req.user;
 
     //Find and update the user in the database.
-    const user = User
-        .findOne({ email: req.user.email }, { new: true })
-        .exec();
+    const user = User.findOne({ email: req.user.email }, { new: true }).exec();
+
     if (user) {
         //If user exists, we get this message.
         res.send("This email address is already in use.");
+        console.log("This email address is already in use.");
         res.json(user);
     } else {
         //If not existing, we create the user.
@@ -26,18 +26,12 @@ exports.mongoDBCreateNewUserController = async (req, res) => {
 };
 
 exports.mongoDBGetCurrentUserController = async ( req, res ) => {
-    User
-        .findOne({ email: req.user.email })
-        .exec(( err, user ) => {
+    User.findOne({ email: req.user.email }).exec(
+        ( err, user ) => {
             if ( err ) {
                 throw new Error( JSON.stringify( err ) );
-                console.log( "err: ", err );
-                res.json( err );
-            } else {
-                console.log( "user: ", user );
-                res.send(user);
-//                res.json( user );
-
             }
+            console.log( "user: ", user );
+            res.json(user);
         });
 };

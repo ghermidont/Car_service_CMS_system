@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { getIdTokenResult, signInWithEmailAndPassword } from "firebase/auth";
 //import { auth /*googleAuthProvider*/ } from "../firebase";
-//import { toast } from "react-toastify";
+import { toast } from "react-toastify";
+
 //useSelector is used to get the data from the state.
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -15,18 +16,20 @@ export default function LoginPage({ history }){
 
     //we use destructuring to get specific data from the states that are defined in the reducers.
     // user is the name of the userReduces
-    const { user } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
         let intended = history.location.state;
+        console.log("history.location.state", history.location.state);
+
         if (intended) {
             return;
         } else {
-            if (user && user.token){
+            if (reduxStoreUser && reduxStoreUser.token){
                 history.push("/main_menu");
             }
         }
-    }, [user, history]);
+    }, [reduxStoreUser, history]);
 
     let dispatch = useDispatch();
 
@@ -36,10 +39,10 @@ export default function LoginPage({ history }){
         if (intended) {
             history.push(intended.from);
         } else {
-            if (res.user.role === "admin") {
+            if (res.data.role === "admin") {
                 history.push("/admin_dashboard");
             } else {
-                history.push("/user_page");
+                history.push("/main_menu");
             }
         }
     };
@@ -55,31 +58,31 @@ export default function LoginPage({ history }){
             //This functions will give us the user token and we send it to the back end in the header as auth token.
             mongoDBGetCurrentUserFunction(idTokenResult.token, user)
                 .then((res) => {
-                    console.log("LoginPage.js mongoDBGetCurrentUserFunction() email :", res.user.email);
-                    // Add data to the React Store.
+                // Add data to the React Store.
                     dispatch({
                         type: "LOGGED_IN_USER",
-                        payload: {
-                            //email: res.data.email,
-                            //name: res.data.name,
-                            // surname: res.data.surname,
-                            // date: res.data.date,
-                            // fiscal_code: res.data.fiscal_code,
-                            // address: res.data.address,
-                            // city: res.data.city,
-                            // province: res.data.province,
-                            // notes: res.data.notes,
-                            // mobile: res.data.mobile,
-                            // token: idTokenResult.token,
-                            // role: res.data.role,
-                            // _id: res.data._id,
+                        payload: {                       
+                            email: res.data.email,
+                            name: res.data.name ? res.data.name: "Default name value",
+                            surname: res.data.surname ? res.data.surname: "Default surname value",
+                            date: res.data.date ? res.data.date: "Default date value",
+                            fiscal_code: res.data.fiscal_code ? res.data.fiscal_code: "Default fiscal_code value",
+                            address: res.data.address ? res.data.address: "Default address value",
+                            city: res.data.city ? res.data.city: "Default city value",
+                            province: res.data.province ? res.data.province: "Default province value",
+                            notes: res.data.notes ? res.data.notes: "Default notes value",
+                            mobile: res.data.mobile ? res.data.mobile: "Default mobile value",
+                            token: idTokenResult.token,
+                            role: res.data.role,
+                            _id: res.data._id,
+                       
                         },
                     });
                     roleBasedRedirect(res);
                 }).catch((err) => console.log("Login page get user info error: ", err));
         } catch (error) {
             console.log("Login page submit error: " + error.message);
-            //toast.error(error.message);
+            toast.error(error.message);
         }
     };
 

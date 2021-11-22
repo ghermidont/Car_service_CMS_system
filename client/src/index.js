@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
+// On release replace BrowserRouter with HashRouter
+//import {HashRouter} from "react-router-dom";
 import "./index.css";
 import App from "./App";
 
@@ -16,10 +18,10 @@ import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 /* This is the link to the general reduces file (index.js) from the reducers folder.
  The actual link is ./reducers/index.js. but since it the file name is index.js we can skip the specification it is done by default. */
-import RootReducer from "./reducers/rootReducer";
+import rootReducer from "./reducers";
 
 // initiate the Redux store
-const store = createStore(RootReducer, composeWithDevTools());
+const store = createStore(rootReducer, composeWithDevTools());
 
 ReactDOM.render(
     <React.StrictMode>

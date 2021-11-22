@@ -10,10 +10,16 @@ import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 
 export default function Header() {
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+    //const FireBaseUser = auth.currentUser;
 
-    let history = useHistory();
-    let dispatch = useDispatch();
-    let { user } = useSelector((state) => ({ ...state }));
+    if ( reduxStoreUser ) {
+        console.log("The user form the Redux Store:", reduxStoreUser);
+    }else{
+        console.log("No user info found in the Redux State.");
+    }
 
     const logout = () => {
         signOut(auth).then(() => {
@@ -73,8 +79,7 @@ export default function Header() {
                         </Link>
                     </div>
                     <div className='flex items-center'>
-
-                        {user &&
+                        {reduxStoreUser &&
                             <>
                                 <div>
                                     <Link to="/user_notifications">
@@ -101,11 +106,11 @@ export default function Header() {
                                     </div>
                                     <span className='font-normal uppercase hover:opacity-70 focus:opacity-70'>
                                         <Link to="/user_page">
-                                            My Data
+                                            {reduxStoreUser ? reduxStoreUser.name : "User Data"}
                                         </Link>
                                     </span>
                                 </div>
-                       
+
                                 <div>
                                     <button
                                         className='flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'
@@ -116,7 +121,6 @@ export default function Header() {
                                 </div>
                             </>
                         }
-
                     </div>
                 </div>
             </header>

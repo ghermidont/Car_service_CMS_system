@@ -2,9 +2,9 @@ import { combineReducers } from "redux";
 import { userReducer } from "./userReducer";
 import { searchReducer } from "./searchReducer";
 
-const rootReducer = combineReducers({
-    userReducerData: userReducer,
-    searchReducerData: searchReducer
+const index = combineReducers({
+    reduxStoreUser: userReducer,
+    reduxStoreUserSearchData: searchReducer
 });
 
-export default rootReducer;
+export default index;

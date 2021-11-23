@@ -30,7 +30,7 @@ export default function ClientUpdatePage({match}) {
 
     const { slug } = match.params;
     // Get the user from Redux Store
-    const { user } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
         loadClientDbInfo();

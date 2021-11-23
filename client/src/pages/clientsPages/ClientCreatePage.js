@@ -29,7 +29,7 @@ export default function ClientCreatePage() {
     const [clientInfoState, setClientInfoState] = useState(initialState);
 
     // Get the user from Redux Store
-    const { user } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     const handleSubmit = (event) => {
         event.preventDefault();

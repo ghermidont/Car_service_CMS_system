@@ -7,7 +7,7 @@ import {useSelector} from "react-redux";
 export default function CarsListPage() {
     const [loading, setLoading] = useState(false);
     const [CarsFromDb, setCarsFromDb] = useState({});
-    const { user } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
         getCarsFromDb();

@@ -37,7 +37,7 @@ export default function CarUpdatePage({match}) {
 
     const { slug } = match.params;
     // Get the user from Redux Store
-    const { user } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
         loadCarDbInfo();

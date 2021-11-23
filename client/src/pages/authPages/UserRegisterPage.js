@@ -7,11 +7,11 @@ import { useSelector } from "react-redux";
 const UserRegisterPage = ({ history }) => {
     const [email, setEmail] = useState("");
 
-    const { user } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
-        if (user && user.token) history.push("/main_menu");
-    }, [user, history]);
+        if (reduxStoreUser && reduxStoreUser.token) history.push("/main_menu");
+    }, [reduxStoreUser, history]);
 
     const handleSubmit = async (e) => {
         //prevent page reload
@@ -30,8 +30,6 @@ const UserRegisterPage = ({ history }) => {
         // clear state
         setEmail("");
     };
-
-
 
     return (
         // TODO On release remove the empty tags and the h1.

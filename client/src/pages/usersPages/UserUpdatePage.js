@@ -1,16 +1,9 @@
 
-import React, {useEffect, useState} from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
-import ClientUpdateForm from "../../components/forms/clientFormsComponents/ClientCreateForm";
+import UserUpdateForm from "../../components/forms/userFormComponents/UserUpdateForm";
 import { useSelector } from "react-redux";
-import {getSingleClientFunction, updateClientFunction} from "../../functions/callsToClientRoutes";
-
-// TODO implement the cascader.
-/* Use the the Ant cascader for cars select. https://ant.design/components/cascader/ */
-
-//Cars DB API: https://parse-dashboard.back4app.com/apps/7e730946-c9c1-4aca-90f3-87f9abc2842c/browser/Carmodels_Car_Model_List
-//https://www.back4app.com/docs/react/quickstart
+import { mongoDBUpdateCurrentUserFunction } from "../../functions/callsToUserRoutes";
 
 const initialState = {
     name: "",
@@ -25,27 +18,17 @@ const initialState = {
     email: ""
 };
 
-export default function ClientUpdatePage({match}) {
-    const [currentClientParamsState, setCurrentClientParamsState] = useState(initialState);
+export default function UpdateUserPage({match}) {
+    const [currentUserInfoState, setCurrentUserInfoState] = useState(initialState);
 
     const { slug } = match.params;
+    console.log(slug);
     // Get the user from Redux Store
-    const { user } = useSelector((state) => ({ ...state }));
-
-    useEffect(() => {
-        loadClientDbInfo();
-    }, []);
-
-    const loadClientDbInfo = () => {
-        getSingleClientFunction(slug).then((client) => {
-            console.log("Single client ", client);
-            setCurrentClientParamsState({ ...currentClientParamsState, ...client.data });
-        });
-    };
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        updateClientFunction(slug, currentClientParamsState, user.token)
+        mongoDBUpdateCurrentUserFunction(slug, currentUserInfoState, reduxStoreUser.token)
             .then(() => {
                 window.alert( "Client info is updated successfully." );
                 window.location.reload();
@@ -57,21 +40,18 @@ export default function ClientUpdatePage({match}) {
 
     const handleUserInput = (event) => {
         // Dynamically update each of the initialState values by their name parameter.
-        setCurrentClientParamsState({ ...currentClientParamsState, [event.target.name]: event.target.value });
+        setCurrentUserInfoState({ ...currentUserInfoState, [event.target.name]: event.target.value });
     };
 
     return (
         <main>
-            <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
-                <Link to="/">Click to go to &rArr; Home Page</Link>
-            </label>
-            <h1>UpdateClientPage.js</h1>
+            <h1>UserUpdatePage.js</h1>
 
-            <ClientUpdateForm
+            <UserUpdateForm
                 handleSubmit={handleSubmit}
                 handleUserInput={handleUserInput}
-                currentCarParamsState={currentClientParamsState}
-                setCurrentCarParamsState={setCurrentClientParamsState}
+                currentCarParamsState={currentUserInfoState}
+                setCurrentCarParamsState={setCurrentUserInfoState}
             />
         </main>
     );

@@ -27,7 +27,7 @@ export default function CarCreatePage() {
     const [carParamsState, setCarParamsState] = useState(initialState);
 
     // Get the user from Redux Store
-    const { user } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     const handleSubmit = (event) => {
         event.preventDefault();

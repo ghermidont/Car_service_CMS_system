@@ -1,21 +1,14 @@
 /**This form is called in the UserUpdatePage.ls*/
 // noinspection DuplicatedCode
 // noinspection DuplicatedCode
-
+//!Start here finish the user update form
 import React from "react";
 import {Link} from "react-router-dom";
 //import { Select } from "antd";
 //const { Option } = Select;
 //Get the multi-choice logic from here.
 
-//TODO implement the cascader.
-/*Use the the Ant cascader for cars select.
-https://ant.design/components/cascader/*/
-
-//Cars DB API: https://parse-dashboard.back4app.com/apps/7e730946-c9c1-4aca-90f3-87f9abc2842c/browser/Carmodels_Car_Model_List
-//https://www.back4app.com/docs/react/quickstart
-
-const ClientUpdateForm = ({ handleSubmit, handleUserInput, values }) => {
+const UserUpdateForm = ({ handleSubmit, handleUserInput, values }) => {
     //states
     const {
         name,
@@ -195,4 +188,4 @@ const ClientUpdateForm = ({ handleSubmit, handleUserInput, values }) => {
     );
 };
 
-export default ClientUpdateForm;
+export default UserUpdateForm;

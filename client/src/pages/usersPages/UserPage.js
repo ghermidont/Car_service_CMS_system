@@ -1,8 +1,11 @@
 import React from "react";
 import ClientPhoto from "../../images/usr_avatar.png";
 import { Link } from "react-router-dom";
+import {useSelector} from "react-redux";
 
-export default function userPage() {
+export default function UserPage() {
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+
     return(     
         <main>
             <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>

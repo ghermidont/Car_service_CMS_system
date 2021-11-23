@@ -1,6 +1,6 @@
-//TRANSFERRED
 import React, { useState, useEffect } from "react";
 import { auth } from "../../firebase";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
@@ -8,23 +8,22 @@ const PswRecoverPage = ({ history }) => {
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const { user } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
-        if (user && user.token) history.push("/");
-    }, [user, history]);
+        if (reduxStoreUser && reduxStoreUser.token) history.push("/");
+    }, [reduxStoreUser, history]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
-        const config = {
-            url: process.env.REACT_APP_FORGOT_PASSWORD_REDIRECT,
-            handleCodeInApp: true,
-        };
+        // const config = {
+        //     url: process.env.REACT_APP_FORGOT_PASSWORD_REDIRECT,
+        //     handleCodeInApp: true,
+        // };
 
-        await auth
-            .sendPasswordResetEmail(email, config)
+        await sendPasswordResetEmail(auth, email /*config*/)
             .then(() => {
                 setEmail("");
                 setLoading(false);
@@ -33,33 +32,51 @@ const PswRecoverPage = ({ history }) => {
             .catch((error) => {
                 setLoading(false);
                 toast.error(error.message);
-                console.log("ERROR MSG IN FORGOT PASSWORD", error);
+                console.log("ERROR MSG IN FORGOT PASSWORD ", error);
             });
     };
 
     return (
-        <div className="container col-md-6 offset-md-3 p-5">
-            {loading ? (
-                <h4 className="text-danger">Loading</h4>
-            ) : (
-                <h4>Forgot Password</h4>
-            )}
+        <>
+            <h1>PswRecoverPage.js</h1>
+            <main>
+                <div className="container mx-auto h-screen flex justify-center items-center">
+                    {loading ? (
+                        <h4 className="text-danger">Loading</h4>
+                    ) : (
+                        <h4>Forgot Password</h4>
+                    )}
+                    <form
+                        autoComplete="off"
+                        className='max-w-600 w-100% bg-grayL px-12 pt-8 pb-14 shadow-shadow rounded'
+                        onSubmit={handleSubmit}
+                    >
+                        <label className='block mb-2 text-xl'>
+                            Email:
+                            <input
+                                className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                                required
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Your email address"
+                                autoFocus
+                            />
+                        </label>
 
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    className="form-control"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Type your email"
-                    autoFocus
-                />
-                <br />
-                <button className="btn btn-raised" disabled={!email}>
-                    Submit
-                </button>
-            </form>
-        </div>
+                        <div className='text-xl text-white flex justify-between'>
+                            <button
+                                className='mr-1 bg-green w-200 py-3 rounded transition duration-300 hover:opacity-70'
+                                disabled={!email}
+                                onClick={handleSubmit}
+                            >
+                                Submit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </>  
     );
 };
 

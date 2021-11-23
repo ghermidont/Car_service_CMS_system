@@ -5,7 +5,7 @@ import LoadingToRedirect from "./loadingToRedirect";
 import { mongoDBGetCurrentAdminFunction } from "../../functions/callsToAuthRoutes";
 
 const AdminRoute = ({ children, ...rest }) => {
-    const { user } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
     const [isAdmin, setIsAdmin] = useState(false);
 
     // When the users state changes it checks if the user is an administrator.

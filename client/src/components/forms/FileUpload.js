@@ -4,8 +4,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Avatar, Badge } from "antd";
 
-const FileUpload = (props) => {
-    const { user } = useSelector((state) => ({ ...state }));
+const FileUploadForm = (props) => {
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     const fileUploadAndResize = (e) => {  
     /* In case we upload single file we would take the first element in the array with e.target.files[0]. 
@@ -27,11 +27,11 @@ const FileUpload = (props) => {
                     (uri) => {           
                         axios
                             .post(
-                                `${process.env.REACT_APP_API}/upload-images`,
+                                `${process.env.REACT_APP_API}/image/upload`,
                                 { image: uri },
                                 {
                                     headers: {
-                                        authToken: user ? user.token : "",
+                                        authToken: reduxStoreUser ? reduxStoreUser.token : "",
                                     },
                                 }
                             )
@@ -56,11 +56,11 @@ const FileUpload = (props) => {
         props.setLoading(true);
         axios
             .post(
-                `${process.env.REACT_APP_API}/remove-image`,
+                `${process.env.REACT_APP_API}/image/remove`,
                 { public_id },
                 {
                     headers: {
-                        authToken: user ? user.token : "",
+                        authToken: reduxStoreUser ? reduxStoreUser.token : "",
                     },
                 }
             )
@@ -114,4 +114,4 @@ const FileUpload = (props) => {
     );
 };
 
-export default FileUpload;
+export default FileUploadForm;

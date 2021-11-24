@@ -34,7 +34,7 @@ const carSchema = new mongoose.Schema({
     km: Number,
     year: Number,
     client: {
-    type: String,
+        type: String,
         trim: true,
         required: true,
         maxlength: 32,
@@ -48,7 +48,7 @@ const carSchema = new mongoose.Schema({
     },
     relation: { type: ObjectId, ref: "clientModel" }
 },
-    { timestamps: true }
+{ timestamps: true }
 );
 
-module.exports = mongoose.model("carModel", carSchema);
+module.exports = mongoose.model("carModel", carSchema, "cars");

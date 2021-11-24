@@ -4,9 +4,10 @@ import {listAllCarsFunction, removeCarFunction} from "../../functions/callsToCar
 import {useSelector} from "react-redux";
 
 //TODO pass the slug to the carInfo object.
-export default function CarsListPage() {
+export default function UsersListPage() {
     const [loading, setLoading] = useState(false);
-    const [CarsFromDb, setCarsFromDb] = useState({});
+    const [mongoDbUsersList, setMongoDbUsersList] = useState({});
+    
     const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
@@ -17,7 +18,7 @@ export default function CarsListPage() {
         setLoading(true);
         listAllCarsFunction()
             .then((res) => {
-                setCarsFromDb(res.data);
+                setMongoDbUsersList(res.data);
                 setLoading(false);
             })
             .catch((err) => {
@@ -33,19 +34,14 @@ export default function CarsListPage() {
 
     return (
         <main className='mb-12'>
-            <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
-                <Link to="/clients_list">
-                    Click to go to &rArr; Clients List Page
-                </Link>
-            </label>
-            <h1>CarsListPage.js</h1>
-        
+            <h1>UsersListPage.js</h1>
+
             <div className="container mx-auto">
                 <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
                     {loading ? (
                         <h4 className="text-danger">Loading...</h4>
                     ) : (
-                        <h4>All Products</h4>
+                        <h4>Users</h4>
                     )}
                     <table className='mx-auto mb-8'>
                         <thead>
@@ -53,39 +49,33 @@ export default function CarsListPage() {
                                 <th> </th>
                                 <th> </th>
                                 <th className='px-1 py-1.5 w-75 bg-blue border border-border text-2xl text-white font-normal uppercase'>
-                                    ID
+                                ID
                                 </th>
                                 <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
-                                    Marca
+                                Ragione sociale
                                 </th>
                                 <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
-                                    MODELLO
+                                Sede Operativa
                                 </th>
                                 <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
-                                    TARGA
+                                Sede Legale
                                 </th>
                                 <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
-                                    REVISIONE
+                                P. Iva
                                 </th>
                                 <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
-                                    KM
-                                </th>
-                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
-                                    ANNO
-                                </th>
-                                <th className='px-6 py-1.5 w-300 bg-blue border border-border text-xl text-white font-normal uppercase'>
-                                    SCHEDA LAVORI
+                                Email
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            {CarsFromDb.map((carInfo) => (
-                                <tr key={carInfo.id}>
+                            {mongoDbUsersList.map((userInfo) => (
+                                <tr key={userInfo.id}>
                                     <td>
                                         <button className='w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'>
-                                            <Link to={`/car/${carInfo.slug}`}>
-                                                Open
+                                            <Link to={`admin/user/${userInfo.slug}`}>
+                                            Open
                                             </Link>
                                         </button>
                                     </td>
@@ -94,7 +84,7 @@ export default function CarsListPage() {
                                             className='w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'
                                             onClick={removeCarFromDB}
                                         >
-                                            Delete
+                                        Delete
                                         </button>
                                     </td>
                                     <td className='border border-border px-3'>1</td>
@@ -160,12 +150,12 @@ export default function CarsListPage() {
                             className='flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70'>
                             <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"> </path>
-                            </svg>                
+                            </svg>
                             Stampa Lista
                         </button>
                     </div>
                 </div>
             </div>
-        </main>     
+        </main>
     );
 }

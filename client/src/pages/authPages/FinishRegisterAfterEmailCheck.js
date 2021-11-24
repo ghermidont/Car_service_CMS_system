@@ -142,7 +142,6 @@ const FinishRegisterAfterEmailCheck = ({ history }) => {
                             />
                         </label>
                         <div className='text-xl text-white flex justify-between'>
-
                             <button
                                 className='mr-1 bg-green w-200 py-3 rounded transition duration-300 hover:opacity-70'
                                 disabled={password.length < 6}

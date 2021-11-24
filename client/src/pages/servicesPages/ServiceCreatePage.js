@@ -29,7 +29,7 @@ export default function ServiceCreatePage() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        createServiceFunction(serviceParamsState, user.token)
+        createServiceFunction(serviceParamsState, reduxStoreUser.token)
             .then(() => {
                 window.alert( "Service added is created" );
                 window.location.reload();

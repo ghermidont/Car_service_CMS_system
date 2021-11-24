@@ -4,8 +4,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Avatar, Badge } from "antd";
 
-const FileUploadForm = (props) => {
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+const FileUploadForm = ( props ) => {
+    const { reduxStoreUser } = useSelector(( state ) => ( { ...state } ));
 
     const fileUploadAndResize = (e) => {  
     /* In case we upload single file we would take the first element in the array with e.target.files[0]. 
@@ -13,10 +13,10 @@ const FileUploadForm = (props) => {
         let files = e.target.files; 
         let allUploadedFiles = props.values.images;
 
-        if (files) {
-            props.setLoading(true);
+        if ( files ) {
+            props.setLoading( true );
 
-            for (let i = 0; i < files.length; i++) {
+            for ( let i = 0; i < files.length; i++ ) {
                 Resizer.imageFileResizer(
                     files[i],
                     720,
@@ -100,7 +100,7 @@ const FileUploadForm = (props) => {
             </div>
             <div className="row">
                 <label className="btn btn-primary btn-raised mt-3">
-          Choose File
+                    Choose File
                     <input
                         type="file"
                         multiple

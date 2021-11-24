@@ -40,12 +40,13 @@ const PswRecoverPage = ({ history }) => {
         <>
             <h1>PswRecoverPage.js</h1>
             <main>
+                {loading ? (
+                    <h4 className="text-danger">Loading</h4>
+                ) : (
+                    <center><h4>Password recover</h4></center>
+                )}
                 <div className="container mx-auto h-screen flex justify-center items-center">
-                    {loading ? (
-                        <h4 className="text-danger">Loading</h4>
-                    ) : (
-                        <h4>Forgot Password</h4>
-                    )}
+
                     <form
                         autoComplete="off"
                         className='max-w-600 w-100% bg-grayL px-12 pt-8 pb-14 shadow-shadow rounded'

@@ -53,7 +53,7 @@ export default function CarUpdatePage({match}) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        updateCarFunction(slug, currentCarParamsState, user.token)
+        updateCarFunction(slug, currentCarParamsState, reduxStoreUser.token)
             .then(() => {
                 window.alert( "Car info is updated successfully." );
                 window.location.reload();

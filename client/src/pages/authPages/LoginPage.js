@@ -39,10 +39,12 @@ export default function LoginPage({ history }){
         if (intended) {
             history.push(intended.from);
         } else {
-            if (res.data.role === "admin") {
-                history.push("/admin_dashboard");
-            } else {
-                history.push("/main_menu");
+            if(res.data) {
+                if (res.data.role === "admin") {
+                    history.push("/admin_dashboard");
+                } else {
+                    history.push("/main_menu");
+                }
             }
         }
     };
@@ -59,24 +61,30 @@ export default function LoginPage({ history }){
             mongoDBGetCurrentUserFunction(idTokenResult.token, user)
                 .then((res) => {
                 // Add data to the React Store.
-                    dispatch({
-                        type: "LOGGED_IN_USER",
-                        payload: {                       
-                            email: res.data.email,
-                            name: res.data.name ? res.data.name: "Default name value",
-                            surname: res.data.surname ? res.data.surname: "Default surname value",
-                            date: res.data.date ? res.data.date: "Default date value",
-                            fiscal_code: res.data.fiscal_code ? res.data.fiscal_code: "Default fiscal_code value",
-                            address: res.data.address ? res.data.address: "Default address value",
-                            city: res.data.city ? res.data.city: "Default city value",
-                            province: res.data.province ? res.data.province: "Default province value",
-                            notes: res.data.notes ? res.data.notes: "Default notes value",
-                            mobile: res.data.mobile ? res.data.mobile: "Default mobile value",
-                            token: idTokenResult.token,
-                            role: res.data.role,
-                            _id: res.data._id,
-                        },
-                    });
+                    if (res.data) {
+                        dispatch({
+                            type: "LOGGED_IN_USER",
+                            payload: {
+                                company_name: res.data.company_name ? res.data.company_name : "Default company_name value",
+                                current_residence: res.data.current_residence ? res.data.current_residence : "Default current_residence value",
+                                current_city: res.data.current_city ? res.data.current_city : "Default current_city value",
+                                current_province: res.data.current_province ? res.data.current_province : "Default current_province value",
+                                official_residence: res.data.current_residence ? res.data.current_residence : "Default current_residence value",
+                                official_city: res.data.current_city ? res.data.current_city : "Default current_city value",
+                                official_province: res.data.current_province ? res.data.current_province : "Default current_province value",
+                                fiscal_code: res.data.fiscal_code ? res.data.fiscal_code : "Default fiscal_code value",
+                                images: res.data.images ? res.data.images : [
+                                    {
+                                        public_id: "jwrzeubemmypod99e8lz",
+                                        url: "https://res.cloudinary.com/dcqjrwaoi/image/upload/v1599480909/jwrzeubemmypod99e8lz.jpg",
+                                    },
+                                ],
+                                email: res.data.email,
+                                role: res.data.role,
+                                token: idTokenResult.token,
+                            },
+                        });
+                    };
                     roleBasedRedirect(res);
                 }).catch((err) => console.log("Login page get user info error: ", err));
         } catch (error) {

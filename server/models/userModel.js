@@ -3,56 +3,62 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
     {
-        name: {
+        company_name: {
             type: String,
             trim: true,
             required: true,
             maxlength: 30,
             text: true,
         },
-        surname: {
+        current_residence: {
             type: String,
             trim: true,
             required: true,
             maxlength: 30,
             text: true,
         },
-        date: Date,
-        fiscal_code: Number,
-        address:{
-            type: String,
-            trim: true,
-            required: true,
-            maxlength: 50,
-            text: false
-        },
-        city:{
+        current_city:{
             type: String,
             trim: true,
             required: true,
             maxlength: 50,
             text: true,
         },
-        province:{
+        current_province:{
             type: String,
             trim: true,
             required: true,
             maxlength: 50,
             text: true,
         },
-        notes:{
+        official_residence: {
             type: String,
             trim: true,
             required: true,
-            maxlength: 50,
+            maxlength: 30,
             text: true,
         },
-        mobile: {
-            type: Number,
+        official_city:{
+            type: String,
             trim: true,
+            required: true,
             maxlength: 20,
-            text: false,
+            text: true,
         },
+        official_province:{
+            type: String,
+            trim: true,
+            required: true,
+            maxlength: 20,
+            text: true,
+        },
+        fiscal_code: Number,
+        images: [
+            {
+                public_id: String,
+                url: String
+            }
+        ],
         email: {
             type: String,
             required: true,
@@ -66,4 +72,4 @@ const userSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-module.exports = mongoose.model("userModel", userSchema);
+module.exports = mongoose.model("userModel", userSchema, "users");

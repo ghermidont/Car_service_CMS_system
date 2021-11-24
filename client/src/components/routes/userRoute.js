@@ -7,7 +7,7 @@ import LoadingToRedirect from "./loadingToRedirect";
 const UserRoute = ({ children, ...rest  }) => {
     const { reduxStoreUser } = useSelector((state) => ({ ...state }));
     // IF user token we return the component passed to the route ELSE redirect to login.
-    return user && user.token ? <Route {...rest} /> : <LoadingToRedirect />;
+    return reduxStoreUser && reduxStoreUser.token ? <Route {...rest} /> : <LoadingToRedirect />;
 };
 
 export default UserRoute;

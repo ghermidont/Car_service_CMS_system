@@ -15,8 +15,8 @@ import { mongoDBGetCurrentUserFunction } from "./functions/callsToAuthRoutes";
 import { LoadingOutlined } from "@ant-design/icons";
 
 // Custom routes. Restrict route access for non logged in users or non admins.
-// const UserRoute = lazy(() => import("./components/routes/userRoute"));
-// const AdminRoute = lazy(() => import("./components/routes/adminRoute"));
+const UserRoute = lazy(() => import("./components/routes/userRoute"));
+const AdminRoute = lazy(() => import("./components/routes/adminRoute"));
 
 // Pages import
 const LoginPage = lazy(() => import("./pages/authPages/LoginPage"));
@@ -31,9 +31,12 @@ const ServiceCreatePage = lazy(() => import("./pages/servicesPages/ServiceCreate
 const CarCreatePage = lazy(() => import("./pages/carsPages/CarCreatePage"));
 const CarPage = lazy(() => import("./pages/carsPages/CarPage"));
 const UserPage = lazy(() => import("./pages/usersPages/UserPage"));
+const UserUpdatePage = lazy(() => import("./pages/usersPages/UserUpdatePage"));
+const UsersListPage = lazy(() => import("./pages/adminPages/UsersListPage"));
+
 const ClientsListPage = lazy(() => import("./pages/clientsPages/ClientsListPage"));
 const PswRecoverPage = lazy(() => import("./pages/authPages/PswRecoverPage"));
-const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const AdminDashboard = lazy(() => import("./pages/adminPages/AdminDashboard"));
 
 // Components
 const Header = lazy(() => import("./components/header/Header"));
@@ -53,25 +56,32 @@ export default function App() {
                 mongoDBGetCurrentUserFunction(idTokenResult.token, user)
                     .then((res) => {
                         // Add data to the React Store.
-                        dispatch({
-                            type: "LOGGED_IN_USER",
-                            payload: {
-                                email: res.data.email,
-                                name: res.data.name ? res.data.name : "Default name value",
-                                surname: res.data.surname ? res.data.surname : "Default surname value",
-                                date: res.data.date ? res.data.date : "Default date value",
-                                fiscal_code: res.data.fiscal_code ? res.data.fiscal_code : "Default fiscal_code value",
-                                address: res.data.address ? res.data.address : "Default address value",
-                                city: res.data.city ? res.data.city : "Default city value",
-                                province: res.data.province ? res.data.province : "Default province value",
-                                notes: res.data.notes ? res.data.notes : "Default notes value",
-                                mobile: res.data.mobile ? res.data.mobile : "Default mobile value",
-                                token: idTokenResult.token,
-                                role: res.data.role,
-                                _id: res.data._id,
-
-                            },
-                        });
+                        if (res.data.company_name!=null){
+                            dispatch({
+                                type: "LOGGED_IN_USER",
+                                payload: {
+                                    company_name: res.data.company_name ? res.data.company_name : "Default company_name value",
+                                    current_residence: res.data.current_residence ? res.data.current_residence : "Default current_residence value",
+                                    current_city: res.data.current_city ? res.data.current_city : "Default current_city value",
+                                    current_province: res.data.current_province ? res.data.current_province : "Default current_province value",
+                                    official_residence: res.data.current_residence ? res.data.current_residence : "Default current_residence value",
+                                    official_city: res.data.current_city ? res.data.current_city : "Default current_city value",
+                                    official_province: res.data.current_province ? res.data.current_province : "Default current_province value",
+                                    fiscal_code: res.data.fiscal_code ? res.data.fiscal_code : "Default fiscal_code value",
+                                    images: res.data.images ? res.data.images : [
+                                        {
+                                            public_id: "jwrzeubemmypod99e8lz",
+                                            url: "https://res.cloudinary.com/dcqjrwaoi/image/upload/v1599480909/jwrzeubemmypod99e8lz.jpg",
+                                        },
+                                    ],
+                                    email: res.data.email,
+                                    role: res.data.role,
+                                    token: idTokenResult.token,
+                                },
+                            });
+                        }else{
+                            console.log("No mongo DB user data received in the App.js");
+                        };
                     }).catch((err) => console.log("App.js get user info error: ", err));
             }
         });
@@ -95,19 +105,21 @@ export default function App() {
             <Switch>
                 <Route exact path="/" component={LoginPage}/>
                 <Route exact path="/finish_register" component={FinishRegisterAfterEmailCheck}/>
-                <Route exact path="/admin_dashboard" component={AdminDashboard}/>
+                <AdminRoute exact path="/admin_dashboard" component={AdminDashboard}/>
                 <Route exact path="/psw_recover" component={PswRecoverPage}/>
-                <Route exact path="/main_menu" component={MainMenu}/>
-                <Route exact path="/add_client" component={ClientCreatePage}/>
+                <UserRoute exact path="/main_menu" component={MainMenu}/>
+                <UserRoute exact path="/add_client" component={ClientCreatePage}/>
                 <Route exact path="/register_user" component={UserRegisterPage}/>
-                <Route exact path="/clients_list" component={ClientsListPage}/>
-                <Route exact path="/cars_list" component={CarsListPage}/>
-                <Route exact path="/services_list" component={ServicesListPage}/>
-                <Route exact path="/cars_archive" component={CarsArchivePage}/>
-                <Route exact path="/add_service" component={ServiceCreatePage}/>
-                <Route exact path="/add_car" component={CarCreatePage}/>
-                <Route exact path="/user_page" component={UserPage}/>
-                <Route exact path="/car/:slug" component={CarPage}/>
+                <UserRoute exact path="/clients_list" component={ClientsListPage}/>
+                <UserRoute exact path="/cars_list" component={CarsListPage}/>
+                <UserRoute exact path="/services_list" component={ServicesListPage}/>
+                <UserRoute exact path="/cars_archive" component={CarsArchivePage}/>
+                <UserRoute exact path="/add_service" component={ServiceCreatePage}/>
+                <UserRoute exact path="/add_car" component={CarCreatePage}/>
+                <UserRoute exact path="/user_page" component={UserPage}/>
+                <UserRoute exact path="/user_update_page" component={UserUpdatePage}/>
+                <UserRoute exact path="/car/:slug" component={CarPage}/>
+                <AdminRoute exact path="/users_list" component={UsersListPage}/>
             </Switch>
             <Footer />
         </Suspense>

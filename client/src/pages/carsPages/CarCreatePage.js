@@ -31,7 +31,7 @@ export default function CarCreatePage() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        createCarFunction(carParamsState, user.token)
+        createCarFunction(carParamsState, reduxStoreUser.token)
             .then(() => {
                 window.alert( "Car added is created" );
                 window.location.reload();

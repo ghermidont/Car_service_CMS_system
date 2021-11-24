@@ -12,7 +12,6 @@ const { mongoDBCreateNewUserController, mongoDBGetCurrentUserController } = requ
 //Apply the middleware (in this case "authCheck") before the response we send.
 router.post(
     "/auth/user/create",
-    fireBaseAuthCheckMiddleware,
     mongoDBCreateNewUserController
 );
 

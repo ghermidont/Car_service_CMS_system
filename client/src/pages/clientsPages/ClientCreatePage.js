@@ -33,7 +33,7 @@ export default function ClientCreatePage() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        createClientFunction(clientInfoState, user.token)
+        createClientFunction(clientInfoState, reduxStoreUser.token)
             .then(() => {
                 window.alert( "New client added." );
                 window.location.reload();

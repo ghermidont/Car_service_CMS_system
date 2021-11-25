@@ -50,30 +50,25 @@ export default function App() {
         console.log("App.js useEffect worked!");
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                console.log("This is the user from App.js onAuthStateChanged(): ", user);
+                console.log("Fire Base user from App.js onAuthStateChanged(): ", user);
                 const idTokenResult = await getIdTokenResult(user, false);
                 //console.log("This is the idTokenResult from App.js: ", idTokenResult);
-                mongoDBGetCurrentUserFunction(idTokenResult.token, user)
+                mongoDBGetCurrentUserFunction(idTokenResult.token, user.email)
                     .then((res) => {
                         // Add data to the React Store.
-                        if (res.data.company_name!=null){
+                        if (res.data!==null){
                             dispatch({
                                 type: "LOGGED_IN_USER",
                                 payload: {
-                                    company_name: res.data.company_name ? res.data.company_name : "Default company_name value",
-                                    current_residence: res.data.current_residence ? res.data.current_residence : "Default current_residence value",
-                                    current_city: res.data.current_city ? res.data.current_city : "Default current_city value",
-                                    current_province: res.data.current_province ? res.data.current_province : "Default current_province value",
-                                    official_residence: res.data.current_residence ? res.data.current_residence : "Default current_residence value",
-                                    official_city: res.data.current_city ? res.data.current_city : "Default current_city value",
-                                    official_province: res.data.current_province ? res.data.current_province : "Default current_province value",
-                                    fiscal_code: res.data.fiscal_code ? res.data.fiscal_code : "Default fiscal_code value",
-                                    images: res.data.images ? res.data.images : [
-                                        {
-                                            public_id: "jwrzeubemmypod99e8lz",
-                                            url: "https://res.cloudinary.com/dcqjrwaoi/image/upload/v1599480909/jwrzeubemmypod99e8lz.jpg",
-                                        },
-                                    ],
+                                    company_name: res.data.company_name,
+                                    current_residence: res.data.current_residence,
+                                    current_city: res.data.current_city,
+                                    current_province: res.data.current_province,
+                                    official_residence: res.data.current_residence,
+                                    official_city: res.data.current_city,
+                                    official_province: res.data.current_province,
+                                    fiscal_code: res.data.fiscal_code,
+                                    images: res.data.images,
                                     email: res.data.email,
                                     role: res.data.role,
                                     token: idTokenResult.token,
@@ -82,7 +77,7 @@ export default function App() {
                         }else{
                             console.log("No mongo DB user data received in the App.js");
                         };
-                    }).catch((err) => console.log("App.js get user info error: ", err));
+                    }).catch((err) => console.log("App.js could not get current user info from MongoDB because: ", err));
             }
         });
         // Cleanup. This function is returned one more time in order to prevent memory leaks.

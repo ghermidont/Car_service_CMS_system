@@ -9,14 +9,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { mongoDBGetCurrentUserFunction } from "../../functions/callsToAuthRoutes";
 import { auth } from "../../firebase";
+import {mongoDBCreateTestFunction} from "../../functions/callsToTestReoutes";
 
 export default function LoginPage({ history }){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [passwordShown, setPasswordShown] = useState(false);
 
     //we use destructuring to get specific data from the states that are defined in the reducers.
     // user is the name of the userReduces
     const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+    const info = {name: "Mike"};
 
     useEffect(() => {
         let intended = history.location.state;
@@ -33,18 +36,22 @@ export default function LoginPage({ history }){
 
     let dispatch = useDispatch();
 
-    const roleBasedRedirect = (res) => {
+    const roleBasedRedirect = (role) => {
+        console.log("LoginPage.js roleBasedRedirect() worked");
         // check if intended
         let intended = history.location.state;
         if (intended) {
             history.push(intended.from);
         } else {
-            if(res.data) {
-                if (res.data.role === "admin") {
+            if(role) {
+                if (role === "admin") {
                     history.push("/admin_dashboard");
                 } else {
                     history.push("/main_menu");
                 }
+            }
+            else {
+                toast.error("roleBasedRedirect() could not read role.");
             }
         }
     };
@@ -56,41 +63,47 @@ export default function LoginPage({ history }){
             const { user } = FBUser;
            
             const idTokenResult = await getIdTokenResult(user, false);
-            console.log("Login Page getIdTokenResult.token: ", idTokenResult.token);
+            console.log("LoginPage.js getIdTokenResult.token: ", idTokenResult.token);
+            console.log("LoginPage.js user.email: ", user.email);
             //This functions will give us the user token and we send it to the back end in the header as auth token.
-            mongoDBGetCurrentUserFunction(idTokenResult.token, user)
+            mongoDBGetCurrentUserFunction(idTokenResult.token, user.email)
                 .then((res) => {
                 // Add data to the React Store.
-                    if (res.data) {
+                    if (res.data!==null){
+                        console.log("LoginPage.js mongoDBGetCurrentUserFunction() response: ", JSON.stringify(res));
                         dispatch({
                             type: "LOGGED_IN_USER",
                             payload: {
-                                company_name: res.data.company_name ? res.data.company_name : "Default company_name value",
-                                current_residence: res.data.current_residence ? res.data.current_residence : "Default current_residence value",
-                                current_city: res.data.current_city ? res.data.current_city : "Default current_city value",
-                                current_province: res.data.current_province ? res.data.current_province : "Default current_province value",
-                                official_residence: res.data.current_residence ? res.data.current_residence : "Default current_residence value",
-                                official_city: res.data.current_city ? res.data.current_city : "Default current_city value",
-                                official_province: res.data.current_province ? res.data.current_province : "Default current_province value",
-                                fiscal_code: res.data.fiscal_code ? res.data.fiscal_code : "Default fiscal_code value",
-                                images: res.data.images ? res.data.images : [
-                                    {
-                                        public_id: "jwrzeubemmypod99e8lz",
-                                        url: "https://res.cloudinary.com/dcqjrwaoi/image/upload/v1599480909/jwrzeubemmypod99e8lz.jpg",
-                                    },
-                                ],
+                                company_name: res.data.company_name,
+                                current_residence: res.data.current_residence,
+                                current_city: res.data.current_city,
+                                current_province: res.data.current_province,
+                                official_residence: res.data.current_residence,
+                                official_city: res.data.current_city,
+                                official_province: res.data.current_province,
+                                fiscal_code: res.data.fiscal_code,
+                                images: res.data.images,
                                 email: res.data.email,
                                 role: res.data.role,
                                 token: idTokenResult.token,
                             },
                         });
+                        roleBasedRedirect(res.data.role);
+                    }else{
+                        toast.error("Could not find user info in the mongoDB database. Unable to proceed");
                     };
-                    roleBasedRedirect(res);
                 }).catch((err) => console.log("Login page get user info error: ", err));
         } catch (error) {
             console.log("Login page submit error: " + error.message);
-            toast.error(error.message);
+            toast.error("Wrong email or password.");
         }
+    };
+
+    // Password toggle handler
+    const togglePassword = () => {
+        // When the handler is invoked
+        // inverse the boolean state of passwordShown
+        setPasswordShown(!passwordShown);
     };
 
     // For Google login
@@ -129,66 +142,76 @@ export default function LoginPage({ history }){
 
             <main>
                 <div className="container mx-auto h-screen flex justify-center items-center">
-                    <form
-                        action="#"
-                        autoComplete="off"
-                        className='max-w-600 w-100% bg-grayL px-12 pt-8 pb-14 shadow-shadow rounded'
-                        onSubmit={handleSubmit}
-                    >
-                        <label className='block mb-2 text-xl'>
-                      User name
-                            <input
-                                className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="Your email"
-                                autoFocus
-                            />
-                        </label>
-                        <label className='block mb-20 text-xl'>
+                    <div className='max-w-600 w-100% bg-grayL px-12 pt-8 pb-14 shadow-shadow rounded'>
+                        <form
+                            action="#"
+                            required
+                            autoComplete="off"
+                            onSubmit={handleSubmit}
+                        >
+                            <label className='block mb-2 text-xl'>
+                                Email
+                                <input
+                                    className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="Your email"
+                                    autoFocus
+                                />
+                            </label>
+                            <label className='block mb-20 text-xl'>
                             Password
-                            <input
-                                type="password"
-                                className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Your password"
-                            />
-                        </label>
-                        <div className='text-xl text-white flex justify-between'>
-
-                            <button
-                                className='mr-1 bg-green w-200 py-3 rounded transition duration-300 hover:opacity-70'
-                                disabled={!email || password.length < 6}
-                                onClick={handleSubmit}
-                            >
+                                <input
+                                    type={passwordShown ? "text" : "password"}
+                                    className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                    placeholder="Your password"
+                                />
+                                <span onClick={()=>{togglePassword();}} style={{color: "blue", fontSize: "15px"}}>Show password</span>
+                            </label>
+                            <div className='text-xl text-white flex justify-between'>
+                                <button
+                                    //type="submit"
+                                    className='mr-1 bg-green w-200 py-3 rounded transition duration-300 hover:opacity-70'
+                                    disabled={!email || password.length < 6}
+                                    onClick={handleSubmit}
+                                >
                               Login
-                            </button>
+                                </button>
 
-                            <button
-                                className='mr-1 ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'
-                                disabled={!email || password.length < 6}
-                            >
-                                <Link to="/psw_recover">
+                                <button
+                                    className='mr-1 ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'
+                                    disabled={!email || password.length < 6}
+                                >
+                                    <Link to="/psw_recover">
                                     Recover pass
-                                </Link>
-                            </button>
+                                    </Link>
+                                </button>
 
-                            <button className='ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'>
-                                <Link to="/register_user">
+                                <button className='ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'>
+                                    <Link to="/register_user">
                                     Register
-                                </Link>
-                            </button>
+                                    </Link>
+                                </button>
+                            </div>
+                        </form>
+                        {/*// For login with Google*/}
+                        {/*<button className='bg-red w-200 py-3 rounded transition duration-300 hover:opacity-70'>*/}
+                        {/*    <Link to="/main_menu">*/}
+                        {/*        Google sign-in*/}
+                        {/*    </Link>*/}
+                        {/*</button>*/}
+                        <button
+                            className='ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'
+                            onClick={() => { mongoDBCreateTestFunction(info); }}
+                        >
+                            Test
+                        </button>
 
-                            {/*// For login with Google*/}
-                            {/*<button className='bg-red w-200 py-3 rounded transition duration-300 hover:opacity-70'>*/}
-                            {/*    <Link to="/main_menu">*/}
-                            {/*        Google sign-in*/}
-                            {/*    </Link>*/}
-                            {/*</button>*/}
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </main>    
         </>

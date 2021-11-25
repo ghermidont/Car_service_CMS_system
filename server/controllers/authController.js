@@ -3,23 +3,29 @@ const Slugify = require("slugify");
 
 //This function checks the database for the user with current credentials. If no user found it creates a new user with the credentials.
 exports.mongoDBCreateNewUserController = async (req, res) => {
-    window.alert(req);
-    // const {
-    //     company_name,
-    //     current_residence,
-    //     current_city,
-    //     current_province,
-    //     official_residence,
-    //     official_city,
-    //     official_province,
-    //     fiscal_code,
-    //     images,
-    //     email,
-    //     role
-    // } = req.user;
 
+    console.log("mongoDBCreateNewUserController() worked");
+
+    const {
+        company_name,
+        current_residence,
+        current_city,
+        current_province,
+        official_residence,
+        official_city,
+        official_province,
+        fiscal_code,
+        images,
+        email,
+        role
+    } = req.body;
+
+    console.log("mongoDBCreateNewUserController() email", email);
+
+    //console.log("req.data.role", req.data.role);
     //Find and update the user in the database.
-    const user = User.findOne({ email: req.user.email }, { new: true }).exec();
+    const user = await User.findOne({ email: email }, { new: true }).exec();
+    console.log("back end mongoDB user: ", JSON.stringify(user));
 
     if (user) {
         //If user exists, we get this message.
@@ -31,31 +37,33 @@ exports.mongoDBCreateNewUserController = async (req, res) => {
         //Create and add the slug to the request body. The slug is formed from the fiscal_code and formatted with Slugify.
         req.body.slug = Slugify(req.body.fiscal_code);
         const newUser = await new User({
-            company_name: req.body.company_name,
-            current_residence: req.body.current_residence,
-            current_city: req.body.current_city,
-            current_province: req.body.current_province,
-            official_residence: req.body.official_residence,
-            official_city: req.body.official_city,
-            official_province: req.body.official_province,
-            fiscal_code: req.body.fiscal_code,
-            images: req.body.images,
-            email: req.body.email,
-            role: req.body.role
+            company_name,
+            current_residence,
+            current_city,
+            current_province,
+            official_residence,
+            official_city,
+            official_province,
+            fiscal_code,
+            images,
+            email,
+            role
         }).save();
-        alert( `New user created: ${newUser}` );
+
+        console.log( `New user created: ${newUser}` );
         //We send in the response the new user object.
         res.json(newUser);
     }
 };
 
 exports.mongoDBGetCurrentUserController = async ( req, res ) => {
-    User.findOne({ email: req.user.email }).exec(
+    console.log("mongoDBGetCurrentUserController() req.query.email: ", JSON.stringify(req.query.email));
+    User.findOne({ email: req.query.email }).exec(
         ( err, user ) => {
             if ( err ) {
                 throw new Error( JSON.stringify( err ) );
             }
-            console.log( "user: ", user );
+            console.log( "mongoDBGetCurrentUserController() user: ", user );
             res.json(user);
         });
 };

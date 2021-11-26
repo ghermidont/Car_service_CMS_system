@@ -58,3 +58,9 @@ Mongoose schemas parameters:
 
 Mongoose populate:
 <https://mongoosejs.com/docs/populate.html>
+
+Hide js code:
+<https://code-boxx.com/hide-javascript-code-from-client/>
+
+Express req info:
+<https://expressjs.com/en/api.html#req>

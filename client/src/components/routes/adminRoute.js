@@ -11,7 +11,7 @@ const AdminRoute = ({ children, ...rest }) => {
     // When the users state changes it checks if the user is an administrator.
     useEffect(() => {
         if (reduxStoreUser && reduxStoreUser.token) {
-            mongoDBGetCurrentAdminFunction(reduxStoreUser.token)
+            mongoDBGetCurrentAdminFunction(reduxStoreUser.token, reduxStoreUser.email)
                 .then((res) => {
                     console.log("CURRENT ADMIN RES", res);
                     setIsAdmin(true);

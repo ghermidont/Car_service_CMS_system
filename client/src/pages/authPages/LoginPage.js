@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { mongoDBGetCurrentUserFunction } from "../../functions/callsToAuthRoutes";
 import { auth } from "../../firebase";
-import {mongoDBCreateTestFunction} from "../../functions/callsToTestReoutes";
+//import {mongoDBCreateTestFunction} from "../../functions/callsToTestRoutes";
 
 export default function LoginPage({ history }){
     const [email, setEmail] = useState("");
@@ -19,7 +19,7 @@ export default function LoginPage({ history }){
     //we use destructuring to get specific data from the states that are defined in the reducers.
     // user is the name of the userReduces
     const { reduxStoreUser } = useSelector((state) => ({ ...state }));
-    const info = {name: "Mike"};
+    //const info = {name: "Mike"};
 
     useEffect(() => {
         let intended = history.location.state;
@@ -44,7 +44,7 @@ export default function LoginPage({ history }){
             history.push(intended.from);
         } else {
             if(role) {
-                if (role === "admin") {
+                if (role === "a%tDHM*54fgS-rl55kfg") {
                     history.push("/admin_dashboard");
                 } else {
                     history.push("/main_menu");
@@ -179,7 +179,7 @@ export default function LoginPage({ history }){
                                     disabled={!email || password.length < 6}
                                     onClick={handleSubmit}
                                 >
-                              Login
+                                    Login
                                 </button>
 
                                 <button
@@ -187,13 +187,13 @@ export default function LoginPage({ history }){
                                     disabled={!email || password.length < 6}
                                 >
                                     <Link to="/psw_recover">
-                                    Recover pass
+                                        Recover pass
                                     </Link>
                                 </button>
 
                                 <button className='ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'>
                                     <Link to="/register_user">
-                                    Register
+                                        Register
                                     </Link>
                                 </button>
                             </div>
@@ -204,12 +204,12 @@ export default function LoginPage({ history }){
                         {/*        Google sign-in*/}
                         {/*    </Link>*/}
                         {/*</button>*/}
-                        <button
-                            className='ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'
-                            onClick={() => { mongoDBCreateTestFunction(info); }}
-                        >
-                            Test
-                        </button>
+                        {/*<button*/}
+                        {/*    className='ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'*/}
+                        {/*    onClick={() => { mongoDBCreateTestFunction(info); }}*/}
+                        {/*>*/}
+                        {/*    Test*/}
+                        {/*</button>*/}
 
                     </div>
                 </div>

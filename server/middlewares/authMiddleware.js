@@ -21,14 +21,18 @@ exports.fireBaseAuthCheckMiddleware = async (req, res, next) => {
 
 // Second layer of security. Check in the MongoDB database if the user is admin.
 exports.mongoDbAdminCheckMiddleware = async (req, res, next) => {
-    const { email } = req.user;
+    //const { email } = req.user;
     //exec() is used to execute the function and get back a real promise.
-    const adminUser = await User.findOne({ email }).exec();
-    if (adminUser.role !== "admin") {
-        res.status(403).json({
-            err: "Admin resource. Access denied.",
-        });
-    } else {
-        next();
-    }
+    await User.findOne({ email: req.query.email }).exec(
+        ( err, user )=>{
+            //console.log("mongoDbAdminCheckMiddleware user: ", user.role);
+            if (user.role === "a%tDHM*54fgS-rl55kfg") {
+                next();
+            } else {
+                res.status(403).json({
+                    err: "Admin resource. Access denied.",
+                });
+            }
+        }
+    );
 };

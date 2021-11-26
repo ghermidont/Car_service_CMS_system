@@ -1,30 +1,29 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import Logo from "../../images/logo.png";
-import UsrAvatar from "../../images/usr_avatar.png";
 import { Link } from "react-router-dom";
 import {LogoutOutlined} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { toast } from "react-toastify";
+import ClientPhoto from "../../images/usr_avatar.png";
 
 export default function Header() {
     const history = useHistory();
     const dispatch = useDispatch();
     const { reduxStoreUser } = useSelector((state) => ({ ...state }));
-    //const FireBaseUser = auth.currentUser;
 
     if ( reduxStoreUser ) {
-        console.log("The user form the Redux Store:", reduxStoreUser);
+        console.log("Header.js The user form the Redux Store:", reduxStoreUser);
     }else{
-        console.log("No user info found in the Redux State.");
+        console.log("Header.js No user info found in the Redux State.");
     }
 
     const logout = () => {
-        signOut(auth).then(() => {
+        signOut( auth ).then( () => {
             toast.success("User signed out." );
-        }).catch((error) => {
+        }).catch(( error ) => {
             toast.error("Error signing out.", error );
         });
         // old version --> firebase.auth().signOut();
@@ -32,7 +31,7 @@ export default function Header() {
             type: "LOGOUT",
             payload: null,
         });
-        history.push("/");
+        history.push("/" );
     };
 
     return (
@@ -101,14 +100,15 @@ export default function Header() {
                                 </div>
 
                                 <div className='flex items-center mx-14'>
-                                    <div className='w-60 h-14 rounded-full overflow-hidden mr-4'>
-                                        <img className=' bg-green rounded' src={UsrAvatar} alt=""/>
-                                    </div>
-                                    <span className='font-normal uppercase hover:opacity-70 focus:opacity-70'>
-                                        <Link to="/user_page">
-                                            {reduxStoreUser ? reduxStoreUser.name : "User Data"}
-                                        </Link>
-                                    </span>
+                                    <Link to="/user_page" >
+                                        <div className='w-60 h-14 rounded-full overflow-hidden mr-4'>
+                                            { reduxStoreUser.images.map((image) => ( <img key={image._id} src={ image.status==="default" ? ClientPhoto : image.url } alt=""/> )) }
+                                            <h1>{ClientPhoto}</h1>
+                                        </div>
+                                        <span className='font-normal uppercase hover:opacity-70 focus:opacity-70'>
+                                            {reduxStoreUser ? reduxStoreUser.company_name : "User Data"}
+                                        </span>
+                                    </Link>
                                 </div>
 
                                 <div>

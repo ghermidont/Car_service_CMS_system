@@ -6,7 +6,7 @@ import { mongoDBCreateUserFunction } from "../../functions/callsToAuthRoutes";
 import { getIdTokenResult, signInWithEmailLink, isSignInWithEmailLink, updatePassword } from "firebase/auth";
 
 //Since the whole app is wrapped in <BrowserRouter> we can do destructuring {history} its the same thing as using (props) >>> props.history.
-const FinishRegisterAfterEmailCheck = ({ history }) => {
+const FinishRegisterAfterEmailCheckPage = ({ history }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordShown, setPasswordShown] = useState(false);
@@ -14,14 +14,14 @@ const FinishRegisterAfterEmailCheck = ({ history }) => {
     let dispatch = useDispatch();
 
     useEffect(() => {
-        console.log("FinishRegisterAfterEmailCheck.js useEffect() worked.");
+        console.log("FinishRegisterAfterEmailCheckPage.js useEffect() worked.");
         //Getting the email from local storage.
         setEmail(window.localStorage.getItem("emailForRegistration"));
         console.log("useEffect() email: ", email);
     }, [history, email]);
 
     const handleSubmit = async (e) => {
-        console.log("FinishRegisterAfterEmailCheck handleSubmit() worked!");
+        console.log("FinishRegisterAfterEmailCheckPage handleSubmit() worked!");
 
         e.preventDefault();
         // validation
@@ -62,31 +62,32 @@ const FinishRegisterAfterEmailCheck = ({ history }) => {
 
                 await getIdTokenResult(user, false).then( (idTokenResult) => {
                     // redux store
-                    console.log( "FinishRegisterAfterEmailCheck handleSubmit user: ", user, "idTokenResult", idTokenResult.token);
+                    console.log( "FinishRegisterAfterEmailCheckPage handleSubmit user: ", user, "idTokenResult", idTokenResult.token);
 
                     const userInfoForMongoDB = {
-                        company_name: "Default name value",
-                        current_residence: "Default surname value",
-                        current_city: "Default date value",
-                        current_province: "Default fiscal_code value",
-                        official_residence: "Default surname value",
-                        official_city: "Default date value",
-                        official_province: "Default fiscal_code value",
-                        fiscal_code: "Default fiscal_code value",
+                        company_name: "Company name",
+                        current_residence: "Current residence",
+                        current_city: "Current city",
+                        current_province: "Current province",
+                        official_residence: "Official residence",
+                        official_city: "Official city",
+                        official_province: "Official province",
+                        fiscal_code: "Fiscal code",
                         images: [
                             {
-                                public_id: "jwrzeubemmypod99e8lz",
-                                url: "https://res.cloudinary.com/dcqjrwaoi/image/upload/v1599480909/jwrzeubemmypod99e8lz.jpg",
+                                public_id: "",
+                                url: "",
+                                status: "default",
                             },
                         ],
                         email: user.email,
                         token: idTokenResult.token,
-                        role: "basic",
+                        role: "b%dDHM*SDKS-Jl5kjs",
                     };
 
                     // On this stage the new user is created and in Mongo DB and then the data is also written in the redux store with dispatch function.
                     mongoDBCreateUserFunction(idTokenResult.token, userInfoForMongoDB).then((res) => {
-                        console.log("mongoDBCreateUserFunction() worked in FinishRegisterAfterEmailCheck.js");
+                        console.log("mongoDBCreateUserFunction() worked in FinishRegisterAfterEmailCheckPage.js");
                         dispatch({
                             type: "LOGGED_IN_USER",
                             payload: {
@@ -176,4 +177,4 @@ const FinishRegisterAfterEmailCheck = ({ history }) => {
     );
 };
 
-export default FinishRegisterAfterEmailCheck;
+export default FinishRegisterAfterEmailCheckPage;

@@ -1,15 +1,10 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-export default function mainMenuPage() {
+export default function MainMenuPage() {
     return (   
         <>
-            <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
-                <Link to="/add_car">
-              Click to go to &rArr; Add Car Pages
-                </Link>
-            </label>  
-            <h1>mainMenu.js</h1>
+            <h1>mainMenuPage.js</h1>
 
             <div className='min-h-screen flex flex-col justify-between'>   
                 <main className='flex items-center'>

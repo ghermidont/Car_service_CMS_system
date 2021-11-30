@@ -92,7 +92,10 @@ export default function LoginPage({ history }){
                     }else{
                         toast.error("Could not find user info in the mongoDB database. Unable to proceed");
                     };
-                }).catch((err) => console.log("Login page get user info error: ", err));
+                }).catch((err) => {
+                    console.log("Login page get user info error: ", err);
+                    toast.error(`Login page get user info error: ${err}`);
+                });
         } catch (error) {
             console.log("Login page submit error: " + error.message);
             toast.error("Wrong email or password.");

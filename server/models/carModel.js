@@ -7,28 +7,28 @@ const carSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: true,
-        maxlength: 32,
+        //maxlength: 32,
         text: true,
     },
     model: {
         type: String,
         trim: true,
         required: true,
-        maxlength: 32,
+        //maxlength: 32,
         text: true,
     },
     licensePlate: {
         type: String,
         trim: true,
         required: true,
-        maxlength: 32,
+        //maxlength: 32,
         text: true,
     },
     revision: {
         type: String,
         trim: true,
         required: true,
-        maxlength: 32,
+        //maxlength: 32,
         text: true,
     },
     km: Number,
@@ -37,7 +37,7 @@ const carSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: true,
-        maxlength: 32,
+        //maxlength: 32,
         text: true,
     },
     slug: {
@@ -46,7 +46,6 @@ const carSchema = new mongoose.Schema({
         lowercase: true,
         index: true,
     },
-    relation: { type: ObjectId, ref: "clientModel" }
 },
 { timestamps: true }
 );

@@ -1,27 +1,27 @@
+//!Start here
 //TODO TO IMPLEMENT
 import React, {useState} from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { createCarFunction } from "../../functions/callsToCarRoutes";
+import { mongoDBCreateCarFunction } from "../../functions/callsToCarRoutes";
 
 // TODO implement the cascader.
-/* Use the the Ant cascader for cars select. https://ant.design/components/cascader/ */
+/* Use the Ant cascader for cars select. https://ant.design/components/cascader/ */
 
 //Cars DB API: https://parse-dashboard.back4app.com/apps/7e730946-c9c1-4aca-90f3-87f9abc2842c/browser/Carmodels_Car_Model_List
 //https://www.back4app.com/docs/react/quickstart
 
 const initialState = {
-    brand: "Car brand",
-    model: "Car model",
-    registrationPlate: "999999",
-    revisions: "Revisions info",
-    km: "999",
-    year: "9999",
-    client: "Client name",
-    referenceToClient: "Client id"
+    brand: "brand",
+    model: "model",
+    licensePlate: "licensePlate",
+    revision: "revisions date",
+    km: 9999,
+    year: 9999,
+    client: "Client",
 };
 
-export default function CarCreatePage() {
+export default function CarCreatePage({history}) {
     const [carParamsState, setCarParamsState] = useState(initialState);
 
     const { brand, model, registrationPlate, revisions, km, year, client } = carParamsState;
@@ -29,16 +29,44 @@ export default function CarCreatePage() {
     // Get the user from Redux Store
     const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        createCarFunction(carParamsState, reduxStoreUser.token)
-            .then(() => {
-                window.alert( "Car added is created" );
-                window.location.reload();
+    const handleSubmit = async (e) => {
+        console.log("CarCreatePage() handleSubmit() worked!");
+
+        e.preventDefault();
+        try {           
+            const carInfoForMongoDB = {
+                company_name: "Company name",
+                current_residence: "Current residence",
+                current_city: "Current city",
+                current_province: "Current province",
+                official_residence: "Official residence",
+                official_city: "Official city",
+                official_province: "Official province",
+                fiscal_code: "Fiscal code",
+                images: [
+                    {
+                        public_id: "",
+                        url: "",
+                        status: "default",
+                    },
+                ],
+                email: user.email,
+                token: idTokenResult.token,
+                role: "b%dDHM*SDKS-Jl5kjs",
+            };
+
+            // On this stage the new user is created and in Mongo DB and then the data is also written in the redux store with dispatch function.
+            mongoDBCreateCarFunction(reduxStoreUser.token, carInfoForMongoDB).then((res) => {
+                console.log("mongoDBCreateCarFunction() worked in CarCreatePage.js");
+
             })
-            .catch((error) => {
-                toast.error(error.response.data.err);
-            });
+                .catch((err) => console.log("mongoDBCreateUserFunction() error: ", err));
+            // redirect
+            history.push(`/car/${slug}`);                       
+        } catch (error) {
+            console.log("handleSubmit try catch error: ", error);
+            toast.error(error.message);
+        }
     };
 
     const handleUserInput = (event) => {

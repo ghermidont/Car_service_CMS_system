@@ -1,59 +1,58 @@
 // noinspection DuplicatedCode
 
 const carModel = require("../models/carModel");
-const Slugify = require("slugify");
+const slugify = require("slugify");
 
-exports.createCarController = async (req, res) => {
+exports.mongoDBCreateCarController = async (req, res) => {
     try {
         //Create and add the slug to the request body. the slug is formed from the registration plate and formatted with Slugify.
-        req.body.slug = Slugify(req.body.registrationPlate);
+        req.body.slug = slugify(req.body.registrationPlate);
         const newCar = await new carModel(req.body).save();
         res.json(newCar);
     } catch (err) {
-        window.alert(err);
-        res.status(400).json({
-            err: err.message,
-        });
+        console.log("mongoDBCreateCarController() err: ", err);
+        res.status(400).json({ err: err.message, });
     }
 };
 
-exports.listAllCarsController = async (req, res) => {
-    let DbCars = await carModel
+exports.mongoDBListAllCarsController = async (req, res) => {
+    const cars = await carModel
         .find({})
         .limit(parseInt(req.params.count))
+        .sort([["createdAt", "desc"]])
         .exec();
-    res.json(DbCars);
+    res.json(cars);
 };
 
-exports.deleteCarController = async (req, res) => {
+exports.mongoDBDeleteCarController = async (req, res) => {
     try {
-        const carToDelete = await carModel
+        const deleted = await carModel
             .findOneAndRemove({slug: req.params.slug,})
             .exec();
-        res.json(carToDelete);
+        res.json(deleted);
     } catch (err) {
-        window.alert(err);
+        console.log("mongoDBDeleteCarController() err: ", err);
         return res.status(400).send("Car deletion failed");
     }
 };
 
-//Gets the single car by the slug. //TODO use this to get single elements from the DB.
-exports.getSingleCarController = async (req, res) => {
-    const product = await carModel
+//Gets the single car by the slug.
+exports.mongoDBGetSingleCarController = async (req, res) => {
+    const car = await carModel
         .findOne({ slug: req.params.slug })
         .exec();
-    res.json(product);
+    res.json(car);
 };
 
-exports.updateCarController = async (req, res) => {
+exports.mongoDBUpdateCarController = async (req, res) => {
     try {
-        if (req.body.title) {
-            req.body.slug = Slugify(req.body.title);
+        if (req.body.licensePlate) {
+            req.body.slug = slugify(req.body.licensePlate);
         }
-        const updated = await carModel
+        const updatedCar = await carModel
             .findOneAndUpdate({ slug: req.params.slug }, req.body,{ new: true })
             .exec();
-        res.json(updated);
+        res.json(updatedCar);
     } catch (err) {
         console.log("CAR UPDATE ERROR ----> ", err);
         res.status(400).json({
@@ -81,28 +80,30 @@ exports.updateCarController = async (req, res) => {
 // };
 
 // WITH PAGINATION
-exports.carsListForPaginationController = async (req, res) => {
+exports.mongoDBCarsListPaginationController = async (req, res) => {
     try {
         // createdAt/updatedAt, desc/asc, 3
         const { sort, order, page } = req.body;
         //the page number the user clicks on
         const currentPage = page || 1;
         //The number of items per page.
-        const perPage = 3; // 3
+        const perPage = 8;
 
         const cars = await carModel.find({})
             //skipping the number of products from the page previous to the chosen page.
             .skip((currentPage - 1) * perPage)
+            .sort([[sort, order]])
             .limit(perPage)
             .exec();
+
         res.json(cars);
     } catch (err) {
-        window.log(err);
+        console.log("mongoDBCarsListPaginationController() err: ", err);
     }
 };
 
 //Getting the total car count for the pagination.
-exports.carsCountController = async (req, res) => {
+exports.mongoDBCarsCountController = async (req, res) => {
     let total = await carModel
         .find({})
         .estimatedDocumentCount()
@@ -111,19 +112,11 @@ exports.carsCountController = async (req, res) => {
 };
 
 // SEARCH / FILTER
-
-const handleSearchQueryController = async (req, res, query) => {
-    const clients = await carModel
-        .find({ $text: { $search: query } })
-        .exec();
-    res.json(clients);
-};
-
-exports.searchFiltersController = async (req, res) => {
+exports.mongoDBCarsSearchFiltersController = async (req, res) => {
     const { query } = req.body;
-
     if (query) {
         console.log("query --->", query);
-        await handleSearchQuery(req, res, query);
+        const car = await carModel.find({ $text: { $search: query } }).exec();
+        res.json(car);
     }
 };

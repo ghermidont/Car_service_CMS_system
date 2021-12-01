@@ -26,6 +26,7 @@ export default function UsersListPage() {
                 console.log(err);
             });
     };
+
     const removeCarFromDB = (slug, plate) => {
         removeCarFunction(slug, reduxStoreUser.token)
             .then(()=>window.alert(`Car with registration palate ${plate} removed successfully.`))

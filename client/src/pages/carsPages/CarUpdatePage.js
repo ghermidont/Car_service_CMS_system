@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import {getSingleCarFunction, updateCarFunction} from "../../functions/callsToCarRoutes";
+import {mongoDBGetSingleCarFunction, mongoDBUpdateCarFunction} from "../../functions/callsToCarRoutes";
 
 // TODO implement the cascader.
 /* Use the the Ant cascader for cars select. https://ant.design/components/cascader/ */
@@ -35,7 +35,7 @@ export default function CarUpdatePage({match}) {
     }, []);
 
     const loadCarDbInfo = () => {
-        getSingleCarFunction(slug).then((car) => {
+        mongoDBGetSingleCarFunction(slug).then((car) => {
             console.log("single car", car);
             setCurrentCarParamsState({ ...currentCarParamsState, ...car.data });
         });
@@ -43,7 +43,7 @@ export default function CarUpdatePage({match}) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        updateCarFunction(slug, currentCarParamsState, reduxStoreUser.token)
+        mongoDBUpdateCarFunction(slug, currentCarParamsState, reduxStoreUser.token)
             .then(() => {
                 window.alert( "Car info is updated successfully." );
                 window.location.reload();

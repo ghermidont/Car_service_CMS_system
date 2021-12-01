@@ -1,22 +1,42 @@
-//TODO Update all the functions here according to the routes calls.
-//TODO See what handleSearchQuery() does.
-
+const admin = require("../firebase/fireBaseSettings");
+const getAuth = require("firebase/auth");
 const userSchema = require("../models/userModel");
 const Slugify = require("slugify");
 
-exports.deleteUserController = async (req, res) => {
+exports.mongoDBFireBaseDeleteUserController = async (req, res) => {
     try {
-        const CMSUserToDelete = await userSchema
+        const deleted = await userSchema
             .findOneAndRemove({slug: req.params.slug,})
             .exec();
-        res.json(CMSUserToDelete);
+        res.json(deleted);
+        try {
+            // Write the current user from the Firebase to the request object.
+            //TODO see if the token is extracted (use console.log).
+            const firebaseUser = await admin
+                .auth()
+                .verifyIdToken(req.headers.authtoken);
+            console.log("FIREBASE USER IN AUTHCHECK", firebaseUser, " end user.");
+            req.user = firebaseUser;
+            getAuth()
+                .deleteUser(firebaseUser.uid)
+                .then(() => {
+                    console.log("Successfully deleted user");
+                })
+                .catch((error) => {
+                    console.log("Error deleting user:", error);
+                });
+        } catch (err) {
+            res.status(401).json({
+                err: "Invalid or expired token",
+            });
+        }
     } catch (err) {
         window.alert(err);
         return res.status(400).send("CMS user deletion failed");
     }
 };
 
-exports.toggleUserAccessController = async (req, res) => {
+exports.mongoDBToggleUserAccessController = async (req, res) => {
     try {
         if (req.body.title) {
             req.body.slug = Slugify(req.body.title);
@@ -35,31 +55,33 @@ exports.toggleUserAccessController = async (req, res) => {
     }
 };
 
-exports.listAllUsersController = async (req, res) => {
-    let DbCars = await userSchema.find({})
-        .populate("category", "", "", "")
-        .sort([["createdAt", "desc"]])
+exports.mongoDBUsersCountController = async (req, res) => {
+    const count = await userSchema
+        .find({})
+        .estimatedDocumentCount()
         .exec();
-    res.json(DbCars);
+
+    res.json(count);
 };
 
-exports.usersForPaginationController = async (req, res) => {
+exports.mongoDBGetAllUsersController = async (req, res) => {
     try {
         // createdAt/updatedAt, desc/asc, 3
         const { sort, order, page } = req.body;
         //the page number the user clicks on
         const currentPage = page || 1;
         //The number of items per page.
-        const perPage = 3; // 3
+        const perPage = 8;
 
         const user = await userSchema.find({})
         //skipping the number of products from the page previous to the chosen page.
             .skip((currentPage - 1) * perPage)
+            .sort([[sort, order]])
             .limit(perPage)
             .exec();
         res.json(user);
     } catch (err) {
-        window.log(err);
+        console.log(err);
     }
 };
 
@@ -70,7 +92,7 @@ exports.getSingleUserController = async (req, res) => {
     res.json(user);
 };
 
-exports.handleSearchQuery = async (req, res, query) => {
+handleSearchQuery = async (req, res, query) => {
     const searchResults = await userSchema
         .find({ $text: { $search: query } })
         .exec();

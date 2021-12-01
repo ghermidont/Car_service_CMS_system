@@ -178,6 +178,8 @@ export default function CarArchivePage() {
                             ))}
                         </tbody>
                     </table>
+
+                    {/* Pagination */}
                     <div className="row">
                         <nav className="col-md-4 offset-md-4 text-center pt-5 p-3">
                             <Pagination
@@ -187,6 +189,7 @@ export default function CarArchivePage() {
                             />
                         </nav>
                     </div>
+
                     {/*Pagination*/}
                     {/*<ul className='flex justify-center items-center xl:text-lg'>*/}
                     {/*    <li className='mx-1'>*/}

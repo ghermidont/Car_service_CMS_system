@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import {getSingleCarFunction, updateCarFunction} from "../../functions/callsToCarRoutes";
+import { mongoDBGetSingleCarFunction } from "../../functions/callsToCarRoutes";
 
 // TODO implement the cascader.
 /* Use the the Ant cascader for cars select. https://ant.design/components/cascader/ */
@@ -37,7 +37,6 @@ export default function CarUpdatePage({match}) {
 
     const { slug } = match.params;
     // Get the user from Redux Store
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
         loadCarDbInfo();
@@ -45,27 +44,10 @@ export default function CarUpdatePage({match}) {
     }, []);
 
     const loadCarDbInfo = () => {
-        getSingleCarFunction(slug).then((car) => {
+        mongoDBGetSingleCarFunction(slug).then((car) => {
             console.log("single car", car);
             setCurrentCarParamsState({ ...currentCarParamsState, ...car.data });
         });
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        updateCarFunction(slug, currentCarParamsState, reduxStoreUser.token)
-            .then(() => {
-                window.alert( "Car info is updated successfully." );
-                window.location.reload();
-            })
-            .catch((error) => {
-                toast.error(error.response.data.err);
-            });
-    };
-
-    const handleUserInput = (event) => {
-        // Dynamically update each of the initialState values by their name parameter.
-        setCurrentCarParamsState({ ...currentCarParamsState, [event.target.name]: event.target.value });
     };
 
     //Start here. Finish the individual car info page with link to the car update page.

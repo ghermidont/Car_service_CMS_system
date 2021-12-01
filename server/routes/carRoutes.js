@@ -7,22 +7,22 @@ const { fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware } = require("..
 
 // controllers import
 const {
-  createCarController,
-  listAllCarsController,
-  deleteCarController,
-  getSingleCarController,
-  updateCarController,
-  carsListForPaginationController,
-  searchFiltersController
+    mongoDBCreateCarController,
+    mongoDBGetCarsCountController,
+    mongoDBDeleteCarController,
+    mongoDBGetSingleCarController,
+    mongoDBUpdateCarController,
+    mongoDBGetAllCarsController,
+    mongoDBFetchCarByFilterController
 } = require("../controllers/carController");
 
 // routesController
-router.post("/car/add-car", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, createCarController);
-router.get("/cars/total", listAllCarsController);
-router.delete("/car/:slug", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, deleteCarController);
-router.get("/car/:slug", getSingleCarController);
-router.put("/car/:slug", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, updateCarController);
-router.post("/cars", carsListForPaginationController);
-router.post("/search/filters", searchFiltersController);
+router.post("/car/new", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, mongoDBCreateCarController);
+router.delete("/car/:slug", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, mongoDBDeleteCarController);
+router.get("/cars/total", fireBaseAuthCheckMiddleware, mongoDBGetCarsCountController);
+router.get("/car/:slug", fireBaseAuthCheckMiddleware, mongoDBGetSingleCarController);
+router.put("/car/:slug", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, mongoDBUpdateCarController);
+router.post("/cars", mongoDBGetAllCarsController);
+router.post("/search/filters", mongoDBFetchCarByFilterController);
 
 module.exports = router;

@@ -7,24 +7,24 @@ const { fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware } = require("..
 
 // Controllers import
 const {
-    deleteUserController,
-    toggleUserAccessController,
-    listAllUsersController,
-    usersForPaginationController,
+    mongoDBFireBaseDeleteUserController,
+    mongoDBToggleUserAccessController,
+    mongoDBUsersCountController,
+    mongoDBGetAllUsersController,
     getSingleUserController,
     searchFiltersController
 } = require("../controllers/adminController");
 
 //Routes
 router.delete(
-    "/admin/user/delete/:slug",
+    "/admin/user/:slug",
     fireBaseAuthCheckMiddleware,
     mongoDbAdminCheckMiddleware,
-    deleteUserController
+    mongoDBFireBaseDeleteUserController
 );
 
 router.get(
-    "/admin/user/get/:slug",
+    "/admin/user/:slug",
     fireBaseAuthCheckMiddleware,
     mongoDbAdminCheckMiddleware,
     getSingleUserController
@@ -34,21 +34,21 @@ router.post(
     "/admin/user/access/:slug",
     fireBaseAuthCheckMiddleware,
     mongoDbAdminCheckMiddleware,
-    toggleUserAccessController
+    mongoDBToggleUserAccessController
 );
 
 router.get(
     "/admin/users/total",
     fireBaseAuthCheckMiddleware,
     mongoDbAdminCheckMiddleware,
-    listAllUsersController
+    mongoDBUsersCountController
 );
 
 router.get(
-    "/admin/users/pagination",
+    "/admin/users",
     fireBaseAuthCheckMiddleware,
     mongoDbAdminCheckMiddleware,
-    usersForPaginationController
+    mongoDBGetAllUsersController
 );
 
 router.get(

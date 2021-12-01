@@ -10,7 +10,7 @@ Take the multi choice logic from the MyMultichooseLogicHereProductCreateForm.js
 <!-- Front end images resizing: -->
 <https://www.npmjs.com/package/react-image-file-resizer>
 
-<!-- Type writer effect -->
+<!-- Typewriter effect -->
 <https://www.npmjs.com/package/typewriter-effect>
 
 <!-- Implement the pagination from here -->
@@ -36,7 +36,8 @@ Deployment and DB links:
 <https://ant.design/components/form/#header>
 
 Clarification:
-We can directly destructure this two parameters without import because they are both part into the Route Object and the component, where they are used, is enclosed inside Route tags in App.js.
+We can directly destructure this two parameters without import because they are both part into the Route Object and the component, 
+where they are used, is enclosed inside Route tags in App.js.
 const CategoryUpdate = ({ history, match }) => {...}
 <https://reactrouter.com/web/api/match>
 

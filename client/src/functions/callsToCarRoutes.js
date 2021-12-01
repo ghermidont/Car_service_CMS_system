@@ -12,23 +12,19 @@ export const mongoDBCreateCarFunction = async ( authToken, newCar ) => {
 //     return await axios.get(`${process.env.REACT_APP_API}/cars/${count}`);
 // };
 
-export const mongoDBRemoveCarFunction = async ( authToken, slug ) => {
+export const mongoDBDeleteCarFunction = async ( authToken, slug ) => {
     return await axios.delete(`${process.env.REACT_APP_API}/car/${slug}`, {
-        headers: {
-            authToken,
-        },
+        headers: { authToken, },
     });
 };
 
-export const mongoDBGetSingleCarFunction = async (slug) => {
+export const mongoDBGetSingleCarFunction = async ( slug ) => {
     return await axios.get(`${process.env.REACT_APP_API}/car/${slug}`);
 };
 
 export const mongoDBUpdateCarFunction = async (slug, car, authToken) => {
     return await axios.put(`${process.env.REACT_APP_API}/car/${slug}`, car, {
-        headers: {
-            authToken,
-        },
+        headers: { authToken, },
     });
 };
 
@@ -43,6 +39,6 @@ export const mongoDBGetCarsCountFunction = async () => {
     return await axios.get(`${process.env.REACT_APP_API}/cars/total`);
 };
 
-export const fetchCarByFilterFunction = async (arg) => {
-    return await axios.post(`${process.env.REACT_APP_API}/search/filters`, arg);
+export const mongoDBFetchCarByFilterFunction = async (args) => {
+    return await axios.post(`${process.env.REACT_APP_API}/search/filters`, args);
 };

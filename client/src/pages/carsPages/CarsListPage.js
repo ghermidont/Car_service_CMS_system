@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {listAllCarsFunction, removeCarFunction} from "../../functions/callsToCarRoutes";
+import {mongoDBGetAllCarsFunction, mongoDBRemoveCarFunction} from "../../functions/callsToCarRoutes";
 import {useSelector} from "react-redux";
 
 //TODO pass the slug to the carInfo object.
 export default function CarsListPage() {
-    const [loading, setLoading] = useState(false);
-    const [CarsFromDb, setCarsFromDb] = useState({});
+    const [ loading, setLoading ] = useState(false);
+    const [ CarsFromDb, setCarsFromDb ] = useState({});
     const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
@@ -15,7 +15,7 @@ export default function CarsListPage() {
 
     const getCarsFromDb = () => {
         setLoading(true);
-        listAllCarsFunction()
+        mongoDBGetAllCarsFunction()
             .then((res) => {
                 setCarsFromDb(res.data);
                 setLoading(false);
@@ -26,7 +26,7 @@ export default function CarsListPage() {
             });
     };
     const removeCarFromDB = (slug, plate) => {
-        removeCarFunction(slug, reduxStoreUser.token)
+        mongoDBRemoveCarFunction(slug, reduxStoreUser.token)
             .then(()=>window.alert(`Car with registration palate ${plate} removed successfully.`))
             .catch(err=>window.alert(err));
     };

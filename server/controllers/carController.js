@@ -80,7 +80,7 @@ exports.mongoDBUpdateCarController = async (req, res) => {
 // };
 
 // WITH PAGINATION
-exports.mongoDBCarsListPaginationController = async (req, res) => {
+exports.mongoDBGetAllCarsController = async (req, res) => {
     try {
         // createdAt/updatedAt, desc/asc, 3
         const { sort, order, page } = req.body;
@@ -103,7 +103,7 @@ exports.mongoDBCarsListPaginationController = async (req, res) => {
 };
 
 //Getting the total car count for the pagination.
-exports.mongoDBCarsCountController = async (req, res) => {
+exports.mongoDBGetCarsCountController = async (req, res) => {
     let total = await carModel
         .find({})
         .estimatedDocumentCount()
@@ -112,7 +112,7 @@ exports.mongoDBCarsCountController = async (req, res) => {
 };
 
 // SEARCH / FILTER
-exports.mongoDBCarsSearchFiltersController = async (req, res) => {
+exports.mongoDBFetchCarByFilterController = async (req, res) => {
     const { query } = req.body;
     if (query) {
         console.log("query --->", query);

@@ -31,8 +31,20 @@ const carSchema = new mongoose.Schema({
         //maxlength: 32,
         text: true,
     },
-    km: Number,
-    year: Number,
+    km: {
+        type: String,
+        trim: true,
+        required: true,
+        //maxlength: 32,
+        text: true,
+    },
+    year: {
+        type: String,
+        trim: true,
+        required: true,
+        //maxlength: 32,
+        text: true,
+    },
     client: {
         type: String,
         trim: true,

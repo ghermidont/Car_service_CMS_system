@@ -12,7 +12,8 @@ exports.fireBaseAuthCheckMiddleware = async (req, res, next) => {
         console.log("FIREBASE USER IN AUTHCHECK", firebaseUser, " end user.");
         req.user = firebaseUser;
         next();
-    } catch (err) {  
+    } catch (err) {
+        console.log("ERROR IN AUTHCHECK", err);
         res.status(401).json({
             err: "Invalid or expired token",
         });
@@ -25,13 +26,17 @@ exports.mongoDbAdminCheckMiddleware = async (req, res, next) => {
     //exec() is used to execute the function and get back a real promise.
     await User.findOne({ email: req.query.email }).exec(
         ( err, user )=>{
-            //console.log("mongoDbAdminCheckMiddleware user: ", user.role);
-            if (user.role === "a%tDHM*54fgS-rl55kfg") {
-                next();
-            } else {
-                res.status(403).json({
-                    err: "Admin resource. Access denied.",
-                });
+            if(user) {
+                //console.log("mongoDbAdminCheckMiddleware user: ", user.role);
+                if (user.role === "a%tDHM*54fgS-rl55kfg") {
+                    next();
+                } else {
+                    res.status(403).json({
+                        err: "Admin resource. Access denied.",
+                    });
+                }
+            }else{
+                res.json( {err: "No user info found.",} );
             }
         }
     );

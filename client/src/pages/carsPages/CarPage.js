@@ -2,7 +2,6 @@
 import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
 import { mongoDBGetSingleCarFunction } from "../../functions/callsToCarRoutes";
 
 // TODO implement the cascader.
@@ -36,7 +35,6 @@ export default function CarUpdatePage({match}) {
     } = currentCarParamsState;
 
     const { slug } = match.params;
-    // Get the user from Redux Store
 
     useEffect(() => {
         loadCarDbInfo();
@@ -47,101 +45,68 @@ export default function CarUpdatePage({match}) {
         mongoDBGetSingleCarFunction(slug).then((car) => {
             console.log("single car", car);
             setCurrentCarParamsState({ ...currentCarParamsState, ...car.data });
+        }).catch((error) => {
+            toast.error("Error loading car info: ", error);
         });
     };
 
     //Start here. Finish the individual car info page with link to the car update page.
     return (
         <main>
-            <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
-                <Link to="/">Click to go to &rArr; Home Page</Link>
-            </label>
-            <h1>UpdateCarPage.js</h1>
+            <h1>CarPage.js</h1>
 
             <div className="container mx-auto py-20">
-                <form onSubmit={handleSubmit}>
-                    {/*TODO Add here inputs from the database with cascader.*/}
-                    <label className='block mb-8 text-xl max-w-600'> MARCA
-                        <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                            type="text"
-                            name="brand"
-                            value={brand}
-                            onChange={handleUserInput}
-                        />
-                    </label>
+                     
+                <label className='block mb-8 text-xl max-w-600'> MARCA
+                    <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
+                        <span className='font-normal text-text text-lg'>{brand}</span>
+                    </div>                      
+                </label>
 
-                    <label className='block mb-8 text-xl max-w-600'> MODELLO
-                        <input
-                            type="text"
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                            name="model"
-                            value={model}
-                            onChange={handleUserInput}
-                        />
-                    </label>
-
-                    <label className='block mb-8 text-xl max-w-600'> TARGA
-                        <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                            type="text"
-                            name="registrationPlate"
-                            value={registrationPlate}
-                            onChange={handleUserInput}
-                        />
-                    </label>
-
-                    <label className='block mb-8 text-xl max-w-600'> REVISIONE
-                        <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                            type="text"
-                            name="revisions"
-                            value={revisions}
-                            onChange={handleUserInput}
-                        />
-                    </label>
-
-                    <label className='block mb-8 text-xl max-w-600'> KM
-                        <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                            type="number"
-                            name="km"
-                            value={km}
-                            onChange={handleUserInput}
-                        />
-                    </label>
-
-                    <label className='block mb-8 text-xl max-w-600'> ANNO
-                        {/*TODO add here regular expression for year only input or replace with date type input*/}
-                        <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                            type="number"
-                            value={year}
-                            onChange={handleUserInput}
-                        />
-                    </label>
-
-                    <label className='block mb-8 text-xl max-w-600'>CLIENTE
-                        {/*TODO consider adding live search algorithm from the clients database.*/}
-                        <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                            type="text"
-                            value={client}
-                            onChange={handleUserInput}
-                        />
-                    </label>
-
-                    <div className='flex justify-end'>
-
-                        <button className='flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"> </path>
-                            </svg>
-                            Salva
-                        </button>
-
+                <label className='block mb-8 text-xl max-w-600'> MODELLO
+                    <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
+                        <span className='font-normal text-text text-lg'>{model}</span>
                     </div>
-                </form>
+                </label>
+
+                <label className='block mb-8 text-xl max-w-600'> TARGA
+                    <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
+                        <span className='font-normal text-text text-lg'>{registrationPlate}</span>
+                    </div>                  
+                </label>
+
+                <label className='block mb-8 text-xl max-w-600'> REVISIONE
+                    <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
+                        <span className='font-normal text-text text-lg'>{revisions}</span>
+                    </div>                   
+                </label>
+
+                <label className='block mb-8 text-xl max-w-600'> KM
+                    <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
+                        <span className='font-normal text-text text-lg'>{km}</span>
+                    </div>                  
+                </label>
+
+                <label className='block mb-8 text-xl max-w-600'> ANNO
+                    <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
+                        <span className='font-normal text-text text-lg'>{year}</span>
+                    </div>                         
+                </label>
+
+                <label className='block mb-8 text-xl max-w-600'>CLIENTE
+                    <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
+                        <span className='font-normal text-text text-lg'>{client}</span>
+                    </div>                  
+                </label>
+
+                <div className='flex justify-end'>
+                    <Link to={`/car/update/${slug}`}>
+                        <button className='flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                            Edit
+                        </button>
+                    </Link>
+                </div>
+             
             </div>
         </main>
     );

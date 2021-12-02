@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
-import {mongoDBGetAllCarsFunction, mongoDBGetCarsCountFunction, mongoDBRemoveCarFunction} from "../../functions/callsToCarRoutes";
+import {mongoDBGetAllCarsFunction, mongoDBGetCarsCountFunction, mongoDBDeleteCarFunction} from "../../functions/callsToCarRoutes";
 import {useSelector} from "react-redux";
 import { toast } from "react-toastify";
 import {Pagination} from "antd";
@@ -70,12 +70,14 @@ export default function CarArchivePage() {
     const [carsCount, setCarsCount] = useState(0);
     const [loading, setLoading] = useState(false);
 
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
     useEffect(() => {
         loadAllCars();
     }, [page]);
 
+    //!START HERE See how the toke is passed.
     useEffect(() => {
-        mongoDBGetCarsCountFunction().then((res) => setCarsCount(res.data));
+        mongoDBGetCarsCountFunction( reduxStoreUser.token ).then(( res) => setCarsCount(res.data));
     }, []);
 
     const loadAllCars = () => {
@@ -87,10 +89,10 @@ export default function CarArchivePage() {
         });
     };
 
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+
 
     const deleteCarFunction = (slug, authToken) => {
-        mongoDBRemoveCarFunction(slug, authToken).then(()=> {
+        mongoDBDeleteCarFunction(slug, authToken).then(()=> {
             toast.success("Car deleted successfully!");
         }).catch(()=>{
             toast.error("Car deletion failed!");
@@ -141,7 +143,7 @@ export default function CarArchivePage() {
                         </thead>
                         <tbody>
                             {dbCars.map(car => (
-                                <tr>
+                                <tr key={car.slug}>
                                     <td>
                                         <Link to={`/cars/${car.slug}`}>
                                             <button className='w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'>
@@ -183,9 +185,10 @@ export default function CarArchivePage() {
                     <div className="row">
                         <nav className="col-md-4 offset-md-4 text-center pt-5 p-3">
                             <Pagination
+                                defaultCurrent={ 1 }
                                 current={ page }
-                                total={ (carsCount / 3) * 10 }
-                                onChange={(value) => setPage(value)}
+                                total={ carsCount }
+                                onChange={(value) => setPage( value ) }
                             />
                         </nav>
                     </div>

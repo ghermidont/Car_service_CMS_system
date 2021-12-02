@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {mongoDBGetAllCarsFunction, mongoDBRemoveCarFunction} from "../../functions/callsToCarRoutes";
+import {mongoDBGetAllCarsFunction, mongoDBDeleteCarFunction} from "../../functions/callsToCarRoutes";
 import {useSelector} from "react-redux";
 
 //TODO pass the slug to the carInfo object.
@@ -26,7 +26,7 @@ export default function CarsListPage() {
             });
     };
     const removeCarFromDB = (slug, plate) => {
-        mongoDBRemoveCarFunction(slug, reduxStoreUser.token)
+        mongoDBDeleteCarFunction(slug, reduxStoreUser.token)
             .then(()=>window.alert(`Car with registration palate ${plate} removed successfully.`))
             .catch(err=>window.alert(err));
     };

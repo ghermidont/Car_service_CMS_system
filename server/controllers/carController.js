@@ -3,15 +3,17 @@
 const carModel = require("../models/carModel");
 const slugify = require("slugify");
 
-exports.mongoDBCreateCarController = async (req, res) => {
+exports.mongoDBCreateCarController = async ( req, res ) => {
     try {
+        console.log( "mongoDBCreateCarController() worked" );
         //Create and add the slug to the request body. the slug is formed from the registration plate and formatted with Slugify.
-        req.body.slug = slugify(req.body.registrationPlate);
+        req.body.slug = slugify(req.body.licensePlate);
+        console.log( JSON.stringify( req.body ) );
         const newCar = await new carModel(req.body).save();
         res.json(newCar);
-    } catch (err) {
-        console.log("mongoDBCreateCarController() err: ", err);
-        res.status(400).json({ err: err.message, });
+    } catch ( err ) {
+        console.log( "mongoDBCreateCarController() err: ", err );
+        res.status( 400 ).json( { err: err.message, } );
     }
 };
 

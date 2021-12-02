@@ -16,15 +16,15 @@ const initialState = {
     model: "model",
     licensePlate: "licensePlate",
     revision: "revisions date",
-    km: 9999,
-    year: 9999,
+    km: "99999",
+    year: "9999",
     client: "Client",
 };
 
-export default function CarCreatePage({history}) {
-    const [carParamsState, setCarParamsState] = useState(initialState);
+export default function CarCreatePage( { history } ){
+    const [ carParamsState, setCarParamsState ] = useState( initialState );
 
-    const { brand, model, registrationPlate, revisions, km, year, client } = carParamsState;
+    const { brand, model, licensePlate, revision, km, year, client } = carParamsState;
 
     // Get the user from Redux Store
     const { reduxStoreUser } = useSelector((state) => ({ ...state }));
@@ -33,39 +33,21 @@ export default function CarCreatePage({history}) {
         console.log("CarCreatePage() handleSubmit() worked!");
 
         e.preventDefault();
-        try {           
-            const carInfoForMongoDB = {
-                company_name: "Company name",
-                current_residence: "Current residence",
-                current_city: "Current city",
-                current_province: "Current province",
-                official_residence: "Official residence",
-                official_city: "Official city",
-                official_province: "Official province",
-                fiscal_code: "Fiscal code",
-                images: [
-                    {
-                        public_id: "",
-                        url: "",
-                        status: "default",
-                    },
-                ],
-                email: user.email,
-                token: idTokenResult.token,
-                role: "b%dDHM*SDKS-Jl5kjs",
-            };
-
-            // On this stage the new user is created and in Mongo DB and then the data is also written in the redux store with dispatch function.
-            mongoDBCreateCarFunction(reduxStoreUser.token, carInfoForMongoDB).then((res) => {
+        try {
+            console.log("carParamsState: ", carParamsState);
+            mongoDBCreateCarFunction(reduxStoreUser.token, carParamsState).then(() => {
                 console.log("mongoDBCreateCarFunction() worked in CarCreatePage.js");
-
+                toast.success( "Car added successfully." );
+                history.push("/cars_archive");
             })
-                .catch((err) => console.log("mongoDBCreateUserFunction() error: ", err));
-            // redirect
-            history.push(`/car/${slug}`);                       
+                .catch((error) => {
+                    console.log("mongoDBCreateCarFunction() error: ", error);
+                    toast.error("Session expired. Please re-login in order to be able to perform this action.");
+                //Logout logic.
+                });
         } catch (error) {
-            console.log("handleSubmit try catch error: ", error);
-            toast.error(error.message);
+            console.log("mongoDBCreateCarFunction() in handleSubmit try catch error: ", error.message);
+            toast.error("Error adding car: ", error.message);
         }
     };
 
@@ -106,8 +88,8 @@ export default function CarCreatePage({history}) {
                         <input
                             className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
                             type="text"
-                            name="registrationPlate"
-                            value={registrationPlate}
+                            name="licensePlate"
+                            value={licensePlate}
                             onChange={handleUserInput}
                         />
                     </label>
@@ -116,8 +98,8 @@ export default function CarCreatePage({history}) {
                         <input
                             className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
                             type="text"
-                            name="revisions"
-                            value={revisions}
+                            name="revision"
+                            value={revision}
                             onChange={handleUserInput}
                         />
                     </label>
@@ -125,7 +107,7 @@ export default function CarCreatePage({history}) {
                     <label className='block mb-8 text-xl max-w-600'> KM
                         <input
                             className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                            type="number"
+                            type="text"
                             name="km"
                             value={km}
                             onChange={handleUserInput}
@@ -136,7 +118,8 @@ export default function CarCreatePage({history}) {
                         {/*TODO add here regular expression for year only input or replace with date type input*/}
                         <input
                             className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                            type="number"
+                            type="text"
+                            name="year"
                             value={year}
                             onChange={handleUserInput}
                         />
@@ -148,32 +131,20 @@ export default function CarCreatePage({history}) {
                             className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
                             type="text"
                             value={client}
+                            name="client"
                             onChange={handleUserInput}
                         />
                     </label>
 
                     <div className='flex justify-end'>
-                        <button className='flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                        <button
+                            className='flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'
+                            type="submit"
+                        >
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"> </path>
                             </svg>
                             Salva
-                        </button>
-
-                        {/*TODO add here the printing functionality.*/}
-                        <button className='flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
-                            <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"> </path>
-                            </svg>
-                            Stampa
-                        </button>
-
-                        {/*TODO Add here the pdf download functionality*/}
-                        <button className='flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"> </path>
-                            </svg>
-                            Download
                         </button>
                     </div>
                 </form>

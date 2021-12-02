@@ -46,7 +46,6 @@ const ClientUpdatePage = lazy(() => import("./pages/clientsPages/ClientUpdatePag
 const ClientPage = lazy(() => import("./pages/clientsPages/ClientPage"));
 //Admin pages
 const AdminDashboard = lazy(() => import("./pages/adminPages/AdminDashboard"));
-const UsersListPage = lazy(() => import("./pages/adminPages/UsersListPage"));
 // Components
 const Header = lazy(() => import("./components/header/Header"));
 const Footer = lazy(() => import("./components/footer/Footer"));
@@ -112,19 +111,18 @@ export default function App() {
                 <Route exact path="/psw_recover" component={PswRecoverPage}/>
                 {/* Admin Routes */}
                 <AdminRoute exact path="/admin_dashboard" component={AdminDashboard}/>
-                <AdminRoute exact path="/users_list" component={UsersListPage}/>
                 {/* User Routes */}
                 <UserRoute exact path="/user_page" component={UserPage}/>
                 <UserRoute exact path="/user_update_page" component={UserUpdatePage}/>
                 <UserRoute exact path="/main_menu" component={MainMenuPage}/>
                 {/* User Routes --> Client */}
                 <UserRoute exact path="/add_client" component={ClientCreatePage}/>
-                <UserRoute exact path="/client_update_page" component={ClientUpdatePage}/>
+                <UserRoute exact path="/client/update/:slug" component={ClientUpdatePage}/>
                 <UserRoute exact path="/clients_list" component={ClientsListPage}/>
                 <UserRoute exact path="/client/:slug" component={ClientPage}/>
                 {/* User Routes --> Cars */}
                 <UserRoute exact path="/add_car" component={CarCreatePage}/>
-                <UserRoute exact path="/car_update_page" component={CarUpdatePage}/>
+                <UserRoute exact path="/car/update/:slug" component={CarUpdatePage}/>
                 <UserRoute exact path="/cars_list" component={CarsListPage}/>
                 <UserRoute exact path="/cars_archive" component={CarsArchivePage}/>
                 <UserRoute exact path="/car/:slug" component={CarPage}/>

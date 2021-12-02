@@ -29,7 +29,6 @@ export default function UserPage() {
                             { images.map((image) => ( <img className='' src={image.status==="default" ? ClientPhoto : image.url} alt=""/> )) }
                         </div>
                         <ul>
-
                             <li className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
                                 Ragione sociale: <span className='font-normal text-text text-lg'>{company_name}</span>
                             </li>

@@ -1,10 +1,10 @@
 /** Functions that trigger the calls to cars manipulation related backend routes. */
 import axios from "axios";
 
-export const mongoDBCreateCarFunction = async ( authToken, newCar ) => {
-    return await axios.post(`${process.env.REACT_APP_API}/car/new`, newCar, {
+export const mongoDBCreateCarFunction = async ( authToken, car ) => {
+    return await axios.post(`${process.env.REACT_APP_API}/car/new`, car, {
         headers: {authToken},
-    });
+    } );
 };
 
 // Not used anywhere. For just in case.
@@ -35,7 +35,7 @@ export const mongoDBGetAllCarsFunction = async (sort, order, page) => {
 };
 
 //Calling the backend end point for total number of products.
-export const mongoDBGetCarsCountFunction = async () => {
+export const mongoDBGetCarsCountFunction = async ( authToken ) => {
     return await axios.get(`${process.env.REACT_APP_API}/cars/total`);
 };
 

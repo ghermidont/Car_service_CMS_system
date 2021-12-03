@@ -1,71 +1,56 @@
-const serviceModel = require("../models/serviceModel");
-const slugify = require("slugify");
+// noinspection DuplicatedCode
+const serviceModel = require( "../models/serviceModel" );
+const slugify = require( "slugify" );
 
-exports.createServiceController = async (req, res) => {
+exports.mongoDBCreateServiceController = async ( req, res ) => {
     try {
-        req.body.slug = slugify(req.body.title, {
-            replacement: '-',
-            remove: /[*+~.()'"!:@]/g,
-            trim: true
-        });
-        const newService = await new serviceModel(req.body).save();
-        res.json(newService);
+        console.log( "mongoDBCreateServiceController() worked" );
+        const slugString = `${req.body.data}${req.body.licensePlate}`;
+        //Create and add the slug to the request body. the slug is formed from the registration plate and formatted with Slugify.
+        req.body.slug = slugify( slugString, { replacement: "-", remove: /[*+~.()'"!:@]/g, trim: true } );
+        console.log(  "mongoDBCreateServiceController() req.body: ", JSON.stringify( req.body ) );
+
+        const newService = await new serviceModel( req.body ).save();
+        res.json( newService );
     } catch (err) {
-        window.alert(err);
-        res.status(400).json({
-            err: err.message,
-        });
+        console.log( "mongoDBCreateServiceController() err: ", err );
+        res.status(400).json( { err: err.message, } );
     }
 };
 
-exports.listAllServicesController = async (req, res) => {
-    let DbServices = await serviceModel.find({})
-        .limit(parseInt(req.params.count))
-        //TODO fill the populate params
-        .populate("category", "", "", "")
-        .sort([["createdAt", "desc"]])
-        .exec();
-    res.json(DbServices);
-};
-
-exports.deleteServiceController = async (req, res) => {
+exports.mongoDBDeleteServiceController = async (req, res) => {
     try {
-        const serviceToDelete = await serviceModel.findOneAndRemove({
-            slug: req.params.slug,
-        }).exec();
-        res.json(serviceToDelete);
-    } catch (err) {
-        window.alert(err);
-        return res.status(400).send("Service deletion failed");
+        const deleted = await serviceModel
+            .findOneAndRemove({ slug: req.params.slug, })
+            .exec();
+        res.json( deleted );
+    } catch ( err ) {
+        window.alert( err );
+        return res.status( 400 ).send("Service deletion failed");
     }
 };
 
 //Gets the single service by the slug.
-// TODO use this to get single elements from the DB.
-exports.getSingleServiceController = async (req, res) => {
-    const product = await serviceModel.findOne({ slug: req.params.slug })
-        // .populate() is being used in order to bring only needed information.
-        //TODO modify the populate criteria.
-        .populate("category")
-        .populate("subs")
+exports.mongoDBGetSingleServiceController = async ( req, res ) => {
+    const product = await serviceModel
+        .findOne({ slug: req.params.slug })
         .exec();
     res.json(product);
 };
 
-exports.updateServiceController = async (req, res) => {
+exports.mongoDBUpdateServiceController = async ( req, res ) => {
     try {
-        if (req.body.title) {
-            req.body.slug = slugify(req.body.title);
-        }
-        const updated = await serviceModel.findOneAndUpdate(
-            { slug: req.params.slug },
-            req.body,
-            { new: true }
-        ).exec();
-        res.json(updated);
-    } catch (err) {
-        console.log("SERVICE UPDATE ERROR ----> ", err);
-        res.status(400).json({
+        const updated = await serviceModel
+            .findOneAndUpdate(
+                { slug: req.params.slug },
+                req.body,
+                { new: true }
+            )
+            .exec();
+        res.json( updated );
+    } catch ( err ) {
+        console.log( "SERVICE UPDATE ERROR ----> ", err );
+        res.status( 400 ).json({
             err: err.message,
         });
     }
@@ -90,56 +75,45 @@ exports.updateServiceController = async (req, res) => {
 // };
 
 // WITH PAGINATION
-exports.servicesListForPaginationController = async (req, res) => {
+exports.mongoDBGetAllServicesController = async ( req, res ) => {
     try {
         // createdAt/updatedAt, desc/asc, 3
         const { sort, order, page } = req.body;
         //the page number the user clicks on
         const currentPage = page || 1;
         //The number of items per page.
-        const perPage = 3; // 3
+        const perPage = 8;
 
-        const services = await serviceModel.find({})
+        const services = await serviceModel.find({} )
             //skipping the number of products from the page previous to the chosen page.
-            .skip((currentPage - 1) * perPage)
-            //TODO modify the populate criteria.
-            .populate("category")
-            .populate("subs")
-            .sort([[sort, order]])
-            .limit(perPage)
+            .skip(( currentPage - 1 ) * perPage )
+            .sort([ [sort, order ] ] )
+            .limit( perPage )
             .exec();
 
-        res.json(services);
-    } catch (err) {
-        window.log(err);
+        res.json( services );
+    } catch ( err ) {
+        window.log( err );
     }
 };
 
 //Getting the total services count for the pagination.
-exports.serviceCountController = async (req, res) => {
-    let total = await serviceModel.find({}).estimatedDocumentCount().exec();
-    res.json(total);
+exports.mongoDBGetServicesCountController = async ( req, res ) => {
+    let total = await serviceModel
+        .find( {} )
+        .estimatedDocumentCount()
+        .exec();
+    res.json( total );
 };
 
 // SEARCH / FILTER
-
-const handleSearchQueryController = async (req, res, query) => {
-    const clients = await serviceModel.find({ $text: { $search: query } })
-        //TODO modify the populates criteria.
-        .populate("category", "_id name")
-        .populate("subs", "_id name")
-        .populate("postedBy", "_id name")
-        .exec();
-    res.json(clients);
-};
-
-exports.searchFiltersController = async (req, res) => {
-    const {
-        query
-    } = req.body;
-
-    if (query) {
-        console.log("query --->", query);
-        await handleSearchQueryController(req, res, query);
+exports.mongoDBFetchServiceByFilterController = async ( req, res ) => {
+    const { query } = req.body;
+    if ( query ) {
+        console.log( "query --->", query );
+        const service = await serviceModel
+            .find({ $text: { $search: query } } )
+            .exec();
+        res.json( service );
     }
 };

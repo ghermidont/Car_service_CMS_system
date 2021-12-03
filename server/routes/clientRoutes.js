@@ -1,30 +1,60 @@
-"use strict";
-
 //File contains endpoints for client related requests.
-const express = require("express");
+const express = require( "express" );
 const router = express.Router();
 
 // middlewares
-const { fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware } = require("../middlewares/authMiddleware");
+const { fireBaseAuthCheckMiddleware } = require( "../middlewares/authMiddleware");
 
 // controllers import
 const {
-  createClientController,
-  listAllClientsController,
-  deleteClientController,
-  getSingleClientController,
-  updateClientController,
-  clientsListForPaginationController,
-  searchFiltersController
+    mongoDBCreateClientController,
+    mongoDBGetClientsCountController,
+    mongoDBDeleteClientController,
+    mongoDBGetSingleClientController,
+    mongoDBUpdateClientController,
+    mongoDBGetAllClientsController,
+    mongoDBFetchClientByFilterController
 } = require("../controllers/clientController");
 
-// routes
-router.post("/client/new", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, createClientController);
-router.get("/clients/total",  fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, listAllClientsController);
-router.delete("/client/:slug", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, deleteClientController);
-router.get("/client/:slug", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, getSingleClientController);
-router.put("/client/:slug", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, updateClientController);
-router.post("/clients", fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware, clientsListForPaginationController);
-router.post("/search/filters", searchFiltersController);
+// routesController
+router.post(
+    "/client/new",
+    fireBaseAuthCheckMiddleware,
+    mongoDBCreateClientController
+);
+
+router.delete(
+    "/client/:slug",
+    fireBaseAuthCheckMiddleware,
+    mongoDBDeleteClientController
+);
+
+router.get(
+    "/cars/total",
+    fireBaseAuthCheckMiddleware,
+    mongoDBGetClientsCountController
+);
+
+router.get(
+    "/client/:slug",
+    fireBaseAuthCheckMiddleware,
+    mongoDBGetSingleClientController
+);
+
+router.put(
+    "/client/update/:slug",
+    fireBaseAuthCheckMiddleware,
+    mongoDBUpdateClientController
+);
+
+router.post(
+    "/clients",
+    mongoDBGetAllClientsController
+);
+
+router.post(
+    "/client/search",
+    mongoDBFetchClientByFilterController
+);
 
 module.exports = router;

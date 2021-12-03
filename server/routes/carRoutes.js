@@ -1,9 +1,9 @@
 //File contains endpoints for car related requests.
-const express = require("express");
+const express = require( "express" );
 const router = express.Router();
 
 // middlewares
-const { fireBaseAuthCheckMiddleware } = require("../middlewares/authMiddleware");
+const { fireBaseAuthCheckMiddleware } = require( "../middlewares/authMiddleware" );
 
 // controllers import
 const {
@@ -14,7 +14,7 @@ const {
     mongoDBUpdateCarController,
     mongoDBGetAllCarsController,
     mongoDBFetchCarByFilterController
-} = require("../controllers/carController");
+} = require( "../controllers/carController" );
 
 // routesController
 router.post(
@@ -42,7 +42,7 @@ router.get(
 );
 
 router.put(
-    "/car/:slug",
+    "/car/update/:slug",
     fireBaseAuthCheckMiddleware,
     mongoDBUpdateCarController
 );
@@ -53,7 +53,7 @@ router.post(
 );
 
 router.post(
-    "/search/filters",
+    "/car/search",
     mongoDBFetchCarByFilterController
 );
 

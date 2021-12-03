@@ -1,6 +1,4 @@
-//!Start here
-//TODO TO IMPLEMENT
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { mongoDBCreateCarFunction } from "../../functions/callsToCarRoutes";
@@ -23,37 +21,36 @@ const initialState = {
 
 export default function CarCreatePage( { history } ){
     const [ carParamsState, setCarParamsState ] = useState( initialState );
-
     const { brand, model, licensePlate, revision, km, year, client } = carParamsState;
 
     // Get the user from Redux Store
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector(( state) => ( { ...state }));
 
-    const handleSubmit = async (e) => {
-        console.log("CarCreatePage() handleSubmit() worked!");
+    const handleSubmit = async ( event ) => {
+        event.preventDefault();
+        console.log( "CarCreatePage() handleSubmit() worked!" );
 
-        e.preventDefault();
         try {
-            console.log("carParamsState: ", carParamsState);
-            mongoDBCreateCarFunction(reduxStoreUser.token, carParamsState).then(() => {
-                console.log("mongoDBCreateCarFunction() worked in CarCreatePage.js");
+            console.log( "carParamsState: ", carParamsState );
+            mongoDBCreateCarFunction( reduxStoreUser.token, carParamsState ).then( () => {
+                console.log( "mongoDBCreateCarFunction() worked in CarCreatePage.js" );
                 toast.success( "Car added successfully." );
-                history.push("/cars_archive");
+                history.push( "/cars_archive" );
             })
-                .catch((error) => {
-                    console.log("mongoDBCreateCarFunction() error: ", error);
-                    toast.error("Session expired. Please re-login in order to be able to perform this action.");
+                .catch( ( error ) => {
+                    console.log( "mongoDBCreateCarFunction() error: ", error );
+                    toast.error( "Session expired. Please re-login in order to be able to perform this action." );
                 //Logout logic.
                 });
         } catch (error) {
-            console.log("mongoDBCreateCarFunction() in handleSubmit try catch error: ", error.message);
-            toast.error("Error adding car: ", error.message);
+            console.log( "mongoDBCreateCarFunction() in handleSubmit try catch error: ", error.message );
+            toast.error("Error adding car: ", error.message );
         }
     };
 
-    const handleUserInput = (event) => {
+    const handleUserInput = ( event ) => {
         // Dynamically update each of the initialState values by their name parameter.
-        setCarParamsState({ ...carParamsState, [event.target.name]: event.target.value });
+        setCarParamsState({ ...carParamsState, [ event.target.name ] : event.target.value } );
     };
 
     return (
@@ -62,83 +59,89 @@ export default function CarCreatePage( { history } ){
             <h1>CarCreatePage.js</h1>
 
             <div className="container mx-auto py-20">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={ handleSubmit }>
                     {/*TODO Add here inputs from the database with cascader.*/}
-                    <label className='block mb-8 text-xl max-w-600'> MARCA
+                    <label className="block mb-8 text-xl max-w-600">
+                        MARCA
                         <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="brand"
-                            value={brand}
-                            onChange={handleUserInput}
+                            value={ brand }
+                            onChange={ handleUserInput }
                         />
                     </label>
 
-                    <label className='block mb-8 text-xl max-w-600'> MODELLO
+                    <label className="block mb-8 text-xl max-w-600">
+                        MODELLO
                         <input
                             type="text"
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             name="model"
-                            value={model}
-                            onChange={handleUserInput}
+                            value={ model }
+                            onChange={ handleUserInput }
                         />
                     </label>
 
-                    <label className='block mb-8 text-xl max-w-600'> TARGA
+                    <label className="block mb-8 text-xl max-w-600">
+                        TARGA
                         <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="licensePlate"
-                            value={licensePlate}
-                            onChange={handleUserInput}
+                            value={ licensePlate }
+                            onChange={ handleUserInput }
                         />
                     </label>
 
-                    <label className='block mb-8 text-xl max-w-600'> REVISIONE
+                    <label className="block mb-8 text-xl max-w-600">
+                        REVISIONE
                         <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="revision"
-                            value={revision}
-                            onChange={handleUserInput}
+                            value={ revision }
+                            onChange={ handleUserInput }
                         />
                     </label>
 
-                    <label className='block mb-8 text-xl max-w-600'> KM
+                    <label className="block mb-8 text-xl max-w-600">
+                        KM
                         <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="km"
-                            value={km}
-                            onChange={handleUserInput}
+                            value={ km }
+                            onChange={ handleUserInput }
                         />
                     </label>
 
-                    <label className='block mb-8 text-xl max-w-600'> ANNO
-                        {/*TODO add here regular expression for year only input or replace with date type input*/}
+                    <label className="block mb-8 text-xl max-w-600">
+                        ANNO
                         <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="year"
-                            value={year}
-                            onChange={handleUserInput}
+                            value={ year }
+                            onChange={ handleUserInput }
                         />
                     </label>
 
-                    <label className='block mb-8 text-xl max-w-600'>CLIENTE
+                    <label className="block mb-8 text-xl max-w-600">
+                        CLIENTE
                         {/*TODO consider adding live search algorithm from the clients database.*/}
                         <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
-                            value={client}
+                            value={ client }
                             name="client"
-                            onChange={handleUserInput}
+                            onChange={ handleUserInput }
                         />
                     </label>
 
-                    <div className='flex justify-end'>
+                    <div className="flex justify-end">
                         <button
-                            className='flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'
+                            className="flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70"
                             type="submit"
                         >
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

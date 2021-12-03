@@ -65,3 +65,6 @@ Hide js code:
 
 Express req info:
 <https://expressjs.com/en/api.html#req>
+
+Express Security to implement:
+<https://expressjs.com/en/advanced/best-practice-security.html>

@@ -6,13 +6,13 @@ const { ObjectId } = mongoose.Schema;
 
 const serviceSchema= new mongoose.Schema(
     {
-        slug: {
+        data: {
             type: String,
-            unique: true,
-            lowercase: true,
-            index: true,
+            trim: true,
+            required: true,
+            //maxlength: 32,
+            text: true,
         },
-        data: Date,
         licensePlate: {
             type: String,
             trim: true,
@@ -83,7 +83,7 @@ const serviceSchema= new mongoose.Schema(
             maxlength: 200,
             text: true
         },
-        relation: { type: ObjectId, ref: "clientModel" }
+        //relation: { type: ObjectId, ref: "clientModel" }
     },
     { timestamps: true }
 );

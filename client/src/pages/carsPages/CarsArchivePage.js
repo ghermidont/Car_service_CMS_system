@@ -89,8 +89,6 @@ export default function CarArchivePage() {
         });
     };
 
-
-
     const deleteCarFunction = (slug, authToken) => {
         mongoDBDeleteCarFunction(slug, authToken).then(()=> {
             toast.success("Car deleted successfully!");

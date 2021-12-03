@@ -1,45 +1,67 @@
-/** Functions that trigger the calls to client manipulation related backend routes. */
+/** Functions that trigger the calls to clients manipulation related backend routes. */
 import axios from "axios";
 
-export const createClientFunction = async (newClient, authToken) => {
-    return axios.post(`${process.env.REACT_APP_API}/client/new`, newClient, {
-        headers: {authToken},
-    });
+export const mongoDBCreateClientFunction = async ( authToken, client ) => {
+    return await axios
+        .post(
+            `${process.env.REACT_APP_API}/client/new`,
+            client,
+            { headers: {authToken} }
+        );
 };
 
-//Calling the backend end point for total number of clients.
-export const getClientsCountFunction = async () => {
-    return axios.get(`${process.env.REACT_APP_API}/clients/total`);
+// Not used anywhere. For just in case.
+// export const mongoDBGetClientsByCountFunction = async (count) => {
+//     return await axios.get(`${process.env.REACT_APP_API}/clients/${count}`);
+// };
+
+export const mongoDBDeleteClientFunction = async ( authToken, slug ) => {
+    return await axios
+        .delete(
+            `${process.env.REACT_APP_API}/client/${slug}`,
+            { headers: { authToken } }
+        );
 };
 
-export const listAllClientsFunction = async (count) => {
-    return axios.get(`${process.env.REACT_APP_API}/clients`);
+export const mongoDBGetSingleClientFunction = async ( slug ) => {
+    return await axios
+        .get(
+            `${process.env.REACT_APP_API}/client/${slug}`
+        );
 };
 
-export const removeClientFunction = async (slug, authToken) => {
-    return axios.delete(`${process.env.REACT_APP_API}/client/${slug}`, {
-        headers: {
-            authToken,
-        },
-    });
+export const mongoDBUpdateClientFunction = async (slug, client, authToken) => {
+    return await axios
+        .put(
+            `${process.env.REACT_APP_API}/client/update/${slug}`,
+            client,
+            { headers: { authToken }}
+        );
 };
 
-export const getSingleClientFunction = async (slug) => {
-    return axios.get(`${process.env.REACT_APP_API}/client/${slug}`);
+//The following two calls are used for forming the pagination.
+//These two functions bellow are used for pagination.
+export const mongoDBGetAllClientsFunction = async ( sort, order, page ) => {
+    return await axios
+        .post(
+            `${process.env.REACT_APP_API}/clients`,
+            { sort, order, page }
+        );
 };
 
-export const updateClientFunction = async (slug, car, authToken) => {
-    return await axios.put(`${process.env.REACT_APP_API}/client/${slug}`, car, {
-        headers: {
-            authToken,
-        },
-    });
+//Calling the backend end point for total number of products.
+export const mongoDBGetClientsCountFunction = async ( authToken ) => {
+    return await axios
+        .get(
+            `${process.env.REACT_APP_API}/client/total`,
+            { headers: { authToken } }
+        );
 };
 
-export const getClientListForPaginationFunction = async (sort, order, page) => {
-    return await axios.post(`${process.env.REACT_APP_API}/clients`, { sort, order, page });
-};
-
-export const fetchClientByFilterFunction = async (arg) => {
-    return await axios.post(`${process.env.REACT_APP_API}/search/filters`, arg);
+export const mongoDBFetchClientByFilterFunction = async ( args ) => {
+    return await axios
+        .post(
+            `${process.env.REACT_APP_API}/client/search`,
+            args
+        );
 };

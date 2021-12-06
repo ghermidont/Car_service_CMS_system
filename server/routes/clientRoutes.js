@@ -30,7 +30,7 @@ router.delete(
 );
 
 router.get(
-    "/cars/total",
+    "/clients/total",
     fireBaseAuthCheckMiddleware,
     mongoDBGetClientsCountController
 );

@@ -101,7 +101,7 @@ exports.mongoDBGetAllCarsController = async ( req, res ) => {
 
         res.json( cars );
     } catch ( err ) {
-        console.log( "mongoDBCarsListPaginationController() err: ", err );
+        console.log( "mongoDBGetAllCarsController() err: ", err );
     }
 };
 

@@ -7,7 +7,7 @@ const clientSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            unique: true,
+            //unique: true,
             trim: true,
             required: true,
             //maxlength: 30,
@@ -15,7 +15,7 @@ const clientSchema = new mongoose.Schema(
         },
         surname: {
             type: String,
-            unique: true,
+            //unique: true,
             trim: true,
             required: true,
             //maxlength: 30,
@@ -23,7 +23,7 @@ const clientSchema = new mongoose.Schema(
         },
         date: {
             type: String,
-            unique: true,
+            //unique: true,
             trim: true,
             required: true,
             //maxlength: 50,
@@ -34,12 +34,12 @@ const clientSchema = new mongoose.Schema(
             unique: true,
             trim: true,
             required: true,
-            maxlength: 50,
+            //maxlength: 50,
             text: false
         },
         address:{
             type: String,
-            unique: true,
+            //unique: true,
             trim: true,
             required: true,
             //maxlength: 50,
@@ -47,7 +47,7 @@ const clientSchema = new mongoose.Schema(
         },
         city:{
             type: String,
-            unique: true,
+            //unique: true,
             trim: true,
             required: true,
             //maxlength: 50,
@@ -55,7 +55,7 @@ const clientSchema = new mongoose.Schema(
         },
         province:{
             type: String,
-            unique: true,
+            //unique: true,
             trim: true,
             required: true,
             //maxlength: 50,
@@ -63,10 +63,10 @@ const clientSchema = new mongoose.Schema(
         },
         notes:{
             type: String,
-            unique: true,
+            //unique: true,
             trim: true,
             required: true,
-            maxlength: 50,
+            //maxlength: 50,
             text: true,
         },
         mobile: {

@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
-import {mongoDBGetAllCarsFunction, mongoDBGetCarsCountFunction, mongoDBDeleteCarFunction} from "../../functions/callsToCarRoutes";
+import {
+    mongoDBGetAllCarsFunction,
+    mongoDBGetCarsCountFunction,
+    mongoDBDeleteCarFunction
+} from "../../functions/callsToCarRoutes";
 import {useSelector} from "react-redux";
 import { toast } from "react-toastify";
 import {Pagination} from "antd";
@@ -65,33 +69,34 @@ const initialState = [
 
 export default function CarArchivePage() {
 
-    const [dbCars, setDbCars] = useState(initialState);
-    const [page, setPage] = useState(1);
-    const [carsCount, setCarsCount] = useState(0);
-    const [loading, setLoading] = useState(false);
+    const [ dbCars, setDbCars ] = useState( initialState );
+    const [ page, setPage ] = useState( 1 );
+    const [ carsCount, setCarsCount ] = useState( 0 );
+    const [ loading, setLoading ] = useState( false );
 
     const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+
     useEffect(() => {
         loadAllCars();
-    }, [page]);
+    }, [ page ]);
 
-    //!START HERE See how the toke is passed.
     useEffect(() => {
         mongoDBGetCarsCountFunction( reduxStoreUser.token )
-            .then(( res) => setCarsCount(res.data))
-            .catch((error) => {
-                toast.error("Error loading cars count", error);
-                console.log("Error loading cars count", error);
+            .then(( res) => setCarsCount( res.data ) )
+            .catch(( error ) => {
+                toast.error( "Error loading cars count", error );
+                console.log( "Error loading cars count", error );
             });
     }, []);
 
     const loadAllCars = () => {
-        setLoading(true);
+        setLoading( true );
         // sort, order, limit
-        mongoDBGetAllCarsFunction("createdAt", "desc", page).then((res) => {
-            setDbCars(res.data);
-            setLoading(false);
-        });
+        mongoDBGetAllCarsFunction( "createdAt", "desc", page )
+            .then(( res ) => {
+                setDbCars( res.data );
+                setLoading( false );
+            });
     };
 
     const deleteCarFunction = (slug, authToken) => {
@@ -106,11 +111,11 @@ export default function CarArchivePage() {
         <main className='mb-12'>
 
             <h1>CarArchivePage.js</h1>
-            {loading ? (
+            { loading ? (
                 <h1>Loading... </h1>
             ) : (
                 <h1>Cars archive</h1>
-            )}
+            ) }
             <div className="container mx-auto">
                 <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
                     <table className='mx-auto mb-8'>
@@ -145,10 +150,10 @@ export default function CarArchivePage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {dbCars.map(car => (
-                                <tr key={car.slug}>
+                            { dbCars.map( car => (
+                                <tr key={ car.slug }>
                                     <td>
-                                        <Link to={`/cars/${car.slug}`}>
+                                        <Link to={`/car/${car.slug}`}>
                                             <button className='w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'>
                                                 Open
                                             </button>
@@ -195,59 +200,6 @@ export default function CarArchivePage() {
                             />
                         </nav>
                     </div>
-
-                    {/*Pagination*/}
-                    {/*<ul className='flex justify-center items-center xl:text-lg'>*/}
-                    {/*    <li className='mx-1'>*/}
-                    {/*        <a className='p-1 hover:opacity-70 focus:opacity-70' href="/">*/}
-                    {/*            <svg*/}
-                    {/*                className="w-6 h-6 p-0.5 border rounded-md"*/}
-                    {/*                fill="none"*/}
-                    {/*                stroke="currentColor"*/}
-                    {/*                viewBox="0 0 24 24"*/}
-                    {/*                xmlns="http://www.w3.org/2000/svg">*/}
-                    {/*                <path*/}
-                    {/*                    strokeLinecap="round"*/}
-                    {/*                    strokeLinejoin="round"*/}
-                    {/*                    strokeWidth="2"*/}
-                    {/*                    d="M10 19l-7-7m0 0l7-7m-7 7h18">*/}
-                    {/*                </path>*/}
-                    {/*            </svg>*/}
-                    {/*        </a>*/}
-                    {/*    </li>*/}
-                    {/*    <li className='mx-1'>*/}
-                    {/*        <a className='p-1 hover:opacity-70 focus:opacity-70' href="/">1</a>*/}
-                    {/*    </li>*/}
-                    {/*    <li className='mx-1'>*/}
-                    {/*        <a className='p-1 hover:opacity-70 focus:opacity-70' href="/">2</a>*/}
-                    {/*    </li>*/}
-                    {/*    <li className='mx-1'>*/}
-                    {/*        <a className='p-1 hover:opacity-70 focus:opacity-70' href="/">3</a>*/}
-                    {/*    </li>*/}
-                    {/*    <li className='mx-1'>*/}
-                    {/*        <a className='p-1 hover:opacity-70 focus:opacity-70' href="/">... </a>*/}
-                    {/*    </li>*/}
-                    {/*    <li className='mx-1'>*/}
-                    {/*        <a className='p-1 hover:opacity-70 focus:opacity-70' href="/">24</a>*/}
-                    {/*    </li>*/}
-                    {/*    <li className='mx-1'>*/}
-                    {/*        <a className='p-1 hover:opacity-70 focus:opacity-70' href="/">*/}
-                    {/*            <svg*/}
-                    {/*                className="w-6 h-6 p-0.5 border rounded-md"*/}
-                    {/*                fill="none"*/}
-                    {/*                stroke="currentColor"*/}
-                    {/*                viewBox="0 0 24 24"*/}
-                    {/*                xmlns="http://www.w3.org/2000/svg">*/}
-                    {/*                <path*/}
-                    {/*                    strokeLinecap="round"*/}
-                    {/*                    strokeLinejoin="round"*/}
-                    {/*                    strokeWidth="2"*/}
-                    {/*                    d="M14 5l7 7m0 0l-7 7m7-7H3">*/}
-                    {/*                </path>*/}
-                    {/*            </svg>*/}
-                    {/*        </a>*/}
-                    {/*    </li>*/}
-                    {/*</ul>*/}
                 </div>
 
                 {/*Bottom buttons section*/}

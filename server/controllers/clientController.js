@@ -84,6 +84,7 @@ exports.mongoDBGetClientsCountController = async ( req, res ) => {
         .find( {} )
         .estimatedDocumentCount()
         .exec();
+    console.log( "mongoDBGetClientsCountController() total: ", total );
     res.json( total );
 };
 

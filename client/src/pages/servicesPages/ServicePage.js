@@ -19,7 +19,7 @@ const initialState = {
     damage: ""
 };
 
-export default function ServiceUpdatePage({match}) {
+export default function ServicePage({match}) {
     const [currentServiceParamsState, setCurrentServiceParamsState] = useState(initialState);
     const {
         date,

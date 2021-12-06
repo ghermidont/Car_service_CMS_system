@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { mongoDBCreateClientFunction } from "../../functions/callsToClientRoutes";
 
 // TODO implement the cascader.
-/* Use the the Ant cascader for cars select. https://ant.design/components/cascader/ */
+/* Use the Ant cascader for cars select. https://ant.design/components/cascader/ */
 
 //Cars DB API: https://parse-dashboard.back4app.com/apps/7e730946-c9c1-4aca-90f3-87f9abc2842c/browser/Carmodels_Car_Model_List
 //https://www.back4app.com/docs/react/quickstart
@@ -13,7 +13,7 @@ const initialState = {
     name: "name",
     surname: "surname",
     date: "date",
-    fiscalCode: "fiscalCode",
+    fiscal_code: "fiscal_code",
     address: "address",
     city: "city",
     province: "province",
@@ -26,7 +26,18 @@ export default function ClientCreatePage( { history } ) {
     const [ clientInfoState, setClientInfoState ] = useState( initialState );
 
     //states
-    const { name, surname, date, fiscalCode, address, city, province, notes, mobile, email } = clientInfoState;
+    const {
+        name,
+        surname,
+        date,
+        fiscal_code,
+        address,
+        city,
+        province,
+        notes,
+        mobile,
+        email
+    } = clientInfoState;
 
     //For implementing the date:
     //   const formattedDate = (rawDate)=>{
@@ -77,10 +88,7 @@ export default function ClientCreatePage( { history } ) {
             <div className="h-screen flex flex-col justify-between">
                 <main className="flex items-center">
                     <div className="container mx-auto py-10">
-                        <form
-                            className="text-lg"
-                            onSubmit={ handleSubmit }
-                        >
+                        <form className="text-lg" onSubmit={ handleSubmit }>
                             <div className="flex flex-col">
                                 <label className="font-normal uppercase mb-3">
                                     Nome
@@ -120,8 +128,8 @@ export default function ClientCreatePage( { history } ) {
                                     <input
                                         className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block"
                                         type="text"
-                                        name="fiscalCode"
-                                        value={ fiscalCode }
+                                        name="fiscal_code"
+                                        value={ fiscal_code }
                                         onChange={ handleUserInput }
                                     />
                                 </label>
@@ -199,23 +207,22 @@ export default function ClientCreatePage( { history } ) {
                                     </div>
                                 </div>
                             </div>
-                        </form>
 
-                        <div className="flex justify-end mt-12">
-                            <button
-                                className="flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70"
-                                type="submit"
-                            >
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"> </path>
-                                </svg>
-                                Salva
-                            </button>
-                        </div>
+                            <div className="flex justify-end mt-12">
+                                <button
+                                    className="flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70"
+                                    type="submit"
+                                >
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"> </path>
+                                    </svg>
+                                    Salva
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </main>
             </div>
-
         </>
     );
 }

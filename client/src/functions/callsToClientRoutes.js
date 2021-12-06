@@ -53,7 +53,7 @@ export const mongoDBGetAllClientsFunction = async ( sort, order, page ) => {
 export const mongoDBGetClientsCountFunction = async ( authToken ) => {
     return await axios
         .get(
-            `${process.env.REACT_APP_API}/client/total`,
+            `${process.env.REACT_APP_API}/clients/total`,
             { headers: { authToken } }
         );
 };

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { useSelector } from "react-redux";
-import {getSingleClientFunction, updateClientFunction} from "../../functions/callsToClientRoutes";
+import { mongoDBGetSingleClientFunction, mongoDBUpdateClientFunction } from "../../functions/callsToClientRoutes";
 
 // TODO implement the cascader.
 /* Use the the Ant cascader for cars select. https://ant.design/components/cascader/ */
@@ -65,7 +65,7 @@ export default function ClientUpdatePage({match}) {
     }, []);
 
     const loadClientDbInfo = () => {
-        getSingleClientFunction(slug).then((client) => {
+        mongoDBGetSingleClientFunction(slug).then((client) => {
             console.log("Single client ", client);
             setCurrentClientParamsState({ ...currentClientParamsState, ...client.data });
         });
@@ -73,7 +73,7 @@ export default function ClientUpdatePage({match}) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        updateClientFunction(slug, currentClientParamsState, reduxStoreUser.token)
+        mongoDBUpdateClientFunction(slug, currentClientParamsState, reduxStoreUser.token)
             .then(() => {
                 window.alert( "Client info is updated successfully." );
                 window.location.reload();

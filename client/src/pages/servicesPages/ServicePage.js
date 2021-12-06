@@ -1,14 +1,13 @@
-//TODO Make the page
-
+//TODO Test this page.
 import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
-import {getSingleServiceFunction, updateServiceFunction} from "../../functions/callsToServicesRoutes";
+//import { useSelector } from "react-redux";
+import { mongoDBGetSingleServiceFunction } from "../../functions/callsToServicesRoutes";
 
 const initialState = {
     date: "",
-    registrationPlate: "",
+    licensePlate: "",
     brand: "",
     model: "",
     state: "",
@@ -22,52 +21,151 @@ const initialState = {
 
 export default function ServiceUpdatePage({match}) {
     const [currentServiceParamsState, setCurrentServiceParamsState] = useState(initialState);
+    const {
+        date,
+        licensePlate,
+        brand,
+        model,
+        state,
+        operator,
+        anomalies,
+        checks,
+        performedRepairs,
+        notes,
+        damage,
+    } = currentServiceParamsState;
 
     const { slug } = match.params;
     // Get the user from Redux Store
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+    //const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
         loadServiceDbInfo();
     }, []);
 
     const loadServiceDbInfo = () => {
-        getSingleServiceFunction(slug).then((service) => {
+        mongoDBGetSingleServiceFunction(slug).then((service) => {
             console.log("single service", service);
             setCurrentServiceParamsState({ ...currentServiceParamsState, ...service.data });
-        });
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        updateServiceFunction(slug, currentServiceParamsState, reduxStoreUser.token)
-            .then(() => {
-                window.alert( "Service info is updated successfully." );
-                window.location.reload();
-            })
-            .catch((error) => {
-                toast.error(error.response.data.err);
-            });
-    };
-
-    const handleUserInput = (event) => {
-        // Dynamically update each of the initialState values by their name parameter.
-        setCurrentServiceParamsState({ ...currentServiceParamsState, [event.target.name]: event.target.value });
+        }).catch(
+            (error)=> {
+                toast.error("Error getting user info: ", error);
+                console.log("Error getting user info: ", error);
+            }
+        );
     };
 
     return (
         <main>
-            <label className='block mb-2 text-xl' style={{float: "right", paddingRight: "10px"}}>
-                <Link to="/">Click to go to &rArr; Home Page</Link>
-            </label>
-            <h1>ServiceUpdatePage.js</h1>
+            <h1>ServicePage.js</h1>
+                
+            <div className="container mx-auto">
+                <div className='my-20'>
+                    <table className='mx-auto'>
+                        <thead>
+                            <tr>
+                                <th className='px-1 py-1.5 w-75 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                    Data
+                                </th>
+                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                    Targa
+                                </th>
+                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                    Marca
+                                </th>
+                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                    Modello
+                                </th>
+                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                    Stato
+                                </th>
+                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                    Operatore
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td className="border border-border px-3">
+                                    <span className='font-normal text-text text-lg'>{ date }</span>
+                                </td>
+                                <td className='border border-border px-3'>
+                                    <span className='font-normal text-text text-lg'>{ licensePlate }</span>
+                                </td>
+                                <td className='border border-border px-3'>
+                                    <span className='font-normal text-text text-lg'>{ brand }</span>
+                                </td>
+                                <td className='border border-border px-3'>                                  
+                                    <span className='font-normal text-text text-lg'>{ model }</span>
+                                </td>
+                                <td className='border border-border px-3'>                                  
+                                    <span className='font-normal text-text text-lg'>{ state }</span>
+                                </td>
+                                <td className='border border-border px-3'>
+                                    <span className='font-normal text-text text-lg'>{ operator }</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            <ServiceUpdateForm
-                handleSubmit={handleSubmit}
-                handleUserInput={handleUserInput}
-                currentServiceParamsState={currentServiceParamsState}
-                setCurrentServiceParamsState={setCurrentServiceParamsState}
-            />
+                <div className='max-w-1075 mx-auto'>
+                    <label className='block mb-6 text-xl uppercase'>
+                        Anomalie
+                        <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
+                            <span className='font-normal text-text text-lg'>{ anomalies }</span>
+                        </div>
+                    </label>
+
+                    <label className='block mb-6 text-xl uppercase'>
+                        Controlli
+                        <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
+                            <span className='font-normal text-text text-lg'>{ checks }</span>
+                        </div>
+                    </label>
+
+                    <label className='block mb-6 text-xl uppercase'>
+                        Lavori Fatti
+                        <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
+                            <span className='font-normal text-text text-lg'>{ performedRepairs }</span>
+                        </div>
+                    </label>
+
+                    <div className='flex justify-between'>
+                        <div className='w-45%'>
+                            <label className='block mb-2 text-xl uppercase'>
+                                Note
+                                <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
+                                    <span className='font-normal text-text text-lg'>{ notes }</span>
+                                </div>
+                            </label>
+                        </div>
+                        <div className='w-45%'>
+                            <label className='block mb-2 text-xl uppercase'>
+                                Danni
+                                <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
+                                    <span className='font-normal text-text text-lg'>{ damage }</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+               
+                </div>
+                <div className='flex justify-end mt-12'>
+                    <button className='flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                        <Link to={`/service/update/${ slug }`}>
+                                Edit
+                        </Link>
+                    </button>
+                </div>
+            </div>
         </main>
+      
+
+
+
+
+
+   
     );
 }

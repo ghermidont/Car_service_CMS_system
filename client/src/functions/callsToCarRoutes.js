@@ -54,7 +54,7 @@ export const mongoDBGetAllCarsFunction = async ( sort, order, page ) => {
 export const mongoDBGetCarsCountFunction = async ( authToken ) => {
     return await axios
         .get(
-            `${process.env.REACT_APP_API}/cars/total`, 
+            `${process.env.REACT_APP_API}/cars/total`,
             { headers: { authToken } }
         );
 };

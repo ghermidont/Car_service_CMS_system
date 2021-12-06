@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import {getSingleServiceFunction, updateServiceFunction} from "../../functions/callsToServicesRoutes";
+import { mongoDBGetSingleServiceFunction, mongoDBUpdateServiceFunction } from "../../functions/callsToServicesRoutes";
 
 const initialState = {
     date: "",
@@ -46,7 +46,7 @@ export default function ServiceUpdatePage({match}) {
     }, []);
 
     const loadServiceDbInfo = () => {
-        getSingleServiceFunction(slug).then((service) => {
+        mongoDBGetSingleServiceFunction(slug).then((service) => {
             console.log("single service", service);
             setCurrentServiceParamsState({ ...currentServiceParamsState, ...service.data });
         });
@@ -54,7 +54,7 @@ export default function ServiceUpdatePage({match}) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        updateServiceFunction(slug, currentServiceParamsState, reduxStoreUser.token)
+        mongoDBUpdateServiceFunction(slug, currentServiceParamsState, reduxStoreUser.token)
             .then(() => {
                 window.alert( "Service info is updated successfully." );
                 window.location.reload();

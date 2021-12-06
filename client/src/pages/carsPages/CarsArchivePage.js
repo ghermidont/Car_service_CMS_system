@@ -77,7 +77,12 @@ export default function CarArchivePage() {
 
     //!START HERE See how the toke is passed.
     useEffect(() => {
-        mongoDBGetCarsCountFunction( reduxStoreUser.token ).then(( res) => setCarsCount(res.data));
+        mongoDBGetCarsCountFunction( reduxStoreUser.token )
+            .then(( res) => setCarsCount(res.data))
+            .catch((error) => {
+                toast.error("Error loading cars count", error);
+                console.log("Error loading cars count", error);
+            });
     }, []);
 
     const loadAllCars = () => {

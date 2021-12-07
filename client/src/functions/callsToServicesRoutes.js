@@ -17,10 +17,11 @@ export const mongoDBDeleteServiceFunction = async ( authToken, slug ) => {
         );
 };
 
-export const mongoDBGetSingleServiceFunction = async ( slug ) => {
+export const mongoDBGetSingleServiceFunction = async ( slug, token ) => {
     return await axios
         .get(
-            `${process.env.REACT_APP_API}/service/${slug}`
+            `${process.env.REACT_APP_API}/service/${slug}`,
+            { headers: { authToken: token } }
         );
 };
 

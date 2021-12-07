@@ -8,18 +8,18 @@ import Resizer from "react-image-file-resizer";
 import axios from "axios";
 
 const initialState = {
-    company_name: "default company name",
-    current_residence: "default current residence",
-    current_city: "default current city",
-    current_province: "default current province",
-    official_residence: "default official residence",
-    official_city: "default official city",
-    official_province: "default official province",
-    fiscal_code: "default fiscal code",
+    company_name: "",
+    current_residence: "",
+    current_city: "",
+    current_province: "",
+    official_residence: "",
+    official_city: "",
+    official_province: "",
+    fiscal_code: "",
     images: [
         {
-            public_id: "jwrzeubemmypod99e8lz",
-            url: "https://res.cloudinary.com/dcqjrwaoi/image/upload/v1599480909/jwrzeubemmypod99e8lz.jpg",
+            public_id: "",
+            url: "",
         },       
     ],
 };

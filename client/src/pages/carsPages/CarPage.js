@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { mongoDBGetSingleCarFunction } from "../../functions/callsToCarRoutes";
+import {useSelector} from "react-redux";
 
 // TODO implement the cascader.
 /* Use the the Ant cascader for cars select. https://ant.design/components/cascader/ */
@@ -21,8 +22,9 @@ const initialState = {
     referenceToClient: "client ID from the DB"
 };
 
-export default function CarUpdatePage({match}) {
-    const [currentCarParamsState, setCurrentCarParamsState] = useState(initialState);
+export default function CarUpdatePage( { match } ) {
+    const [ currentCarParamsState, setCurrentCarParamsState ] = useState(initialState);
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     const {
         brand,
@@ -39,15 +41,15 @@ export default function CarUpdatePage({match}) {
     useEffect(() => {
         loadCarDbInfo();
         // eslint-disable-next-line
-    }, []);
+    }, [] );
 
     const loadCarDbInfo = () => {
-        mongoDBGetSingleCarFunction(slug).then((car) => {
-            console.log("single car", car);
-            setCurrentCarParamsState({ ...currentCarParamsState, ...car.data });
-        }).catch((error) => {
-            toast.error("Error loading car info: ", error);
-        });
+        mongoDBGetSingleCarFunction( slug, reduxStoreUser.token ).then( ( car ) => {
+            console.log( "single car", car );
+            setCurrentCarParamsState( { ...currentCarParamsState, ...car.data } );
+        } ).catch( ( error ) => {
+            toast.error( "Error loading car info: ", error );
+        } );
     };
 
     //Start here. Finish the individual car info page with link to the car update page.
@@ -65,37 +67,37 @@ export default function CarUpdatePage({match}) {
 
                 <label className='block mb-8 text-xl max-w-600'> MODELLO
                     <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                        <span className='font-normal text-text text-lg'>{model}</span>
+                        <span className='font-normal text-text text-lg'>{ model }</span>
                     </div>
                 </label>
 
                 <label className='block mb-8 text-xl max-w-600'> TARGA
                     <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                        <span className='font-normal text-text text-lg'>{registrationPlate}</span>
+                        <span className='font-normal text-text text-lg'>{ registrationPlate }</span>
                     </div>                  
                 </label>
 
                 <label className='block mb-8 text-xl max-w-600'> REVISIONE
                     <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                        <span className='font-normal text-text text-lg'>{revisions}</span>
+                        <span className='font-normal text-text text-lg'>{ revisions }</span>
                     </div>                   
                 </label>
 
                 <label className='block mb-8 text-xl max-w-600'> KM
                     <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                        <span className='font-normal text-text text-lg'>{km}</span>
+                        <span className='font-normal text-text text-lg'>{ km }</span>
                     </div>                  
                 </label>
 
                 <label className='block mb-8 text-xl max-w-600'> ANNO
                     <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                        <span className='font-normal text-text text-lg'>{year}</span>
+                        <span className='font-normal text-text text-lg'>{ year }</span>
                     </div>                         
                 </label>
 
                 <label className='block mb-8 text-xl max-w-600'>CLIENTE
                     <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                        <span className='font-normal text-text text-lg'>{client}</span>
+                        <span className='font-normal text-text text-lg'>{ client }</span>
                     </div>                  
                 </label>
 

@@ -183,7 +183,6 @@ export default function ServicesListPage() {
                             Stampa Lista
                         </button>
                     </div>
-
                 </div>
             </div>
         </main>     

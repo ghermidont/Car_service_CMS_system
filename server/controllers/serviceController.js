@@ -5,11 +5,12 @@ const slugify = require( "slugify" );
 exports.mongoDBCreateServiceController = async ( req, res ) => {
     try {
         console.log( "mongoDBCreateServiceController() worked" );
-        const slugString = `${req.body.data}${req.body.licensePlate}`;
+        const slugString = `${req.body.date}${req.body.license_plate}`;
+        console.log("slugString: ", slugString);
         //Create and add the slug to the request body. the slug is formed from the registration plate and formatted with Slugify.
         req.body.slug = slugify( slugString, { replacement: "-", remove: /[*+~.()'"!:@]/g, trim: true } );
         console.log(  "mongoDBCreateServiceController() req.body: ", JSON.stringify( req.body ) );
-
+        console.log(req.body);
         const newService = await new serviceModel( req.body ).save();
         res.json( newService );
     } catch (err) {

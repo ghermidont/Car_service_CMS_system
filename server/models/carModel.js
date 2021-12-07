@@ -24,7 +24,7 @@ const carSchema = new mongoose.Schema({
         //maxlength: 32,
         text: true,
     },
-    revision: {
+    revisions: {
         type: String,
         trim: true,
         required: true,

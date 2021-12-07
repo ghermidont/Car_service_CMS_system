@@ -1,26 +1,27 @@
 //TODO Test this page.
 
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-//import { useSelector } from "react-redux";
 import { mongoDBGetSingleClientFunction } from "../../functions/callsToClientRoutes";
 import Link from "react-router-dom/es/Link";
+import { useSelector } from "react-redux";
 
 const initialState = {
-    name: "name",
-    surname: "surname",
-    date: "date",
-    fiscalCode: "fiscalCode",
-    address: "address",
-    city: "city",
-    province: "province",
-    notes: "notes",
-    mobile: "5674552333",
-    email: "email@email.com"
+    name: "",
+    surname: "",
+    date: "",
+    fiscalCode: "",
+    address: "",
+    city: "",
+    province: "",
+    notes: "",
+    mobile: "",
+    email: ""
 };
 
 export default function ClientCreatePage( { match } ) {
     const [ currentClientParamsState, setCurrentClientParamsState] = useState( initialState );
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     //states
     const { 
@@ -54,16 +55,16 @@ export default function ClientCreatePage( { match } ) {
 
     const { slug } = match.params;
 
-    useEffect(() => {
+    useEffect( () => {
         loadClientDbInfo();
         // eslint-disable-next-line
-    }, []);
+    }, [] );
 
     const loadClientDbInfo = () => {
-        mongoDBGetSingleClientFunction( slug ).then( ( client ) => {
-            console.log("Single client", client);
-            setCurrentClientParamsState({ ...currentClientParamsState, ...client.data });
-        }).catch((error) => {
+        mongoDBGetSingleClientFunction( slug, reduxStoreUser.token ).then( ( client ) => {
+            console.log( "Single client", client );
+            setCurrentClientParamsState({ ...currentClientParamsState, ...client.data } );
+        } ).catch( ( error ) => {
             toast.error("Error loading client info: ", error);
         });
     };

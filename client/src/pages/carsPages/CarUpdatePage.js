@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import {mongoDBGetSingleCarFunction, mongoDBUpdateCarFunction} from "../../functions/callsToCarRoutes";
 
 // TODO implement the cascader.
-/* Use the the Ant cascader for cars select. https://ant.design/components/cascader/ */
+/* Use the Ant cascader for cars select. https://ant.design/components/cascader/ */
 
 //Cars DB API: https://parse-dashboard.back4app.com/apps/7e730946-c9c1-4aca-90f3-87f9abc2842c/browser/Carmodels_Car_Model_List
 //https://www.back4app.com/docs/react/quickstart
@@ -13,7 +13,7 @@ import {mongoDBGetSingleCarFunction, mongoDBUpdateCarFunction} from "../../funct
 const initialState = {
     brand: "",
     model: "",
-    registrationPlate: "",
+    licensePlate: "",
     revisions: "",
     km: "",
     year: "",
@@ -21,31 +21,40 @@ const initialState = {
     referenceToClient: ""
 };
 
-export default function CarUpdatePage({match}) {
-    const [currentCarParamsState, setCurrentCarParamsState] = useState(initialState);
+export default function CarUpdatePage( { match } ) {
+    const [ currentCarParamsState, setCurrentCarParamsState ] = useState( initialState );
 
-    const { brand, model, registrationPlate, revisions, km, year, client } = currentCarParamsState;
+    const {
+        brand,
+        model,
+        licensePlate,
+        revisions,
+        km,
+        year,
+        client
+    } = currentCarParamsState;
 
     const { slug } = match.params;
     // Get the user from Redux Store
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector(( state ) => ( { ...state }));
 
     useEffect(() => {
         loadCarDbInfo();
-    }, []);
+    }, [] );
 
     const loadCarDbInfo = () => {
-        mongoDBGetSingleCarFunction(slug).then((car) => {
-            console.log("single car", car);
-            setCurrentCarParamsState({ ...currentCarParamsState, ...car.data });
+        mongoDBGetSingleCarFunction( slug, reduxStoreUser.token ).then( ( car) => {
+            console.log( "single car", car );
+            setCurrentCarParamsState( { ...currentCarParamsState, ...car.data });
         });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = ( event ) => {
         event.preventDefault();
-        mongoDBUpdateCarFunction(slug, currentCarParamsState, reduxStoreUser.token)
+        mongoDBUpdateCarFunction( slug, currentCarParamsState, reduxStoreUser.token )
             .then(() => {
-                window.alert( "Car info is updated successfully." );
+                toast.success( "Car info is updated successfully." );
+                //Reload the page wit the new values.
                 window.location.reload();
             })
             .catch((error) => {
@@ -70,8 +79,8 @@ export default function CarUpdatePage({match}) {
                             className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
                             type="text"
                             name="brand"
-                            value={brand}
-                            onChange={handleUserInput}
+                            value={ brand }
+                            onChange={ handleUserInput }
                         />
                     </label>
 
@@ -80,8 +89,8 @@ export default function CarUpdatePage({match}) {
                             type="text"
                             className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
                             name="model"
-                            value={model}
-                            onChange={handleUserInput}
+                            value={ model }
+                            onChange={ handleUserInput }
                         />
                     </label>
 
@@ -89,9 +98,9 @@ export default function CarUpdatePage({match}) {
                         <input
                             className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
                             type="text"
-                            name="registrationPlate"
-                            value={registrationPlate}
-                            onChange={handleUserInput}
+                            name="licensePlate"
+                            value={ licensePlate }
+                            onChange={ handleUserInput }
                         />
                     </label>
 
@@ -100,18 +109,18 @@ export default function CarUpdatePage({match}) {
                             className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
                             type="text"
                             name="revisions"
-                            value={revisions}
-                            onChange={handleUserInput}
+                            value={ revisions }
+                            onChange={ handleUserInput }
                         />
                     </label>
 
                     <label className='block mb-8 text-xl max-w-600'> KM
                         <input
                             className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                            type="number"
+                            type="text"
                             name="km"
-                            value={km}
-                            onChange={handleUserInput}
+                            value={ km }
+                            onChange={ handleUserInput }
                         />
                     </label>
 
@@ -119,9 +128,10 @@ export default function CarUpdatePage({match}) {
                         {/*TODO add here regular expression for year only input or replace with date type input*/}
                         <input
                             className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                            type="number"
-                            value={year}
-                            onChange={handleUserInput}
+                            type="text"
+                            name="year"
+                            value={ year }
+                            onChange={ handleUserInput }
                         />
                     </label>
 
@@ -130,8 +140,9 @@ export default function CarUpdatePage({match}) {
                         <input
                             className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
                             type="text"
-                            value={client}
-                            onChange={handleUserInput}
+                            name="client"
+                            value={ client }
+                            onChange={ handleUserInput }
                         />
                     </label>
 

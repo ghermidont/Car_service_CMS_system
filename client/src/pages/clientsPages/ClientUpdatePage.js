@@ -1,13 +1,12 @@
 //TODO TO IMPLEMENT
 import React, {useEffect, useState} from "react";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { useSelector } from "react-redux";
 import { mongoDBGetSingleClientFunction, mongoDBUpdateClientFunction } from "../../functions/callsToClientRoutes";
 
 // TODO implement the cascader.
-/* Use the the Ant cascader for cars select. https://ant.design/components/cascader/ */
+/* Use the Ant cascader for cars select. https://ant.design/components/cascader/ */
 
 //Cars DB API: https://parse-dashboard.back4app.com/apps/7e730946-c9c1-4aca-90f3-87f9abc2842c/browser/Carmodels_Car_Model_List
 //https://www.back4app.com/docs/react/quickstart
@@ -16,7 +15,7 @@ const initialState = {
     name: "",
     surname: "",
     date: "",
-    fiscalCode: "",
+    fiscal_code: "",
     address: "",
     city: "",
     province: "",
@@ -25,15 +24,15 @@ const initialState = {
     email: ""
 };
 
-export default function ClientUpdatePage({match}) {
-    const [currentClientParamsState, setCurrentClientParamsState] = useState(initialState);
+export default function ClientUpdatePage( { match } ) {
+    const [ currentClientParamsState, setCurrentClientParamsState ] = useState( initialState );
 
     //states
     const {
         name,
         surname,
         date,
-        fiscalCode,
+        fiscal_code,
         address,
         city,
         province,
@@ -58,24 +57,24 @@ export default function ClientUpdatePage({match}) {
 
     const { slug } = match.params;
     // Get the user from Redux Store
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
 
-    useEffect(() => {
+    useEffect( () => {
         loadClientDbInfo();
-    }, []);
+    }, [] );
 
     const loadClientDbInfo = () => {
-        mongoDBGetSingleClientFunction(slug).then((client) => {
-            console.log("Single client ", client);
+        mongoDBGetSingleClientFunction( slug, reduxStoreUser.token ).then( ( client) => {
+            console.log( "Single client ", client );
             setCurrentClientParamsState({ ...currentClientParamsState, ...client.data });
         });
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        mongoDBUpdateClientFunction(slug, currentClientParamsState, reduxStoreUser.token)
+        mongoDBUpdateClientFunction( slug, currentClientParamsState, reduxStoreUser.token )
             .then(() => {
-                window.alert( "Client info is updated successfully." );
+                toast.success( "Client info is updated successfully." );
                 window.location.reload();
             })
             .catch((error) => {
@@ -94,9 +93,10 @@ export default function ClientUpdatePage({match}) {
             <h1>UpdateClientPage.js</h1>
 
             <div className='h-screen flex flex-col justify-between'>
-                <main className='flex items-center'>
-                    <div className="container mx-auto py-10">
-                        <form className='text-lg' onSubmit={handleSubmit}>
+                <form className='text-lg' onSubmit={handleSubmit}>
+                    <main className='flex items-center'>
+                        <div className="container mx-auto py-10">
+
                             <div className='flex flex-col'>
 
                                 <label className='font-normal uppercase mb-3'>Nome
@@ -104,8 +104,8 @@ export default function ClientUpdatePage({match}) {
                                         className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
                                         type="text"
                                         name="name"
-                                        value={name}
-                                        onChange={handleUserInput}
+                                        value={ name }
+                                        onChange={ handleUserInput }
                                     />
                                 </label>
 
@@ -114,8 +114,8 @@ export default function ClientUpdatePage({match}) {
                                         className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
                                         type="text"
                                         name="surname"
-                                        value={surname}
-                                        onChange={handleUserInput}
+                                        value={ surname }
+                                        onChange={ handleUserInput }
                                     />
                                 </label>
 
@@ -124,8 +124,8 @@ export default function ClientUpdatePage({match}) {
                                         className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block"
                                         type="text"
                                         name="date"
-                                        value={date}
-                                        onChange={handleUserInput}
+                                        value={ date }
+                                        onChange={ handleUserInput }
                                     />
                                 </label>
 
@@ -133,9 +133,9 @@ export default function ClientUpdatePage({match}) {
                                     <input
                                         className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block"
                                         type="text"
-                                        name="fiscalCode"
-                                        value={fiscalCode}
-                                        onChange={handleUserInput}
+                                        name="fiscal_code"
+                                        value={ fiscal_code }
+                                        onChange={ handleUserInput }
                                     />
                                 </label>
 
@@ -146,8 +146,8 @@ export default function ClientUpdatePage({match}) {
                                             className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL w-100% block"
                                             type="text"
                                             name="address"
-                                            value={address}
-                                            onChange={handleUserInput}
+                                            value={ address }
+                                            onChange={ handleUserInput }
                                         />
                                     </label>
 
@@ -156,8 +156,8 @@ export default function ClientUpdatePage({match}) {
                                             className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL w-100% block"
                                             type="text"
                                             name="city"
-                                            value={city}
-                                            onChange={handleUserInput}
+                                            value={ city }
+                                            onChange={ handleUserInput }
                                         />
                                     </label>
 
@@ -166,8 +166,8 @@ export default function ClientUpdatePage({match}) {
                                             className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL w-100% block"
                                             type="text"
                                             name="province"
-                                            value={province}
-                                            onChange={handleUserInput}
+                                            value={ province }
+                                            onChange={ handleUserInput }
                                         />
                                     </label>
 
@@ -179,8 +179,8 @@ export default function ClientUpdatePage({match}) {
                                         name="notes"
                                         rows="4"
                                         maxLength="1000"
-                                        value={notes}
-                                        onChange={handleUserInput}
+                                        value={ notes }
+                                        onChange={ handleUserInput }
                                     >
                                     </textarea>
                                 </label>
@@ -189,9 +189,9 @@ export default function ClientUpdatePage({match}) {
                                         <label className='font-normal uppercase mb-3'>Cellulare
                                             <input
                                                 className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block"
-                                                type="number"
+                                                type="text"
                                                 name="mobile"
-                                                pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                                                //pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
                                                 value={mobile}
                                                 onChange={handleUserInput}
                                             />
@@ -200,7 +200,7 @@ export default function ClientUpdatePage({match}) {
                                         <label className="font-normal uppercase mb-3">Email
                                             <input
                                                 className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block"
-                                                type="email"
+                                                type="text"
                                                 name="email"
                                                 value={email}
                                                 onChange={handleUserInput}
@@ -209,36 +209,24 @@ export default function ClientUpdatePage({match}) {
                                     </div>
                                 </div>
                             </div>
-                        </form>
 
-                        <div className="flex justify-end mt-12">
 
-                            <button className="flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70">
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"> </path>
-                                </svg>
-                                <Link to="clients_list">
+                            <div className="flex justify-end mt-12">
+
+                                <button
+                                    className="flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70"
+                                    type="submit"
+                                >
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"> </path>
+                                    </svg>
                                     Salva
-                                </Link>
-                            </button>
+                                </button>
+                            </div>
 
-                            <button className="flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70">
-                                <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"> </path>
-                                </svg>
-                                Stampa
-                            </button>
-
-                            <button className="flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70">
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"> </path>
-                                </svg>
-                                Download
-                            </button>
                         </div>
-
-                    </div>
-                </main>
+                    </main>
+                </form>
             </div>
         </main>
     );

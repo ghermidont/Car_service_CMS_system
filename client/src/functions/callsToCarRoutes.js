@@ -23,10 +23,11 @@ export const mongoDBDeleteCarFunction = async ( authToken, slug ) => {
         );
 };
 
-export const mongoDBGetSingleCarFunction = async ( slug ) => {
+export const mongoDBGetSingleCarFunction = async ( slug, authToken ) => {
     return await axios
         .get(
-            `${process.env.REACT_APP_API}/car/${slug}`
+            `${process.env.REACT_APP_API}/car/${slug}`,
+            { headers: { authToken } }
         );
 };
 

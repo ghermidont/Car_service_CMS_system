@@ -128,7 +128,7 @@ export default function App() {
                 <UserRoute exact path="/car/:slug" component={CarPage}/>
                 {/* User Routes --> Services */}
                 <UserRoute exact path="/add_service" component={ServiceCreatePage}/>
-                <UserRoute exact path="/service_update_page" component={ServiceUpdatePage}/>
+                <UserRoute exact path="/service/update/:slug" component={ServiceUpdatePage}/>
                 <UserRoute exact path="/services_list" component={ServicesListPage}/>
                 <UserRoute exact path="/service/:slug" component={ServicePage}/>
             </Switch>

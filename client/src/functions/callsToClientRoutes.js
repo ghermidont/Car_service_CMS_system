@@ -23,14 +23,15 @@ export const mongoDBDeleteClientFunction = async ( authToken, slug ) => {
         );
 };
 
-export const mongoDBGetSingleClientFunction = async ( slug ) => {
+export const mongoDBGetSingleClientFunction = async ( slug, authToken ) => {
     return await axios
         .get(
-            `${process.env.REACT_APP_API}/client/${slug}`
+            `${process.env.REACT_APP_API}/client/${slug}`,
+            { headers: { authToken } }
         );
 };
 
-export const mongoDBUpdateClientFunction = async (slug, client, authToken) => {
+export const mongoDBUpdateClientFunction = async ( slug, client, authToken ) => {
     return await axios
         .put(
             `${process.env.REACT_APP_API}/client/update/${slug}`,

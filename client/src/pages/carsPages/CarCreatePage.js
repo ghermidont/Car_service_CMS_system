@@ -13,7 +13,7 @@ const initialState = {
     brand: "brand",
     model: "model",
     licensePlate: "licensePlate",
-    revision: "revisions date",
+    revisions: "revisions date",
     km: "99999",
     year: "9999",
     client: "Client",
@@ -21,7 +21,15 @@ const initialState = {
 
 export default function CarCreatePage( { history } ){
     const [ carParamsState, setCarParamsState ] = useState( initialState );
-    const { brand, model, licensePlate, revision, km, year, client } = carParamsState;
+    const {
+        brand,
+        model,
+        licensePlate,
+        revisions,
+        km,
+        year,
+        client
+    } = carParamsState;
 
     // Get the user from Redux Store
     const { reduxStoreUser } = useSelector(( state) => ( { ...state }));
@@ -99,8 +107,8 @@ export default function CarCreatePage( { history } ){
                         <input
                             className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
-                            name="revision"
-                            value={ revision }
+                            name="revisions"
+                            value={ revisions }
                             onChange={ handleUserInput }
                         />
                     </label>

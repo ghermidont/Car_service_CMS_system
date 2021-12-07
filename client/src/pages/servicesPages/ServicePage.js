@@ -2,49 +2,51 @@
 import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-//import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { mongoDBGetSingleServiceFunction } from "../../functions/callsToServicesRoutes";
 
 const initialState = {
-    date: "",
-    licensePlate: "",
-    brand: "",
-    model: "",
-    state: "",
-    operator: "",
-    anomalies: "",
-    checks: "",
-    performedRepairs: "",
-    notes: "",
-    damage: ""
+    date: "date",
+    license_plate: "license_plate",
+    brand: "brand",
+    model: "model",
+    state: "state",
+    operator: "operator",
+    anomalies: "anomalies",
+    checks: "checks",
+    performed_repairs: "performed_repairs",
+    notes: "notes",
+    damage: "damage",
 };
 
-export default function ServicePage({match}) {
+export default function ServicePage( { match } ) {
+    console.log("ServicePage() worked");
     const [currentServiceParamsState, setCurrentServiceParamsState] = useState(initialState);
     const {
         date,
-        licensePlate,
+        license_plate,
         brand,
         model,
         state,
         operator,
         anomalies,
         checks,
-        performedRepairs,
+        actions,
         notes,
-        damage,
+        damage,        g
     } = currentServiceParamsState;
 
     const { slug } = match.params;
+    console.log("match.params", match.params);
     // Get the user from Redux Store
-    //const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     useEffect(() => {
         loadServiceDbInfo();
     }, []);
 
     const loadServiceDbInfo = () => {
-        mongoDBGetSingleServiceFunction(slug).then((service) => {
+        mongoDBGetSingleServiceFunction(slug, reduxStoreUser.token).then((service) => {
             console.log("single service", service);
             setCurrentServiceParamsState({ ...currentServiceParamsState, ...service.data });
         }).catch(
@@ -90,7 +92,7 @@ export default function ServicePage({match}) {
                                     <span className='font-normal text-text text-lg'>{ date }</span>
                                 </td>
                                 <td className='border border-border px-3'>
-                                    <span className='font-normal text-text text-lg'>{ licensePlate }</span>
+                                    <span className='font-normal text-text text-lg'>{ license_plate }</span>
                                 </td>
                                 <td className='border border-border px-3'>
                                     <span className='font-normal text-text text-lg'>{ brand }</span>
@@ -127,7 +129,7 @@ export default function ServicePage({match}) {
                     <label className='block mb-6 text-xl uppercase'>
                         Lavori Fatti
                         <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                            <span className='font-normal text-text text-lg'>{ performedRepairs }</span>
+                            <span className='font-normal text-text text-lg'>{ actions }</span>
                         </div>
                     </label>
 

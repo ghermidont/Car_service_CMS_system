@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { mongoDBUpdateCurrentUserFunction } from "../../functions/callsToUserRoutes";
 import { LoadingOutlined } from "@ant-design/icons";
-import {Avatar, Badge} from "antd";
+import { Avatar, Badge } from "antd";
 import Resizer from "react-image-file-resizer";
 import axios from "axios";
+import { mongoDBGetCurrentUserFunction } from "../../functions/callsToAuthRoutes";
 
 const initialState = {
     company_name: "",
@@ -24,10 +25,12 @@ const initialState = {
     ],
 };
 
-export default function UpdateUserPage({match}) {
-    const [currentUserInfoState, setCurrentUserInfoState] = useState(initialState);
-    const [loading, setLoading] = useState(false);
-    const { reduxStoreUser } = useSelector(( state ) => ( { ...state } ));
+//TODO implement images upload.
+export default function UpdateUserPage() {
+    const [ currentUserInfoState, setCurrentUserInfoState ] = useState( initialState );
+    const [ loading, setLoading ] = useState( false );
+    const { reduxStoreUser } = useSelector(( state ) => ( { ...state } ) );
+    const dispatch = useDispatch();
 
     const {
         company_name,
@@ -41,33 +44,80 @@ export default function UpdateUserPage({match}) {
         images,
     } = currentUserInfoState;
 
-    const { slug } = match.params;
-    console.log(slug);
+    //const { slug } = match.params;
+    //console.log( slug );
     // Get the user from Redux Store
     //const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        mongoDBUpdateCurrentUserFunction(slug, currentUserInfoState)
-            .then(() => {
-                window.alert( "Client info is updated successfully." );
-                window.location.reload();
-            })
-            .catch((error) => {
-                toast.error(error.response.data.err);
+    const getCurrentUser = () => {
+        mongoDBGetCurrentUserFunction( reduxStoreUser.token, reduxStoreUser.email )
+            .then( ( res ) => {
+                // Add data to the React Store.
+                if ( res.data !== null ) {
+                    setCurrentUserInfoState( res.data );
+                } else {
+                    toast.error( "No user info in the response from the backend." );
+                }
+            }).catch((err) => {
+                console.log( "Error while getting the user info: ", err );                
+                toast.error( `Error while getting the user info: ${err}` );
             });
     };
 
-    const handleUserInput = (event) => {
-        // Dynamically update each of the initialState values by their name parameter.
-        setCurrentUserInfoState({ ...currentUserInfoState, [event.target.name]: event.target.value });
+    useEffect( () => {
+        getCurrentUser();
+    }, [] );
+
+    const handleSubmit = ( event ) => {
+        event.preventDefault();
+        mongoDBUpdateCurrentUserFunction( reduxStoreUser.email, currentUserInfoState, reduxStoreUser.token )
+            .then( () => {
+                toast.success( "Client info is updated successfully." );
+                window.location.reload();
+                mongoDBGetCurrentUserFunction( reduxStoreUser.token, reduxStoreUser.email )
+                    .then( ( res ) => {
+                        // Add data to the React Store.
+                        if ( res.data!==null ){
+                            dispatch({
+                                type: "LOGGED_IN_USER",
+                                payload: {
+                                    role: res.data.role,
+                                    company_name: res.data.company_name,
+                                    current_residence: res.data.current_residence,
+                                    current_city: res.data.current_city,
+                                    current_province: res.data.current_province,
+                                    official_residence: res.data.current_residence,
+                                    official_city: res.data.current_city,
+                                    official_province: res.data.current_province,
+                                    fiscal_code: res.data.fiscal_code,
+                                    images: res.data.images,
+                                    email: res.data.email,
+                                    token: reduxStoreUser.token,
+                                },
+                            } );
+                        } else {
+                            toast.error( "Could not find user info in the mongoDB database." );
+                        };
+                    } ).catch( ( err ) => {
+                        console.log( "Error while getting the user info: ", err );
+                        toast.error( `Error while getting the user info: ${err}` );
+                    });
+            })
+            .catch( ( error ) => {
+                toast.error( error.response.data.err );
+            });
     };
 
-    const fileUploadAndResize = (e) => {
+    const handleUserInput = ( event ) => {
+        // Dynamically update each of the initialState values by their name parameter.
+        setCurrentUserInfoState({ ...currentUserInfoState, [ event.target.name ]: event.target.value } );
+    };
+
+    const fileUploadAndResize = ( e ) => {
         /* In case we upload single file we would take the first element in the array with e.target.files[0].
         In case o multiple upload we take all the files with e.target.files.*/
-        let files = e.target.files;
-        let allUploadedFiles = images;
+        const files = e.target.files;
+        const allUploadedFiles = images;
 
         if ( files ) {
             setLoading( true );
@@ -80,18 +130,25 @@ export default function UpdateUserPage({match}) {
                     "JPEG",
                     100,
                     0,
-                    (uri) => {
-                        return axios.post(`${process.env.REACT_APP_API}/image/upload`,{ image: uri },{headers: { authToken: currentUserInfoState ? currentUserInfoState.token : "",},})
-                            .then((res) => {
-                                console.log("IMAGE UPLOAD RES DATA", res);
-                                setLoading(false);
-                                allUploadedFiles.push(res.data);
-                                setCurrentUserInfoState({ ...currentUserInfoState, images: allUploadedFiles });
-                            })
-                            .catch((err) => {
-                                setLoading(false);
-                                console.log("CLOUDINARY UPLOAD ERR", err);
-                            });
+                    ( uri ) => {
+                        return axios
+                            .post(
+                                `${process.env.REACT_APP_API}/image/upload`,
+                                { image: uri },
+                                { 
+                                    headers: { authToken: currentUserInfoState ? currentUserInfoState.token : "",},
+                                }
+                            )
+                            .then( ( res) => {
+                                console.log( "IMAGE UPLOAD RES DATA: ", res );
+                                setLoading( false );
+                                allUploadedFiles.push( res.data );
+                                setCurrentUserInfoState({ ...currentUserInfoState, images: allUploadedFiles } );
+                            } )
+                            .catch( ( err ) => {
+                                setLoading( false );
+                                console.log( "CLOUDINARY UPLOAD ERR: ", err );
+                            } );
                     },
                     "base64"
                 );
@@ -99,8 +156,8 @@ export default function UpdateUserPage({match}) {
         }
     };
 
-    const handleImageRemove = (public_id) => {
-        setLoading(true);
+    const handleImageRemove = ( public_id ) => {
+        setLoading( true );
         axios
             .post(
                 `${process.env.REACT_APP_API}/image/remove`,
@@ -111,42 +168,42 @@ export default function UpdateUserPage({match}) {
                     },
                 }
             )
-            .then(() => {
-                setLoading(false);
+            .then( () => {
+                setLoading( false );
                 const { images } = currentUserInfoState;
-                let filteredImages = images.filter((item) => {
+                let filteredImages = images.filter( ( item) => {
                     return item.public_id !== public_id;
                 });
-                setCurrentUserInfoState({ ...currentUserInfoState, images: filteredImages });
+                setCurrentUserInfoState({ ...currentUserInfoState, images: filteredImages } );
             })
-            .catch((err) => {
-                console.log(err);
-                setLoading(false);
-            });
+            .catch( ( err ) => {
+                console.log( "handleImageRemove", err );
+                setLoading( false );
+            } );
     };
 
     return (
         <main>
-            <h1>UserUpdatePage.js</h1>
-            {loading ? (
+            <h1> UserUpdatePage.js </h1>
+            { loading ? (
                 <LoadingOutlined className="text-danger h1" />
             ) : (
                 <h4>Edit user info:</h4>
             )}
             <hr />
 
-            <div className='h-screen flex flex-col justify-between'>
-                <main className='flex items-center'>
+            <div className="h-screen flex flex-col justify-between">
+                <main className="flex items-center">
                     <div className="container mx-auto py-10">
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={ handleSubmit }>
                             <label className='font-normal uppercase mb-3'>
                                 Ragione Sociale
                                 <input
                                     className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
                                     type="text"
                                     name="company_name"
-                                    value={company_name}
-                                    onChange={handleUserInput}
+                                    value={ company_name }
+                                    onChange={ handleUserInput }
                                 />
                             </label>
                             <div className='flex justify-between mt-6'>
@@ -156,8 +213,8 @@ export default function UpdateUserPage({match}) {
                                         className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
                                         type="text"
                                         name="current_residence"
-                                        value={current_residence}
-                                        onChange={handleUserInput}
+                                        value={ current_residence }
+                                        onChange={ handleUserInput }
                                     />
                                 </label>
                                 <label className='font-normal uppercase mb-3 max-w-400 w-100%'>
@@ -166,18 +223,18 @@ export default function UpdateUserPage({match}) {
                                         className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
                                         type="text"
                                         name="current_city"
-                                        value={current_city}
-                                        onChange={handleUserInput}
+                                        value={ current_city }
+                                        onChange={ handleUserInput }
                                     />
                                 </label>
-                                <label className='font-normal uppercase mb-3 max-w-400 w-100%'>
+                                <label className="font-normal uppercase mb-3 max-w-400 w-100%">
                                     Provincia
                                     <input
                                         className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
                                         type="text"
                                         name="current_province"
-                                        value={current_province}
-                                        onChange={handleUserInput}
+                                        value={ current_province }
+                                        onChange={ handleUserInput }
                                     />
                                 </label>
                             </div>
@@ -188,8 +245,8 @@ export default function UpdateUserPage({match}) {
                                         className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
                                         type="text"
                                         name="official_residence"
-                                        value={official_residence}
-                                        onChange={handleUserInput}
+                                        value={ official_residence }
+                                        onChange={ handleUserInput }
                                     />
                                 </label>
                                 <label className='font-normal uppercase mb-3 max-w-400 w-100%'>
@@ -198,8 +255,8 @@ export default function UpdateUserPage({match}) {
                                         className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
                                         type="text"
                                         name="official_city"
-                                        value={official_city}
-                                        onChange={handleUserInput}
+                                        value={ official_city }
+                                        onChange={ handleUserInput }
                                     />
                                 </label>
                                 <label className='font-normal uppercase mb-3 max-w-400 w-100%'>
@@ -208,8 +265,8 @@ export default function UpdateUserPage({match}) {
                                         className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
                                         type="text"
                                         name="official_province"
-                                        value={official_province}
-                                        onChange={handleUserInput}
+                                        value={ official_province }
+                                        onChange={ handleUserInput }
                                     />
                                 </label>
                             </div>
@@ -219,42 +276,42 @@ export default function UpdateUserPage({match}) {
                                     className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
                                     type="text"
                                     name="fiscal_code"
-                                    value={fiscal_code}
-                                    onChange={handleUserInput}
+                                    value={ fiscal_code }
+                                    onChange={ handleUserInput }
                                 />
                             </label>
-                            <div className='flex justify-between'>
+                            <div className="flex justify-between">
                                 <div>
-                                    <div className='uppercase mb-2 mt-6'>Aggiungi Foto</div>
-                                    <div className='flex items-end'>
+                                    <div className="uppercase mb-2 mt-6"> Aggiungi Foto </div>
+                                    <div className="flex items-end">
                                         <div className='w-250 h-[250px] rounded bg-border mr-6'> </div>
                                         <label
                                             className='font-normal bg-bgBtnGray color uppercase cursor-pointer px-3 py-2 rounded flex justify-center inline w-100 hover:opacity-70 focus:opacity-70'>
                                             <input
-                                                className='hidden'
+                                                className="hidden"
                                                 type="file"
                                                 multiple
                                                 hidden
                                                 accept="images/*"
-                                                onChange={fileUploadAndResize}
+                                                onChange={ fileUploadAndResize }
                                             />
                                             <div className='pr-2'>
                                                 {images &&
-                                                images.map((image) => (
+                                                images.map( ( image ) => (
                                                     <Badge
                                                         count="X"
-                                                        key={image.public_id}
-                                                        onClick={() => handleImageRemove(image.public_id)}
-                                                        style={{ cursor: "pointer" }}
+                                                        key={ image.public_id }
+                                                        onClick={ () => handleImageRemove( image.public_id ) }
+                                                        style={ { cursor: "pointer" } }
                                                     >
                                                         <Avatar
-                                                            src={image.url}
-                                                            size={100}
+                                                            src={ image.url }
+                                                            size={ 100 }
                                                             shape="square"
                                                             className="ml-3"
                                                         />
                                                     </Badge>
-                                                ))}
+                                                ) ) }
                                             </div>
                                             ADD
                                         </label>

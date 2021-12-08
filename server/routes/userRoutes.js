@@ -9,6 +9,6 @@ const { fireBaseAuthCheckMiddleware } = require("../middlewares/authMiddleware")
 const { mongoDBUserUpdateController } = require("../controllers/userController");
 
 // routes
-router.put("/user/update/:slug", fireBaseAuthCheckMiddleware, mongoDBUserUpdateController);
+router.put("/user/update", fireBaseAuthCheckMiddleware, mongoDBUserUpdateController);
 
 module.exports = router;

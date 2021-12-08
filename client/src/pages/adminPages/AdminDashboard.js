@@ -14,24 +14,26 @@ import {
 
 export default function AdminDashboard(){
     const { Content, Sider } = Layout;
-    const [selectedMenuItem, setSelectedMenuItem]= useState("1");
-    const [page, setPage] = useState(1);
-    const [usersCount, setUsersCount] = useState(0);
-    const [loading, setLoading] = useState(false);
-    const [mongoDbUsersList, setMongoDbUsersList] = useState({});
+    const [ selectedMenuItem, setSelectedMenuItem ]= useState( "1" );
+    const [ page, setPage ] = useState( 1 );
+    const [ usersCount, setUsersCount ] = useState( 0 );
+    const [ loading, setLoading ] = useState( false );
+    const [ mongoDbUsersList, setMongoDbUsersList ] = useState([]);
 
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
 
     const getUsersFromDb = () => {
+        console.log("getUsersFromDb() worked: ");
         setLoading(true);
-        mongoDBGetAllUsersFunction("createdAt", "desc", page)
-            .then((res) => {
-                setMongoDbUsersList(res.data);
-                setLoading(false);
+        mongoDBGetAllUsersFunction("createdAt", "desc", page, reduxStoreUser.token )
+            .then( ( res ) => {
+                console.log("res.data: ", res.data);
+                setMongoDbUsersList( res.data );
+                setLoading( false );
             })
-            .catch((err) => {
-                setLoading(false);
-                console.log(err);
+            .catch( ( err ) => {
+                setLoading( false );
+                console.log( "mongoDBGetAllUsersFunction(): ", err );
             });
     };
     
@@ -39,9 +41,16 @@ export default function AdminDashboard(){
         getUsersFromDb();
     }, [page]);
 
-    useEffect(() => {
-        mongoDBGetUsersCountFunction().then((res) => setUsersCount(res.data));
-    }, []);
+    useEffect( () => {
+        mongoDBGetUsersCountFunction( reduxStoreUser.token )
+            .then(
+                ( res ) => setUsersCount( res.data )
+            )
+            .catch(( error ) => {
+                toast.error( "Error loading users count: ", error );
+                console.log( "Error loading users count: ", error );
+            });
+    }, [] );
 
     const toggleUserRole = (userId, role) => {
         mongoDBToggleUserAccessFunction(userId, role, reduxStoreUser.authToken)
@@ -64,11 +73,11 @@ export default function AdminDashboard(){
 
             <div className="container mx-auto">
                 <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
-                    {loading ? (
-                        <h4 className="text-danger">Loading...</h4>
+                    { loading ? (
+                        <h4 className="text-danger"> Loading... </h4>
                     ) : (
-                        <h4>Users</h4>
-                    )}
+                        <h4> Users List: </h4>
+                    ) }
                     <table className='mx-auto mb-8'>
                         <thead>
                             <tr>
@@ -97,31 +106,31 @@ export default function AdminDashboard(){
 
                         <tbody>
 
-                            {mongoDbUsersList.map((userInfo) => (
-                                <tr key={userInfo.id}>
-                                    <td>
-                                        <button className='w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'>
-                                            <Link to={`admin/user/${userInfo.slug}`}>
-                                                Open
-                                            </Link>
-                                        </button>
-                                    </td>
-                                    <td className='pr-3'>
-                                        <button
-                                            className='w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'
-                                            onClick={()=>deleteUserFromDB(userInfo.slug, userInfo.company_name)}
-                                        >
-                                        Delete
-                                        </button>
-                                    </td>
-                                    <td className='border border-border px-3'>{userInfo._id}</td>
-                                    <td className='border border-border px-3'>{userInfo.company_name}</td>
-                                    <td className='border border-border px-3'>{userInfo.email}</td>
-                                    <td className='border border-border px-3'>{userInfo.fiscal_code}</td>
-                                    <td className='border border-border px-3'>{userInfo.createdAt}</td>
-                                    <td className='border border-border px-3'>{userInfo.role}</td>
-                                </tr>
-                            ))}
+                            {/*{mongoDbUsersList.map((userInfo) => (*/}
+                            {/*    <tr key={userInfo.id}>*/}
+                            {/*        <td>*/}
+                            {/*            <button className='w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'>*/}
+                            {/*                <Link to={`admin/user/${userInfo.slug}`}>*/}
+                            {/*                    Open*/}
+                            {/*                </Link>*/}
+                            {/*            </button>*/}
+                            {/*        </td>*/}
+                            {/*        <td className='pr-3'>*/}
+                            {/*            <button*/}
+                            {/*                className='w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'*/}
+                            {/*                onClick={()=>deleteUserFromDB(userInfo.slug, userInfo.company_name)}*/}
+                            {/*            >*/}
+                            {/*            Delete*/}
+                            {/*            </button>*/}
+                            {/*        </td>*/}
+                            {/*        <td className='border border-border px-3'>{userInfo._id}</td>*/}
+                            {/*        <td className='border border-border px-3'>{userInfo.company_name}</td>*/}
+                            {/*        <td className='border border-border px-3'>{userInfo.email}</td>*/}
+                            {/*        <td className='border border-border px-3'>{userInfo.fiscal_code}</td>*/}
+                            {/*        <td className='border border-border px-3'>{userInfo.createdAt}</td>*/}
+                            {/*        <td className='border border-border px-3'>{userInfo.role}</td>*/}
+                            {/*    </tr>*/}
+                            {/*))}*/}
 
                         </tbody>
                     </table>
@@ -189,7 +198,7 @@ export default function AdminDashboard(){
     const componentsSwitch = (key) => {
         switch (key) {
         case "1":
-            return usersTable;
+            return usersTable();
         case "2":
             return (<h1>item2</h1>);
         default:
@@ -199,22 +208,28 @@ export default function AdminDashboard(){
 
     return(
         <>
-            <center><h1 style={{fontSize: 20, fontWeight: 700}}>Admin dashboard</h1></center>
+            <center><h1 style={ { fontSize: 20, fontWeight: 700 } }> Admin dashboard </h1></center>
             <Layout>           
                 <Sider
                     breakpoint="lg"
                     collapsedWidth="0"
-                    onBreakpoint={broken => {
-                        console.log(broken);
+                    onBreakpoint={ broken => {
+                        console.log( broken );
                     }}
-                    onCollapse={(collapsed, type) => {
-                        console.log(collapsed, type);
+                    onCollapse={ ( collapsed, type ) => {
+                        console.log( collapsed, type );
                     }}
                 >
                     <div className="logo" />
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]} onClick={(e) =>
-                        setSelectedMenuItem(e.key)}>
-                        <Menu.Item key="1" icon={<UserOutlined />}>
+                    <Menu
+                        theme="dark"
+                        mode="inline"
+                        defaultSelectedKeys={ [ "1" ] }
+                        onClick={
+                            ( e ) => setSelectedMenuItem( e.key )
+                        }
+                    >
+                        <Menu.Item key="1" icon={ <UserOutlined /> }>
                             Users List
                         </Menu.Item>
                         <Menu.Item key="2" >
@@ -224,9 +239,9 @@ export default function AdminDashboard(){
                 </Sider>
                 <Layout>
                     {/*<Header className="site-layout-sub-header-background" style={{ padding: 0 }} />*/}
-                    <Content style={{ margin: "24px 16px 0" }}>
-                        <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-                            {componentsSwitch(selectedMenuItem)}
+                    <Content style={ { margin: "24px 16px 0" } }>
+                        <div className="site-layout-background" style={ { padding: 24, minHeight: 360 } }>
+                            { componentsSwitch( selectedMenuItem ) }
                         </div>
                     </Content>
                     {/*<Footer style={{ textAlign: "center" }}>Ant Design ©2018 Created by Ant UED</Footer>*/}

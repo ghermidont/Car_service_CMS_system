@@ -55,16 +55,16 @@ exports.mongoDBToggleUserAccessController = async (req, res) => {
     }
 };
 
-exports.mongoDBUsersCountController = async (req, res) => {
+exports.mongoDBUsersCountController = async ( req, res ) => {
     const count = await userSchema
-        .find({})
+        .find( {} )
         .estimatedDocumentCount()
         .exec();
-
+    console.log( "USERS COUNT: ", count );
     res.json(count);
 };
 
-exports.mongoDBGetAllUsersController = async (req, res) => {
+exports.mongoDBGetAllUsersController = async ( req, res ) => {
     try {
         // createdAt/updatedAt, desc/asc, 3
         const { sort, order, page } = req.body;
@@ -73,15 +73,16 @@ exports.mongoDBGetAllUsersController = async (req, res) => {
         //The number of items per page.
         const perPage = 8;
 
-        const user = await userSchema.find({})
+        const users = await userSchema.find( {} )
         //skipping the number of products from the page previous to the chosen page.
-            .skip((currentPage - 1) * perPage)
-            .sort([[sort, order]])
-            .limit(perPage)
+            .skip(( currentPage - 1 ) * perPage )
+            .sort( [ [ sort, order ] ] )
+            .limit( perPage )
             .exec();
-        res.json(user);
-    } catch (err) {
-        console.log(err);
+        console.log( "ALL USERS: ", users );
+        res.json( users );
+    } catch ( err ) {
+        console.log( "mongoDBGetAllUsersController() ", err );
     }
 };
 

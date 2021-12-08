@@ -95,7 +95,7 @@ exports.mongoDBGetAllCarsController = async ( req, res ) => {
         const cars = await carModel.find({})
             //skipping the number of products from the page previous to the chosen page.
             .skip(( currentPage - 1 ) * perPage )
-            .sort([ [sort, order] ] )
+            .sort([ [ sort, order ] ] )
             .limit( perPage )
             .exec();
 

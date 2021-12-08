@@ -34,7 +34,7 @@ export default function LoginPage({ history }){
         }
     }, [reduxStoreUser, history]);
 
-    let dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const roleBasedRedirect = (role) => {
         console.log("LoginPage.js roleBasedRedirect() worked");

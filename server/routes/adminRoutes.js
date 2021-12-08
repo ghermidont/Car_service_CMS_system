@@ -44,14 +44,14 @@ router.get(
     mongoDBUsersCountController
 );
 
-router.get(
+router.post(
     "/admin/users",
     fireBaseAuthCheckMiddleware,
     mongoDbAdminCheckMiddleware,
     mongoDBGetAllUsersController
 );
 
-router.get(
+router.post(
     "/search/users/search",
     mongoDbAdminCheckMiddleware,
     searchFiltersController

@@ -17,18 +17,38 @@ export const mongoDBDeleteUserFunction = async ( authToken, slug ) => {
 };
 
 // The function is used in AdminDashUserList.js file.
-export const mongoDBGetSingleUserFunction = async ( slug ) => {
-    return await axios.get( `${process.env.REACT_APP_API}/admin/user/${slug}` );
+export const mongoDBGetSingleUserFunction = async ( email, authToken ) => {
+    return await axios
+        .get(
+            `${process.env.REACT_APP_API}/admin/user`,
+            {
+                params: { email },
+                headers: { authToken }
+            }
+        );
 };
 
-export const mongoDBGetAllUsersFunction = async ( sort, order, page ) => {
-    return await axios.post( `${process.env.REACT_APP_API}/admin/users`,  { sort, order, page });
+export const mongoDBGetAllUsersFunction = async ( sort, order, page, authToken ) => {
+    return await axios
+        .post(
+            `${process.env.REACT_APP_API}/admin/users`,
+            { sort, order, page },
+            { headers: { authToken } }
+        );
 };
 
-export const mongoDBGetUsersCountFunction = async () => {
-    return await axios.get(`${process.env.REACT_APP_API}admin/users/total`);
+export const mongoDBGetUsersCountFunction = async ( authToken ) => {
+    return await axios
+        .get(
+            `${process.env.REACT_APP_API}/admin/users/total`,
+            { headers: { authToken } }
+        );
 };
 
 export const mongoDBFetchUserByFilterFunction = async ( args ) => {
-    return await axios.post( `${process.env.REACT_APP_API}admin/search/filters`, args );
+    return await axios
+        .post(
+            `${process.env.REACT_APP_API}/admin/search/filters`,
+            args
+        );
 };

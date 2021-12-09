@@ -15,7 +15,7 @@ const initialState = [
         brand: "Mercedes",
         model: "GLS600",
         licensePlate: "CVD45",
-        revision: "2020/05/30",
+        revisions: "2020/05/30",
         km: 45345,
         year: 2000,
         client: "Mark Zukerman",
@@ -26,7 +26,7 @@ const initialState = [
         brand: "BMW",
         model: "M30",
         licensePlate: "VFD45",
-        revision: "2021/06/30",
+        revisions: "2021/06/30",
         km: 346345,
         year: 2000,
         client: "1900",
@@ -37,74 +37,54 @@ const initialState = [
         brand: "Lada",
         model: "Calina",
         licensePlate: "TSS34",
-        revision: "2010/01/30",
+        revisions: "2010/01/30",
         km: 45435,
         year: 1885,
         client: "Will Smith",
         slug: "asd4t4t",
     },
-    {
-        _id: 4,
-        brand: "Jaguar",
-        model: "XLS",
-        licensePlate: "TDF56",
-        revision: "2015/03/30",
-        km: 34999,
-        year: 2030,
-        client: "John Smith",
-        slug: "sda4t4",
-    },
-    {
-        _id: 5,
-        brand: "Opel",
-        model: "Astra",
-        licensePlate: "DFG67",
-        revision: "2013/09/30",
-        km: 45499,
-        year: 2000,
-        client: "Elton John",
-        slug: "dasfhgerh",
-    },
 ];
 
 export default function CarArchivePage() {
+    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     const [ dbCars, setDbCars ] = useState( initialState );
     const [ page, setPage ] = useState( 1 );
     const [ carsCount, setCarsCount ] = useState( 0 );
     const [ loading, setLoading ] = useState( false );
 
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
-
     useEffect(() => {
         loadAllCars();
-    }, [ page ]);
+    }, [ page ] );
 
     useEffect(() => {
+
         mongoDBGetCarsCountFunction( reduxStoreUser.token )
-            .then(( res) => setCarsCount( res.data ) )
-            .catch(( error ) => {
+            .then( ( res) => setCarsCount( res.data ) )
+            .catch( ( error ) => {
                 toast.error( "Error loading cars count", error );
                 console.log( "Error loading cars count", error );
-            });
-    }, []);
+            } );
+    }, [] );
 
     const loadAllCars = () => {
         setLoading( true );
         // sort, order, limit
-        mongoDBGetAllCarsFunction( "createdAt", "desc", page )
+        mongoDBGetAllCarsFunction( "createdAt", "desc", page, reduxStoreUser._id )
             .then(( res ) => {
                 setDbCars( res.data );
                 setLoading( false );
+                console.log( "Cars loaded: ", res.data );
             });
     };
 
-    const deleteCarFunction = (slug, authToken) => {
-        mongoDBDeleteCarFunction(slug, authToken).then(()=> {
-            toast.success("Car deleted successfully!");
-        }).catch(()=>{
-            toast.error("Car deletion failed!");
-        });
+    const deleteCarFunction = ( slug ) => {
+        mongoDBDeleteCarFunction( reduxStoreUser.token, slug ).then( ()=> {
+            toast.success( "Car deleted successfully!" );
+            window.location.reload();
+        } ).catch( ()=>{
+            toast.error( "Car deletion failed!" );
+        } );
     };
 
     return (
@@ -163,7 +143,7 @@ export default function CarArchivePage() {
                                     <td className='pr-3'>
                                         <button
                                             className='w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'
-                                            onClick={()=>deleteCarFunction(car.slug, reduxStoreUser.token)}
+                                            onClick={ ()=>deleteCarFunction( car.slug ) }
                                         >
                                             Delete
                                         </button>
@@ -177,7 +157,7 @@ export default function CarArchivePage() {
                                     {/*TARGA*/}
                                     <td className='border border-border px-3'>{car.licensePlate}</td>
                                     {/*REVISIONE*/}
-                                    <td className='border border-border px-3'>{car.revision}</td>
+                                    <td className='border border-border px-3'>{car.revisions}</td>
                                     {/*KM*/}
                                     <td className='border border-border px-3'>{car.km}</td>
                                     {/*ANNO*/}
@@ -196,7 +176,7 @@ export default function CarArchivePage() {
                                 defaultCurrent={ 1 }
                                 current={ page }
                                 total={ carsCount }
-                                onChange={(value) => setPage( value ) }
+                                onChange={ ( value ) => setPage( value ) }
                             />
                         </nav>
                     </div>

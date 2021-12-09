@@ -22,21 +22,21 @@ export default function LoginPage({ history }){
     //const info = {name: "Mike"};
 
     useEffect(() => {
-        let intended = history.location.state;
-        console.log("history.location.state", history.location.state);
+        const intended = history.location.state;
+        console.log( "history.location.state", history.location.state );
 
-        if (intended) {
+        if ( intended ) {
             return;
         } else {
-            if (reduxStoreUser && reduxStoreUser.token){
-                history.push("/main_menu");
+            if ( reduxStoreUser && reduxStoreUser.token ){
+                history.push( "/main_menu" );
             }
         }
-    }, [reduxStoreUser, history]);
+    }, [ reduxStoreUser, history ]);
 
     const dispatch = useDispatch();
 
-    const roleBasedRedirect = (role) => {
+    const roleBasedRedirect = ( role ) => {
         console.log("LoginPage.js roleBasedRedirect() worked");
         // check if intended
         let intended = history.location.state;
@@ -56,24 +56,25 @@ export default function LoginPage({ history }){
         }
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async ( e ) => {
         e.preventDefault();
         try {
-            let FBUser = await signInWithEmailAndPassword(auth, email, password);
+            let FBUser = await signInWithEmailAndPassword( auth, email, password );
             const { user } = FBUser;
            
-            const idTokenResult = await getIdTokenResult(user, false);
-            console.log("LoginPage.js getIdTokenResult.token: ", idTokenResult.token);
-            console.log("LoginPage.js user.email: ", user.email);
-            //This functions will give us the user token and we send it to the back end in the header as auth token.
-            mongoDBGetCurrentUserFunction(idTokenResult.token, user.email)
-                .then((res) => {
+            const idTokenResult = await getIdTokenResult( user, false );
+            console.log( "LoginPage.js getIdTokenResult.token: ", idTokenResult.token );
+            console.log( "LoginPage.js user.email: ", user.email );
+            //This functions will give us the user token, and we send it to the back end in the header as auth token.
+            mongoDBGetCurrentUserFunction( idTokenResult.token, user.email )
+                .then( ( res ) => {
                 // Add data to the React Store.
-                    if (res.data!==null){
-                        console.log("LoginPage.js mongoDBGetCurrentUserFunction() response: ", JSON.stringify(res));
-                        dispatch({
+                    if ( res.data!==null ){
+                        console.log( "LoginPage.js mongoDBGetCurrentUserFunction() response: ", JSON.stringify( res ) );
+                        dispatch( {
                             type: "LOGGED_IN_USER",
                             payload: {
+                                _id: res.data._id,
                                 company_name: res.data.company_name,
                                 current_residence: res.data.current_residence,
                                 current_city: res.data.current_city,
@@ -87,15 +88,15 @@ export default function LoginPage({ history }){
                                 role: res.data.role,
                                 token: idTokenResult.token,
                             },
-                        });
-                        roleBasedRedirect(res.data.role);
-                    }else{
-                        toast.error("Could not find user info in the mongoDB database. Unable to proceed");
+                        } );
+                        roleBasedRedirect( res.data.role );
+                    } else {
+                        toast.error( "Could not find user info in the mongoDB database. Unable to proceed" );
                     };
-                }).catch((err) => {
-                    console.log("Login page get user info error: ", err);
-                    toast.error(`Login page get user info error: ${err}`);
-                });
+                } ).catch( ( err ) => {
+                    console.log( "Login page get user info error: ", err );
+                    toast.error( `Login page get user info error: ${ err }` );
+                } );
         } catch (error) {
             console.log("Login page submit error: " + error.message);
             toast.error("Wrong email or password.");

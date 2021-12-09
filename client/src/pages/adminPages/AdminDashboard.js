@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
-import {Layout, Menu, Pagination} from "antd";
+import React, { useEffect, useState } from "react";
+import { Layout, Menu, Pagination} from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import { toast } from "react-toastify";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import {
     mongoDBGetAllUsersFunction,
     mongoDBGetUsersCountFunction,
@@ -18,16 +17,16 @@ export default function AdminDashboard(){
     const [ page, setPage ] = useState( 1 );
     const [ usersCount, setUsersCount ] = useState( 0 );
     const [ loading, setLoading ] = useState( false );
-    const [ mongoDbUsersList, setMongoDbUsersList ] = useState([]);
+    const [ mongoDbUsersList, setMongoDbUsersList ] = useState( [] );
 
     const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
 
     const getUsersFromDb = () => {
-        console.log("getUsersFromDb() worked: ");
-        setLoading(true);
+        console.log( "getUsersFromDb() worked: " );
+        setLoading( true );
         mongoDBGetAllUsersFunction("createdAt", "desc", page, reduxStoreUser.token )
             .then( ( res ) => {
-                console.log("res.data: ", res.data);
+                console.log( "res.data: ", res.data );
                 setMongoDbUsersList( res.data );
                 setLoading( false );
             })
@@ -37,9 +36,9 @@ export default function AdminDashboard(){
             });
     };
     
-    useEffect(() => {
+    useEffect( () => {
         getUsersFromDb();
-    }, [page]);
+    }, [ page ] );
 
     useEffect( () => {
         mongoDBGetUsersCountFunction( reduxStoreUser.token )
@@ -52,19 +51,20 @@ export default function AdminDashboard(){
             });
     }, [] );
 
-    const toggleUserRole = (userId, role) => {
-        mongoDBToggleUserAccessFunction(userId, role, reduxStoreUser.authToken)
-            .then((res) => {
-                toast.success("User role changed");
-            }).catch((err) => {
-                toast.error("Error changing user role");
-            });
+    const toggleUserRole = ( userId, role ) => {
+        mongoDBToggleUserAccessFunction( userId, role, reduxStoreUser.authToken )
+            .then( ( res ) => {
+                toast.success( "User role changed" );
+            } )
+            .catch( ( err ) => {
+                toast.error( "Error changing user role: ", err );
+            } );
     };
     
     const deleteUserFromDB = ( slug, company_name ) => {
         mongoDBDeleteUserFunction( slug, reduxStoreUser.token )
-            .then(()=>window.alert(`User ${company_name} removed successfully.`))
-            .catch(err=>window.alert(err));
+            .then( ()=>window.alert( `User ${ company_name } removed successfully.` ) )
+            .catch( err=>window.alert( err ) );
     };
 
     const usersTable = () => (
@@ -140,8 +140,8 @@ export default function AdminDashboard(){
                         <nav className="col-md-4 offset-md-4 text-center pt-5 p-3">
                             <Pagination
                                 current={ page }
-                                total={ (usersCount / 3) * 10 }
-                                onChange={(value) => setPage(value)}
+                                total={ ( usersCount / 3 ) * 10 }
+                                onChange={ ( value ) => setPage( value ) }
                             />
                         </nav>
                     </div>
@@ -195,12 +195,12 @@ export default function AdminDashboard(){
         </main>
     );
 
-    const componentsSwitch = (key) => {
-        switch (key) {
+    const componentsSwitch = ( key ) => {
+        switch ( key ) {
         case "1":
             return usersTable();
         case "2":
-            return (<h1>item2</h1>);
+            return ( <h1> item2 </h1> );
         default:
             break;
         }

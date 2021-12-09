@@ -3,6 +3,7 @@ const mongoose = require( "mongoose" );
 
 const userSchema = new mongoose.Schema(
     {
+        _id: mongoose.Schema.Types.ObjectId,
         company_name: {
             type: String,
             trim: true,

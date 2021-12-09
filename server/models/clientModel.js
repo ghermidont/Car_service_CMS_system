@@ -1,10 +1,10 @@
 // Schema options here: https://mongoosejs.com/docs/schematypes.html#strings
-
 const mongoose = require("mongoose");
-//const { ObjectId } = mongoose.Schema;
 
 const clientSchema = new mongoose.Schema(
     {
+        _id: mongoose.Schema.Types.ObjectId,
+        user: { type: mongoose.Schema.Types.ObjectId, ref: "userModel" },
         name: {
             type: String,
             //unique: true,
@@ -87,7 +87,6 @@ const clientSchema = new mongoose.Schema(
             lowercase: true,
             index: true,
         },
-        //relation: { type: ObjectId, ref: "userModel" },
     },
     { timestamps: true }
 );

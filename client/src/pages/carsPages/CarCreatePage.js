@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { mongoDBCreateCarFunction } from "../../functions/callsToCarRoutes";
+import { mongoDBGetCurrentUserFunction } from "../../functions/callsToAuthRoutes";
+import { mongoDBGetAllClientsFunctionNoPag } from "../../functions/callsToClientRoutes";
 
 // TODO implement the cascader.
 /* Use the Ant cascader for cars select. https://ant.design/components/cascader/ */
@@ -10,6 +12,7 @@ import { mongoDBCreateCarFunction } from "../../functions/callsToCarRoutes";
 //https://www.back4app.com/docs/react/quickstart
 
 const initialState = {
+    user: "user",
     brand: "brand",
     model: "model",
     licensePlate: "licensePlate",
@@ -20,7 +23,10 @@ const initialState = {
 };
 
 export default function CarCreatePage( { history } ){
+
     const [ carParamsState, setCarParamsState ] = useState( initialState );
+    const [ clientsListState, setClientsListState ] = useState( initialState );
+
     const {
         brand,
         model,
@@ -28,11 +34,43 @@ export default function CarCreatePage( { history } ){
         revisions,
         km,
         year,
-        client
     } = carParamsState;
 
+    const loadAllClients = async () => {
+        // sort, order
+        await mongoDBGetAllClientsFunctionNoPag( "createdAt", "desc" )
+            .then( ( res ) => {
+                setClientsListState( res.data );            
+            }).catch(( error ) => {
+                toast.error("Error getting all clients: ", error );
+                console.log( "Error getting all clients", error );
+            });
+    };
+    
+    const getCurrentUser = async () => {
+        await mongoDBGetCurrentUserFunction( reduxStoreUser.token, reduxStoreUser.email )
+            .then( ( res ) => {
+                // Add data to the React Store.
+                if ( res.data !== null ) {
+                    console.log( "Current User data: ", res.data._id );
+                    carParamsState.user = res.data._id;
+                    console.log( "carParamsState: ", carParamsState );
+                } else {
+                    toast.error( "No user info in the response from the backend." );
+                }
+            }).catch((err) => {
+                console.log( "Error while getting the user info: ", err );
+                toast.error( `Error while getting the user info: ${ err }` );
+            });
+    };
+
+    useEffect( () => {
+        getCurrentUser().then(()=>console.log("getCurrentUser() worked in useEffect()."));
+        loadAllClients().then(()=>console.log("loadAllClients() worked in useEffect()."));
+    }, [] );
+
     // Get the user from Redux Store
-    const { reduxStoreUser } = useSelector(( state) => ( { ...state }));
+    const { reduxStoreUser } = useSelector(( state) => ( { ...state } ) );
 
     const handleSubmit = async ( event ) => {
         event.preventDefault();
@@ -40,11 +78,12 @@ export default function CarCreatePage( { history } ){
 
         try {
             console.log( "carParamsState: ", carParamsState );
-            mongoDBCreateCarFunction( reduxStoreUser.token, carParamsState ).then( () => {
-                console.log( "mongoDBCreateCarFunction() worked in CarCreatePage.js" );
-                toast.success( "Car added successfully." );
-                history.push( "/cars_archive" );
-            })
+            await mongoDBCreateCarFunction( reduxStoreUser.token, carParamsState )
+                .then( () => {
+                    console.log( "mongoDBCreateCarFunction() worked in CarCreatePage.js" );
+                    toast.success( "Car added successfully." );
+                    history.push( "/cars_archive" );
+                })
                 .catch( ( error ) => {
                     console.log( "mongoDBCreateCarFunction() error: ", error );
                     toast.error( "Session expired. Please re-login in order to be able to perform this action." );
@@ -63,7 +102,6 @@ export default function CarCreatePage( { history } ){
 
     return (
         <main>
-
             <h1>CarCreatePage.js</h1>
 
             <div className="container mx-auto py-20">
@@ -137,14 +175,20 @@ export default function CarCreatePage( { history } ){
 
                     <label className="block mb-8 text-xl max-w-600">
                         CLIENTE
-                        {/*TODO consider adding live search algorithm from the clients database.*/}
-                        <input
-                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
-                            type="text"
-                            value={ client }
+                        <select
                             name="client"
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
+                            //className="form-control"
                             onChange={ handleUserInput }
-                        />
+                        >
+                            <option> Please select </option>
+                            { clientsListState.length > 0 &&
+                                clientsListState.map( ( cli ) => (
+                                    <option key={ cli._id } value={ cli._id }>
+                                        { cli.name + " " + cli.surname + ", P.IVA: " + cli.fiscal_code }
+                                    </option>
+                                ) ) }
+                        </select>
                     </label>
 
                     <div className="flex justify-end">

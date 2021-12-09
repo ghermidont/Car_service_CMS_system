@@ -43,11 +43,12 @@ export const mongoDBUpdateCarFunction = async (slug, car, authToken) => {
 
 //The following two calls are used for forming the pagination.
 //These two functions bellow are used for pagination.
-export const mongoDBGetAllCarsFunction = async ( sort, order, page ) => {
+export const mongoDBGetAllCarsFunction = async ( sort, order, page, userId ) => {
+    console.log("userId", userId);
     return await axios
         .post(
             `${process.env.REACT_APP_API}/cars`, 
-            { sort, order, page }
+            { sort, order, page, userId }
         );
 };
 

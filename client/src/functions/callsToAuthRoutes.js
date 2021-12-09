@@ -2,19 +2,34 @@
 import axios from "axios";
 
 export const mongoDBCreateUserFunction = async (authToken, user) => {
-    return await axios.post(`${process.env.REACT_APP_API}/auth/user/create`, user, { headers: {authToken}, });
+    return await axios
+        .post(
+            `${process.env.REACT_APP_API}/auth/user/create`, 
+            user, 
+            { 
+                headers: {authToken},
+            }
+        );
 };
 
-export const mongoDBGetCurrentUserFunction = async (authToken, email) => {
-    return await axios.get(`${process.env.REACT_APP_API}/auth/user/current`, {
-        headers: { authToken },
-        params: { email: email }
-    });
+export const mongoDBGetCurrentUserFunction = async ( authToken, email ) => {
+    return await axios
+        .get(
+            `${process.env.REACT_APP_API}/auth/user/current`, 
+            {
+                headers: { authToken },
+                params: { email: email }
+            }
+        );
 };
 
 export const mongoDBGetCurrentAdminFunction = async (authToken, email) => {
-    return await axios.get(`${process.env.REACT_APP_API}/auth/admin/current`,{
-        headers: { authToken },
-        params: {email: email},
-    });
+    return await axios
+        .get(
+            `${process.env.REACT_APP_API}/auth/admin/current`,
+            {
+                headers: { authToken },
+                params: {email: email},
+            }
+        );
 };

@@ -26,39 +26,39 @@ export default function UserPage() {
                 <div className='bg-grayL shadow-shadow rounded p-12'>
                     <div className='flex mb-20'>
                         <div className='w-400 h-auto border border-border rounded-md mr-6'>
-                            { images.map((image) => ( <img className='' src={image.status==="default" ? ClientPhoto : image.url} alt=""/> )) }
+                            { images.map( ( image ) => ( <img className='' src={ image.status==="default" ? ClientPhoto : image.url } alt=""/> )) }
                         </div>
                         <ul>
                             <li className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                                Ragione sociale: <span className='font-normal text-text text-lg'>{company_name}</span>
+                                Ragione sociale: <span className='font-normal text-text text-lg'> { company_name } </span>
                             </li>
 
                             <li className='mb-4 bg-white px-2'>
                                 <div className='text-xl text-black font-bold uppercase'>
-                                    Sede Operativa: <span className='font-normal text-text text-lg'>{current_residence}</span>
+                                    Sede Operativa: <span className='font-normal text-text text-lg'> { current_residence } </span>
                                 </div>
                                 <div className='text-base font-bold uppercase'>
-                                    Citta: <span className='font-medium text-sm text-text'>{current_city}</span>
+                                    Citta: <span className='font-medium text-sm text-text'> { current_city } </span>
                                 </div>
                                 <div className='text-base font-bold uppercase'>
-                                    Provincia: <span className='font-medium text-sm text-text'>{current_province}</span>
+                                    Provincia: <span className='font-medium text-sm text-text'> { current_province } </span>
                                 </div>
                             </li>
 
-                            <li className='mb-4 bg-white px-2'>
-                                <div className='text-xl text-black font-bold'>
-                                    Sede Legale: <span>{official_residence}</span>
+                            <li className="mb-4 bg-white px-2">
+                                <div className="text-xl text-black font-bold">
+                                    Sede Legale: <span>{ official_residence }</span>
                                 </div>
                                 <div className='text-base font-bold uppercase'>
-                                    Citta: <span className='font-medium text-sm text-text'>{official_city}</span>
+                                    Citta: <span className='font-medium text-sm text-text'> { official_city } </span>
                                 </div>
                                 <div className='text-base font-bold uppercase'>
-                                    Provincia: <span className='font-medium text-sm text-text'>{official_province}</span>
+                                    Provincia: <span className='font-medium text-sm text-text'> { official_province } </span>
                                 </div>
                             </li>
 
                             <li className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                                P. Iva: <span className='font-normal text-text text-lg'>{fiscal_code}</span>
+                                P. Iva: <span className='font-normal text-text text-lg'> { fiscal_code } </span>
                             </li>
 
                         </ul>

@@ -6,18 +6,18 @@ exports.mongoDBCreateCarController = async ( req, res ) => {
     try {
         console.log( "mongoDBCreateCarController() worked" );
         //Create and add the slug to the request body. the slug is formed from the registration plate and formatted with Slugify.
-        req.body.slug = slugify(req.body.licensePlate);
+        req.body.slug = slugify( req.body.licensePlate );
         console.log( "mongoDBCreateCarController() req.body: ", JSON.stringify( req.body ) );
 
-        const newCar = await new carModel(req.body).save();
-        res.json(newCar);
+        const newCar = await new carModel( req.body ).save();
+        res.json( newCar );
     } catch ( err ) {
         console.log( "mongoDBCreateCarController() err: ", err );
         res.status( 400 ).json( { err: err.message, } );
     }
 };
 
-exports.mongoDBDeleteCarController = async (req, res) => {
+exports.mongoDBDeleteCarController = async ( req, res ) => {
     try {
         const deleted = await carModel
             .findOneAndRemove({ slug: req.params.slug, } )
@@ -86,13 +86,17 @@ exports.mongoDBUpdateCarController = async ( req, res ) => {
 exports.mongoDBGetAllCarsController = async ( req, res ) => {
     try {
         // createdAt/updatedAt, desc/asc, 3
-        const { sort, order, page } = req.body;
-        //the page number the user clicks on
+        const { sort, order, page, userId } = req.body;
+        //the page number the user clicks on.
         const currentPage = page || 1;
         //The number of items per page.
         const perPage = 8;
-
-        const cars = await carModel.find({})
+        console.log( "mongoDBGetAllCarsController() userId", userId );
+        const cars = await carModel.find( { user: req.body.userId } )
+            //.populate( "user" )
+            //.populate("client")
+            //In order not to get the whole user object, but only some parameters use this syntax:
+            // .populate({"user", select: ["name", "email"]})
             //skipping the number of products from the page previous to the chosen page.
             .skip(( currentPage - 1 ) * perPage )
             .sort([ [ sort, order ] ] )

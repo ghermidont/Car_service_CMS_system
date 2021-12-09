@@ -13,6 +13,7 @@ const {
     mongoDBGetSingleClientController,
     mongoDBUpdateClientController,
     mongoDBGetAllClientsController,
+    mongoDBGetAllClientsNoPagController,
     mongoDBFetchClientByFilterController
 } = require("../controllers/clientController");
 
@@ -48,8 +49,13 @@ router.put(
 );
 
 router.post(
-    "/clients",
+    "/clients/pagination",
     mongoDBGetAllClientsController
+);
+
+router.post(
+    "/clients",
+    mongoDBGetAllClientsNoPagController
 );
 
 router.post(

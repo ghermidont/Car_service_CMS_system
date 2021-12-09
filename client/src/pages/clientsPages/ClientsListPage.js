@@ -104,7 +104,7 @@ export default function ClientsListPage() {
             }).catch(( error ) => {
                 toast.error("Error getting all clients: ", error );
                 console.log( "Error getting all clients", error );
-            });;
+            });
     };
 
     const deleteClientFunction = (slug, authToken) => {

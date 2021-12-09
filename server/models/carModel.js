@@ -1,8 +1,13 @@
 // Schema options here: https://mongoosejs.com/docs/schematypes.html#strings
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
 
 const carSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId, ref: "userModel",
+    },
+    client: {
+        type: mongoose.Schema.Types.ObjectId, ref: "clientModel"
+    },
     brand: {
         type: String,
         trim: true,
@@ -45,13 +50,13 @@ const carSchema = new mongoose.Schema({
         //maxlength: 32,
         text: true,
     },
-    client: {
-        type: String,
-        trim: true,
-        required: true,
-        //maxlength: 32,
-        text: true,
-    },
+    // client: {
+    //     type: String,
+    //     trim: true,
+    //     required: true,
+    //     //maxlength: 32,
+    //     text: true,
+    // },
     slug: {
         type: String,
         unique: true,

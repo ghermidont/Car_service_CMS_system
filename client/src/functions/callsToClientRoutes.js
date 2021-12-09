@@ -45,10 +45,19 @@ export const mongoDBUpdateClientFunction = async ( slug, client, authToken ) => 
 export const mongoDBGetAllClientsFunction = async ( sort, order, page ) => {
     return await axios
         .post(
-            `${process.env.REACT_APP_API}/clients`,
+            `${process.env.REACT_APP_API}/clients/pagination`,
             { sort, order, page }
         );
 };
+
+export const mongoDBGetAllClientsFunctionNoPag = async ( sort, order ) => {
+    return await axios
+        .post(
+            `${process.env.REACT_APP_API}/clients`,
+            { sort, order }
+        );
+};
+
 
 //Calling the backend end point for total number of products.
 export const mongoDBGetClientsCountFunction = async ( authToken ) => {

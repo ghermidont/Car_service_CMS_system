@@ -78,6 +78,22 @@ exports.mongoDBGetAllClientsController = async ( req, res ) => {
     }
 };
 
+exports.mongoDBGetAllClientsNoPagController = async ( req, res ) => {
+    try {
+        // createdAt/updatedAt, desc/asc
+        const { sort, order } = req.body;
+
+        const clients = await clientModel.find({})
+            .sort([ [sort, order] ] )
+            .exec();
+
+        res.json( clients );
+    } catch ( err ) {
+        console.log( "mongoDBGetAllClientsControllerNoPag() err: ", err );
+    }
+};
+
+
 //Getting the total clients count for the pagination.
 exports.mongoDBGetClientsCountController = async ( req, res ) => {
     let total = await clientModel

@@ -1,4 +1,4 @@
-const User = require("../models/userModel");
+const userModel = require("../models/userModel");
 const Slugify = require("slugify");
 
 //This function checks the database for the user with current credentials. If no user found it creates a new user with the credentials.
@@ -24,10 +24,10 @@ exports.mongoDBCreateNewUserController = async (req, res) => {
 
     //console.log("req.data.role", req.data.role);
     //Find and update the user in the database.
-    const user = await User.findOne({ email: email }, { new: true }).exec();
+    const user = await userModel.findOne({ email: email }, { new: true }).exec();
     console.log("back end mongoDB user: ", JSON.stringify(user));
 
-    if (user) {
+    if ( user ) {
         //If user exists, we get this message.
         res.send("This email address is already in use.");
         console.log("This email address is already in use.");
@@ -36,7 +36,7 @@ exports.mongoDBCreateNewUserController = async (req, res) => {
         //If not existing, we create the user.
         //Create and add the slug to the request body. The slug is formed from the fiscal_code and formatted with Slugify.
         req.body.slug = Slugify(req.body.fiscal_code);
-        const newUser = await new User({
+        const newUser = await new userModel({
             company_name,
             current_residence,
             current_city,
@@ -58,12 +58,13 @@ exports.mongoDBCreateNewUserController = async (req, res) => {
 
 exports.mongoDBGetCurrentUserController = async ( req, res ) => {
     console.log("mongoDBGetCurrentUserController() req.query.email: ", JSON.stringify(req.query.email));
-    User.findOne({ email: req.query.email }).exec(
+    userModel.findOne( { email: req.query.email } ).exec(
         ( err, user ) => {
             if ( err ) {
+                console.log("mongoDBGetCurrentUserController() error: ", err);
                 throw new Error( JSON.stringify( err ) );
             }
             console.log( "mongoDBGetCurrentUserController() user: ", user );
-            res.json(user);
+            res.json( user);
         });
 };

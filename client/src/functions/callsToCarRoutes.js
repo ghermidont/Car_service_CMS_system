@@ -52,12 +52,21 @@ export const mongoDBGetAllCarsFunction = async ( sort, order, page, userId ) => 
         );
 };
 
+export const mongoDBGetCarsByFilterFunction = async ( sort, order, userId ) => {
+    console.log("mongoDBGetCarsByFilterFunction() userId: ", userId);
+    return await axios
+        .post(
+            `${process.env.REACT_APP_API}/cars/filter`,
+            { sort, order, userId }
+        );
+};
+
 //Calling the backend end point for total number of products.
-export const mongoDBGetCarsCountFunction = async ( authToken ) => {
+export const mongoDBGetCarsCountFunction = async ( userId ) => {
     return await axios
         .get(
             `${process.env.REACT_APP_API}/cars/total`,
-            { headers: { authToken } }
+            { params: { userId } }
         );
 };
 

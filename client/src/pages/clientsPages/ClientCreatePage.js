@@ -3,29 +3,25 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { mongoDBCreateClientFunction } from "../../functions/callsToClientRoutes";
 
-// TODO implement the cascader.
-/* Use the Ant cascader for cars select. https://ant.design/components/cascader/ */
-
-//Cars DB API: https://parse-dashboard.back4app.com/apps/7e730946-c9c1-4aca-90f3-87f9abc2842c/browser/Carmodels_Car_Model_List
-//https://www.back4app.com/docs/react/quickstart
-
-const initialState = {
-    name: "name",
-    surname: "surname",
-    date: "date",
-    fiscal_code: "fiscal_code",
-    address: "address",
-    city: "city",
-    province: "province",
-    notes: "notes",
-    mobile: "5674552333",
-    email: "email@email.com"
-};
-
 export default function ClientCreatePage( { history } ) {
+    const { reduxStoreUser } = useSelector(( state) => ( { ...state } ) );
+
+    const initialState = {
+        user: reduxStoreUser._id,
+        name: "name",
+        surname: "surname",
+        date: "date",
+        fiscal_code: "fiscal_code",
+        address: "address",
+        city: "city",
+        province: "province",
+        notes: "notes",
+        mobile: "5674552333",
+        email: "email@email.com"
+    };
+
     const [ clientInfoState, setClientInfoState ] = useState( initialState );
 
-    //states
     const {
         name,
         surname,
@@ -53,7 +49,6 @@ export default function ClientCreatePage( { history } ) {
     //     // eslint-disable-next-line
     // }, [values]);
     // Get the user from Redux Store
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
     const handleSubmit = ( event ) => {
         event.preventDefault();

@@ -1,28 +1,58 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useSelector } from "react-redux";
 import { mongoDBCreateServiceFunction } from "../../functions/callsToServicesRoutes";
 import { toast } from "react-toastify";
-
-const initialState = {
-    date: "dd/mm/yyyy",
-    license_plate: "GH9999",
-    brand: "Car brand",
-    model: "Car model",
-    state: "done",
-    operator: "Donald Duck",
-    anomalies: " Broken steering system",
-    checks: "On 07.09.2021",
-    actions: "Steering system repair",
-    notes: "breaking system close to wearing out.",
-    damage: "No accidents registered."
-};
+import {mongoDBGetCurrentUserFunction} from "../../functions/callsToAuthRoutes";
 
 export default function ServiceCreatePage( { history } ) {
-    const [ serviceParamsState, setServiceParamsState ] = useState( initialState );
-    const { date, license_plate, brand, model, state, operator, anomalies, checks, actions, notes, damage } = serviceParamsState;
-
     // Get the user from Redux Store
     const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
+
+    const initialState = {
+        user: "",
+        date: "",
+        license_plate: "",
+        brand: "",
+        model: "",
+        state: "",
+        operator: "",
+        anomalies: "",
+        checks: "",
+        actions: "",
+        notes: "",
+        damage: ""
+    };
+    const [ serviceParamsState, setServiceParamsState ] = useState( initialState );
+    const {
+        date,
+        license_plate,
+        brand,
+        model,
+        state,
+        operator,
+        anomalies,
+        checks,
+        actions,
+        notes,
+        damage
+    } = serviceParamsState;
+
+    const getCurrentUser = async () => {
+        await mongoDBGetCurrentUserFunction( reduxStoreUser.token, reduxStoreUser.email )
+            .then( ( res ) => {
+                // Add data to the React Store.
+                if ( res.data !== null ) {
+                    console.log( "Current User data: ", res.data._id );
+                    serviceParamsState.user = res.data._id;
+                    console.log( "carParamsState: ", serviceParamsState );
+                } else {
+                    toast.error( "No user info in the response from the backend." );
+                }
+            }).catch((err) => {
+                console.log( "Error while getting the user info: ", err );
+                toast.error( `Error while getting the user info: ${ err }` );
+            });
+    };
 
     const handleSubmit = ( event ) => {
         event.preventDefault();
@@ -50,6 +80,10 @@ export default function ServiceCreatePage( { history } ) {
         // Dynamically update each of the initialState values by their name parameter.
         setServiceParamsState( { ...serviceParamsState, [ event.target.name ]: event.target.value } );
     };
+
+    useEffect( () => {
+        getCurrentUser().then(()=>console.log("getCurrentUser() worked in useEffect()."));
+    }, [] );
 
     return (
         <>         

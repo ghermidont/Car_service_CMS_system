@@ -1,13 +1,16 @@
 import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import {
     mongoDBDeleteClientFunction,
     mongoDBGetAllClientsFunction,
     mongoDBGetClientsCountFunction
 } from "../../functions/callsToClientRoutes";
+//import { mongoDBGetCarsByFilterFunction } from "../../functions/callsToCarRoutes";
 import {toast} from "react-toastify";
 import {Pagination} from "antd";
+import {signOut} from "firebase/auth";
+import {auth} from "../../firebase";
 
 const initialState = [
     {
@@ -72,58 +75,96 @@ const clientCars = [ {
 },
 ];
 
-export default function ClientsListPage() {
+export default function ClientsListPage( { history } ) {
     const [ dbClients, setDbClients ] = useState( initialState );
     const [ page, setPage ] = useState( 1 );
     const [ clientsCount, setClientsCount ] = useState( 0 );
     const [ loading, setLoading ] = useState( false );
-
+    //const [ carsListState, setCarsListState ] = useState([ {} ] );
     const { reduxStoreUser } = useSelector(( state ) => ({ ...state }));
+    const dispatch = useDispatch();
 
     useEffect(() => {
         loadAllClients();
     }, [ page ] );
 
     useEffect(() => {
-        mongoDBGetClientsCountFunction( reduxStoreUser.token )
-            .then(( res) => setClientsCount( res.data ) )
+        mongoDBGetClientsCountFunction( reduxStoreUser._id )
+            .then(( res) => {
+                setClientsCount(res.data);
+                console.log("Clients count: ", res.data);
+            }
+            )
             .catch(( error ) => {
                 toast.error("Error loading clients count: ", error );
                 console.log( "Error loading clients count: ", error );
             });
-        console.log(clientsCount);
+        console.log( clientsCount );
     }, []);
 
     const loadAllClients = () => {
-        setLoading( true );
-        // sort, order, limit
-        mongoDBGetAllClientsFunction("createdAt", "desc", page)
-            .then((res) => {
-                setDbClients( res.data );
-                setLoading( false );
-            }).catch(( error ) => {
-                toast.error("Error getting all clients: ", error );
-                console.log( "Error getting all clients", error );
-            });
+        console.log( "loadAllClients() worked." );
+        if ( reduxStoreUser._id === undefined ){
+            logout();
+            return toast.error("reduxStoreUser._id is undefined please re-login.");
+        } else {
+            setLoading( true );
+            // sort, order, limit
+            mongoDBGetAllClientsFunction("createdAt", "desc", page, reduxStoreUser._id)
+                .then((res) => {
+                    setDbClients(res.data);
+                    console.log("mongoDBGetAllClientsFunction res.data: ", res.data );
+                    setLoading(false);
+                }).catch((error) => {
+                    toast.error("Error getting all clients: ", error);
+                    console.log("Error getting all clients", error);
+                });
+        }
     };
 
-    const deleteClientFunction = (slug, authToken) => {
-        mongoDBDeleteClientFunction(slug, authToken).then(()=> {
-            toast.success("Clients deleted successfully!");
-        }).catch(()=>{
-            toast.error("Client deletion failed!");
+    const logout = () => {
+        signOut( auth ).then( () => {
+            toast.success("User signed out." );
+        }).catch(( error ) => {
+            toast.error("Error signing out.", error );
         });
+        // old version --> firebase.auth().signOut();
+        dispatch({
+            type: "LOGOUT",
+            payload: null,
+        });
+        history.push( "/" );
+    };
+
+    // const getClientCars = () => {
+    //     mongoDBGetCarsByFilterFunction( "client", dbClients[0]._id )
+    //         .then((res) => {
+    //             setCarsListState(res.data);
+    //         }).catch((error) => {
+    //             toast.error("Error getting client cars: ", error);
+    //             console.log("Error getting client cars", error);
+    //         });
+    // };
+    
+    const deleteClientFunction = ( slug ) => {
+        mongoDBDeleteClientFunction( reduxStoreUser.token, slug )
+            .then( ()=> {
+                toast.success( "Clients deleted successfully!" );
+            } )
+            .catch( ()=>{
+                toast.error( "Client deletion failed!" );
+            } );
     };
 
     return (   
         <main className='mb-12'>
 
-            <h1>ClientsListPage.js</h1>
-            {loading ? (
-                <h1>Loading... </h1>
+            <h1> ClientsListPage.js </h1>
+            { loading ? (
+                <h1> Loading... </h1>
             ) : (
-                <h1>Clients List</h1>
-            )}
+                <h1> Clients List </h1>
+            ) }
             <div className="container mx-auto">
                 <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
                     <table className='mx-auto mb-8'>
@@ -145,6 +186,8 @@ export default function ClientsListPage() {
                                 </th>
                                 <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
                                     Elenco Ventture
+                                </th> <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                    User Id
                                 </th>
                             </tr>
                         </thead>
@@ -153,7 +196,7 @@ export default function ClientsListPage() {
                             { dbClients.map( client => (
                                 <tr key={ client.slug }>
                                     <td>
-                                        <Link to={`/client/${client.slug}`}>
+                                        <Link to={ `/client/${ client.slug }` }>
                                             <button className='w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'>
                                                 Open
                                             </button>
@@ -163,15 +206,15 @@ export default function ClientsListPage() {
                                     <td className='pr-3'>
                                         <button
                                             className='w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'
-                                            onClick={()=>deleteClientFunction(client.slug, reduxStoreUser.token)}
+                                            onClick={ ()=>deleteClientFunction( client.slug ) }
                                         >
                                             Delete
                                         </button>
                                     </td>
-                                    <td className='border border-border px-3'>{client._id}</td>
-                                    <td className='border border-border px-3'>{client.name}</td>
-                                    <td className='border border-border px-3'>{client.surname}</td>
-                                    <td className='border border-border px-3'>{client.mobile}</td>
+                                    <td className='border border-border px-3'>{ client._id }</td>
+                                    <td className='border border-border px-3'>{ client.name }</td>
+                                    <td className='border border-border px-3'>{ client.surname }</td>
+                                    <td className='border border-border px-3'>{ client.mobile }</td>
                                     <td className='border border-border px-3'>
                                         <ol>
                                             {/*TODO After implementing the db docs relationships change the clientCars with the info from the database related to the current client.*/}
@@ -183,6 +226,8 @@ export default function ClientsListPage() {
                                             }
                                         </ol>
                                     </td>
+                                    <td className='border border-border px-3'>{ client.user }</td>
+
                                 </tr>
                             ))}
                             {/*<Loop end*/}
@@ -196,10 +241,10 @@ export default function ClientsListPage() {
                                 defaultCurrent={ 1 }
                                 current={ page }
                                 total={ clientsCount }
-                                onChange={(value) => {
+                                onChange={ ( value ) => {
                                     setPage( value );
-                                    console.log("page: ", page);
-                                    console.log("clientsCount: ", clientsCount);
+                                    console.log( "page: ", page );
+                                    console.log( "clientsCount: ", clientsCount );
                                 } 
                                 }
                             />

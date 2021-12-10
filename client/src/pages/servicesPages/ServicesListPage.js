@@ -4,9 +4,11 @@ import {
     mongoDBGetAllServicesFunction,
     mongoDBGetServicesCountFunction
 } from "../../functions/callsToServicesRoutes";
-import {useSelector} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import {Pagination} from "antd";
+import {signOut} from "firebase/auth";
+import {auth} from "../../firebase";
 
 const initialState = [
     {
@@ -50,14 +52,15 @@ const initialState = [
     },
 ];
 
-export default function ServicesListPage() {
+export default function ServicesListPage( { history } ) {
 
     const [ dbServices, setDbServices ] = useState( initialState );
     const [ page, setPage ] = useState( 1 );
     const [ servicesCount, setServicesCount ] = useState( 0 );
     const [ loading, setLoading ] = useState( false );
 
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
+    const dispatch = useDispatch();
 
     useEffect(() => {
         loadAllServices();
@@ -72,14 +75,35 @@ export default function ServicesListPage() {
             });
     }, []);
 
+    const logout = () => {
+        signOut( auth ).then( () => {
+            toast.success("User signed out." );
+        }).catch(( error ) => {
+            toast.error("Error signing out.", error );
+        });
+        // old version --> firebase.auth().signOut();
+        dispatch({
+            type: "LOGOUT",
+            payload: null,
+        });
+        history.push( "/" );
+    };
+
     const loadAllServices = () => {
+        console.log( "loadAllServices() worked." );
         setLoading( true );
-        // sort, order, limit
-        mongoDBGetAllServicesFunction( "createdAt", "desc", page )
-            .then(( res ) => {
-                setDbServices( res.data );
-                setLoading( false );
-            });
+        if ( reduxStoreUser._id === undefined ){
+            logout();
+            return toast.error("reduxStoreUser._id is undefined please re-login.");
+
+        } else {
+            // sort, order, limit
+            mongoDBGetAllServicesFunction("createdAt", "desc", page, reduxStoreUser._id)
+                .then((res) => {
+                    setDbServices(res.data);
+                    setLoading(false);
+                });
+        }
     };
 
     return (

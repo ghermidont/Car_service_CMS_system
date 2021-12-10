@@ -56,16 +56,17 @@ exports.mongoDBUpdateClientController = async ( req, res ) => {
 };
 
 // WITH PAGINATION
-exports.mongoDBGetAllClientsController = async ( req, res ) => {
+exports.mongoDBGetAllClientsController = async ( req, res, userId ) => {
     try {
         // createdAt/updatedAt, desc/asc, 3
-        const { sort, order, page } = req.body;
+        const { sort, order, page, userId } = req.body;
+        console.log( "mongoDBGetAllClientsController() req.body.userId: ", req.body.userId );
         //the page number the user clicks on
         const currentPage = page || 1;
         //The number of items per page.
         const perPage = 8;
 
-        const clients = await clientModel.find({})
+        const clients = await clientModel.find({ user: req.body.userId } )
             //skipping the number of products from the page previous to the chosen page.
             .skip(( currentPage - 1 ) * perPage )
             .sort([ [sort, order] ] )
@@ -82,11 +83,10 @@ exports.mongoDBGetAllClientsNoPagController = async ( req, res ) => {
     try {
         // createdAt/updatedAt, desc/asc
         const { sort, order } = req.body;
-
-        const clients = await clientModel.find({})
-            .sort([ [sort, order] ] )
+        const clients = await clientModel
+            .find( { user: req.body.userId } )
+            .sort( [ [sort, order] ] )
             .exec();
-
         res.json( clients );
     } catch ( err ) {
         console.log( "mongoDBGetAllClientsControllerNoPag() err: ", err );
@@ -96,9 +96,10 @@ exports.mongoDBGetAllClientsNoPagController = async ( req, res ) => {
 
 //Getting the total clients count for the pagination.
 exports.mongoDBGetClientsCountController = async ( req, res ) => {
+    console.log("mongoDBGetClientsCountController req.body.userId: ", req.body.userId );
     let total = await clientModel
-        .find( {} )
-        .estimatedDocumentCount()
+        .find()
+        .countDocuments({ user: req.query.userId })
         .exec();
     console.log( "mongoDBGetClientsCountController() total: ", total );
     res.json( total );

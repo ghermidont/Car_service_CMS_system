@@ -32,7 +32,6 @@ router.delete(
 
 router.get(
     "/clients/total",
-    fireBaseAuthCheckMiddleware,
     mongoDBGetClientsCountController
 );
 

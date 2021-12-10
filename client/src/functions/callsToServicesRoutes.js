@@ -36,19 +36,19 @@ export const mongoDBUpdateServiceFunction = async ( slug, service, authToken ) =
 
 //The following two calls are used for forming the pagination.
 //These two functions bellow are used for pagination.
-export const mongoDBGetAllServicesFunction = async ( sort, order, page ) => {
+export const mongoDBGetAllServicesFunction = async ( sort, order, page, userId ) => {
     return await axios.post(
         `${process.env.REACT_APP_API}/services`,
-        { sort, order, page }
+        { sort, order, page, userId }
     );
 };
 
 //Calling the backend end point for total number of services.
-export const mongoDBGetServicesCountFunction = async ( authToken ) => {
+export const mongoDBGetServicesCountFunction = async ( userId ) => {
     return await axios
         .get(
             `${process.env.REACT_APP_API}/services/total`,
-            { headers: { authToken } }
+            { params: { userId } }
         );
 };
 

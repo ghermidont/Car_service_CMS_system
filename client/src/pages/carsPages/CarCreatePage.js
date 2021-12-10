@@ -11,6 +11,7 @@ import { mongoDBGetAllClientsFunctionNoPag } from "../../functions/callsToClient
 //Cars DB API: https://parse-dashboard.back4app.com/apps/7e730946-c9c1-4aca-90f3-87f9abc2842c/browser/Carmodels_Car_Model_List
 //https://www.back4app.com/docs/react/quickstart
 
+//TODO consider implementing here the ReduxStore user id extraction instead of mongoDBGetCurrentUserFunction().
 const initialState = {
     user: "user",
     brand: "brand",
@@ -23,9 +24,9 @@ const initialState = {
 };
 
 export default function CarCreatePage( { history } ){
-
     const [ carParamsState, setCarParamsState ] = useState( initialState );
     const [ clientsListState, setClientsListState ] = useState( initialState );
+    const { reduxStoreUser } = useSelector(( state) => ( { ...state } ) );
 
     const {
         brand,
@@ -38,7 +39,7 @@ export default function CarCreatePage( { history } ){
 
     const loadAllClients = async () => {
         // sort, order
-        await mongoDBGetAllClientsFunctionNoPag( "createdAt", "desc" )
+        await mongoDBGetAllClientsFunctionNoPag( "createdAt", "desc", reduxStoreUser._id )
             .then( ( res ) => {
                 setClientsListState( res.data );            
             }).catch(( error ) => {
@@ -68,9 +69,6 @@ export default function CarCreatePage( { history } ){
         getCurrentUser().then(()=>console.log("getCurrentUser() worked in useEffect()."));
         loadAllClients().then(()=>console.log("loadAllClients() worked in useEffect()."));
     }, [] );
-
-    // Get the user from Redux Store
-    const { reduxStoreUser } = useSelector(( state) => ( { ...state } ) );
 
     const handleSubmit = async ( event ) => {
         event.preventDefault();

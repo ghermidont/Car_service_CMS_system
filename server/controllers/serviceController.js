@@ -79,13 +79,15 @@ exports.mongoDBUpdateServiceController = async ( req, res ) => {
 exports.mongoDBGetAllServicesController = async ( req, res ) => {
     try {
         // createdAt/updatedAt, desc/asc, 3
-        const { sort, order, page } = req.body;
+        const { sort, order, page, userId } = req.body;
+        console.log( "mongoDBGetAllServicesController() req.body.userId: ", req.body.userId );
         //the page number the user clicks on
         const currentPage = page || 1;
         //The number of items per page.
         const perPage = 8;
 
-        const services = await serviceModel.find({} )
+        const services = await serviceModel
+            .find({ user: req.body.userId } )
             //skipping the number of products from the page previous to the chosen page.
             .skip(( currentPage - 1 ) * perPage )
             .sort([ [sort, order ] ] )
@@ -102,7 +104,7 @@ exports.mongoDBGetAllServicesController = async ( req, res ) => {
 exports.mongoDBGetServicesCountController = async ( req, res ) => {
     let total = await serviceModel
         .find( {} )
-        .estimatedDocumentCount()
+        .countDocuments({ user: req.query.userId })
         .exec();
     res.json( total );
 };

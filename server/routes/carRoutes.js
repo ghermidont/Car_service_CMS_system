@@ -13,7 +13,8 @@ const {
     mongoDBGetSingleCarController,
     mongoDBUpdateCarController,
     mongoDBGetAllCarsController,
-    mongoDBFetchCarByFilterController
+    mongoDBSearchCarByFilterController,
+    mongoDBGetCarsByFilterController
 } = require( "../controllers/carController" );
 
 // routesController
@@ -31,7 +32,6 @@ router.delete(
 
 router.get(
     "/cars/total",
-    fireBaseAuthCheckMiddleware,
     mongoDBGetCarsCountController
 );
 
@@ -53,8 +53,14 @@ router.post(
 );
 
 router.post(
+    "/cars/filter",
+    fireBaseAuthCheckMiddleware,
+    mongoDBGetCarsByFilterController
+);
+
+router.post(
     "/car/search",
-    mongoDBFetchCarByFilterController
+    mongoDBSearchCarByFilterController
 );
 
 module.exports = router;

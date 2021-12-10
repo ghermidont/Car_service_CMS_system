@@ -92,7 +92,9 @@ exports.mongoDBGetAllCarsController = async ( req, res ) => {
         //The number of items per page.
         const perPage = 8;
         console.log( "mongoDBGetAllCarsController() userId", userId );
-        const cars = await carModel.find( { user: req.body.userId } )
+
+        const cars = await carModel
+            .find( { user: req.body.userId } )
             //.populate( "user" )
             //.populate("client")
             //In order not to get the whole user object, but only some parameters use this syntax:
@@ -109,17 +111,40 @@ exports.mongoDBGetAllCarsController = async ( req, res ) => {
     }
 };
 
+exports.mongoDBGetCarsByFilterController = async ( req, res ) => {
+    try {
+        // createdAt/updatedAt, desc/asc, 3
+        const { sort, order, clientId, userId } = req.body;
+
+        console.log( "mongoDBGetCarsByFilterController() userId", userId );
+        console.log( "mongoDBGetCarsByFilterController() clientId", clientId );
+        const cars = await carModel.find( { client: req.body.clientId, user: req.body.userId } )
+            //.populate( "user" )
+            //.populate("client")
+            //In order not to get the whole user object, but only some parameters use this syntax:
+            // .populate({"user", select: ["name", "email"]})
+            //skipping the number of products from the page previous to the chosen page.
+            .sort([ [ sort, order ] ] )
+            .exec();
+        res.json( cars );
+    } catch ( err ) {
+        console.log( "mongoDBGetCarsByFilterController() err: ", err );
+    }
+};
+
 //Getting the total car count for the pagination.
 exports.mongoDBGetCarsCountController = async ( req, res ) => {
+    console.log("mongoDBGetCarsCountController() userId", req.query.user );
     let total = await carModel
         .find( {} )
-        .estimatedDocumentCount()
+        .countDocuments({ user: req.query.userId })
         .exec();
+    console.log("mongoDBGetCarsCountController() total: ", total );
     res.json( total );
 };
 
 // SEARCH / FILTER
-exports.mongoDBFetchCarByFilterController = async ( req, res ) => {
+exports.mongoDBSearchCarByFilterController = async ( req, res ) => {
     const { query } = req.body;
     if ( query ) {
         console.log( "query --->", query );

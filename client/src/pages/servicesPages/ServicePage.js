@@ -5,23 +5,27 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { mongoDBGetSingleServiceFunction } from "../../functions/callsToServicesRoutes";
 
-const initialState = {
-    date: "date",
-    license_plate: "license_plate",
-    brand: "brand",
-    model: "model",
-    state: "state",
-    operator: "operator",
-    anomalies: "anomalies",
-    checks: "checks",
-    performed_repairs: "performed_repairs",
-    notes: "notes",
-    damage: "damage",
-};
-
 export default function ServicePage( { match } ) {
     console.log("ServicePage() worked");
-    const [currentServiceParamsState, setCurrentServiceParamsState] = useState(initialState);
+
+    const { reduxStoreUser } = useSelector(( state ) => ( { ...state } ) );
+
+    const initialState = {
+        user: reduxStoreUser._id,
+        date: "date",
+        license_plate: "license_plate",
+        brand: "brand",
+        model: "model",
+        state: "state",
+        operator: "operator",
+        anomalies: "anomalies",
+        checks: "checks",
+        performed_repairs: "performed_repairs",
+        notes: "notes",
+        damage: "damage",
+    };
+
+    const [ currentServiceParamsState, setCurrentServiceParamsState ] = useState( initialState );
     const {
         date,
         license_plate,
@@ -33,28 +37,28 @@ export default function ServicePage( { match } ) {
         checks,
         actions,
         notes,
-        damage,        g
+        damage,
     } = currentServiceParamsState;
 
     const { slug } = match.params;
-    console.log("match.params", match.params);
-    // Get the user from Redux Store
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+    console.log( "match.params", match.params );
 
     useEffect(() => {
         loadServiceDbInfo();
-    }, []);
+    }, [] );
 
     const loadServiceDbInfo = () => {
-        mongoDBGetSingleServiceFunction(slug, reduxStoreUser.token).then((service) => {
-            console.log("single service", service);
-            setCurrentServiceParamsState({ ...currentServiceParamsState, ...service.data });
-        }).catch(
-            (error)=> {
-                toast.error("Error getting user info: ", error);
-                console.log("Error getting user info: ", error);
-            }
-        );
+        mongoDBGetSingleServiceFunction( slug, reduxStoreUser.token )
+            .then( ( service ) => {
+                console.log( "single service", service );
+                setCurrentServiceParamsState({ ...currentServiceParamsState, ...service.data } );
+            } )
+            .catch(
+                ( error ) => {
+                    toast.error( "Error getting service info: ", error );
+                    console.log( "Error getting service info: ", error );
+                }
+            );
     };
 
     return (

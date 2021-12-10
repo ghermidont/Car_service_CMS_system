@@ -9,65 +9,29 @@ import {useSelector} from "react-redux";
 import { toast } from "react-toastify";
 import {Pagination} from "antd";
 
-const initialState = [
-    {
-        _id: 1,
-        brand: "Mercedes",
-        model: "GLS600",
-        licensePlate: "CVD45",
-        revisions: "2020/05/30",
-        km: 45345,
-        year: 2000,
-        client: "Mark Zukerman",
-        slug: "asdff4t435",
-    },
-    {
-        _id: 2,
-        brand: "BMW",
-        model: "M30",
-        licensePlate: "VFD45",
-        revisions: "2021/06/30",
-        km: 346345,
-        year: 2000,
-        client: "1900",
-        slug: "asdf4t34",
-    },
-    {
-        _id: 3,
-        brand: "Lada",
-        model: "Calina",
-        licensePlate: "TSS34",
-        revisions: "2010/01/30",
-        km: 45435,
-        year: 1885,
-        client: "Will Smith",
-        slug: "asd4t4t",
-    },
-];
-
 export default function CarArchivePage() {
     const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
-    const [ dbCars, setDbCars ] = useState( initialState );
+    const [ dbCars, setDbCars ] = useState( [] );
     const [ page, setPage ] = useState( 1 );
     const [ carsCount, setCarsCount ] = useState( 0 );
     const [ loading, setLoading ] = useState( false );
 
     useEffect(() => {
-        loadAllCars();
-    }, [ page ] );
-
-    useEffect(() => {
-
-        mongoDBGetCarsCountFunction( reduxStoreUser.token )
-            .then( ( res) => setCarsCount( res.data ) )
+        mongoDBGetCarsCountFunction( reduxStoreUser._id )
+            .then( ( res) => {
+                setCarsCount( res.data );
+                console.log("mongoDBGetCarsCountFunction() res.data: ", res.data);
+            } )
             .catch( ( error ) => {
                 toast.error( "Error loading cars count", error );
                 console.log( "Error loading cars count", error );
             } );
+        console.log( "Cars count: ", carsCount );
     }, [] );
 
     const loadAllCars = () => {
+        console.log( "loadAllCars() worked." );
         setLoading( true );
         // sort, order, limit
         mongoDBGetAllCarsFunction( "createdAt", "desc", page, reduxStoreUser._id )
@@ -75,17 +39,29 @@ export default function CarArchivePage() {
                 setDbCars( res.data );
                 setLoading( false );
                 console.log( "Cars loaded: ", res.data );
+            }).catch(( error ) => {
+                toast.error("Error getting all cars: ", error );
+                console.log( "Error getting all cars: ", error );
             });
     };
 
     const deleteCarFunction = ( slug ) => {
-        mongoDBDeleteCarFunction( reduxStoreUser.token, slug ).then( ()=> {
-            toast.success( "Car deleted successfully!" );
-            window.location.reload();
-        } ).catch( ()=>{
-            toast.error( "Car deletion failed!" );
-        } );
+        setLoading(true);
+        console.log("deleteCarFunction");
+        mongoDBDeleteCarFunction( reduxStoreUser.token, slug )
+            .then( ()=> {
+                toast.success( "Car deleted successfully!" );
+                setLoading(false);
+                //window.location.reload();
+            } )
+            .catch( ()=>{
+                toast.error( "Car deletion failed!" );
+            } );
     };
+
+    useEffect(() => {
+        loadAllCars();
+    }, [ page ] );
 
     return (
         <main className='mb-12'>
@@ -98,7 +74,9 @@ export default function CarArchivePage() {
             ) }
             <div className="container mx-auto">
                 <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
+
                     <table className='mx-auto mb-8'>
+
                         <thead>
                             <tr>
                                 <th> </th>
@@ -127,13 +105,18 @@ export default function CarArchivePage() {
                                 <th className='px-6 py-1.5 w-200 bg-blue border border-border text-xl text-white font-normal uppercase'>
                                     Cliente
                                 </th>
+                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-xl text-white font-normal uppercase'>
+                                    user ID
+                                </th>
                             </tr>
                         </thead>
+
                         <tbody>
+
                             { dbCars.map( car => (
                                 <tr key={ car.slug }>
                                     <td>
-                                        <Link to={`/car/${car.slug}`}>
+                                        <Link to={ `/car/${ car.slug }` }>
                                             <button className='w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'>
                                                 Open
                                             </button>
@@ -149,26 +132,27 @@ export default function CarArchivePage() {
                                         </button>
                                     </td>
                                     {/*ID*/}
-                                    <td className='border border-border px-3'>{car._id}</td>
+                                    <td className='border border-border px-3'>{ car._id }</td>
                                     {/*MARCA*/}
-                                    <td className='border border-border px-3'>{car.brand}</td>
+                                    <td className='border border-border px-3'>{ car.brand }</td>
                                     {/*MODELLO*/}
-                                    <td className='border border-border px-3'>{car.model}</td>
+                                    <td className='border border-border px-3'>{ car.model }</td>
                                     {/*TARGA*/}
-                                    <td className='border border-border px-3'>{car.licensePlate}</td>
+                                    <td className='border border-border px-3'>{ car.licensePlate }</td>
                                     {/*REVISIONE*/}
-                                    <td className='border border-border px-3'>{car.revisions}</td>
+                                    <td className='border border-border px-3'>{ car.revisions }</td>
                                     {/*KM*/}
-                                    <td className='border border-border px-3'>{car.km}</td>
+                                    <td className='border border-border px-3'>{ car.km }</td>
                                     {/*ANNO*/}
-                                    <td className='border border-border px-3'>{car.year}</td>
+                                    <td className='border border-border px-3'>{ car.year }</td>
                                     {/*CLIENTE*/}
-                                    <td className='border border-border px-3'>{car.client}</td>
+                                    <td className='border border-border px-3'>{ car.client }</td>
+                                    <td className='border border-border px-3'>{ car.user }</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
-
+                    {dbCars.length === 0 && <center><h1>No cars info found.</h1></center>}
                     {/* Pagination */}
                     <div className="row">
                         <nav className="col-md-4 offset-md-4 text-center pt-5 p-3">

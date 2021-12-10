@@ -12,9 +12,10 @@ import { auth } from "../../firebase";
 //import {mongoDBCreateTestFunction} from "../../functions/callsToTestRoutes";
 
 export default function LoginPage({ history }){
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [passwordShown, setPasswordShown] = useState(false);
+    const [ email, setEmail ] = useState( "" );
+    const [ password, setPassword ] = useState( "" );
+    const [ passwordShown, setPasswordShown ] = useState( false );
+
 
     //we use destructuring to get specific data from the states that are defined in the reducers.
     // user is the name of the userReduces
@@ -89,6 +90,7 @@ export default function LoginPage({ history }){
                                 token: idTokenResult.token,
                             },
                         } );
+
                         roleBasedRedirect( res.data.role );
                     } else {
                         toast.error( "Could not find user info in the mongoDB database. Unable to proceed" );

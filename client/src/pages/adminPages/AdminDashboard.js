@@ -106,31 +106,31 @@ export default function AdminDashboard(){
 
                         <tbody>
 
-                            {/*{mongoDbUsersList.map((userInfo) => (*/}
-                            {/*    <tr key={userInfo.id}>*/}
-                            {/*        <td>*/}
-                            {/*            <button className='w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'>*/}
-                            {/*                <Link to={`admin/user/${userInfo.slug}`}>*/}
-                            {/*                    Open*/}
-                            {/*                </Link>*/}
-                            {/*            </button>*/}
-                            {/*        </td>*/}
-                            {/*        <td className='pr-3'>*/}
-                            {/*            <button*/}
-                            {/*                className='w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'*/}
-                            {/*                onClick={()=>deleteUserFromDB(userInfo.slug, userInfo.company_name)}*/}
-                            {/*            >*/}
-                            {/*            Delete*/}
-                            {/*            </button>*/}
-                            {/*        </td>*/}
-                            {/*        <td className='border border-border px-3'>{userInfo._id}</td>*/}
-                            {/*        <td className='border border-border px-3'>{userInfo.company_name}</td>*/}
-                            {/*        <td className='border border-border px-3'>{userInfo.email}</td>*/}
-                            {/*        <td className='border border-border px-3'>{userInfo.fiscal_code}</td>*/}
-                            {/*        <td className='border border-border px-3'>{userInfo.createdAt}</td>*/}
-                            {/*        <td className='border border-border px-3'>{userInfo.role}</td>*/}
-                            {/*    </tr>*/}
-                            {/*))}*/}
+                            {mongoDbUsersList.map((userInfo) => (
+                                <tr key={userInfo.id}>
+                                    <td>
+                                        <button className='w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'>
+                                            <Link to={`admin/user/${userInfo.slug}`}>
+                                                Open
+                                            </Link>
+                                        </button>
+                                    </td>
+                                    <td className='pr-3'>
+                                        <button
+                                            className='w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'
+                                            onClick={()=>deleteUserFromDB(userInfo.slug, userInfo.company_name)}
+                                        >
+                                        Delete
+                                        </button>
+                                    </td>
+                                    <td className='border border-border px-3'>{userInfo._id}</td>
+                                    <td className='border border-border px-3'>{userInfo.company_name}</td>
+                                    <td className='border border-border px-3'>{userInfo.email}</td>
+                                    <td className='border border-border px-3'>{userInfo.fiscal_code}</td>
+                                    <td className='border border-border px-3'>{userInfo.createdAt}</td>
+                                    <td className='border border-border px-3'>{userInfo.role}</td>
+                                </tr>
+                            ))}
 
                         </tbody>
                     </table>

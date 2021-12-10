@@ -17,21 +17,21 @@ const {
 
 //Routes
 router.delete(
-    "/admin/user/:slug",
+    "/admin/user/delete",
     fireBaseAuthCheckMiddleware,
     mongoDbAdminCheckMiddleware,
     mongoDBFireBaseDeleteUserController
 );
 
 router.get(
-    "/admin/user/:slug",
+    "/admin/user",
     fireBaseAuthCheckMiddleware,
     mongoDbAdminCheckMiddleware,
     getSingleUserController
 );
 
 router.post(
-    "/admin/user/access/:slug",
+    "/admin/user/access",
     fireBaseAuthCheckMiddleware,
     mongoDbAdminCheckMiddleware,
     mongoDBToggleUserAccessController

@@ -5,15 +5,28 @@ import axios from "axios";
 //     return await axios.get(`${process.env.REACT_APP_API}/admin/users`, { headers: { authToken } });
 // };
 
-export const mongoDBToggleUserAccessFunction = async ( slug, decision, authToken ) => {
-    return await axios.put( `${process.env.REACT_APP_API}/admin/user/access/${slug}`,  { decision },{ headers: { authToken:  authToken }});
+export const mongoDBToggleUserAccessFunction = async ( email, decision, authToken ) => {
+    return await axios
+        .put( 
+            `${process.env.REACT_APP_API}/admin/user/access`,  
+            { decision },
+            { 
+                headers: { authToken },
+                params: { email },
+            }
+        );
 };
 
 // The function is used in AdminDashUserList.js file.
-export const mongoDBDeleteUserFunction = async ( authToken, slug ) => {
-    return await axios.delete( `${process.env.REACT_APP_API}/admin/user/${slug}`,
-        { headers: {authToken}}
-    );
+export const mongoDBDeleteUserFunction = async ( authToken, email ) => {
+    return await axios
+        .delete( 
+            `${process.env.REACT_APP_API}/admin/user/delete`,
+            {
+                headers: {authToken},
+                params: { email }
+            }
+        );
 };
 
 // The function is used in AdminDashUserList.js file.

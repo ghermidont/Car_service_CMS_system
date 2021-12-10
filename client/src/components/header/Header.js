@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useHistory } from "react-router-dom";
 import Logo from "../../images/logo.png";
 import { Link } from "react-router-dom";
@@ -10,15 +10,21 @@ import { toast } from "react-toastify";
 import ClientPhoto from "../../images/usr_avatar.png";
 
 export default function Header() {
+    const [ admin, setAdmin ] = useState( false );
     const history = useHistory();
     const dispatch = useDispatch();
     const { reduxStoreUser } = useSelector((state) => ({ ...state }));
 
-    if ( reduxStoreUser ) {
-        console.log("Header.js The user form the Redux Store:", reduxStoreUser);
-    }else{
-        console.log("Header.js No user info found in the Redux State.");
-    }
+    useEffect(() => {
+        return () => {
+            if ( reduxStoreUser ) {
+                reduxStoreUser.role === "a%tDHM*54fgS-rl55kfg" ? setAdmin( true ) : setAdmin( false );
+                console.log("Header.js The user form the Redux Store:", reduxStoreUser);
+            }else{
+                console.log("Header.js No user info found in the Redux State.");
+            }
+        };
+    }, [ reduxStoreUser ] );
 
     const logout = () => {
         signOut( auth ).then( () => {
@@ -118,6 +124,13 @@ export default function Header() {
                                     >
                                         <LogoutOutlined/> Log Out
                                     </button>
+                                    {admin &&
+                                        <Link to="/admin_dashboard">
+                                            <button className='flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                                                Admin Panel
+                                            </button>
+                                        </Link>
+                                    }
                                 </div>
                             </>
                         }

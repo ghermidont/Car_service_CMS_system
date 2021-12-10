@@ -1,38 +1,38 @@
-const admin = require("../firebase/fireBaseSettings");
-const getAuth = require("firebase/auth");
-const userSchema = require("../models/userModel");
-const Slugify = require("slugify");
+const admin = require( "../firebase/fireBaseSettings" );
+const getAuth = require( "firebase/auth" );
+const userSchema = require( "../models/userModel" );
+const Slugify = require( "slugify" );
 
-exports.mongoDBFireBaseDeleteUserController = async (req, res) => {
+exports.mongoDBFireBaseDeleteUserController = async ( req, res ) => {
     try {
         const deleted = await userSchema
-            .findOneAndRemove({slug: req.params.slug,})
+            .findOneAndRemove( { slug: req.params.slug } )
             .exec();
-        res.json(deleted);
+        res.json( deleted );
         try {
             // Write the current user from the Firebase to the request object.
             //TODO see if the token is extracted (use console.log).
             const firebaseUser = await admin
                 .auth()
-                .verifyIdToken(req.headers.authtoken);
-            console.log("FIREBASE USER IN AUTHCHECK", firebaseUser, " end user.");
+                .verifyIdToken( req.headers.authtoken );
+            console.log( "FIREBASE USER IN AUTHCHECK", firebaseUser, " end user." );
             req.user = firebaseUser;
             getAuth()
-                .deleteUser(firebaseUser.uid)
-                .then(() => {
-                    console.log("Successfully deleted user");
-                })
-                .catch((error) => {
-                    console.log("Error deleting user:", error);
-                });
-        } catch (err) {
-            res.status(401).json({
+                .deleteUser( firebaseUser.uid )
+                .then( () => {
+                    console.log( "Successfully deleted user" );
+                } )
+                .catch( ( error ) => {
+                    console.log( "Error deleting user:", error );
+                } );
+        } catch ( err ) {
+            res.status( 401 ).json( {
                 err: "Invalid or expired token",
-            });
+            } );
         }
-    } catch (err) {
-        window.alert(err);
-        return res.status(400).send("CMS user deletion failed");
+    } catch ( err ) {
+        window.alert( err );
+        return res.status( 400 ).send( "CMS user deletion failed" );
     }
 };
 

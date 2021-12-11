@@ -1,11 +1,10 @@
 const admin = require( "../firebase/fireBaseSettings" );
 const getAuth = require( "firebase/auth" );
-const userSchema = require( "../models/userModel" );
-const Slugify = require( "slugify" );
+const userModel = require( "../models/userModel" );
 
 exports.mongoDBFireBaseDeleteUserController = async ( req, res ) => {
     try {
-        const deleted = await userSchema
+        const deleted = await userModel
             .findOneAndRemove( { slug: req.params.slug } )
             .exec();
         res.json( deleted );
@@ -17,7 +16,7 @@ exports.mongoDBFireBaseDeleteUserController = async ( req, res ) => {
                 .verifyIdToken( req.headers.authtoken );
             console.log( "FIREBASE USER IN AUTHCHECK", firebaseUser, " end user." );
             req.user = firebaseUser;
-            getAuth()
+            await getAuth()
                 .deleteUser( firebaseUser.uid )
                 .then( () => {
                     console.log( "Successfully deleted user" );
@@ -35,33 +34,33 @@ exports.mongoDBFireBaseDeleteUserController = async ( req, res ) => {
         return res.status( 400 ).send( "CMS user deletion failed" );
     }
 };
-
-exports.mongoDBToggleUserAccessController = async (req, res) => {
+//!Start here
+exports.mongoDBToggleUserAccessController = async ( req, res ) => {
     try {
-        if (req.body.title) {
-            req.body.slug = Slugify(req.body.title);
-        }
-        const updated = await userSchema.findOneAndUpdate(
-            { slug: req.params.slug },
-            req.body,
-            { new: true }
-        ).exec();
-        res.json(updated);
-    } catch (err) {
-        console.log("CAR UPDATE ERROR ----> ", err);
-        res.status(400).json({
+        const updated = await userModel
+            .findOneAndUpdate(
+                { slug: req.params.email },
+                { role: req.params.role },
+                { new: true }
+            )
+            .exec();
+        console.log( "mongoDBToggleUserAccessController() updated: ", updated );
+        res.json( updated );
+    } catch ( err ) {
+        console.log( "USER UPDATE ERROR ----> ", err );
+        res.status( 400 ).json( {
             err: err.message,
-        });
+        } );
     }
 };
 
 exports.mongoDBUsersCountController = async ( req, res ) => {
-    const count = await userSchema
+    const count = await userModel
         .find( {} )
         .estimatedDocumentCount()
         .exec();
-    console.log( "USERS COUNT: ", count );
-    res.json(count);
+    console.log( "mongoDBUsersCountController() COUNT: ", count );
+    res.json( count );
 };
 
 exports.mongoDBGetAllUsersController = async ( req, res ) => {
@@ -73,13 +72,13 @@ exports.mongoDBGetAllUsersController = async ( req, res ) => {
         //The number of items per page.
         const perPage = 8;
 
-        const users = await userSchema.find( {} )
+        const users = await userModel.find( {} )
         //skipping the number of products from the page previous to the chosen page.
             .skip(( currentPage - 1 ) * perPage )
             .sort( [ [ sort, order ] ] )
             .limit( perPage )
             .exec();
-        console.log( "ALL USERS: ", users );
+        console.log( "mongoDBGetAllUsersController users: ", users );
         res.json( users );
     } catch ( err ) {
         console.log( "mongoDBGetAllUsersController() ", err );

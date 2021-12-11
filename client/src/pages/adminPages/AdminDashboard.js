@@ -10,6 +10,7 @@ import {
     mongoDBDeleteUserFunction,
     mongoDBToggleUserAccessFunction
 } from "../../functions/callsToAdminRoutes";
+import Link from "react-router-dom/es/Link";
 
 export default function AdminDashboard(){
     const { Content, Sider } = Layout;
@@ -105,12 +106,11 @@ export default function AdminDashboard(){
                         </thead>
 
                         <tbody>
-
-                            {mongoDbUsersList.map((userInfo) => (
-                                <tr key={userInfo.id}>
+                            { mongoDbUsersList.map( ( userInfo ) => (
+                                <tr key={ userInfo.id }>
                                     <td>
                                         <button className='w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'>
-                                            <Link to={`admin/user/${userInfo.slug}`}>
+                                            <Link to={`admin/user/${userInfo.email}`}>
                                                 Open
                                             </Link>
                                         </button>
@@ -118,7 +118,7 @@ export default function AdminDashboard(){
                                     <td className='pr-3'>
                                         <button
                                             className='w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'
-                                            onClick={()=>deleteUserFromDB(userInfo.slug, userInfo.company_name)}
+                                            onClick={ ()=>deleteUserFromDB( userInfo.slug, userInfo.company_name ) }
                                         >
                                         Delete
                                         </button>

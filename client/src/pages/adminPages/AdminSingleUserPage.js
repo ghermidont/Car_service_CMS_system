@@ -1,10 +1,30 @@
-import React, {useState} from "react";
+//TODO Finish the page.
+import React, { useState } from "react";
 import ClientPhoto from "../../images/usr_avatar.png";
 import { Link } from "react-router-dom";
-//!start here finish the page.
-export default function AdminSingleUserPage() {
-    
-    const [ userInfo, setUserInfo ] = useState();
+import { mongoDBGetCurrentUserFunction } from "../../functions/callsToAuthRoutes";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+
+export default function AdminSingleUserPage( { match } ) {
+    const initialState = {
+        company_name: "loading...",
+        current_residence: "loading...",
+        current_city: "loading...",
+        current_province: "loading...",
+        official_residence: "loading...",
+        official_city: "loading...",
+        official_province: "loading...",
+        fiscal_code: "loading...",
+        images: [
+            {
+                public_id: "loading...",
+                url: "loading...",
+            },
+        ],
+    };
+
+    const [ userInfo, setUserInfo ] = useState( initialState );
    
     const{
         company_name,
@@ -18,6 +38,25 @@ export default function AdminSingleUserPage() {
         images,
     } = userInfo;
 
+    const { slug } = match.params;
+    console.log( "match.params", match.params );
+
+    const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
+
+    mongoDBGetCurrentUserFunction( reduxStoreUser.token, slug )
+        .then( ( res ) => {
+            // Add data to the React Store.
+            if ( res.data!==null ){
+                setUserInfo( res.data );
+                console.log( "LoginPage.js mongoDBGetCurrentUserFunction() response: ", JSON.stringify( res ) );
+            } else {
+                toast.error( "Could not find user info in the mongoDB database. Unable to proceed" );
+            };
+        } ).catch( ( err ) => {
+            console.log( "Login page get user info error: ", err );
+            toast.error( `Login page get user info error: ${ err }` );
+        } );
+
     return(
         <main>
             <h1>AdminSingleUserPage.js</h1>
@@ -29,17 +68,17 @@ export default function AdminSingleUserPage() {
                 </Link>
             </div>
             <div className="container mx-auto py-20">
-                <div className='bg-grayL shadow-shadow rounded p-12'>
-                    <div className='flex mb-20'>
-                        <div className='w-400 h-auto border border-border rounded-md mr-6'>
-                            { images.map( ( image ) => ( <img className='' src={ image.status==="default" ? ClientPhoto : image.url } alt=""/> )) }
+                <div className="bg-grayL shadow-shadow rounded p-12">
+                    <div className="flex mb-20">
+                        <div className="w-400 h-auto border border-border rounded-md mr-6">
+                            { images.map( ( image ) => ( <img className="" src={ image.status==="default" ? ClientPhoto : image.url } alt=""/> ) ) }
                         </div>
                         <ul>
-                            <li className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                                Ragione sociale: <span className='font-normal text-text text-lg'> { company_name } </span>
+                            <li className="text-xl text-black font-bold uppercase mb-4 bg-white px-2">
+                                Ragione sociale: <span className="font-normal text-text text-lg"> { company_name } </span>
                             </li>
 
-                            <li className='mb-4 bg-white px-2'>
+                            <li className="mb-4 bg-white px-2">
                                 <div className='text-xl text-black font-bold uppercase'>
                                     Sede Operativa: <span className='font-normal text-text text-lg'> { current_residence } </span>
                                 </div>

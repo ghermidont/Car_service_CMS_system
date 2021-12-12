@@ -36,11 +36,12 @@ exports.mongoDBFireBaseDeleteUserController = async ( req, res ) => {
 };
 //!Start here
 exports.mongoDBToggleUserAccessController = async ( req, res ) => {
+    console.log("mongoDBToggleUserAccessController", req.body);
     try {
         const updated = await userModel
             .findOneAndUpdate(
-                { slug: req.params.email },
-                { role: req.params.role },
+                { email: req.body.email },
+                { role: req.body.role },
                 { new: true }
             )
             .exec();
@@ -65,6 +66,7 @@ exports.mongoDBUsersCountController = async ( req, res ) => {
 
 exports.mongoDBGetAllUsersController = async ( req, res ) => {
     try {
+        console.log("mongoDBGetAllUsersController() req.body: ", req.body);
         // createdAt/updatedAt, desc/asc, 3
         const { sort, order, page } = req.body;
         //the page number the user clicks on
@@ -81,28 +83,28 @@ exports.mongoDBGetAllUsersController = async ( req, res ) => {
         console.log( "mongoDBGetAllUsersController users: ", users );
         res.json( users );
     } catch ( err ) {
-        console.log( "mongoDBGetAllUsersController() ", err );
+        console.log( "mongoDBGetAllUsersController() err: ", err );
     }
 };
 
 exports.getSingleUserController = async (req, res) => {
-    const user = await userSchema
+    const user = await userModel
         .findOne({ slug: req.params.slug })
         .exec();
     res.json(user);
 };
 
-handleSearchQuery = async (req, res, query) => {
-    const searchResults = await userSchema
-        .find({ $text: { $search: query } })
+handleSearchQuery = async ( req, res, query ) => {
+    const searchResults = await userModel
+        .find( { $text: { $search: query } } )
         .exec();
-    res.json(searchResults);
+    res.json( searchResults );
 };
 
-exports.searchFiltersController = async (req, res) => {
+exports.searchFiltersController = async ( req, res ) => {
     const { query } = req.body;
-    if (query) {
-        console.log("query --->", query);
-        await handleSearchQuery(req, res, query);
+    if ( query ) {
+        console.log("query --->", query );
+        await handleSearchQuery( req, res, query );
     }
 };

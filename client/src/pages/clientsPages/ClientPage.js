@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { mongoDBGetSingleClientFunction } from "../../functions/callsToClientRoutes";
-import Link from "react-router-dom/es/Link";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const initialState = {

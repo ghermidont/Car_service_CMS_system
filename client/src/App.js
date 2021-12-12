@@ -1,5 +1,5 @@
 import React, { useEffect, lazy, Suspense } from "react";
-import {Route, Switch} from "react-router";
+import { Route, Switch } from "react-router";
 
 //Popup notifications window package.
 import { ToastContainer } from "react-toastify";
@@ -13,10 +13,9 @@ import { useDispatch } from "react-redux";
 import { mongoDBGetCurrentUserFunction } from "./functions/callsToAuthRoutes";
 
 import { LoadingOutlined } from "@ant-design/icons";
-
 // Custom routes. Restrict route access for non logged in users or non admins.
 const UserRoute = lazy(() => import("./components/routes/userRoute"));
-const AdminRoute = lazy(() => import("./components/routes/adminRoute"));
+//const AdminRoute = lazy(() => import("./components/routes/adminRoute"));
 
 // Pages import
 // Auth pages
@@ -29,7 +28,6 @@ const MainMenuPage = lazy(() => import("./pages/MainMenuPage"));
 const UserPage = lazy(() => import("./pages/usersPages/UserPage"));
 const UserUpdatePage = lazy(() => import("./pages/usersPages/UserUpdatePage"));
 //Cars pages
-const CarsListPage = lazy(() => import("./pages/carsPages/CarsListPage"));
 const CarsArchivePage = lazy(() => import("./pages/carsPages/CarsArchivePage"));
 const CarCreatePage = lazy(() => import("./pages/carsPages/CarCreatePage"));
 const CarUpdatePage = lazy(() => import("./pages/carsPages/CarUpdatePage"));
@@ -46,6 +44,7 @@ const ClientUpdatePage = lazy(() => import("./pages/clientsPages/ClientUpdatePag
 const ClientPage = lazy(() => import("./pages/clientsPages/ClientPage"));
 //Admin pages
 const AdminDashboard = lazy(() => import("./pages/adminPages/AdminDashboard"));
+const AdminSingleUserPage = lazy(() => import("./pages/adminPages/AdminSingleUserPage"));
 // Components
 const Header = lazy(() => import("./components/header/Header"));
 const Footer = lazy(() => import("./components/footer/Footer"));
@@ -54,18 +53,18 @@ export default function App() {
     const dispatch = useDispatch();
 
     // User state change listener. To check firebase auth state.
-    useEffect(() => {
-        console.log("App.js useEffect worked!");
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                console.log("Fire Base user from App.js onAuthStateChanged(): ", user);
-                const idTokenResult = await getIdTokenResult(user, false);
+    useEffect( () => {
+        console.log( "App.js useEffect worked!" );
+        const unsubscribe = onAuthStateChanged( auth, async ( user ) => {
+            if ( user ) {
+                console.log( "Fire Base user from App.js onAuthStateChanged(): ", user );
+                const idTokenResult = await getIdTokenResult( user, false );
                 //console.log("This is the idTokenResult from App.js: ", idTokenResult);
-                mongoDBGetCurrentUserFunction(idTokenResult.token, user.email)
-                    .then((res) => {
+                mongoDBGetCurrentUserFunction( idTokenResult.token, user.email )
+                    .then( ( res ) => {
                         // Add data to the React Store.
-                        if (res.data!==null){
-                            dispatch({
+                        if ( res.data!==null ){
+                            dispatch( {
                                 type: "LOGGED_IN_USER",
                                 payload: {
                                     company_name: res.data.company_name,
@@ -81,16 +80,16 @@ export default function App() {
                                     role: res.data.role,
                                     token: idTokenResult.token,
                                 },
-                            });
-                        }else{
-                            console.log("No mongo DB user data received in the App.js");
+                            } );
+                        } else {
+                            console.log( "No mongo DB user data received in the App.js" );
                         };
-                    }).catch((err) => console.log("App.js could not get current user info from MongoDB because: ", err));
+                    } ).catch( ( err ) => console.log( "App.js could not get current user info from MongoDB because: ", err ) );
             }
-        });
+        } );
         // Cleanup. This function is returned one more time in order to prevent memory leaks.
         return () => unsubscribe();
-    }, [dispatch]);
+    }, [ dispatch ] );
 
     return (
         <Suspense
@@ -105,32 +104,32 @@ export default function App() {
             <ToastContainer />
             <Switch>
                 {/* Auth Routes */}
-                <Route exact path="/" component={LoginPage}/>
-                <Route exact path="/register_user" component={UserRegisterPage}/>
-                <Route exact path="/finish_register" component={FinishRegisterAfterEmailCheckPage}/>
-                <Route exact path="/psw_recover" component={PswRecoverPage}/>
+                <Route exact path="/" component={ LoginPage }/>
+                <Route exact path="/register_user" component={ UserRegisterPage }/>
+                <Route exact path="/finish_register" component={ FinishRegisterAfterEmailCheckPage }/>
+                <Route exact path="/psw_recover" component={ PswRecoverPage }/>
                 {/* Admin Routes */}
-                <AdminRoute exact path="/admin_dashboard" component={AdminDashboard}/>
+                <UserRoute exact path="/admin_dashboard" component={ AdminDashboard }/>
+                <UserRoute exact path="/admin/user/:slug" component={ AdminSingleUserPage }/>
                 {/* User Routes */}
-                <UserRoute exact path="/user_page" component={UserPage}/>
-                <UserRoute exact path="/user_update_page" component={UserUpdatePage}/>
-                <UserRoute exact path="/main_menu" component={MainMenuPage}/>
+                <UserRoute exact path="/user_page" component={ UserPage }/>
+                <UserRoute exact path="/user_update_page" component={ UserUpdatePage }/>
+                <UserRoute exact path="/main_menu" component={ MainMenuPage }/>
                 {/* User Routes --> Client */}
-                <UserRoute exact path="/add_client" component={ClientCreatePage}/>
-                <UserRoute exact path="/client/update/:slug" component={ClientUpdatePage}/>
-                <UserRoute exact path="/clients_list" component={ClientsListPage}/>
-                <UserRoute exact path="/client/:slug" component={ClientPage}/>
+                <UserRoute exact path="/add_client" component={ ClientCreatePage }/>
+                <UserRoute exact path="/client/update/:slug" component={ ClientUpdatePage }/>
+                <UserRoute exact path="/clients_list" component={ ClientsListPage }/>
+                <UserRoute exact path="/client/:slug" component={ ClientPage }/>
                 {/* User Routes --> Cars */}
-                <UserRoute exact path="/add_car" component={CarCreatePage}/>
-                <UserRoute exact path="/car/update/:slug" component={CarUpdatePage}/>
-                <UserRoute exact path="/cars_list" component={CarsListPage}/>
-                <UserRoute exact path="/cars_archive" component={CarsArchivePage}/>
-                <UserRoute exact path="/car/:slug" component={CarPage}/>
+                <UserRoute exact path="/add_car" component={ CarCreatePage }/>
+                <UserRoute exact path="/car/update/:slug" component={ CarUpdatePage }/>
+                <UserRoute exact path="/cars_archive" component={ CarsArchivePage }/>
+                <UserRoute exact path="/car/:slug" component={ CarPage }/>
                 {/* User Routes --> Services */}
-                <UserRoute exact path="/add_service" component={ServiceCreatePage}/>
-                <UserRoute exact path="/service/update/:slug" component={ServiceUpdatePage}/>
-                <UserRoute exact path="/services_list" component={ServicesListPage}/>
-                <UserRoute exact path="/service/:slug" component={ServicePage}/>
+                <UserRoute exact path="/add_service" component={ ServiceCreatePage }/>
+                <UserRoute exact path="/service/update/:slug" component={ ServiceUpdatePage }/>
+                <UserRoute exact path="/services_list" component={ ServicesListPage }/>
+                <UserRoute exact path="/service/:slug" component={ ServicePage }/>
             </Switch>
             <Footer />
         </Suspense>

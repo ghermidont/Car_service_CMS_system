@@ -6,81 +6,18 @@ import {
     mongoDBGetAllClientsFunction,
     mongoDBGetClientsCountFunction
 } from "../../functions/callsToClientRoutes";
-//import { mongoDBGetCarsByFilterFunction } from "../../functions/callsToCarRoutes";
+import { mongoDBGetCarsByFilterFunction } from "../../functions/callsToCarRoutes";
 import {toast} from "react-toastify";
 import {Pagination} from "antd";
 import {signOut} from "firebase/auth";
 import {auth} from "../../firebase";
 
-const initialState = [
-    {
-        name: "name",
-        surname: "surname",
-        date: "date",
-        fiscalCode: "fiscalCode",
-        address: "address",
-        city: "city",
-        province: "province",
-        notes: "notes",
-        mobile: "5674552333",
-        email: "email@email.com"
-    },
-    {
-        name: "name",
-        surname: "surname",
-        date: "date",
-        fiscalCode: "fiscalCode",
-        address: "address",
-        city: "city",
-        province: "province",
-        notes: "notes",
-        mobile: "5674552333",
-        email: "email@email.com"
-    },
-    {
-        name: "name",
-        surname: "surname",
-        date: "date",
-        fiscalCode: "fiscalCode",
-        address: "address",
-        city: "city",
-        province: "province",
-        notes: "notes",
-        mobile: "5674552333",
-        email: "email@email.com"
-    },
-];
-
-const clientCars = [ {
-    _id: 1,
-    brand: "Mercedes",
-    model: "GLS600",
-    licensePlate: "CVD45",
-    revision: "2020/05/30",
-    km: 45345,
-    year: 2000,
-    client: "Mark Zukerman",
-    slug: "asdff4t435",
-},
-{
-    _id: 2,
-    brand: "BMW",
-    model: "M30",
-    licensePlate: "VFD45",
-    revision: "2021/06/30",
-    km: 346345,
-    year: 2000,
-    client: "1900",
-    slug: "asdf4t34",
-},
-];
-
 export default function ClientsListPage( { history } ) {
-    const [ dbClients, setDbClients ] = useState( initialState );
+    const [ dbClients, setDbClients ] = useState(  [ {}, {} ] );
     const [ page, setPage ] = useState( 1 );
     const [ clientsCount, setClientsCount ] = useState( 0 );
     const [ loading, setLoading ] = useState( false );
-    //const [ carsListState, setCarsListState ] = useState([ {} ] );
+    const [ carsListState, setCarsListState ] = useState([ {}, {} ] );
     const { reduxStoreUser } = useSelector(( state ) => ({ ...state }));
     const dispatch = useDispatch();
 
@@ -136,15 +73,15 @@ export default function ClientsListPage( { history } ) {
         history.push( "/" );
     };
 
-    // const getClientCars = () => {
-    //     mongoDBGetCarsByFilterFunction( "client", dbClients[0]._id )
-    //         .then((res) => {
-    //             setCarsListState(res.data);
-    //         }).catch((error) => {
-    //             toast.error("Error getting client cars: ", error);
-    //             console.log("Error getting client cars", error);
-    //         });
-    // };
+    const getClientCars = ( clientId ) => {
+        mongoDBGetCarsByFilterFunction( clientId )
+            .then((res) => {
+                setCarsListState(res.data);
+            }).catch((error) => {
+                toast.error("Error getting client cars: ", error);
+                console.log("Error getting client cars", error);
+            });
+    };
     
     const deleteClientFunction = ( slug ) => {
         mongoDBDeleteClientFunction( reduxStoreUser.token, slug )
@@ -218,9 +155,9 @@ export default function ClientsListPage( { history } ) {
                                     <td className='border border-border px-3'>
                                         <ol>
                                             {/*TODO After implementing the db docs relationships change the clientCars with the info from the database related to the current client.*/}
-                                            { clientCars.map( car =>
+                                            { carsListState.map( car =>
                                                 (
-                                                    <li key={ car._id+car.licensePlate } >{ car.licensePlate } </li>
+                                                    <li key={ car._id } > { car.licensePlate } </li>
                                                 )
                                             )
                                             }

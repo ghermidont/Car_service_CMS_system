@@ -9,14 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { mongoDBGetCurrentUserFunction } from "../../functions/callsToAuthRoutes";
 import { auth } from "../../firebase";
-//import {mongoDBCreateTestFunction} from "../../functions/callsToTestRoutes";
 
 export default function LoginPage({ history }){
     const [ email, setEmail ] = useState( "" );
     const [ password, setPassword ] = useState( "" );
     const [ passwordShown, setPasswordShown ] = useState( false );
-
-
     //we use destructuring to get specific data from the states that are defined in the reducers.
     // user is the name of the userReduces
     const { reduxStoreUser } = useSelector((state) => ({ ...state }));

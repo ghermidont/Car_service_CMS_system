@@ -1,16 +1,20 @@
-import React, {useEffect, useState} from "react";
+//TODO Implement the search functionality
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
     mongoDBGetAllCarsFunction,
     mongoDBGetCarsCountFunction,
     mongoDBDeleteCarFunction
 } from "../../functions/callsToCarRoutes";
-import {useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import {Pagination} from "antd";
+import { Pagination } from "antd";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
 
-export default function CarArchivePage() {
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+export default function CarArchivePage( { history } ) {
+    const { reduxStoreUser } = useSelector(( state ) => ( { ...state } ) );
+    const dispatch = useDispatch();
 
     const [ dbCars, setDbCars ] = useState( [] );
     const [ page, setPage ] = useState( 1 );
@@ -30,19 +34,39 @@ export default function CarArchivePage() {
         console.log( "Cars count: ", carsCount );
     }, [] );
 
+    const logout = () => {
+        signOut( auth ).then( () => {
+            toast.success("User signed out." );
+        }).catch(( error ) => {
+            toast.error("Error signing out.", error );
+        });
+        // old version --> firebase.auth().signOut();
+        dispatch({
+            type: "LOGOUT",
+            payload: null,
+        });
+        history.push( "/" );
+    };
+
     const loadAllCars = () => {
         console.log( "loadAllCars() worked." );
         setLoading( true );
         // sort, order, limit
-        mongoDBGetAllCarsFunction( "createdAt", "desc", page, reduxStoreUser._id )
-            .then(( res ) => {
-                setDbCars( res.data );
-                setLoading( false );
-                console.log( "Cars loaded: ", res.data );
-            }).catch(( error ) => {
-                toast.error("Error getting all cars: ", error );
-                console.log( "Error getting all cars: ", error );
-            });
+        if ( reduxStoreUser._id === undefined ){
+            logout();
+            return toast.error("reduxStoreUser._id is undefined please re-login.");
+
+        } else {
+            mongoDBGetAllCarsFunction("createdAt", "desc", page, reduxStoreUser._id)
+                .then((res) => {
+                    setDbCars(res.data);
+                    setLoading(false);
+                    console.log("Cars loaded: ", res.data);
+                }).catch((error) => {
+                    toast.error("Error getting all cars: ", error);
+                    console.log("Error getting all cars: ", error);
+                });
+        }
     };
 
     const deleteCarFunction = ( slug ) => {
@@ -152,7 +176,7 @@ export default function CarArchivePage() {
                             ))}
                         </tbody>
                     </table>
-                    {dbCars.length === 0 && <center><h1>No cars info found.</h1></center>}
+                    {dbCars.length === 0 && <center><h1> No cars info loaded... </h1></center>}
                     {/* Pagination */}
                     <div className="row">
                         <nav className="col-md-4 offset-md-4 text-center pt-5 p-3">

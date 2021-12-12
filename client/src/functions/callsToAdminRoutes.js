@@ -5,14 +5,13 @@ import axios from "axios";
 //     return await axios.get(`${process.env.REACT_APP_API}/admin/users`, { headers: { authToken } });
 // };
 
-export const mongoDBToggleUserAccessFunction = async ( email, decision, authToken ) => {
+export const mongoDBToggleUserAccessFunction = async ( email, role, authToken ) => {
     return await axios
         .put( 
             `${process.env.REACT_APP_API}/admin/user/access`,  
-            { decision },
+            { role, email },
             { 
                 headers: { authToken },
-                params: { email },
             }
         );
 };

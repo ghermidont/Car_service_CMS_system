@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
     mongoDBGetAllServicesFunction,
@@ -6,9 +6,9 @@ import {
 } from "../../functions/callsToServicesRoutes";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import {Pagination} from "antd";
-import {signOut} from "firebase/auth";
-import {auth} from "../../firebase";
+import { Pagination } from "antd";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
 
 const initialState = [
     {
@@ -68,12 +68,12 @@ export default function ServicesListPage( { history } ) {
 
     useEffect(() => {
         mongoDBGetServicesCountFunction( reduxStoreUser.token )
-            .then(( res) => setServicesCount( res.data ) )
-            .catch(( error ) => {
+            .then( ( res ) => setServicesCount( res.data ) )
+            .catch( ( error ) => {
                 toast.error( "Error loading services count", error );
                 console.log( "Error loading services count", error );
-            });
-    }, []);
+            } );
+    }, [] );
 
     const logout = () => {
         signOut( auth ).then( () => {

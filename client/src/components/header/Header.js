@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Logo from "../../images/logo.png";
 import { Link } from "react-router-dom";
-import {LogoutOutlined} from "@ant-design/icons";
+import { LogoutOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
@@ -13,7 +13,7 @@ export default function Header() {
     const [ admin, setAdmin ] = useState( false );
     const history = useHistory();
     const dispatch = useDispatch();
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
 
     useEffect(() => {
         return () => {
@@ -80,11 +80,11 @@ export default function Header() {
                     </div>
                     <div>
                         <Link to="/">
-                            <img src={Logo} alt=""/>
+                            <img src={ Logo } alt=""/>
                         </Link>
                     </div>
                     <div className='flex items-center'>
-                        {reduxStoreUser &&
+                        { reduxStoreUser &&
                             <>
                                 <div>
                                     <Link to="/user_notifications">
@@ -108,11 +108,11 @@ export default function Header() {
                                 <div className='flex items-center mx-14'>
                                     <Link to="/user_page" >
                                         <div className='w-60 h-14 rounded-full overflow-hidden mr-4'>
-                                            { reduxStoreUser.images.map((image) => ( <img key={image._id} src={ image.status==="default" ? ClientPhoto : image.url } alt=""/> )) }
+                                            { reduxStoreUser.images && reduxStoreUser.images.map( ( image ) => ( <img key={image._id} src={ image.status==="default" ? ClientPhoto : image.url } alt=""/> )) }
                                             {/*<h1>{ClientPhoto}</h1>*/}
                                         </div>
                                         <span className='font-normal uppercase hover:opacity-70 focus:opacity-70'>
-                                            {reduxStoreUser ? reduxStoreUser.company_name : "User Data"}
+                                            { reduxStoreUser ? reduxStoreUser.company_name : "User Data"}
                                         </span>
                                     </Link>
                                 </div>

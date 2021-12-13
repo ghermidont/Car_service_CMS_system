@@ -3,41 +3,55 @@ import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { mongoDBCreateUserFunction } from "../../functions/callsToAuthRoutes";
-import { getIdTokenResult, signInWithEmailLink, isSignInWithEmailLink, updatePassword } from "firebase/auth";
+import {getIdTokenResult, signInWithEmailLink, isSignInWithEmailLink, updatePassword, signOut} from "firebase/auth";
 
 //Since the whole app is wrapped in <BrowserRouter> we can do destructuring {history} its the same thing as using (props) >>> props.history.
-const FinishRegisterAfterEmailCheckPage = ({ history }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [passwordShown, setPasswordShown] = useState(false);
+const FinishRegisterAfterEmailCheckPage = ( { history } ) => {
+    const [ email, setEmail ] = useState( "" );
+    const [ password, setPassword ] = useState( "" );
+    const [ passwordShown, setPasswordShown ] = useState( false );
 
     let dispatch = useDispatch();
 
-    useEffect(() => {
-        console.log("FinishRegisterAfterEmailCheckPage.js useEffect() worked.");
+    useEffect( () => {
+        console.log( "FinishRegisterAfterEmailCheckPage.js useEffect() worked." );
         //Getting the email from local storage.
-        setEmail(window.localStorage.getItem("emailForRegistration"));
-        console.log("useEffect() email: ", email);
-    }, [history, email]);
+        setEmail( window.localStorage.getItem( "emailForRegistration" ) );
+        console.log( "FinishRegisterAfterEmailCheckPage() useEffect() email: ", email );
+    }, [ history, email ] );
 
-    const handleSubmit = async (e) => {
-        console.log("FinishRegisterAfterEmailCheckPage handleSubmit() worked!");
+    const logout = () => {
+        signOut( auth ).then( () => {
+            toast.success( "You are being signed out. Please login with your new credentials." );
+        } ).catch( ( error ) => {
+            toast.error( "Error signing out: ", error );
+        } );
+        // old version --> firebase.auth().signOut();
+        dispatch( {
+            type: "LOGOUT",
+            payload: null,
+        } );
+        history.push( "/" );
+    };
+
+    const handleSubmit = async ( e ) => {
+        console.log( "FinishRegisterAfterEmailCheckPage handleSubmit() worked!" );
 
         e.preventDefault();
         // validation
         if ( !password ) {
-            toast.error("Email and password is required");
+            toast.error( "Email and password is required" );
             return;
         }
 
         if ( password.length < 6 ) {
-            toast.error("Password must be at least 6 characters long");
+            toast.error( "Password must be at least 6 characters long" );
             return;
         }
 
         try {
-            console.log("try window.location.href", window.location.href);
-            if (isSignInWithEmailLink(auth, window.location.href)) {
+            console.log( "try window.location.href", window.location.href );
+            if ( isSignInWithEmailLink( auth, window.location.href ) ) {
                 //Signing in the new user with email link.
                 //setEmail(window.localStorage.getItem("emailForRegistration"));
 
@@ -65,6 +79,7 @@ const FinishRegisterAfterEmailCheckPage = ({ history }) => {
                     console.log( "FinishRegisterAfterEmailCheckPage handleSubmit user: ", user, "idTokenResult", idTokenResult.token);
 
                     const userInfoForMongoDB = {
+                        status: "active",
                         company_name: "Company name",
                         current_residence: "Current residence",
                         current_city: "Current city",
@@ -86,11 +101,12 @@ const FinishRegisterAfterEmailCheckPage = ({ history }) => {
                     };
 
                     // On this stage the new user is created and in Mongo DB and then the data is also written in the redux store with dispatch function.
-                    mongoDBCreateUserFunction(idTokenResult.token, userInfoForMongoDB).then((res) => {
-                        console.log("mongoDBCreateUserFunction() worked in FinishRegisterAfterEmailCheckPage.js");
+                    mongoDBCreateUserFunction( idTokenResult.token, userInfoForMongoDB ).then( ( res) => {
+                        console.log( "mongoDBCreateUserFunction() worked in FinishRegisterAfterEmailCheckPage.js" );
                         dispatch({
                             type: "LOGGED_IN_USER",
                             payload: {
+                                status: res.data.status,
                                 company_name: res.data.company_name,
                                 current_residence: res.data.current_residence,
                                 current_city: res.data.current_city,
@@ -106,18 +122,21 @@ const FinishRegisterAfterEmailCheckPage = ({ history }) => {
                             },
                         });
                     })
-                        .catch((err) => console.log("mongoDBCreateUserFunction() error: ", err));
-
-                    // redirect
-                    history.push("/user_page");
+                        .catch( ( err ) =>
+                        {
+                            toast.error( "Error in mongoDBCreateUserFunction() in FinishRegisterAfterEmailCheckPage.js" );
+                            console.log( "mongoDBCreateUserFunction() error: ", err );
+                        });
+                    //Logging out the user to sign in with the new password.
+                    logout();
                 });
 
             }else{
-                throw("isSignInWithEmailLink() is: ", isSignInWithEmailLink(auth, window.location.href));
+                throw( "isSignInWithEmailLink() is: ", isSignInWithEmailLink( auth, window.location.href ));
             }
-        } catch (error) {
-            console.log("handleSubmit try catch error: ", error);
-            toast.error(error.message);
+        } catch ( error ) {
+            console.log( "FinishRegisterAfterEmailCheckPage() handleSubmit() try catch error: ", error );
+            toast.error( "FinishRegisterAfterEmailCheckPage() handleSubmit() try catch error: ", error.message );
         }
     };
 
@@ -138,14 +157,14 @@ const FinishRegisterAfterEmailCheckPage = ({ history }) => {
                         action="#"
                         autoComplete="off"
                         className='max-w-600 w-100% bg-grayL px-12 pt-8 pb-14 shadow-shadow rounded'
-                        onSubmit={handleSubmit}
+                        onSubmit={ handleSubmit }
                     >
                         <label className='block mb-2 text-xl'>
                             Email:
                             <input
                                 className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
                                 type="email"
-                                value={email}
+                                value={ email }
                                 disabled
                             />
                         </label>
@@ -154,17 +173,17 @@ const FinishRegisterAfterEmailCheckPage = ({ history }) => {
                             <input
                                 type="password"
                                 className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                value={ password }
+                                onChange={ ( e ) => setPassword( e.target.value ) }
                                 placeholder="Your password"
                                 autoFocus
                             />
-                            <span onClick={()=>{togglePassword();}} style={{color: "blue", fontSize: "15px"}}>Show password</span>
+                            <span onClick={ ()=>{ togglePassword(); } } style={ { color: "blue", fontSize: "15px" } }>Show password</span>
                         </label>
                         <div className='text-xl text-white flex justify-between'>
                             <button
                                 className='mr-1 bg-green w-200 py-3 rounded transition duration-300 hover:opacity-70'
-                                disabled={password.length < 6}
+                                disabled={ password.length < 6 }
                                 type="submit"
                             >
                                 Complete Registration

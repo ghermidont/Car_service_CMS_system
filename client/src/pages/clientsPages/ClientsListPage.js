@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {useSelector, useDispatch} from "react-redux";
+import {useSelector, useDispatch } from "react-redux";
 import {
     mongoDBDeleteClientFunction,
     mongoDBGetAllClientsFunction,
@@ -18,7 +18,7 @@ export default function ClientsListPage( { history } ) {
     const [ clientsCount, setClientsCount ] = useState( 0 );
     const [ loading, setLoading ] = useState( false );
     const [ carsListState, setCarsListState ] = useState([ {}, {} ] );
-    const { reduxStoreUser } = useSelector(( state ) => ({ ...state }));
+    const { reduxStoreUser } = useSelector(( state ) => ( { ...state } ) );
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -75,12 +75,12 @@ export default function ClientsListPage( { history } ) {
 
     const getClientCars = ( clientId ) => {
         mongoDBGetCarsByFilterFunction( clientId )
-            .then((res) => {
-                setCarsListState(res.data);
-            }).catch((error) => {
-                toast.error("Error getting client cars: ", error);
-                console.log("Error getting client cars", error);
-            });
+            .then( ( res ) => {
+                setCarsListState( res.data );
+            } ).catch( ( error ) => {
+                toast.error( "Error getting client cars: ", error );
+                console.log( "Error getting client cars", error );
+            } );
     };
     
     const deleteClientFunction = ( slug ) => {
@@ -223,3 +223,6 @@ export default function ClientsListPage( { history } ) {
         </main>   
     );
 }
+
+
+

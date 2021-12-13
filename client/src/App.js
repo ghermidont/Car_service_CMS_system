@@ -15,7 +15,7 @@ import { mongoDBGetCurrentUserFunction } from "./functions/callsToAuthRoutes";
 import { LoadingOutlined } from "@ant-design/icons";
 // Custom routes. Restrict route access for non logged in users or non admins.
 const UserRoute = lazy(() => import("./components/routes/userRoute"));
-//const AdminRoute = lazy(() => import("./components/routes/adminRoute"));
+const AdminRoute = lazy(() => import("./components/routes/adminRoute"));
 
 // Pages import
 // Auth pages
@@ -54,7 +54,7 @@ export default function App() {
 
     // User state change listener. To check firebase auth state.
     useEffect( () => {
-        console.log( "App.js useEffect worked!" );
+        console.log( "App.js useEffect with mongoDBGetCurrentUserFunction() worked!" );
         const unsubscribe = onAuthStateChanged( auth, async ( user ) => {
             if ( user ) {
                 console.log( "Fire Base user from App.js onAuthStateChanged(): ", user );
@@ -67,6 +67,8 @@ export default function App() {
                             dispatch( {
                                 type: "LOGGED_IN_USER",
                                 payload: {
+                                    _id: res.data._id,
+                                    status: res.data.status,
                                     company_name: res.data.company_name,
                                     current_residence: res.data.current_residence,
                                     current_city: res.data.current_city,
@@ -109,8 +111,8 @@ export default function App() {
                 <Route exact path="/finish_register" component={ FinishRegisterAfterEmailCheckPage }/>
                 <Route exact path="/psw_recover" component={ PswRecoverPage }/>
                 {/* Admin Routes */}
-                <UserRoute exact path="/admin_dashboard" component={ AdminDashboard }/>
-                <UserRoute exact path="/admin/user/:slug" component={ AdminSingleUserPage }/>
+                <AdminRoute exact path="/admin_dashboard" component={ AdminDashboard }/>
+                <AdminRoute exact path="/admin/user/:slug" component={ AdminSingleUserPage }/>
                 {/* User Routes */}
                 <UserRoute exact path="/user_page" component={ UserPage }/>
                 <UserRoute exact path="/user_update_page" component={ UserUpdatePage }/>

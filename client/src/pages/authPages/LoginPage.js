@@ -1,4 +1,4 @@
-//!IMPLEMENTED
+//TODO Test the page.
 import React, { useState, useEffect } from "react";
 import { getIdTokenResult, signInWithEmailAndPassword } from "firebase/auth";
 //import { auth /*googleAuthProvider*/ } from "../firebase";
@@ -10,16 +10,16 @@ import { Link } from "react-router-dom";
 import { mongoDBGetCurrentUserFunction } from "../../functions/callsToAuthRoutes";
 import { auth } from "../../firebase";
 
-export default function LoginPage({ history }){
+export default function LoginPage( { history } ){
     const [ email, setEmail ] = useState( "" );
     const [ password, setPassword ] = useState( "" );
     const [ passwordShown, setPasswordShown ] = useState( false );
     //we use destructuring to get specific data from the states that are defined in the reducers.
     // user is the name of the userReduces
-    const { reduxStoreUser } = useSelector((state) => ({ ...state }));
+    const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
     //const info = {name: "Mike"};
 
-    useEffect(() => {
+    useEffect( () => {
         const intended = history.location.state;
         console.log( "history.location.state", history.location.state );
 
@@ -30,26 +30,28 @@ export default function LoginPage({ history }){
                 history.push( "/main_menu" );
             }
         }
-    }, [ reduxStoreUser, history ]);
+    }, [ reduxStoreUser, history ] );
 
     const dispatch = useDispatch();
 
-    const roleBasedRedirect = ( role ) => {
-        console.log("LoginPage.js roleBasedRedirect() worked");
+    const roleBasedRedirect = ( role, status ) => {
+        console.log( "LoginPage.js roleBasedRedirect() worked" );
         // check if intended
         let intended = history.location.state;
-        if (intended) {
-            history.push(intended.from);
+        if ( intended ) {
+            history.push( intended.from );
         } else {
-            if(role) {
-                if (role === "a%tDHM*54fgS-rl55kfg") {
-                    history.push("/admin_dashboard");
-                } else {
-                    history.push("/main_menu");
+            if( status === "active" ){
+                if ( role === "a%tDHM*54fgS-rl55kfg" ) {
+                    history.push( "/admin_dashboard" );
+                } else if ( role === "b%dDHM*SDKS-Jl5kjs" ) {
+                    history.push( "/main_menu" );
+                }else{
+                    toast.error( "Your role could not be established. Please register or try to re-login.");
+                    history.push( "/" );
                 }
-            }
-            else {
-                toast.error("roleBasedRedirect() could not read role.");
+            } else {
+                toast.error( "Your account is inactive please contact the administrator." );
             }
         }
     };
@@ -73,6 +75,7 @@ export default function LoginPage({ history }){
                             type: "LOGGED_IN_USER",
                             payload: {
                                 _id: res.data._id,
+                                status: res.data.status,
                                 company_name: res.data.company_name,
                                 current_residence: res.data.current_residence,
                                 current_city: res.data.current_city,
@@ -88,9 +91,9 @@ export default function LoginPage({ history }){
                             },
                         } );
 
-                        roleBasedRedirect( res.data.role );
+                        roleBasedRedirect( res.data.role, res.data.status );
                     } else {
-                        toast.error( "Could not find user info in the mongoDB database. Unable to proceed" );
+                        toast.error( "Could not get/find user info in the mongoDB database. Unable to proceed" );
                     };
                 } ).catch( ( err ) => {
                     console.log( "Login page get user info error: ", err );
@@ -150,7 +153,7 @@ export default function LoginPage({ history }){
                             action="#"
                             required
                             autoComplete="off"
-                            onSubmit={handleSubmit}
+                            onSubmit={ handleSubmit }
                         >
                             <label className='block mb-2 text-xl'>
                                 Email
@@ -173,21 +176,21 @@ export default function LoginPage({ history }){
                                     required
                                     placeholder="Your password"
                                 />
-                                <span onClick={()=>{togglePassword();}} style={{color: "blue", fontSize: "15px"}}>Show password</span>
+                                <span onClick={ ()=>{ togglePassword(); } } style={ { color: "blue", fontSize: "15px" } }> Show password </span>
                             </label>
                             <div className='text-xl text-white flex justify-between'>
                                 <button
                                     //type="submit"
                                     className='mr-1 bg-green w-200 py-3 rounded transition duration-300 hover:opacity-70'
-                                    disabled={!email || password.length < 6}
-                                    onClick={handleSubmit}
+                                    disabled={ !email || password.length < 6 }
+                                    onClick={ handleSubmit }
                                 >
                                     Login
                                 </button>
 
                                 <button
                                     className='mr-1 ml-1 bg-blue w-200 py-3 rounded transition duration-300 hover:opacity-70'
-                                    disabled={!email || password.length < 6}
+                                    disabled={ !email || password.length < 6 }
                                 >
                                     <Link to="/psw_recover">
                                         Recover pass

@@ -12,33 +12,25 @@ import App from "./App";
  * "CMSRootReducer" is used to change the states
  *  The reducers are stored in the "src/reducers" folder
  */
+
 import { PersistGate } from "redux-persist/integration/react";
 import { createStore } from "redux";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-
+import { persistStore } from "redux-persist";
 import rootReducer from "./reducers";
 import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-
-const persistConfig = {
-    key: "root",
-    storage,
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 /* This is the link to the general reduces file (index.js) from the reducers folder.
  The actual link is ./reducers/index.js. but since it the file name is index.js we can skip the specification it is done by default. */
 
 // initiate the Redux store
-const store = createStore( persistedReducer, composeWithDevTools() );
-const persistor = persistStore(store);
+const store = createStore( rootReducer, composeWithDevTools() );
+const persistor = persistStore( store );
 
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={ store }>
-            <PersistGate loading={ null } persistor={ persistor }>
+            <PersistGate loading={ <h1> Redux Persist loading... </h1> } persistor={ persistor }>
                 <BrowserRouter>
                     <App />
                 </BrowserRouter>

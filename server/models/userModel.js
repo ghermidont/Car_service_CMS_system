@@ -4,7 +4,11 @@ const mongoose = require( "mongoose" );
 const userSchema = new mongoose.Schema(
     {
         _id: mongoose.Schema.Types.ObjectId,
-        company_name: {
+        status: {
+            type: String,
+            trim: true,
+            required: true,
+        },company_name: {
             type: String,
             trim: true,
             required: true,

@@ -6,12 +6,15 @@ import {
     mongoDBGetAllUsersFunction,
     mongoDBGetUsersCountFunction,
     mongoDBDeleteUserFunction,
-    mongoDBToggleUserAccessFunction
+    mongoDBToggleUserAccessFunction,
+    mongoDBToggleUserStatusFunction
 } from "../../functions/callsToAdminRoutes";
 import { Pagination } from "antd";
 import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
-import {auth} from "../../firebase";
+import { auth } from "../../firebase";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+//import UsersPrintTable from "./UserPrintTable";
 
 export default function AdminDashboard ( { history } ) {
     const [ page, setPage ] = useState( 1 );
@@ -21,8 +24,21 @@ export default function AdminDashboard ( { history } ) {
     const dispatch = useDispatch();
 
     const rolesListState = [ "a%tDHM*54fgS-rl55kfg", "b%dDHM*SDKS-Jl5kjs" ];
+    const statusList = [ "active", "suspended" ];
 
     const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
+
+    //Use for pdf and printing.
+    const showDownloadLink = (order) => (
+        <PDFDownloadLink
+            document={<UsersPrintTable order={order} />}
+            fileName="invoice.pdf"
+            className="btn btn-sm btn-block btn-outline-primary"
+        >
+            Download PDF
+        </PDFDownloadLink>
+    );
+
 
     const getUsersFromDb = async () => {
         console.log( "getUsersFromDb() worked: " );
@@ -77,15 +93,30 @@ export default function AdminDashboard ( { history } ) {
     };
 
     const toggleUserRole = ( userId, role ) => {
-        if(reduxStoreUser._id) {
-            mongoDBToggleUserAccessFunction(userId, role, reduxStoreUser.authToken)
-                .then((res) => {
-                    toast.success("User role changed");
-                })
-                .catch((err) => {
-                    console.log("Error changing user role: ", err);
-                    toast.error("Error changing user role: ", err);
-                });
+        if( reduxStoreUser._id ) {
+            mongoDBToggleUserAccessFunction( userId, role, reduxStoreUser.authToken )
+                .then( ( res ) => {
+                    toast.success( "User role changed" );
+                } )
+                .catch( ( err ) => {
+                    console.log( "Error changing user role: ", err );
+                    toast.error( "Error changing user role: ", err );
+                } );
+        } else {
+            logout();
+        }
+    };
+
+    const toggleUserStatus = ( userId, status ) => {
+        if( reduxStoreUser._id ) {
+            mongoDBToggleUserStatusFunction( userId, status, reduxStoreUser.authToken )
+                .then( ( res ) => {
+                    toast.success( "User status changed" );
+                } )
+                .catch( ( err ) => {
+                    console.log( " Error changing user status: ", err );
+                    toast.error( "Error changing user status: ", err );
+                } );
         } else {
             logout();
         }
@@ -101,14 +132,14 @@ export default function AdminDashboard ( { history } ) {
         <>
             <center><h1 style={ { fontSize: 20, fontWeight: 700 } }> Admin dashboard </h1></center>
             <main className='mb-12'>
-                <h1>UsersListPage.js</h1>
+                <h1> UsersListPage.js </h1>
 
                 <div className="container mx-auto">
                     <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
                         { loading ? (
-                            <h4 className="text-danger"> Loading... </h4>
+                            <center> <h3 style={ { fontSize: 20, fontWeight: 700 } }> Loading users info... </h3> </center>
                         ) : (
-                            <h4> Users List: </h4>
+                            <center> <h3 style={ { fontSize: 20, fontWeight: 700 } }> Users List </h3> </center>
                         ) }
                         <table className='mx-auto mb-8'>
                             <thead>
@@ -133,6 +164,8 @@ export default function AdminDashboard ( { history } ) {
                                     </th>
                                     <th className="px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase">
                                     Role
+                                    </th> <th className="px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase">
+                                    Status
                                     </th>
                                 </tr>
                             </thead>                         
@@ -177,7 +210,7 @@ export default function AdminDashboard ( { history } ) {
                                                 { rolesListState.length > 0 &&
                                                         rolesListState.map( ( r ) => (
                                                             <option key={ r } value={ r } selected={ r===userInfo.role }>
-                                                                { r === "a%tDHM*54fgS-rl55kfg" ? "Admin" : "User" }
+                                                                { r === "a%tDHM*54fgS-rl55kfg" ? "admin" : "user" }
                                                             </option>
                                                         ) )
 
@@ -188,6 +221,35 @@ export default function AdminDashboard ( { history } ) {
                                                 onClick={ () => toggleUserRole( userInfo.email, userInfo.role ) }
                                             >
                                                 Change role
+                                            </button>
+                                        </td>
+                                        <td className="border border-border px-3">
+                                            {/*//TODO Fix here the defaultValue error */}
+                                            <select
+                                                name="client"
+                                                className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
+                                                //className="form-control"
+                                                onChange={ ( e ) => {
+                                                    userInfo.status = e.target.value;
+                                                    console.log( "userInfo.status: ",  userInfo.status );
+                                                }
+                                                }
+                                            >
+                                                <option> Please select </option>
+                                                { statusList.length > 0 &&
+                                                        statusList.map( ( s ) => (
+                                                            <option key={ s } value={ s } selected={ s===userInfo.status }>
+                                                                { s === "active" ? "active" : "suspended" }
+                                                            </option>
+                                                        ) )
+
+                                                }
+                                            </select>
+                                            <button
+                                                className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"
+                                                onClick={ () => toggleUserStatus( userInfo.email, userInfo.status ) }
+                                            >
+                                                Change status
                                             </button>
                                         </td>
                                     </tr>

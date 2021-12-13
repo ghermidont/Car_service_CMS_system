@@ -1,19 +1,21 @@
 /**File contains endpoints for admin operation requests.*/
-const express = require("express");
+//TO DO: In production activate the auth and admin checks.
+const express = require( "express" );
 const router = express.Router();
 
 // Middlewares import
-const { fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware } = require("../middlewares/authMiddleware");
+const { fireBaseAuthCheckMiddleware, mongoDbAdminCheckMiddleware } = require( "../middlewares/authMiddleware" );
 
 // Controllers import
 const {
     mongoDBFireBaseDeleteUserController,
     mongoDBToggleUserAccessController,
+    mongoDBToggleUserStatusController,
     mongoDBUsersCountController,
     mongoDBGetAllUsersController,
     getSingleUserController,
     searchFiltersController
-} = require("../controllers/adminController");
+} = require( "../controllers/adminController" );
 
 //Routes
 router.delete(
@@ -35,6 +37,13 @@ router.put(
     //fireBaseAuthCheckMiddleware,
     //mongoDbAdminCheckMiddleware,
     mongoDBToggleUserAccessController
+);
+
+router.put(
+    "/admin/user/status",
+    //fireBaseAuthCheckMiddleware,
+    //mongoDbAdminCheckMiddleware,
+    mongoDBToggleUserStatusController
 );
 
 router.get(

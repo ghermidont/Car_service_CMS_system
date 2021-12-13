@@ -16,6 +16,17 @@ export const mongoDBToggleUserAccessFunction = async ( email, role, authToken ) 
         );
 };
 
+export const mongoDBToggleUserStatusFunction = async ( email, status, authToken ) => {
+    return await axios
+        .put(
+            `${process.env.REACT_APP_API}/admin/user/status`,
+            { status, email },
+            {
+                headers: { authToken },
+            }
+        );
+};
+
 // The function is used in AdminDashUserList.js file.
 export const mongoDBDeleteUserFunction = async ( authToken, email ) => {
     return await axios

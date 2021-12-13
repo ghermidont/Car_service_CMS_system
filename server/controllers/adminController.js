@@ -34,9 +34,9 @@ exports.mongoDBFireBaseDeleteUserController = async ( req, res ) => {
         return res.status( 400 ).send( "CMS user deletion failed" );
     }
 };
-//!Start here
+
 exports.mongoDBToggleUserAccessController = async ( req, res ) => {
-    console.log("mongoDBToggleUserAccessController", req.body);
+    console.log( "mongoDBToggleUserAccessController() req.body: ", req.body );
     try {
         const updated = await userModel
             .findOneAndUpdate(
@@ -48,7 +48,27 @@ exports.mongoDBToggleUserAccessController = async ( req, res ) => {
         console.log( "mongoDBToggleUserAccessController() updated: ", updated );
         res.json( updated );
     } catch ( err ) {
-        console.log( "USER UPDATE ERROR ----> ", err );
+        console.log( "USER ACCESS UPDATE ERROR --> ", err );
+        res.status( 400 ).json( {
+            err: err.message,
+        } );
+    }
+};
+
+exports.mongoDBToggleUserStatusController = async ( req, res ) => {
+    console.log( "mongoDBToggleUserStatusController() req.body: ", req.body );
+    try {
+        const updated = await userModel
+            .findOneAndUpdate(
+                { email: req.body.email },
+                { status: req.body.status },
+                { new: true }
+            )
+            .exec();
+        console.log( "mongoDBToggleUserStatusController() updated: ", updated );
+        res.json( updated );
+    } catch ( err ) {
+        console.log( "USER STATUS UPDATE ERROR --> ", err );
         res.status( 400 ).json( {
             err: err.message,
         } );
@@ -66,7 +86,7 @@ exports.mongoDBUsersCountController = async ( req, res ) => {
 
 exports.mongoDBGetAllUsersController = async ( req, res ) => {
     try {
-        console.log("mongoDBGetAllUsersController() req.body: ", req.body);
+        console.log( "mongoDBGetAllUsersController() req.body: ", req.body );
         // createdAt/updatedAt, desc/asc, 3
         const { sort, order, page } = req.body;
         //the page number the user clicks on
@@ -87,13 +107,14 @@ exports.mongoDBGetAllUsersController = async ( req, res ) => {
     }
 };
 
-exports.getSingleUserController = async (req, res) => {
+exports.getSingleUserController = async ( req, res ) => {
     const user = await userModel
         .findOne({ slug: req.params.slug })
         .exec();
-    res.json(user);
+    res.json( user );
 };
 
+//Not used. For just in case.
 handleSearchQuery = async ( req, res, query ) => {
     const searchResults = await userModel
         .find( { $text: { $search: query } } )
@@ -101,10 +122,11 @@ handleSearchQuery = async ( req, res, query ) => {
     res.json( searchResults );
 };
 
+//Not used. For just in case.
 exports.searchFiltersController = async ( req, res ) => {
     const { query } = req.body;
     if ( query ) {
-        console.log("query --->", query );
+        console.log( "searchFiltersController() query --->", query );
         await handleSearchQuery( req, res, query );
     }
 };

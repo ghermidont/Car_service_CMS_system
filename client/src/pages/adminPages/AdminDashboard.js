@@ -9,18 +9,22 @@ import {
     mongoDBToggleUserAccessFunction,
     mongoDBToggleUserStatusFunction
 } from "../../functions/callsToAdminRoutes";
-import { Pagination } from "antd";
+import { Pagination, Modal } from "antd";
 import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-//import UsersPrintTable from "./UserPrintTable";
+import { PDFViewer } from "@react-pdf/renderer";
+import UsersPrintTable from "./UsersPrintTable";
 
 export default function AdminDashboard ( { history } ) {
+
     const [ page, setPage ] = useState( 1 );
     const [ usersCount, setUsersCount ] = useState( 0 );
     const [ loading, setLoading ] = useState( false );
     const [ mongoDbUsersList, setMongoDbUsersList ] = useState( [] );
+    const [ isModalVisible, setIsModalVisible] = useState( false );
+
     const dispatch = useDispatch();
 
     const rolesListState = [ "a%tDHM*54fgS-rl55kfg", "b%dDHM*SDKS-Jl5kjs" ];
@@ -28,30 +32,26 @@ export default function AdminDashboard ( { history } ) {
 
     const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
 
-    //Use for pdf and printing.
-    const showDownloadLink = (order) => (
-        <PDFDownloadLink
-            document={<UsersPrintTable order={order} />}
-            fileName="invoice.pdf"
-            className="btn btn-sm btn-block btn-outline-primary"
-        >
-            Download PDF
-        </PDFDownloadLink>
-    );
+    const showModal = () => {
+        setIsModalVisible( true );
+    };
 
+    const handleOk = () => {
+        setIsModalVisible( false );
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible( false );
+    };
 
     const getUsersFromDb = async () => {
-        console.log( "getUsersFromDb() worked: " );
+        console.log( "getUsersFromDb() worked!" );
         setLoading( true );
         await mongoDBGetAllUsersFunction("createdAt", "desc", page, reduxStoreUser.token )
             .then( ( res ) => {
-                // console.log( "res.data[0] length: ", Object.keys( res.data[0] ).length !== 0 );
-                //if( Object.keys( res.data[0] ).length !== 0 ) {
-                setMongoDbUsersList( res.data );
                 setLoading( false );
+                setMongoDbUsersList( res.data );
                 console.log( "mongoDbUsersList: ", mongoDbUsersList );
-                // }
-                // if( Object.keys( res.data[0] ).length === 0 ){ getUsersFromDb(); }
             })
             .catch( ( err ) => {
                 setLoading( false );
@@ -61,6 +61,7 @@ export default function AdminDashboard ( { history } ) {
 
     useEffect( () => {
         getUsersFromDb().then();
+        setMongoDbUsersList( [] );
     }, [ page ] );
 
     useEffect( () => {
@@ -170,7 +171,7 @@ export default function AdminDashboard ( { history } ) {
                                 </tr>
                             </thead>                         
                             <tbody>
-                                { mongoDbUsersList!==[] ? mongoDbUsersList.map( userInfo => (
+                                { mongoDbUsersList.length !== 0 ? mongoDbUsersList.map( userInfo => (
                                  
                                     <tr key={ userInfo._id }>
                                         <td>
@@ -193,7 +194,7 @@ export default function AdminDashboard ( { history } ) {
                                         <td className="border border-border px-3">{ userInfo.company_name }</td>
                                         <td className="border border-border px-3">{ userInfo.email }</td>
                                         <td className="border border-border px-3">{ userInfo.fiscal_code }</td>
-                                        <td className="border border-border px-3">{ userInfo.createdAt }</td>
+                                        <td className="border border-border px-3">{ userInfo.createdAt.toLocaleString() }</td>
                                         <td className="border border-border px-3">
                                             {/*//TODO Fix here the defaultValue error */}
                                             <select
@@ -255,7 +256,7 @@ export default function AdminDashboard ( { history } ) {
                                     </tr>
 
                                 )):
-                                    (<div>No user info loaded .... </div>)
+                                    ( <div> No user info loaded .... </div>)
                                 }
                                     
                             </tbody>                           
@@ -275,16 +276,42 @@ export default function AdminDashboard ( { history } ) {
                     </div>
                     <div className='flex justify-end mx-8'>
                         <div className='flex'>
-                            <button
-                                className='flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70'>
-                                <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"> </path>
-                                </svg>
-                                    Stampa Lista
-                            </button>
+                            { mongoDbUsersList.length !== 0 &&
+                                <>
+                                    <button
+                                        className='flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                                        <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                        </svg>
+    
+                                        <PDFDownloadLink
+                                            document={ <UsersPrintTable mongoDbUsersList={ mongoDbUsersList }/> }
+                                            fileName={`usersTable-${ new Date().toLocaleString() }.pdf` }
+                                            className="btn btn-sm btn-block btn-outline-primary"
+                                        >
+                                            Stampa Lista
+                                        </PDFDownloadLink>
+                                    </button>
+    
+                                    <button
+                                        style={ { marginLeft: 10 } }
+                                        className='flex items-center text-xl text-white bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70'
+                                        onClick={ showModal }
+                                    >
+                                        Preview table for printing
+                                    </button>
+                                </>
+                            }
                         </div>
                     </div>
                 </div>
+
+                <Modal title="Basic Modal" visible={ isModalVisible } onOk={ handleOk } onCancel={ handleCancel }>
+                    <PDFViewer>
+                        <UsersPrintTable mongoDbUsersList={ mongoDbUsersList } />
+                    </PDFViewer>
+                </Modal>
+
             </main>
         </>
     );

@@ -1,75 +1,83 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
     mongoDBDeleteClientFunction,
     mongoDBGetAllClientsFunction,
     mongoDBGetClientsCountFunction
 } from "../../functions/callsToClientRoutes";
 import { mongoDBGetCarsByFilterFunction } from "../../functions/callsToCarRoutes";
-import {toast} from "react-toastify";
-import {Pagination} from "antd";
-import {signOut} from "firebase/auth";
-import {auth} from "../../firebase";
+import { toast } from "react-toastify";
+import { Pagination } from "antd";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import ClientsPrintList from "./ClientsPrintList";
 
 export default function ClientsListPage( { history } ) {
-    const [ dbClients, setDbClients ] = useState(  [ {}, {} ] );
+
+    const [ dbClients, setDbClients ] = useState(  [] );
     const [ page, setPage ] = useState( 1 );
     const [ clientsCount, setClientsCount ] = useState( 0 );
     const [ loading, setLoading ] = useState( false );
     const [ carsListState, setCarsListState ] = useState([ {}, {} ] );
+
     const { reduxStoreUser } = useSelector(( state ) => ( { ...state } ) );
     const dispatch = useDispatch();
 
     useEffect(() => {
         loadAllClients();
+        setDbClients([]);
     }, [ page ] );
 
     useEffect(() => {
         mongoDBGetClientsCountFunction( reduxStoreUser._id )
-            .then(( res) => {
-                setClientsCount(res.data);
-                console.log("Clients count: ", res.data);
+            .then( ( res ) => {
+                setClientsCount( res.data );
+                console.log( "Clients count: ", res.data );
             }
             )
-            .catch(( error ) => {
+            .catch( ( error ) => {
                 toast.error("Error loading clients count: ", error );
                 console.log( "Error loading clients count: ", error );
             });
         console.log( clientsCount );
-    }, []);
+    }, [] );
 
     const loadAllClients = () => {
         console.log( "loadAllClients() worked." );
         if ( reduxStoreUser._id === undefined ){
             logout();
-            return toast.error("reduxStoreUser._id is undefined please re-login.");
+            return toast.error( "reduxStoreUser._id is undefined please re-login.");
         } else {
             setLoading( true );
             // sort, order, limit
-            mongoDBGetAllClientsFunction("createdAt", "desc", page, reduxStoreUser._id)
-                .then((res) => {
-                    setDbClients(res.data);
-                    console.log("mongoDBGetAllClientsFunction res.data: ", res.data );
-                    setLoading(false);
-                }).catch((error) => {
-                    toast.error("Error getting all clients: ", error);
-                    console.log("Error getting all clients", error);
-                });
+            mongoDBGetAllClientsFunction( "createdAt", "desc", page, reduxStoreUser._id)
+                .then( ( res ) => {
+                    setDbClients( res.data );
+                    console.log( "mongoDBGetAllClientsFunction res.data: ", res.data );
+                    setLoading( false );
+                } )
+                .catch( ( error ) => {
+                    toast.error( "Error getting all clients: ", error);
+                    console.log( "Error getting all clients", error );
+                } );
         }
     };
 
     const logout = () => {
-        signOut( auth ).then( () => {
-            toast.success("User signed out." );
-        }).catch(( error ) => {
-            toast.error("Error signing out.", error );
-        });
+        signOut( auth )
+            .then( () => {
+                toast.success( "User signed out." );
+            } )
+            .catch( ( error ) => {
+                toast.error( "Error signing out.", error );
+            } );
         // old version --> firebase.auth().signOut();
-        dispatch({
+        dispatch( {
             type: "LOGOUT",
             payload: null,
-        });
+        } );
         history.push( "/" );
     };
 
@@ -130,7 +138,7 @@ export default function ClientsListPage( { history } ) {
                         </thead>
                         <tbody>
                             {/*Loop start*/}
-                            { dbClients.map( client => (
+                            { dbClients.length !== 0 && dbClients.map( client => (
                                 <tr key={ client.slug }>
                                     <td>
                                         <Link to={ `/client/${ client.slug }` }>
@@ -158,12 +166,11 @@ export default function ClientsListPage( { history } ) {
                                             { carsListState.map( car =>
                                                 (
                                                     <li key={ car._id } > { car.licensePlate } </li>
-                                                )
-                                            )
+                                                ) )
                                             }
                                         </ol>
                                     </td>
-                                    <td className='border border-border px-3'>{ client.user }</td>
+                                    <td className='border border-border px-3'> { client.user } </td>
 
                                 </tr>
                             ))}
@@ -190,7 +197,6 @@ export default function ClientsListPage( { history } ) {
                 </div>
             </div>
 
-            {/* TODO Include the pdf and print logic here.*/}
             <div className="flex justify-end mx-8">
                 {/*Add vehicle button*/}
                 <button className="flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70">
@@ -202,24 +208,27 @@ export default function ClientsListPage( { history } ) {
                     </Link>
                 </button>
                 {/*Print list button*/}
-                <button className="flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70">
-                    <svg
-                        className="w-6 h-6 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
-                        </path>
-                    </svg>
-                        Stampa Lista
-                </button>
+                { dbClients.length !== 0 &&
+                    <>
+                        <button
+                            className='flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                            <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"> </path>
+                            </svg>
+
+                            <PDFDownloadLink
+                                document={ <ClientsPrintList dbClients={ dbClients } carsListState={carsListState}/> }
+                                fileName={`clientsTable-${ new Date().toLocaleString() }.pdf` }
+                                className="btn btn-sm btn-block btn-outline-primary"
+                            >
+                                Stampa Lista
+                            </PDFDownloadLink>
+                        </button>
+                    </>
+                }
             </div>
-        
+
+
         </main>   
     );
 }

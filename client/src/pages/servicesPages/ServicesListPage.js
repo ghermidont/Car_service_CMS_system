@@ -9,52 +9,13 @@ import { toast } from "react-toastify";
 import { Pagination } from "antd";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
-
-const initialState = [
-    {
-        date: "date",
-        license_plate: "license_plate",
-        brand: "brand",
-        model: "model",
-        state: "state",
-        operator: "operator",
-        anomalies: "anomalies",
-        checks: "checks",
-        performed_repairs: "performed_repairs",
-        notes: "notes",
-        damage: "damage"
-    },
-    {
-        date: "date",
-        license_plate: "license_plate",
-        brand: "brand",
-        model: "model",
-        state: "state",
-        operator: "operator",
-        anomalies: "anomalies",
-        checks: "checks",
-        performed_repairs: "performed_repairs",
-        notes: "notes",
-        damage: "damage"
-    },
-    {
-        date: "date",
-        license_plate: "license_plate",
-        brand: "brand",
-        model: "model",
-        state: "state",
-        operator: "operator",
-        anomalies: "anomalies",
-        checks: "checks",
-        performed_repairs: "performed_repairs",
-        notes: "notes",
-        damage: "damage"
-    },
-];
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import ServicesPrintList from "./ServicesPrintList";
+import SingleServicePrintList from "./SingleServicePrintList";
 
 export default function ServicesListPage( { history } ) {
 
-    const [ dbServices, setDbServices ] = useState( initialState );
+    const [ dbServices, setDbServices ] = useState( [] );
     const [ page, setPage ] = useState( 1 );
     const [ servicesCount, setServicesCount ] = useState( 0 );
     const [ loading, setLoading ] = useState( false );
@@ -62,12 +23,13 @@ export default function ServicesListPage( { history } ) {
     const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
     const dispatch = useDispatch();
 
-    useEffect(() => {
+    useEffect( () => {
         loadAllServices();
-    }, [ page ]);
+        setDbServices( [] );
+    }, [ page ] );
 
     useEffect(() => {
-        mongoDBGetServicesCountFunction( reduxStoreUser.token )
+        mongoDBGetServicesCountFunction( reduxStoreUser._id )
             .then( ( res ) => setServicesCount( res.data ) )
             .catch( ( error ) => {
                 toast.error( "Error loading services count", error );
@@ -76,16 +38,17 @@ export default function ServicesListPage( { history } ) {
     }, [] );
 
     const logout = () => {
-        signOut( auth ).then( () => {
-            toast.success("User signed out." );
-        }).catch(( error ) => {
-            toast.error("Error signing out.", error );
-        });
+        signOut( auth )
+            .then( () => {
+                toast.success( "User signed out."  );
+            } ).catch( ( error ) => {
+                toast.error( "Error signing out.", error );
+            } );
         // old version --> firebase.auth().signOut();
-        dispatch({
+        dispatch( {
             type: "LOGOUT",
             payload: null,
-        });
+        } );
         history.push( "/" );
     };
 
@@ -94,15 +57,15 @@ export default function ServicesListPage( { history } ) {
         setLoading( true );
         if ( reduxStoreUser._id === undefined ){
             logout();
-            return toast.error("reduxStoreUser._id is undefined please re-login.");
+            return toast.error("reduxStoreUser._id is undefined please re-login." );
 
         } else {
             // sort, order, limit
-            mongoDBGetAllServicesFunction("createdAt", "desc", page, reduxStoreUser._id)
-                .then((res) => {
-                    setDbServices(res.data);
-                    setLoading(false);
-                });
+            mongoDBGetAllServicesFunction( "createdAt", "desc", page, reduxStoreUser._id )
+                .then( ( res ) => {
+                    setDbServices( res.data );
+                    setLoading( false );
+                } );
         }
     };
 
@@ -113,7 +76,7 @@ export default function ServicesListPage( { history } ) {
             { loading ? (
                 <h1>Loading... </h1>
             ) : (
-                <h1>Services archive</h1>
+                <h1>Services list</h1>
             ) }
             <div className="container mx-auto">
                 <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
@@ -145,7 +108,7 @@ export default function ServicesListPage( { history } ) {
                         </thead>
                         <tbody>
                             {/*Loop start*/}
-                            { dbServices.map( service => (
+                            { dbServices.length !== 0 && dbServices.map( service => (
                                 <tr key={ service.slug }>
                                     <td>
                                         <Link to={`/service/${service.slug}`}>
@@ -155,9 +118,14 @@ export default function ServicesListPage( { history } ) {
                                         </Link>
                                     </td>
                                     <td>
-                                        {/*TODO Implement here the pgf print logic.*/}
                                         <button className='w-75 h-8 m-1 bg-blueDark flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'>
-                                            Print
+                                            <PDFDownloadLink
+                                                document={ <SingleServicePrintList service={ service }/> }
+                                                fileName={`servicesTable-${ new Date().toLocaleString() }.pdf` }
+                                                className="btn btn-sm btn-block btn-outline-primary"
+                                            >
+                                                Print
+                                            </PDFDownloadLink>
                                         </button>
                                     </td>
                                     <td className='pr-3'>
@@ -184,7 +152,7 @@ export default function ServicesListPage( { history } ) {
                                 defaultCurrent={ 1 }
                                 current={ page }
                                 total={ servicesCount }
-                                onChange={(value) => setPage( value ) }
+                                onChange={ ( value ) => setPage( value ) }
                             />
                         </nav>
                     </div>
@@ -199,16 +167,27 @@ export default function ServicesListPage( { history } ) {
                                 Aggiungi Scheda
                             </Link>
                         </button>
-                        {/*TODO Implement here the pgf print logic for the whole list.*/}
-                        <button className='flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70'>
-                            <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"> </path>
-                            </svg>
-                            Stampa Lista
-                        </button>
+                        { dbServices.length !== 0 &&
+                            <>
+                                <button
+                                    className='flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                                    <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"> </path>
+                                    </svg>
+
+                                    <PDFDownloadLink
+                                        document={ <ServicesPrintList dbServices={ dbServices }/> }
+                                        fileName={`servicesTable-${ new Date().toLocaleString() }.pdf` }
+                                        className="btn btn-sm btn-block btn-outline-primary"
+                                    >
+                                        Stampa Lista
+                                    </PDFDownloadLink>
+                                </button>
+                            </>
+                        }
                     </div>
                 </div>
             </div>
-        </main>     
+        </main>
     );
 }

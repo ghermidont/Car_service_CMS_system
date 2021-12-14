@@ -8,11 +8,15 @@ import {
 } from "../../functions/callsToCarRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { Pagination } from "antd";
+import { Pagination} from "antd";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+
+import CarsPrintList from "./CarsPrinList";
 
 export default function CarArchivePage( { history } ) {
+
     const { reduxStoreUser } = useSelector(( state ) => ( { ...state } ) );
     const dispatch = useDispatch();
 
@@ -44,7 +48,7 @@ export default function CarArchivePage( { history } ) {
         dispatch({
             type: "LOGOUT",
             payload: null,
-        });
+        } );
         history.push( "/" );
     };
 
@@ -54,28 +58,28 @@ export default function CarArchivePage( { history } ) {
         // sort, order, limit
         if ( reduxStoreUser._id === undefined ){
             logout();
-            return toast.error("reduxStoreUser._id is undefined please re-login.");
+            return toast.error( "reduxStoreUser._id is undefined please re-login.");
 
         } else {
             mongoDBGetAllCarsFunction("createdAt", "desc", page, reduxStoreUser._id)
-                .then((res) => {
-                    setDbCars(res.data);
+                .then( ( res ) => {
+                    setDbCars( res.data );
                     setLoading(false);
-                    console.log("Cars loaded: ", res.data);
-                }).catch((error) => {
+                    console.log( "Cars loaded: ", res.data );
+                } ).catch( ( error ) => {
                     toast.error("Error getting all cars: ", error);
                     console.log("Error getting all cars: ", error);
-                });
+                } );
         }
     };
 
     const deleteCarFunction = ( slug ) => {
         setLoading(true);
-        console.log("deleteCarFunction");
+        console.log( "deleteCarFunction() worked. " );
         mongoDBDeleteCarFunction( reduxStoreUser.token, slug )
             .then( ()=> {
                 toast.success( "Car deleted successfully!" );
-                setLoading(false);
+                setLoading( false );
                 //window.location.reload();
             } )
             .catch( ()=>{
@@ -85,6 +89,7 @@ export default function CarArchivePage( { history } ) {
 
     useEffect(() => {
         loadAllCars();
+        setDbCars([]);
     }, [ page ] );
 
     return (
@@ -137,7 +142,7 @@ export default function CarArchivePage( { history } ) {
 
                         <tbody>
 
-                            { dbCars.map( car => (
+                            { dbCars.length !== 0 && dbCars.map( car => (
                                 <tr key={ car.slug }>
                                     <td>
                                         <Link to={ `/car/${ car.slug }` }>
@@ -176,7 +181,7 @@ export default function CarArchivePage( { history } ) {
                             ))}
                         </tbody>
                     </table>
-                    {dbCars.length === 0 && <center><h1> No cars info loaded... </h1></center>}
+                    { dbCars.length === 0 && <center><h1> No cars info loaded... </h1></center>}
                     {/* Pagination */}
                     <div className="row">
                         <nav className="col-md-4 offset-md-4 text-center pt-5 p-3">
@@ -203,12 +208,24 @@ export default function CarArchivePage( { history } ) {
                             </Link>
                         </button>
                         {/*Print list button*/}
-                        <button className='flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70'>
-                            <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"> </path>
-                            </svg>
-                            Stampa Lista
-                        </button>
+                        { dbCars.length !== 0 &&
+                            <>
+                                <button
+                                    className='flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                                    <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                    </svg>
+
+                                    <PDFDownloadLink
+                                        document={ <CarsPrintList dbCars={ dbCars }/> }
+                                        fileName={`carsTable-${ new Date().toLocaleString() }.pdf` }
+                                        className="btn btn-sm btn-block btn-outline-primary"
+                                    >
+                                        Stampa Lista
+                                    </PDFDownloadLink>
+                                </button>
+                            </>
+                        }
                     </div>
                     {/*Search bar START*/}
                     <form className='w-300 flex items-center relative'>

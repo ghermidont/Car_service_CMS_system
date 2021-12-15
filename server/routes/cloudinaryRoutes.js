@@ -7,10 +7,23 @@ const router = express.Router();
 // middlewares
 const { fireBaseAuthCheckMiddleware } = require("../middlewares/authMiddleware");
 
-// controllers
-const { cloudinaryImageUploadController, cloudinaryImageRemoveController } = require("../controllers/cloudinaryController");
+// controllers imports
+const {
+    cloudinaryImageUploadController,
+    cloudinaryImageRemoveController
+} = require("../controllers/cloudinaryController");
 
-router.post("/image/upload", fireBaseAuthCheckMiddleware, cloudinaryImageUploadController);
-router.delete("/image/remove", fireBaseAuthCheckMiddleware, cloudinaryImageRemoveController);
+// Routes
+router.post(
+    "/image/upload",
+    fireBaseAuthCheckMiddleware,
+    cloudinaryImageUploadController
+);
+
+router.post(
+    "/image/remove",
+    fireBaseAuthCheckMiddleware,
+    cloudinaryImageRemoveController
+);
 
 module.exports = router;

@@ -9,12 +9,11 @@ import {
     mongoDBToggleUserAccessFunction,
     mongoDBToggleUserStatusFunction
 } from "../../functions/callsToAdminRoutes";
-import { Pagination, Modal } from "antd";
+import { Pagination } from "antd";
 import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { PDFViewer } from "@react-pdf/renderer";
 import UsersPrintTable from "./UsersPrintTable";
 
 export default function AdminDashboard ( { history } ) {
@@ -22,8 +21,7 @@ export default function AdminDashboard ( { history } ) {
     const [ page, setPage ] = useState( 1 );
     const [ usersCount, setUsersCount ] = useState( 0 );
     const [ loading, setLoading ] = useState( false );
-    const [ mongoDbUsersList, setMongoDbUsersList ] = useState( [] );
-    const [ isModalVisible, setIsModalVisible] = useState( false );
+    const [ mongoDbUsersList, setMongoDbUsersList ] = useState([] );
 
     const dispatch = useDispatch();
 
@@ -31,18 +29,6 @@ export default function AdminDashboard ( { history } ) {
     const statusList = [ "active", "suspended" ];
 
     const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
-
-    const showModal = () => {
-        setIsModalVisible( true );
-    };
-
-    const handleOk = () => {
-        setIsModalVisible( false );
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible( false );
-    };
 
     const getUsersFromDb = async () => {
         console.log( "getUsersFromDb() worked!" );
@@ -97,7 +83,7 @@ export default function AdminDashboard ( { history } ) {
         if( reduxStoreUser._id ) {
             mongoDBToggleUserAccessFunction( userId, role, reduxStoreUser.authToken )
                 .then( ( res ) => {
-                    toast.success( "User role changed" );
+                    toast.success( "User role changed", res );
                 } )
                 .catch( ( err ) => {
                     console.log( "Error changing user role: ", err );
@@ -112,7 +98,7 @@ export default function AdminDashboard ( { history } ) {
         if( reduxStoreUser._id ) {
             mongoDBToggleUserStatusFunction( userId, status, reduxStoreUser.authToken )
                 .then( ( res ) => {
-                    toast.success( "User status changed" );
+                    toast.success( "User status changed", res );
                 } )
                 .catch( ( err ) => {
                     console.log( " Error changing user status: ", err );
@@ -136,7 +122,7 @@ export default function AdminDashboard ( { history } ) {
                 <h1> UsersListPage.js </h1>
 
                 <div className="container mx-auto">
-                    <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
+                    <div className="py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10">
                         { loading ? (
                             <center> <h3 style={ { fontSize: 20, fontWeight: 700 } }> Loading users info... </h3> </center>
                         ) : (
@@ -148,31 +134,30 @@ export default function AdminDashboard ( { history } ) {
                                     <th> </th>
                                     <th> </th>
 
-                                    <th className='px-1 py-1.5 w-75 bg-blue border border-border text-2xl text-white font-normal uppercase'>
-                                    ID
-                                    </th>
-                                    <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
-                                    Ragione sociale
-                                    </th>
-                                    <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
-                                    Email
-                                    </th>
-                                    <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
-                                    P. Iva
-                                    </th>
-                                    <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
-                                    Created At
+                                    <th className="px-1 py-1.5 w-75 bg-blue border border-border text-2xl text-white font-normal uppercase">
+                                        ID
                                     </th>
                                     <th className="px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase">
-                                    Role
+                                        Ragione sociale
+                                    </th>
+                                    <th className="px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase">
+                                        Email
+                                    </th>
+                                    <th className="px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase">
+                                        P. Iva
+                                    </th>
+                                    <th className="px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase">
+                                        Created At
+                                    </th>
+                                    <th className="px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase">
+                                        Role
                                     </th> <th className="px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase">
-                                    Status
+                                        Status
                                     </th>
                                 </tr>
                             </thead>                         
                             <tbody>
                                 { mongoDbUsersList.length !== 0 ? mongoDbUsersList.map( userInfo => (
-                                 
                                     <tr key={ userInfo._id }>
                                         <td>
                                             <button className="w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase">
@@ -190,11 +175,11 @@ export default function AdminDashboard ( { history } ) {
                                             </button>
                                         </td>
 
-                                        <td className="border border-border px-3">{ userInfo._id }</td>
-                                        <td className="border border-border px-3">{ userInfo.company_name }</td>
-                                        <td className="border border-border px-3">{ userInfo.email }</td>
-                                        <td className="border border-border px-3">{ userInfo.fiscal_code }</td>
-                                        <td className="border border-border px-3">{ userInfo.createdAt.toLocaleString() }</td>
+                                        <td className="border border-border px-3"> { userInfo._id } </td>
+                                        <td className="border border-border px-3"> { userInfo.company_name } </td>
+                                        <td className="border border-border px-3"> { userInfo.email } </td>
+                                        <td className="border border-border px-3"> { userInfo.fiscal_code } </td>
+                                        <td className="border border-border px-3"> { userInfo.createdAt.toLocaleString() } </td>
                                         <td className="border border-border px-3">
                                             {/*//TODO Fix here the defaultValue error */}
                                             <select
@@ -221,7 +206,7 @@ export default function AdminDashboard ( { history } ) {
                                                 className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"
                                                 onClick={ () => toggleUserRole( userInfo.email, userInfo.role ) }
                                             >
-                                                Change role
+                                                Change
                                             </button>
                                         </td>
                                         <td className="border border-border px-3">
@@ -250,7 +235,7 @@ export default function AdminDashboard ( { history } ) {
                                                 className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"
                                                 onClick={ () => toggleUserStatus( userInfo.email, userInfo.status ) }
                                             >
-                                                Change status
+                                                Change
                                             </button>
                                         </td>
                                     </tr>
@@ -274,12 +259,12 @@ export default function AdminDashboard ( { history } ) {
                         </div>
 
                     </div>
-                    <div className='flex justify-end mx-8'>
-                        <div className='flex'>
+                    <div className="flex justify-end mx-8">
+                        <div className="flex">
                             { mongoDbUsersList.length !== 0 &&
                                 <>
                                     <button
-                                        className='flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                                        className="flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70">
                                         <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
                                         </svg>
@@ -292,25 +277,11 @@ export default function AdminDashboard ( { history } ) {
                                             Stampa Lista
                                         </PDFDownloadLink>
                                     </button>
-    
-                                    <button
-                                        style={ { marginLeft: 10 } }
-                                        className='flex items-center text-xl text-white bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70'
-                                        onClick={ showModal }
-                                    >
-                                        Preview table for printing
-                                    </button>
                                 </>
                             }
                         </div>
                     </div>
                 </div>
-
-                <Modal title="Basic Modal" visible={ isModalVisible } onOk={ handleOk } onCancel={ handleCancel }>
-                    <PDFViewer>
-                        <UsersPrintTable mongoDbUsersList={ mongoDbUsersList } />
-                    </PDFViewer>
-                </Modal>
 
             </main>
         </>

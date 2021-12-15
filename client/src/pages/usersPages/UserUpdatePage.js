@@ -8,29 +8,30 @@ import Resizer from "react-image-file-resizer";
 import axios from "axios";
 import { mongoDBGetCurrentUserFunction } from "../../functions/callsToAuthRoutes";
 
-const initialState = {
-    company_name: "",
-    current_residence: "",
-    current_city: "",
-    current_province: "",
-    official_residence: "",
-    official_city: "",
-    official_province: "",
-    fiscal_code: "",
-    images: [
-        {
-            public_id: "",
-            url: "",
-        },       
-    ],
-};
-
-//TODO implement images upload.
 export default function UpdateUserPage() {
-    const [ currentUserInfoState, setCurrentUserInfoState ] = useState( initialState );
-    const [ loading, setLoading ] = useState( false );
+
     const { reduxStoreUser } = useSelector(( state ) => ( { ...state } ) );
     const dispatch = useDispatch();
+
+    const initialState = {
+        _id: "",
+        status: "",
+        company_name: "",
+        current_residence: "",
+        current_city: "",
+        current_province: "",
+        official_residence: "",
+        official_city: "",
+        official_province: "",
+        fiscal_code: "",
+        images: [],
+        email: "",
+        role: "",
+        token: "",
+    };
+
+    const [ currentUserInfoState, setCurrentUserInfoState ] = useState( initialState );
+    const [ loading, setLoading ] = useState( false );
 
     const {
         company_name,
@@ -81,7 +82,8 @@ export default function UpdateUserPage() {
                             dispatch({
                                 type: "LOGGED_IN_USER",
                                 payload: {
-                                    role: res.data.role,
+                                    _id: res.data._id,
+                                    status: res.data.status,
                                     company_name: res.data.company_name,
                                     current_residence: res.data.current_residence,
                                     current_city: res.data.current_city,
@@ -92,6 +94,7 @@ export default function UpdateUserPage() {
                                     fiscal_code: res.data.fiscal_code,
                                     images: res.data.images,
                                     email: res.data.email,
+                                    role: res.data.role,
                                     token: reduxStoreUser.token,
                                 },
                             } );
@@ -99,12 +102,12 @@ export default function UpdateUserPage() {
                             toast.error( "Could not find user info in the mongoDB database." );
                         };
                     } ).catch( ( err ) => {
-                        console.log( "Error while getting the user info: ", err );
+                        console.log( "Error getting the user info: ", err.status );
                         toast.error( `Error while getting the user info: ${err}` );
                     });
             })
             .catch( ( error ) => {
-                toast.error( error.response.data.err );
+                toast.error( "mongoDBUpdateCurrentUserFunction() error: ", error.response.data.err );
             });
     };
 
@@ -113,10 +116,10 @@ export default function UpdateUserPage() {
         setCurrentUserInfoState({ ...currentUserInfoState, [ event.target.name ]: event.target.value } );
     };
 
-    const fileUploadAndResize = ( e ) => {
+    const fileUploadAndResize = ( event ) => {
         /* In case we upload single file we would take the first element in the array with e.target.files[0].
         In case o multiple upload we take all the files with e.target.files.*/
-        const files = e.target.files;
+        const files = event.target.files;
         const allUploadedFiles = images;
 
         if ( files ) {
@@ -136,7 +139,7 @@ export default function UpdateUserPage() {
                                 `${process.env.REACT_APP_API}/image/upload`,
                                 { image: uri },
                                 { 
-                                    headers: { authToken: currentUserInfoState ? currentUserInfoState.token : "",},
+                                    headers: { authToken: reduxStoreUser.token },
                                 }
                             )
                             .then( ( res) => {
@@ -156,28 +159,34 @@ export default function UpdateUserPage() {
         }
     };
 
-    const handleImageRemove = ( public_id ) => {
+    const handleImageRemove = async ( public_id ) => {
+        console.log( "handleImageRemove() worked" );
         setLoading( true );
-        axios
+        await axios
             .post(
                 `${process.env.REACT_APP_API}/image/remove`,
                 { public_id },
                 {
                     headers: {
-                        authToken: currentUserInfoState ? currentUserInfoState.token : "",
+                        authToken: reduxStoreUser.token,
                     },
                 }
             )
-            .then( () => {
+            .then( (res) => {
                 setLoading( false );
-                const { images } = currentUserInfoState;
-                let filteredImages = images.filter( ( item) => {
-                    return item.public_id !== public_id;
-                });
-                setCurrentUserInfoState({ ...currentUserInfoState, images: filteredImages } );
+                toast.success( "Image removed successfully. res: ", res );
+                // const { images } = currentUserInfoState;
+                // const filteredImages = images.filter( ( item) => {
+                //     return item.public_id !== public_id;
+                // });
+                setCurrentUserInfoState({ ...currentUserInfoState, images: Array(0) } );
+                console.log( "handleImageRemove() currentUserInfoState: ", currentUserInfoState );
+                // handleSubmit();
+                // console.log(currentUserInfoState);
             })
             .catch( ( err ) => {
                 console.log( "handleImageRemove", err );
+                toast.error( "handleImageRemove", err );
                 setLoading( false );
             } );
     };
@@ -282,41 +291,48 @@ export default function UpdateUserPage() {
                             </label>
                             <div className="flex justify-between">
                                 <div>
-                                    <div className="uppercase mb-2 mt-6"> Aggiungi Foto </div>
+                                    <div className="uppercase mb-2 mt-6"> Foto </div>
                                     <div className="flex items-end">
                                         <div className='w-250 h-[250px] rounded bg-border mr-6'> </div>
-                                        <label
-                                            className='font-normal bg-bgBtnGray color uppercase cursor-pointer px-3 py-2 rounded flex justify-center inline w-100 hover:opacity-70 focus:opacity-70'>
-                                            <input
-                                                className="hidden"
-                                                type="file"
-                                                multiple
-                                                hidden
-                                                accept="images/*"
-                                                onChange={ fileUploadAndResize }
-                                            />
-                                            <div className='pr-2'>
-                                                {images &&
-                                                images.map( ( image ) => (
-                                                    <Badge
-                                                        count="X"
-                                                        key={ image.public_id }
-                                                        onClick={ () => handleImageRemove( image.public_id ) }
-                                                        style={ { cursor: "pointer" } }
-                                                    >
-                                                        <Avatar
-                                                            src={ image.url }
-                                                            size={ 100 }
-                                                            shape="square"
-                                                            className="ml-3"
-                                                        />
-                                                    </Badge>
-                                                ) ) }
-                                            </div>
-                                            ADD
-                                        </label>
+                                        { currentUserInfoState.images.length === 0 &&
+                                            <label
+                                                className='font-normal bg-bgBtnGray color uppercase cursor-pointer px-3 py-2 rounded flex justify-center inline w-100 hover:opacity-70 focus:opacity-70'>
+                                                <input
+                                                    className="hidden"
+                                                    type="file"
+                                                    multiple
+                                                    hidden
+                                                    accept="images/*"
+                                                    onChange={fileUploadAndResize}
+                                                />
+                                                Add image
+                                            </label>
+                                        }
+
+                                        <div className='pr-2'>
+                                            {/*{ currentUserInfoState.images!==undefined &&*/}
+                                            {/*images.map( ( image ) => (*/}
+                                            { currentUserInfoState.images.length!==0 &&
+                                            <Badge
+                                                count="REMOVE"
+                                                key={ currentUserInfoState.images[0].public_id }
+                                                onClick={ () => handleImageRemove( currentUserInfoState.images[0].public_id ) }
+                                                style={ { cursor: "pointer", paddingRight: "10" } }
+                                            >
+                                                <Avatar
+                                                    src={ currentUserInfoState.images[0].url }
+                                                    size={ 100 }
+                                                    shape="square"
+                                                    className="ml-3"
+                                                />
+                                            </Badge>
+                                            }
+
+                                            {/*) ) }*/}
+                                        </div>
                                     </div>
                                 </div>
+
                                 <button
                                     className='h-10 flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 mt-auto rounded transition hover:opacity-70 focus:opacity-70'
                                     type="submit"

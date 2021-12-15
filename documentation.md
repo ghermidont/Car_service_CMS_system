@@ -68,3 +68,9 @@ Express req info:
 
 Express Security to implement:
 <https://expressjs.com/en/advanced/best-practice-security.html>
+
+Reminder:
+<https://www.npmjs.com/package/luxon>
+<https://github.com/fabiau/jc-calendar/blob/master/src/components/App.js>
+use this one:
+<https://www.npmjs.com/package/node-schedule>

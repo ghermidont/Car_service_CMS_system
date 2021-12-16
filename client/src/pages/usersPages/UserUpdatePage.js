@@ -298,7 +298,7 @@ export default function UpdateUserPage() {
                                             <label
                                                 className='font-normal bg-bgBtnGray color uppercase cursor-pointer px-3 py-2 rounded flex justify-center inline w-100 hover:opacity-70 focus:opacity-70'>
                                                 <input
-                                                    className="hidden"
+                                                    className="flex items-center text-xl text-white bg-red uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70"
                                                     type="file"
                                                     multiple
                                                     hidden

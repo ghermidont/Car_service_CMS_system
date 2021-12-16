@@ -97,7 +97,7 @@ export default function UsersPrintList( { dbClients, carsListState } ) {
                         <DataTableCell getContent={ (c) => c.surname } />
                         <DataTableCell getContent={ (c) => c.mobile } />
                         <DataTableCell getContent={ () =>
-                            carsListState.map( ( car ) => car.licensePlate )
+                            carsListState&&carsListState.map( ( car ) => car.licensePlate )
                         } />
                     </TableBody>
                 </Table>

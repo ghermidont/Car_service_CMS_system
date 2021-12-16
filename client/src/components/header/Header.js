@@ -119,14 +119,14 @@ export default function Header() {
 
                                 <div>
                                     <button
-                                        className='flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'
+                                        className='flex items-center text-xl text-white bg-red uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'
                                         onClick={logout}
                                     >
                                         <LogoutOutlined/> Log Out
                                     </button>
-                                    {admin &&
-                                        <Link to="/admin_dashboard" style={{marginTop: "10"}}  >
-                                            <button className='flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                                    { admin &&
+                                        <Link to="/admin_dashboard" style={{marginTop: "10px"}}  >
+                                            <button className='flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
                                                 Admin Panel
                                             </button>
                                         </Link>

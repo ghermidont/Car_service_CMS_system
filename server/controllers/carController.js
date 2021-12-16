@@ -145,12 +145,17 @@ exports.mongoDBGetCarsCountController = async ( req, res ) => {
 
 // SEARCH / FILTER
 exports.mongoDBSearchCarByFilterController = async ( req, res ) => {
-    const { query } = req.body;
-    if ( query ) {
-        console.log( "query --->", query );
+    if ( req.body.query ) {
+        console.log( "mongoDBSearchCarByFilterController() req.body.query: ", req.body.query );
+        console.log( "mongoDBSearchCarByFilterController() req.body.userId: ", req.body.userId );
         const car = await carModel
-            .find( { $text: { $search: query } } )
+            .find( {
+                user: req.body.userId
+            } )
             .exec();
+        console.log( "mongoDBSearchCarByFilterController() car: ", car );
         res.json( car );
+        // $text: { $search: req.body.query },
+        // user: req.body.userId
     }
 };

@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { mongoDBCreateCarFunction } from "../../functions/callsToCarRoutes";
 import { mongoDBGetCurrentUserFunction } from "../../functions/callsToAuthRoutes";
 import { mongoDBGetAllClientsFunctionNoPag } from "../../functions/callsToClientRoutes";
+//import schedule from "node-schedule";
+
 
 // TODO implement the cascader.
 /* Use the Ant cascader for cars select. https://ant.design/components/cascader/ */
@@ -37,6 +39,10 @@ export default function CarCreatePage( { history } ){
         year,
     } = carParamsState;
 
+    // const scheduledAlert = schedule.scheduleJob("59 * * * *", function(){
+    //     toast.success( "ALERT!");
+    // });
+
     const loadAllClients = async () => {
         // sort, order
         await mongoDBGetAllClientsFunctionNoPag( "createdAt", "desc", reduxStoreUser._id )
@@ -66,8 +72,8 @@ export default function CarCreatePage( { history } ){
     };
 
     useEffect( () => {
-        getCurrentUser().then(()=>console.log("getCurrentUser() worked in useEffect()."));
-        loadAllClients().then(()=>console.log("loadAllClients() worked in useEffect()."));
+        getCurrentUser().then( ()=>console.log( "getCurrentUser() worked in useEffect()." ) );
+        loadAllClients().then( ()=>console.log( "loadAllClients() worked in useEffect()." ) );
     }, [] );
 
     const handleSubmit = async ( event ) => {

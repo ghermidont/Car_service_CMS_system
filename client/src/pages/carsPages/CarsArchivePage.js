@@ -4,32 +4,50 @@ import { Link } from "react-router-dom";
 import {
     mongoDBGetAllCarsFunction,
     mongoDBGetCarsCountFunction,
-    mongoDBDeleteCarFunction
+    mongoDBDeleteCarFunction,
+    mongoDBFetchCarByFilterFunction,
 } from "../../functions/callsToCarRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { Pagination} from "antd";
+import {Card, Pagination} from "antd";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import { Modal } from "antd";
 
 import CarsPrintList from "./CarsPrinList";
 
 export default function CarArchivePage( { history } ) {
+    console.log( "CarsArchivePage() worked" );
 
-    const { reduxStoreUser } = useSelector(( state ) => ( { ...state } ) );
+    const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
     const dispatch = useDispatch();
 
     const [ dbCars, setDbCars ] = useState( [] );
     const [ page, setPage ] = useState( 1 );
     const [ carsCount, setCarsCount ] = useState( 0 );
     const [ loading, setLoading ] = useState( false );
+    const [ searchResults, setSearchResults ] = useState( [] );
+    const [ searchQuery, setSearchQuery ] = useState( "" );
+    const [ isModalVisible, setIsModalVisible ] = useState( false );
+
+    const showModal = () => {
+        setIsModalVisible(true);
+        console.log( "isModalVisible", isModalVisible );
+
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+        console.log( "isModalVisible", isModalVisible );
+    };
 
     useEffect(() => {
+        console.log( "CarArchivePage() useEffect() [] worked." );
         mongoDBGetCarsCountFunction( reduxStoreUser._id )
             .then( ( res) => {
                 setCarsCount( res.data );
-                console.log("mongoDBGetCarsCountFunction() res.data: ", res.data);
+                console.log( "mongoDBGetCarsCountFunction() res.data: ", res.data );
             } )
             .catch( ( error ) => {
                 toast.error( "Error loading cars count", error );
@@ -38,14 +56,42 @@ export default function CarArchivePage( { history } ) {
         console.log( "Cars count: ", carsCount );
     }, [] );
 
+    const handleUserInput = ( event ) => {
+        // Dynamically update each of the initialState values by their name parameter.
+        setSearchQuery( event.target.value );
+    };
+
+    const handleSearch = ( event ) => {
+        event.preventDefault();
+        console.log( "ClientCreatePage() handleSearch() worked!" );
+        try {
+            console.log( "searchQuery: ", searchQuery );
+            mongoDBFetchCarByFilterFunction( reduxStoreUser._id, searchQuery ).then( (res) => {
+                console.log( "mongoDBFetchCarByFilterFunction() worked in ClientCreatePage.js" );
+                console.log( "mongoDBFetchCarByFilterFunction() ClientCreatePage.js res: ", res.data );
+                setSearchResults( res.data );
+                toast.success( "Search successful." );
+                setSearchQuery( "" );
+            } )
+                .catch( ( error ) => {
+                    console.log( "mongoDBFetchCarByFilterFunction() error: ", error );
+                    toast.error( "Session expired. Please re-login in order to be able to perform this action." );
+                } );
+        } catch ( error ) {
+            console.log( "mongoDBFetchCarByFilterFunction() in handleSubmit try catch error: ", error.message );
+            toast.error("Search error: ", error.message );
+        }
+    };
+
     const logout = () => {
+        console.log( "CarArchivePage logout() worked." );
         signOut( auth ).then( () => {
-            toast.success("User signed out." );
+            toast.success( "User signed out." );
         }).catch(( error ) => {
-            toast.error("Error signing out.", error );
+            toast.error( "Error signing out.", error );
         });
         // old version --> firebase.auth().signOut();
-        dispatch({
+        dispatch( {
             type: "LOGOUT",
             payload: null,
         } );
@@ -53,29 +99,29 @@ export default function CarArchivePage( { history } ) {
     };
 
     const loadAllCars = () => {
-        console.log( "loadAllCars() worked." );
+        console.log( "CarArchivePage loadAllCars() worked." );
         setLoading( true );
         // sort, order, limit
         if ( reduxStoreUser._id === undefined ){
             logout();
-            return toast.error( "reduxStoreUser._id is undefined please re-login.");
+            return toast.error( "reduxStoreUser._id is undefined please re-login." );
 
         } else {
-            mongoDBGetAllCarsFunction("createdAt", "desc", page, reduxStoreUser._id)
+            mongoDBGetAllCarsFunction( "createdAt", "desc", page, reduxStoreUser._id )
                 .then( ( res ) => {
                     setDbCars( res.data );
-                    setLoading(false);
-                    console.log( "Cars loaded: ", res.data );
+                    setLoading( false );
+                    console.log( "CarArchivePage loadAllCars() mongoDBGetAllCarsFunction: ", res.data );
                 } ).catch( ( error ) => {
-                    toast.error("Error getting all cars: ", error);
-                    console.log("Error getting all cars: ", error);
+                    toast.error( "Error getting all cars: ", error );
+                    console.log( "Error getting all cars: ", error );
                 } );
         }
     };
 
     const deleteCarFunction = ( slug ) => {
-        setLoading(true);
-        console.log( "deleteCarFunction() worked. " );
+        setLoading( true );
+        console.log( "CarArchivePage deleteCarFunction() worked." );
         mongoDBDeleteCarFunction( reduxStoreUser.token, slug )
             .then( ()=> {
                 toast.success( "Car deleted successfully!" );
@@ -88,8 +134,9 @@ export default function CarArchivePage( { history } ) {
     };
 
     useEffect(() => {
+        console.log( "CarArchivePage useEffect() [page] worked." );
         loadAllCars();
-        setDbCars([]);
+        setDbCars( [] );
     }, [ page ] );
 
     return (
@@ -227,20 +274,53 @@ export default function CarArchivePage( { history } ) {
                             </>
                         }
                     </div>
+
                     {/*Search bar START*/}
-                    <form className='w-300 flex items-center relative'>
+                    <form className="w-300 flex items-center relative" onSubmit={ handleSearch }>
                         <button
-                            className='w-40 h-10 px-2 border border-border rounded-l-full transition hover:opacity-70 focus:opacity-70'
-                            //onClick={ handleSubmit }
+                            type="submit"
+                            className="w-40 h-10 px-2 border border-border rounded-l-full transition hover:opacity-70 focus:opacity-70"
+                            onClick={()=>showModal()}
                         >
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"> </path>
                             </svg>
                         </button>
-                        <input className='w-100% h-10 border border-border rounded-r-full border-l-0 outline-none' type="text"/>
+                        <input
+                            className='w-100% h-10 border border-border rounded-r-full border-l-0 outline-none' type="text"
+                            value={ searchQuery }
+                            onChange={ handleUserInput }
+                        />
                         <span className='text-sm text-red block absolute right-0 -bottom-8'> </span>
                     </form>
                     {/*Search bar END*/}
+
+                    <Modal title="SEARCH RESULTS" visible={ isModalVisible } onOk={ handleOk } >
+                        { searchResults.length!==0&&searchResults.map( ( car )=>
+
+                            <Card  style={{ backgroundColor: "rgba(74, 164, 225, 1)", borderRadius: "25px"}}>
+                               
+                                <Card type="inner" >
+                                    <span style={{ fontWeight: "bold" }}>Marca</span>: {car.brand}
+                                </Card>
+
+                                <Card
+                                    style={{ marginTop: 10 }}
+                                    type="inner"
+                                >
+                                    <span  style={{ fontWeight: "bold" }}>Targa: </span> {car.licensePlate}
+                                </Card>
+
+                                <Link to={ `/car/${ car.slug }` }>
+                                    <button className='w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'>
+                                        Open
+                                    </button>
+                                </Link>
+                            </Card>
+
+
+                        )}
+                    </Modal>
                 </div>
             </div>
         </main>     

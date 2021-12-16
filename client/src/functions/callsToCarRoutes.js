@@ -2,6 +2,7 @@
 import axios from "axios";
 
 export const mongoDBCreateCarFunction = async ( authToken, car ) => {
+    console.log( "mongoDBCreateCarFunction() worked" );
     return await axios
         .post(
             `${process.env.REACT_APP_API}/car/new`, 
@@ -16,6 +17,7 @@ export const mongoDBCreateCarFunction = async ( authToken, car ) => {
 // };
 
 export const mongoDBDeleteCarFunction = async ( authToken, slug ) => {
+    console.log( "mongoDBDeleteCarFunction() worked" );
     return await axios
         .delete(
             `${process.env.REACT_APP_API}/car/${slug}`,
@@ -24,6 +26,7 @@ export const mongoDBDeleteCarFunction = async ( authToken, slug ) => {
 };
 
 export const mongoDBGetSingleCarFunction = async ( slug, authToken ) => {
+    console.log( "mongoDBGetSingleCarFunction() worked" );
     return await axios
         .get(
             `${process.env.REACT_APP_API}/car/${slug}`,
@@ -32,6 +35,7 @@ export const mongoDBGetSingleCarFunction = async ( slug, authToken ) => {
 };
 
 export const mongoDBUpdateCarFunction = async (slug, car, authToken) => {
+    console.log( "mongoDBUpdateCarFunction() worked" );
     return await axios
         .put(
             `${process.env.REACT_APP_API}/car/update/${slug}`, 
@@ -44,7 +48,7 @@ export const mongoDBUpdateCarFunction = async (slug, car, authToken) => {
 //The following two calls are used for forming the pagination.
 //These two functions bellow are used for pagination.
 export const mongoDBGetAllCarsFunction = async ( sort, order, page, userId ) => {
-    console.log("userId", userId);
+    console.log( "mongoDBGetAllCarsFunction() worked" );
     return await axios
         .post(
             `${process.env.REACT_APP_API}/cars`, 
@@ -52,17 +56,18 @@ export const mongoDBGetAllCarsFunction = async ( sort, order, page, userId ) => 
         );
 };
 
-export const mongoDBGetCarsByFilterFunction = async ( sort, order, userId ) => {
-    console.log("mongoDBGetCarsByFilterFunction() userId: ", userId);
+export const mongoDBGetCarsByFilterFunction = async ( sort, order, clientId, userId ) => {
+    console.log( "mongoDBGetAllCarsFunction() worked" );
     return await axios
         .post(
             `${process.env.REACT_APP_API}/cars/filter`,
-            { sort, order, userId }
+            { sort, order, clientId, userId }
         );
 };
 
 //Calling the backend end point for total number of products.
 export const mongoDBGetCarsCountFunction = async ( userId ) => {
+    console.log( "mongoDBGetCarsCountFunction() worked" );
     return await axios
         .get(
             `${process.env.REACT_APP_API}/cars/total`,
@@ -70,10 +75,11 @@ export const mongoDBGetCarsCountFunction = async ( userId ) => {
         );
 };
 
-export const mongoDBFetchCarByFilterFunction = async ( args ) => {
+export const mongoDBFetchCarByFilterFunction = async ( userId, query ) => {
+    console.log( "mongoDBFetchCarByFilterFunction() worked" );
     return await axios
         .post(
             `${process.env.REACT_APP_API}/car/search`,
-            args
+            { userId, query }
         );
 };

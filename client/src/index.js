@@ -28,14 +28,14 @@ const store = createStore( rootReducer, composeWithDevTools() );
 const persistor = persistStore( store );
 
 ReactDOM.render(
-    <React.StrictMode>
-        <Provider store={ store }>
-            <PersistGate loading={ <h1> Redux Persist loading... </h1> } persistor={ persistor }>
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
-            </PersistGate>
-        </Provider>
-    </React.StrictMode>,
+    // <React.StrictMode>
+    <Provider store={ store }>
+        <PersistGate loading={ <h1> Redux Persist loading... </h1> } persistor={ persistor }>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </PersistGate>
+    </Provider>,
+    // </React.StrictMode>,
     document.getElementById("root")
 );

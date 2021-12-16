@@ -54,7 +54,7 @@ router.post(
 
 router.post(
     "/cars/filter",
-    fireBaseAuthCheckMiddleware,
+    //fireBaseAuthCheckMiddleware,
     mongoDBGetCarsByFilterController
 );
 

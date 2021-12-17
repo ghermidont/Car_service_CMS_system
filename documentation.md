@@ -74,3 +74,6 @@ Reminder:
 <https://github.com/fabiau/jc-calendar/blob/master/src/components/App.js>
 use this one:
 <https://www.npmjs.com/package/node-schedule>
+
+iFrame problem solution:
+<https://github.com/facebook/create-react-app/issues/11771>

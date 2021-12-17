@@ -9,7 +9,7 @@ import {
 } from "../../functions/callsToCarRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import {Card, Pagination} from "antd";
+import { Card, Pagination } from "antd";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { PDFDownloadLink } from "@react-pdf/renderer";
@@ -37,8 +37,24 @@ export default function CarArchivePage( { history } ) {
 
     };
 
+    useEffect(()=>{
+        if( isModalVisible===false ) {
+            setSearchResults( [] );
+            setSearchQuery( "" );
+        }
+    },[ isModalVisible ]);
+
     const handleOk = () => {
-        setIsModalVisible(false);
+        isModalVisible&&setIsModalVisible(false);
+        setSearchResults([]);
+        setSearchQuery("");
+        console.log( "isModalVisible", isModalVisible );
+    };
+
+    const handleCancel = () => {
+        isModalVisible&&setIsModalVisible(false);
+        setSearchResults([]);
+        setSearchQuery("");
         console.log( "isModalVisible", isModalVisible );
     };
 
@@ -295,13 +311,12 @@ export default function CarArchivePage( { history } ) {
                     </form>
                     {/*Search bar END*/}
 
-                    <Modal title="SEARCH RESULTS" visible={ isModalVisible } onOk={ handleOk } >
+                    <Modal title="SEARCH RESULTS" visible={ isModalVisible } onOk={ handleOk } onCancel={ handleCancel }>
                         { searchResults.length!==0&&searchResults.map( ( car )=>
-
-                            <Card  style={{ backgroundColor: "rgba(74, 164, 225, 1)", borderRadius: "25px"}}>
+                            <Card  style={ { backgroundColor: "rgba(74, 164, 225, 1)", borderRadius: "25px"} }>
                                
                                 <Card type="inner" >
-                                    <span style={{ fontWeight: "bold" }}>Marca</span>: {car.brand}
+                                    <span style={ { fontWeight: "bold" } }>Marca</span>: { car.brand }
                                 </Card>
 
                                 <Card
@@ -312,13 +327,11 @@ export default function CarArchivePage( { history } ) {
                                 </Card>
 
                                 <Link to={ `/car/${ car.slug }` }>
-                                    <button className='w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'>
+                                    <button className="w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase">
                                         Open
                                     </button>
                                 </Link>
                             </Card>
-
-
                         )}
                     </Modal>
                 </div>

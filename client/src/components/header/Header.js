@@ -84,7 +84,7 @@ export default function Header() {
                         </Link>
                     </div>
                     <div className='flex items-center'>
-                        { reduxStoreUser &&
+                        { reduxStoreUser.token &&
                             <>
                                 <div>
                                     <Link to="/user_notifications">

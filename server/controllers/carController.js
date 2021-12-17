@@ -1,6 +1,7 @@
 // noinspection DuplicatedCode
 const carModel = require("../models/carModel");
 const slugify = require("slugify");
+//const ObjectId = require("mongoose").Types.ObjectId;
 
 exports.mongoDBCreateCarController = async ( req, res ) => {
     try {
@@ -104,7 +105,6 @@ exports.mongoDBGetAllCarsController = async ( req, res ) => {
             .sort([ [ sort, order ] ] )
             .limit( perPage )
             .exec();
-
         res.json( cars );
     } catch ( err ) {
         console.log( "mongoDBGetAllCarsController() err: ", err );
@@ -146,15 +146,23 @@ exports.mongoDBGetCarsCountController = async ( req, res ) => {
 // SEARCH / FILTER
 exports.mongoDBSearchCarByFilterController = async ( req, res ) => {
     if ( req.body.query ) {
+        const searchQuery = req.body.query;
         console.log( "mongoDBSearchCarByFilterController() req.body.query: ", req.body.query );
         console.log( "mongoDBSearchCarByFilterController() req.body.userId: ", req.body.userId );
-        const car = await carModel
-            .find( {
-                user: req.body.userId
-            } )
+        // const objId = new ObjectId( (searchQuery.length === 12) ? "123456789012" : searchQuery );
+        // You should make string 'param' as ObjectId type. To avoid exception,
+        // the 'param' must consist of more than 12 characters.
+        const cars = await carModel
+            .find({ user: req.body.userId } )
+            .or([
+                { _id: searchQuery },
+                { brand: searchQuery },
+                { licensePlate: searchQuery }
+            ]
+            )
             .exec();
-        console.log( "mongoDBSearchCarByFilterController() car: ", car );
-        res.json( car );
+        console.log( "mongoDBSearchCarByFilterController() cars: ", cars );
+        res.json( cars );
         // $text: { $search: req.body.query },
         // user: req.body.userId
     }

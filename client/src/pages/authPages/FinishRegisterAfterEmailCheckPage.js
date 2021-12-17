@@ -36,9 +36,8 @@ const FinishRegisterAfterEmailCheckPage = ( { history } ) => {
 
     const handleSubmit = async ( e ) => {
         console.log( "FinishRegisterAfterEmailCheckPage handleSubmit() worked!" );
-
         e.preventDefault();
-        // validation
+        // password validation
         if ( !password ) {
             toast.error( "Email and password is required" );
             return;
@@ -57,8 +56,8 @@ const FinishRegisterAfterEmailCheckPage = ( { history } ) => {
 
                 await signInWithEmailLink(auth, email, window.location.href)
                     .then(() => {
-                        console.log("Done the signInWithEmailLink()");
-                        console.log("then window.location.href", window.location.href);
+                        console.log( "Done the signInWithEmailLink()" );
+                        console.log( "then window.location.href", window.location.href );
                     })
                     .catch(err => {
                         console.log("signInWithEmailLink ", err);
@@ -74,7 +73,7 @@ const FinishRegisterAfterEmailCheckPage = ( { history } ) => {
                         console.log("Error updating the password: ", err);
                     });
 
-                await getIdTokenResult(user, false).then( (idTokenResult) => {
+                await getIdTokenResult(user, false).then( async (idTokenResult) => {
                     // redux store
                     console.log( "FinishRegisterAfterEmailCheckPage handleSubmit user: ", user, "idTokenResult", idTokenResult.token);
 
@@ -92,16 +91,16 @@ const FinishRegisterAfterEmailCheckPage = ( { history } ) => {
                             {
                                 public_id: "",
                                 url: "",
-                                status: "default",
+                                status: "default"
                             },
                         ],
                         email: user.email,
-                        token: idTokenResult.token,
                         role: "b%dDHM*SDKS-Jl5kjs",
+
                     };
 
                     // On this stage the new user is created and in Mongo DB and then the data is also written in the redux store with dispatch function.
-                    mongoDBCreateUserFunction( idTokenResult.token, userInfoForMongoDB ).then( ( res) => {
+                    await mongoDBCreateUserFunction( idTokenResult.token, userInfoForMongoDB ).then( ( res) => {
                         console.log( "mongoDBCreateUserFunction() worked in FinishRegisterAfterEmailCheckPage.js" );
                         dispatch({
                             type: "LOGGED_IN_USER",
@@ -121,6 +120,7 @@ const FinishRegisterAfterEmailCheckPage = ( { history } ) => {
                                 role: res.data.role,
                             },
                         });
+                        logout();
                     })
                         .catch( ( err ) =>
                         {
@@ -128,7 +128,6 @@ const FinishRegisterAfterEmailCheckPage = ( { history } ) => {
                             console.log( "mongoDBCreateUserFunction() error: ", err );
                         });
                     //Logging out the user to sign in with the new password.
-                    logout();
                 });
 
             }else{
@@ -171,7 +170,7 @@ const FinishRegisterAfterEmailCheckPage = ( { history } ) => {
                         <label className='block mb-20 text-xl'>
                             Password
                             <input
-                                type="password"
+                                type={passwordShown ? "text" : "password"}
                                 className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
                                 value={ password }
                                 onChange={ ( e ) => setPassword( e.target.value ) }

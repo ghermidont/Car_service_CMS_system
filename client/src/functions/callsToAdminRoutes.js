@@ -28,28 +28,28 @@ export const mongoDBToggleUserStatusFunction = async ( email, status, authToken 
 };
 
 // The function is used in AdminDashUserList.js file.
-export const mongoDBDeleteUserFunction = async ( authToken, email ) => {
+export const mongoDBDeleteUserFunction = async ( id, email, authToken ) => {
     return await axios
         .delete( 
             `${process.env.REACT_APP_API}/admin/user/delete`,
             {
-                headers: {authToken},
-                params: { email }
+                headers: { authToken },
+                params: { id, email, authToken }
             }
         );
 };
 
 // The function is used in AdminDashUserList.js file.
-export const mongoDBGetSingleUserFunction = async ( email, authToken ) => {
-    return await axios
-        .get(
-            `${process.env.REACT_APP_API}/admin/user`,
-            {
-                params: { email },
-                headers: { authToken }
-            }
-        );
-};
+// export const mongoDBGetSingleUserFunction = async ( email, authToken ) => {
+//     return await axios
+//         .get(
+//             `${process.env.REACT_APP_API}/admin/user`,
+//             {
+//                 params: { email },
+//                 headers: { authToken }
+//             }
+//         );
+// };
 
 export const mongoDBGetAllUsersFunction = async ( sort, order, page, authToken ) => {
     return await axios
@@ -68,10 +68,10 @@ export const mongoDBGetUsersCountFunction = async ( authToken ) => {
         );
 };
 
-export const mongoDBFetchUserByFilterFunction = async ( args ) => {
-    return await axios
-        .post(
-            `${process.env.REACT_APP_API}/admin/search/filters`,
-            args
-        );
-};
+// export const mongoDBFetchUserByFilterFunction = async ( args ) => {
+//     return await axios
+//         .post(
+//             `${process.env.REACT_APP_API}/admin/search/filters`,
+//             args
+//         );
+// };

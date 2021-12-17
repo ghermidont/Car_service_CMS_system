@@ -7,6 +7,7 @@ exports.mongoDBCreateNewUserController = async (req, res) => {
     console.log("mongoDBCreateNewUserController() worked");
 
     const {
+        status,
         company_name,
         current_residence,
         current_city,
@@ -35,8 +36,9 @@ exports.mongoDBCreateNewUserController = async (req, res) => {
     } else {
         //If not existing, we create the user.
         //Create and add the slug to the request body. The slug is formed from the fiscal_code and formatted with Slugify.
-        req.body.slug = Slugify(req.body.fiscal_code);
+        //req.body.slug = Slugify(req.body.fiscal_code);
         const newUser = await new userModel({
+            status,
             company_name,
             current_residence,
             current_city,

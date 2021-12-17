@@ -3,6 +3,10 @@ const getAuth = require( "firebase/auth" );
 const userModel = require( "../models/userModel" );
 
 exports.mongoDBFireBaseDeleteUserController = async ( req, res ) => {
+    console.log("mongoDBFireBaseDeleteUserController(). req", req );
+    console.log("mongoDBFireBaseDeleteUserController(). req.query.email", req.query.email );
+    console.log("mongoDBFireBaseDeleteUserController(). req.query._id", req.query.id );
+    console.log("mongoDBFireBaseDeleteUserController(). req.headers.authtoken", req.headers.authtoken );
     try {
         const deleted = await userModel
             .findOneAndRemove( { slug: req.params.slug } )
@@ -14,15 +18,17 @@ exports.mongoDBFireBaseDeleteUserController = async ( req, res ) => {
             const firebaseUser = await admin
                 .auth()
                 .verifyIdToken( req.headers.authtoken );
-            console.log( "FIREBASE USER IN AUTHCHECK", firebaseUser, " end user." );
+
+            console.log( "mongoDBFireBaseDeleteUserController firebaseUser", firebaseUser );
             req.user = firebaseUser;
+
             await getAuth()
                 .deleteUser( firebaseUser.uid )
                 .then( () => {
-                    console.log( "Successfully deleted user" );
+                    console.log( "Successfully deleted user from firebase." );
                 } )
                 .catch( ( error ) => {
-                    console.log( "Error deleting user:", error );
+                    console.log( "Error deleting user from Firebase:", error );
                 } );
         } catch ( err ) {
             res.status( 401 ).json( {
@@ -30,8 +36,8 @@ exports.mongoDBFireBaseDeleteUserController = async ( req, res ) => {
             } );
         }
     } catch ( err ) {
-        window.alert( err );
-        return res.status( 400 ).send( "CMS user deletion failed" );
+        console.log("mongoDBFireBaseDeleteUserController() catch() err: ", err );
+        return res.status( 400 ).send( "mongoDBFireBaseDeleteUserController error deleting user", err );
     }
 };
 

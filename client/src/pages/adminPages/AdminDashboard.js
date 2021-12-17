@@ -108,12 +108,6 @@ export default function AdminDashboard ( { history } ) {
             logout();
         }
     };
-    
-    const deleteUserFromDB = ( slug, company_name ) => {
-        mongoDBDeleteUserFunction( slug, reduxStoreUser.token )
-            .then( () => window.alert( `User ${ company_name } removed successfully.` ) )
-            .catch( err => window.alert( err ) );
-    };
 
     return(
         <>
@@ -132,8 +126,6 @@ export default function AdminDashboard ( { history } ) {
                             <thead>
                                 <tr>
                                     <th> </th>
-                                    <th> </th>
-
                                     <th className="px-1 py-1.5 w-75 bg-blue border border-border text-2xl text-white font-normal uppercase">
                                         ID
                                     </th>
@@ -166,15 +158,6 @@ export default function AdminDashboard ( { history } ) {
                                                 </Link>
                                             </button>
                                         </td>
-                                        <td className="pr-3">
-                                            <button
-                                                className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"
-                                                onClick={ () => deleteUserFromDB( userInfo.slug, userInfo.company_name ) }
-                                            >
-                                                    Delete
-                                            </button>
-                                        </td>
-
                                         <td className="border border-border px-3"> { userInfo._id } </td>
                                         <td className="border border-border px-3"> { userInfo.company_name } </td>
                                         <td className="border border-border px-3"> { userInfo.email } </td>

@@ -20,8 +20,8 @@ const {
 //Routes
 router.delete(
     "/admin/user/delete",
-    fireBaseAuthCheckMiddleware,
-    mongoDbAdminCheckMiddleware,
+    //fireBaseAuthCheckMiddleware,
+    //mongoDbAdminCheckMiddleware,
     mongoDBFireBaseDeleteUserController
 );
 

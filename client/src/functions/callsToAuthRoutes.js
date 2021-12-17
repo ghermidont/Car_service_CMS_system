@@ -7,7 +7,7 @@ export const mongoDBCreateUserFunction = async (authToken, user) => {
             `${process.env.REACT_APP_API}/auth/user/create`, 
             user, 
             { 
-                headers: {authToken},
+                headers: { authToken },
             }
         );
 };

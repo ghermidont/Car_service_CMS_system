@@ -19,9 +19,10 @@ exports.mongoDBCreateNoteController = async ( req, res ) => {
 };
 
 exports.mongoDBDeleteNoteController = async ( req, res ) => {
+    console.log( "mongoDBDeleteNoteController() req.params: ", req.params.slug );
     try {
         const deleted = await noteModel
-            .findOneAndRemove({ id: req.params.id, } )
+            .findOneAndRemove({ id: req.params.slug, } )
             .exec();
         console.log( "mongoDBDeleteNoteController() note deleted successfully. " );
         res.json( deleted );
@@ -34,7 +35,7 @@ exports.mongoDBDeleteNoteController = async ( req, res ) => {
 //Gets the single car by the slug.
 exports.mongoDBGetSingleNoteController = async ( req, res ) => {
     const note = await noteModel
-        .findOne({ slug: req.params.slug } )
+        .findOne({ id: req.params.slug } )
         .exec();
     res.json( note );
 };
@@ -43,7 +44,7 @@ exports.mongoDBUpdateNoteController = async ( req, res ) => {
     try {
         const updated = await noteModel
             .findOneAndUpdate(
-                { slug: req.params.slug },
+                { id: req.params.slug },
                 req.body,
                 { new: true }
             )

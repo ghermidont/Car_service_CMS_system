@@ -72,10 +72,10 @@ export default function NotesListPage( { history } ) {
         }
     };
 
-    const deleteNoteFunction = ( id ) => {
+    const deleteNoteFunction = ( slug ) => {
         setLoading( true );
         console.log( "NotesListPage deleteNoteFunction() worked." );
-        mongoDBDeleteNoteFunction( reduxStoreUser.token, id )
+        mongoDBDeleteNoteFunction( reduxStoreUser.token, slug )
             .then( ()=> {
                 toast.success( "Note deleted successfully!" );
                 setLoading( false );
@@ -116,15 +116,20 @@ export default function NotesListPage( { history } ) {
                         }}
                         dataSource={ dbNotes }
 
-                        renderItem={item => (
+                        renderItem={ item => (
                             <List.Item
-                                key={item.title}
+                                key={ item.title }
                             >
                                 <List.Item.Meta
-                                    title={<Link to={ `/car/${ item.slug }`}> {item.title}</Link>}
+                                    title={ <Link to={ `/note/${ item.id }`}> { item.title }</Link> }
                                     description={ item.createdAt }
                                 />
-                                {item.content}
+                                { item.content }
+                                {<Link to={`/note/update/${item.id}`}>
+                                    <button className='flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                                        Edit
+                                    </button>
+                                </Link>}
                                 {<button
                                     className='w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'
                                     onClick={ ()=>deleteNoteFunction( item.id ) }

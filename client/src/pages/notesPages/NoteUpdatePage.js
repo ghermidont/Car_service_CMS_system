@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import { mongoDBGetSingleNoteFunction, mongoDBUpdateNoteFunction } from "../../functions/callsToNotesRoutes";
 
 const initialState = {
-    title: "",
-    content: "",
+    title: "default",
+    content: "default",
 };
 
 export default function NoteUpdatePage( { match } ) {

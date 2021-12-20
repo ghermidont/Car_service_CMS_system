@@ -16,11 +16,11 @@ export const mongoDBCreateNoteFunction = async ( authToken, note ) => {
 //     return await axios.get(`${process.env.REACT_APP_API}/notes/${count}`);
 // };
 
-export const mongoDBDeleteNoteFunction = async ( authToken, id ) => {
+export const mongoDBDeleteNoteFunction = async ( authToken, slug ) => {
     console.log( "mongoDBDeleteNoteFunction() worked" );
     return await axios
         .delete(
-            `${process.env.REACT_APP_API}/note/${id}`,
+            `${process.env.REACT_APP_API}/note/${slug}`,
             { headers: { authToken } }
         );
 };

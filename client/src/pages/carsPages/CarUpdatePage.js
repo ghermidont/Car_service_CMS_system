@@ -1,8 +1,8 @@
 //TODO To IMPLEMENT
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import {mongoDBGetSingleCarFunction, mongoDBUpdateCarFunction} from "../../functions/callsToCarRoutes";
+import { mongoDBGetSingleCarFunction, mongoDBUpdateCarFunction } from "../../functions/callsToCarRoutes";
 
 // TODO implement the cascader.
 /* Use the Ant cascader for cars select. https://ant.design/components/cascader/ */
@@ -36,7 +36,7 @@ export default function CarUpdatePage( { match } ) {
 
     const { slug } = match.params;
     // Get the user from Redux Store
-    const { reduxStoreUser } = useSelector(( state ) => ( { ...state }));
+    const { reduxStoreUser } = useSelector(( state ) => ( { ...state } ) );
 
     useEffect(() => {
         loadCarDbInfo();
@@ -45,26 +45,26 @@ export default function CarUpdatePage( { match } ) {
     const loadCarDbInfo = () => {
         mongoDBGetSingleCarFunction( slug, reduxStoreUser.token ).then( ( car) => {
             console.log( "single car", car );
-            setCurrentCarParamsState( { ...currentCarParamsState, ...car.data });
+            setCurrentCarParamsState( { ...currentCarParamsState, ...car.data } );
         });
     };
 
     const handleSubmit = ( event ) => {
         event.preventDefault();
         mongoDBUpdateCarFunction( slug, currentCarParamsState, reduxStoreUser.token )
-            .then(() => {
+            .then( () => {
                 toast.success( "Car info is updated successfully." );
                 //Reload the page wit the new values.
                 window.location.reload();
-            })
-            .catch((error) => {
-                toast.error(error.response.data.err);
+            } )
+            .catch( ( error ) => {
+                toast.error( error.response.data.err );
             });
     };
 
-    const handleUserInput = (event) => {
+    const handleUserInput = ( event ) => {
         // Dynamically update each of the initialState values by their name parameter.
-        setCurrentCarParamsState({ ...currentCarParamsState, [event.target.name]: event.target.value });
+        setCurrentCarParamsState( { ...currentCarParamsState, [event.target.name]: event.target.value } );
     };
 
     return (

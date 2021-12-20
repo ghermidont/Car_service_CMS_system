@@ -14,29 +14,34 @@ import { mongoDBGetCurrentUserFunction } from "./functions/callsToAuthRoutes";
 
 import { LoadingOutlined } from "@ant-design/icons";
 // Custom routes. Restrict route access for non logged in users or non admins.
-const UserRoute = lazy(() => import("./components/routes/userRoute"));
-const AdminRoute = lazy(() => import("./components/routes/adminRoute"));
+const UserRoute = lazy( () => import( "./components/routes/userRoute") );
+const AdminRoute = lazy( () => import( "./components/routes/adminRoute") );
 
 // Pages import
 // Auth pages
-const LoginPage = lazy(() => import("./pages/authPages/LoginPage"));
-const PswRecoverPage = lazy(() => import("./pages/authPages/PswRecoverPage"));
-const FinishRegisterAfterEmailCheckPage = lazy(() => import("./pages/authPages/FinishRegisterAfterEmailCheckPage"));
-const UserRegisterPage = lazy(() => import("./pages/authPages/UserRegisterPage"));
+const LoginPage = lazy( () => import( "./pages/authPages/LoginPage" ) );
+const PswRecoverPage = lazy( () => import( "./pages/authPages/PswRecoverPage" ) );
+const FinishRegisterAfterEmailCheckPage = lazy(() => import( "./pages/authPages/FinishRegisterAfterEmailCheckPage" ) );
+const UserRegisterPage = lazy( () => import( "./pages/authPages/UserRegisterPage" ) );
 //User pages
-const MainMenuPage = lazy(() => import("./pages/MainMenuPage"));
-const UserPage = lazy(() => import("./pages/usersPages/UserPage"));
-const UserUpdatePage = lazy(() => import("./pages/usersPages/UserUpdatePage"));
+const MainMenuPage = lazy( () => import( "./pages/MainMenuPage" ) );
+const UserPage = lazy( () => import( "./pages/usersPages/UserPage" ) );
+const UserUpdatePage = lazy( () => import( "./pages/usersPages/UserUpdatePage" ) );
 //Cars pages
-const CarsArchivePage = lazy(() => import("./pages/carsPages/CarsArchivePage"));
-const CarCreatePage = lazy(() => import("./pages/carsPages/CarCreatePage"));
-const CarUpdatePage = lazy(() => import("./pages/carsPages/CarUpdatePage"));
-const CarPage = lazy(() => import("./pages/carsPages/CarPage"));
+const CarsArchivePage = lazy( () => import( "./pages/carsPages/CarsArchivePage" ) );
+const CarCreatePage = lazy( () => import( "./pages/carsPages/CarCreatePage" ) );
+const CarUpdatePage = lazy( () => import( "./pages/carsPages/CarUpdatePage" ) );
+const CarPage = lazy( () => import( "./pages/carsPages/CarPage" ) );
 //Services pages
-const ServicesListPage = lazy(() => import("./pages/servicesPages/ServicesListPage"));
-const ServiceCreatePage = lazy(() => import("./pages/servicesPages/ServiceCreatePage"));
+const ServicesListPage = lazy( () => import("./pages/servicesPages/ServicesListPage"));
+const ServiceCreatePage = lazy( () => import("./pages/servicesPages/ServiceCreatePage"));
 const ServiceUpdatePage = lazy(() => import("./pages/servicesPages/ServiceUpdatePage"));
 const ServicePage = lazy(() => import("./pages/servicesPages/ServicePage"));
+//Notes pages
+const NotesListPage = lazy( () => import("./pages/notesPages/NotesListPage"));
+const NoteCreatePage = lazy( () => import("./pages/notesPages/NoteCreatePage"));
+const NoteUpdatePage = lazy(() => import("./pages/notesPages/NoteUpdatePage"));
+const NotePage = lazy(() => import("./pages/notesPages/NotePage"));
 //Clients pages
 const ClientCreatePage = lazy(() => import("./pages/clientsPages/ClientCreatePage"));
 const ClientsListPage = lazy(() => import("./pages/clientsPages/ClientsListPage"));
@@ -132,6 +137,11 @@ export default function App() {
                 <UserRoute exact path="/service/update/:slug" component={ ServiceUpdatePage }/>
                 <UserRoute exact path="/services_list" component={ ServicesListPage }/>
                 <UserRoute exact path="/service/:slug" component={ ServicePage }/>
+                {/* User Routes --> Notes */}
+                <UserRoute exact path="/add_note" component={ NoteCreatePage }/>
+                <UserRoute exact path="/note/update/:slug" component={ NoteUpdatePage }/>
+                <UserRoute exact path="/notes_list" component={ NotesListPage }/>
+                <UserRoute exact path="/note/:slug" component={ NotePage }/>
             </Switch>
             <Footer />
         </Suspense>

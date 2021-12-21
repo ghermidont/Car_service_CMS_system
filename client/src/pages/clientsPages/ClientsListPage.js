@@ -113,14 +113,15 @@ export default function ClientsListPage( { history } ) {
 
     return (   
         <main className='mb-12'>
-
-            <h1> ClientsListPage.js </h1>
             { loading ? (
                 <h1> Loading... </h1>
             ) : (
-                <h1> Clients List </h1>
+                <h1> </h1>
             ) }
             <div className="container mx-auto">
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>ELENCO CLIENTI</span></center>
+
                 <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
                     <table className='mx-auto mb-8'>
                         <thead>

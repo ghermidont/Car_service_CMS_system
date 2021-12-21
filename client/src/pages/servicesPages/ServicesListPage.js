@@ -71,14 +71,15 @@ export default function ServicesListPage( { history } ) {
 
     return (
         <main className='mb-12'>
-
-            <h1>ServicesListPage.js</h1>
             { loading ? (
                 <h1>Loading... </h1>
             ) : (
-                <h1>Services list</h1>
+                <h1> </h1>
             ) }
             <div className="container mx-auto">
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>SERVICES LIST</span></center>
+
                 <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
                     <table className='mx-auto mb-8'>
                         <thead>

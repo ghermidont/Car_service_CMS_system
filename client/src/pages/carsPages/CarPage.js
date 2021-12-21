@@ -54,10 +54,10 @@ export default function CarUpdatePage( { match } ) {
     //Start here. Finish the individual car info page with link to the car update page.
     return (
         <main>
-            <h1>CarPage.js</h1>
-
             <div className="container mx-auto py-20">
-                     
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>VEICOLO</span></center>
+
                 <label className='block mb-8 text-xl max-w-600'> MARCA
                     <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
                         <span className='font-normal text-text text-lg'>{brand}</span>

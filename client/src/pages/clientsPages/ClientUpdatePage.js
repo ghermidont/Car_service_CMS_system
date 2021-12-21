@@ -89,10 +89,10 @@ export default function ClientUpdatePage( { match } ) {
 
     return (
         <main>
-
-            <h1>UpdateClientPage.js</h1>
-
             <div className='h-screen flex flex-col justify-between'>
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>UPDATE CLIENT INFO</span></center>
+
                 <form className='text-lg' onSubmit={handleSubmit}>
                     <main className='flex items-center'>
                         <div className="container mx-auto py-10">

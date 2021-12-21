@@ -144,9 +144,10 @@ export default function LoginPage( { history } ){
 
     return(
         <>
-            <h1>LoginPage.js</h1>
-
             <main>
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>LOGIN</span></center>
+
                 <div className="container mx-auto h-screen flex justify-center items-center">
                     <div className='max-w-600 w-100% bg-grayL px-12 pt-8 pb-14 shadow-shadow rounded'>
                         <form

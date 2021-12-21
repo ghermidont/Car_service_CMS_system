@@ -14,7 +14,10 @@ const initialState = {
     brand: "",
     model: "",
     licensePlate: "",
-    revisions: "",
+    revisions: {
+        start: "",
+        end: "" 
+    },
     km: "",
     year: "",
     client: "",
@@ -69,9 +72,9 @@ export default function CarUpdatePage( { match } ) {
 
     return (
         <main>
-            <h1>CarUpdatePage.js</h1>
-
             <div className="container mx-auto py-20">
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>UPDATE CAR INFO</span></center>
                 <form onSubmit={handleSubmit}>
                     {/*TODO Add here inputs from the database with cascader.*/}
                     <label className='block mb-8 text-xl max-w-600'> MARCA
@@ -105,6 +108,13 @@ export default function CarUpdatePage( { match } ) {
                     </label>
 
                     <label className='block mb-8 text-xl max-w-600'> REVISIONE
+                        <input
+                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                            type="text"
+                            name="revisions"
+                            value={ revisions }
+                            onChange={ handleUserInput }
+                        />
                         <input
                             className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
                             type="text"

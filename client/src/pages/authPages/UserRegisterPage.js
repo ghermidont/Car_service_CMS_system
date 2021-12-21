@@ -34,9 +34,10 @@ const UserRegisterPage = ({ history }) => {
     return (
         // TODO On release remove the empty tags and the h1.
         <>
-            <h1>UserRegisterPage.js</h1>
-
             <main>
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>REGISTER</span></center>
+
                 <div className="container mx-auto h-screen flex justify-center items-center">
                     <form
                         action="#"

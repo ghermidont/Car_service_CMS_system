@@ -30,11 +30,12 @@ const carSchema = new mongoose.Schema({
         text: true,
     },
     revisions: {
-        type: String,
-        trim: true,
-        required: true,
-        //maxlength: 32,
-        text: true,
+        start: {
+            type: Date,
+        },
+        end: {
+            type: Date,
+        }
     },
     km: {
         type: String,

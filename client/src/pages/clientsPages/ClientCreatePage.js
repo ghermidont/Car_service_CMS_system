@@ -78,9 +78,10 @@ export default function ClientCreatePage( { history } ) {
 
     return (  
         <>
-            <h1>ClientCreatePage.js</h1>
-
             <div className="h-screen flex flex-col justify-between">
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>REGISTRA CLIENTE</span></center>
+
                 <main className="flex items-center">
                     <div className="container mx-auto py-10">
                         <form className="text-lg" onSubmit={ handleSubmit }>

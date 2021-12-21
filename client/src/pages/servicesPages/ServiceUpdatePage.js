@@ -70,10 +70,11 @@ export default function ServiceUpdatePage( { match } ) {
 
     return (
         <>
-            <h1>ServiceUpdatePage.js</h1>
-
             <main>
                 <div className="container mx-auto">
+                    {/*Page title*/}
+                    <center><span style={{fontWeight: "bold", fontSize: "25px"}}>SERVICE UPDATE</span></center>
+
                     <form onSubmit={handleSubmit}>
                         <div className='my-20'>
                             <table className='mx-auto'>

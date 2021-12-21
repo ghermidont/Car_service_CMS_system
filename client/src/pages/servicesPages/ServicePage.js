@@ -63,9 +63,11 @@ export default function ServicePage( { match } ) {
 
     return (
         <main>
-            <h1>ServicePage.js</h1>
-                
+
             <div className="container mx-auto">
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>SERVICE</span></center>
+
                 <div className='my-20'>
                     <table className='mx-auto'>
                         <thead>

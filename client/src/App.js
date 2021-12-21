@@ -11,9 +11,9 @@ import { auth } from "./firebase";
 //Dispatch is the entry point to the redux store.
 import { useDispatch } from "react-redux";
 import { mongoDBGetCurrentUserFunction } from "./functions/callsToAuthRoutes";
-
 import { LoadingOutlined } from "@ant-design/icons";
-// Custom routes. Restrict route access for non logged in users or non admins.
+
+// Custom routes. Restrict route access for not logged-in users or non admins.
 const UserRoute = lazy( () => import( "./components/routes/userRoute") );
 const AdminRoute = lazy( () => import( "./components/routes/adminRoute") );
 
@@ -27,6 +27,7 @@ const UserRegisterPage = lazy( () => import( "./pages/authPages/UserRegisterPage
 const MainMenuPage = lazy( () => import( "./pages/MainMenuPage" ) );
 const UserPage = lazy( () => import( "./pages/usersPages/UserPage" ) );
 const UserUpdatePage = lazy( () => import( "./pages/usersPages/UserUpdatePage" ) );
+const NotificationsPage = lazy( () => import( "./pages/usersPages/NotificationsPage" ) );
 //Cars pages
 const CarsArchivePage = lazy( () => import( "./pages/carsPages/CarsArchivePage" ) );
 const CarCreatePage = lazy( () => import( "./pages/carsPages/CarCreatePage" ) );
@@ -90,7 +91,7 @@ export default function App() {
                             } );
                         } else {
                             console.log( "No mongo DB user data received in the App.js" );
-                        };
+                        }
                     } ).catch( ( err ) => console.log( "App.js could not get current user info from MongoDB because: ", err ) );
             }
         } );
@@ -142,6 +143,10 @@ export default function App() {
                 <UserRoute exact path="/note/update/:slug" component={ NoteUpdatePage }/>
                 <UserRoute exact path="/notes_list" component={ NotesListPage }/>
                 <UserRoute exact path="/note/:slug" component={ NotePage }/>
+                {/* User Routes --> Notifications */}
+                <UserRoute exact path="/notifications_list" component={ NotificationsPage }/>
+
+
             </Switch>
             <Footer />
         </Suspense>

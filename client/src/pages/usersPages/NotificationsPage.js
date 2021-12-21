@@ -1,3 +1,4 @@
+//TODO make this page.
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -11,7 +12,7 @@ import { Card, Pagination, List, Avatar } from "antd";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 
-export default function NotesListPage( { history } ) {
+export default function NotificationsPage( { history } ) {
     console.log( "NotesListPage() worked" );
 
     const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
@@ -20,7 +21,7 @@ export default function NotesListPage( { history } ) {
     const [ dbNotes, setDbNotes ] = useState( [] );
     const [ page, setPage ] = useState( 1 );
     const [ notesCount, setNotesCount ] = useState( 0 );
-    const [ loading, setLoading ] = useState( false );  
+    const [ loading, setLoading ] = useState( false );
 
     useEffect(() => {
         console.log( "NotesListPage() useEffect() [] worked." );
@@ -35,7 +36,7 @@ export default function NotesListPage( { history } ) {
             } );
         console.log( "Notes count: ", notesCount );
     }, [] );
-  
+
     const logout = () => {
         console.log( "CarArchivePage logout() worked." );
         signOut( auth ).then( () => {
@@ -96,14 +97,14 @@ export default function NotesListPage( { history } ) {
     return (
         <main className='mb-12'>
 
-
+            <h1>NoteArchivePage.js</h1>
             { loading ? (
                 <h1>Loading... </h1>
             ) : (
-                <h1> </h1>
+                <h1>Notes archive</h1>
             ) }
             <div className="container mx-auto">
-                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>NOTES LIST</span></center>
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>NOTIFICATIONS</span></center>
                 <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
                     <List
                         itemLayout="vertical"
@@ -129,14 +130,14 @@ export default function NotesListPage( { history } ) {
                                     <div>
                                         <Link to={`/note/update/${item.id}`}>
                                             <button className='flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
-                                        Edit
+                                                Edit
                                             </button>
                                         </Link>
                                         <button
                                             className='w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'
                                             onClick={ ()=>deleteNoteFunction( item.id ) }
                                         >
-                                    Delete
+                                            Delete
                                         </button>
                                     </div>
                                 }

@@ -156,14 +156,15 @@ export default function CarArchivePage( { history } ) {
 
     return (
         <main className='mb-12'>
-
-            <h1>CarArchivePage.js</h1>
             { loading ? (
                 <h1>Loading... </h1>
             ) : (
-                <h1>Cars archive</h1>
+                <h1> </h1>
             ) }
             <div className="container mx-auto">
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>ARCHIVIO VETTURE</span></center>
+
                 <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
 
                     <table className='mx-auto mb-8'>

@@ -38,13 +38,16 @@ const PswRecoverPage = ({ history }) => {
 
     return (
         <>
-            <h1>PswRecoverPage.js</h1>
+
             <main>
                 {loading ? (
                     <h4 className="text-danger">Loading</h4>
                 ) : (
-                    <center><h4>Password recover</h4></center>
+                    <center><h4> </h4></center>
                 )}
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>RECOVER PASSWORD</span></center>
+
                 <div className="container mx-auto h-screen flex justify-center items-center">
 
                     <form

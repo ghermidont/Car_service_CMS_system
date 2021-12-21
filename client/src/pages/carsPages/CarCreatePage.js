@@ -19,7 +19,10 @@ const initialState = {
     brand: "brand",
     model: "model",
     licensePlate: "licensePlate",
-    revisions: "revisions date",
+    revisions: {
+        start: "",
+        end: "",
+    },
     km: "99999",
     year: "9999",
     client: "Client",
@@ -101,14 +104,20 @@ export default function CarCreatePage( { history } ){
 
     const handleUserInput = ( event ) => {
         // Dynamically update each of the initialState values by their name parameter.
-        setCarParamsState({ ...carParamsState, [ event.target.name ] : event.target.value } );
+        setCarParamsState({ ...carParamsState, [ event.target.name ]:event.target.value } );
+    };
+
+    const handleDateUserInput = ( event ) => {
+        // Dynamically update each of the initialState values by their name parameter.
+        setCarParamsState({ ...carParamsState, revisions:{[ event.target.name ] : event.target.value }} );
     };
 
     return (
         <main>
-            <h1>CarCreatePage.js</h1>
-
             <div className="container mx-auto py-20">
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>AGGIUNGI VEICOLO</span></center>
+
                 <form onSubmit={ handleSubmit }>
                     {/*TODO Add here inputs from the database with cascader.*/}
                     <label className="block mb-8 text-xl max-w-600">
@@ -145,14 +154,25 @@ export default function CarCreatePage( { history } ){
                     </label>
 
                     <label className="block mb-8 text-xl max-w-600">
-                        REVISIONE
+                        REVISIONE <br/>
+                        <span>start date</span>
                         <input
                             className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
-                            type="text"
-                            name="revisions"
-                            value={ revisions }
-                            onChange={ handleUserInput }
+                            type="date"
+                            name="start"
+                            value={ revisions.start }
+                            onChange={ handleDateUserInput }
                         />
+                        <span>revisions.start: { revisions.start }</span> <br/>
+                        <span>end date</span>
+                        <input
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
+                            type="date"
+                            name="end"
+                            value={ revisions.end }
+                            onChange={ handleDateUserInput }
+                        />
+                        <span>revisions.end: {revisions.end}</span>
                     </label>
 
                     <label className="block mb-8 text-xl max-w-600">

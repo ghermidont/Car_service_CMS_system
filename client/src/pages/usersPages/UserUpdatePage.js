@@ -202,6 +202,9 @@ export default function UpdateUserPage() {
             <hr />
 
             <div className="h-screen flex flex-col justify-between">
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>UPDATE USER INFO</span></center>
+
                 <main className="flex items-center">
                     <div className="container mx-auto py-10">
                         <form onSubmit={ handleSubmit }>

@@ -71,9 +71,10 @@ export default function ClientCreatePage( { match } ) {
 
     return (
         <>
-            <h1>ClientPage.js</h1>
-
             <div className="h-screen flex flex-col justify-between">
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>CLIENT</span></center>
+
                 <main className="flex items-center">
                     <div className="container mx-auto py-10">                       
                         <div className="flex flex-col">

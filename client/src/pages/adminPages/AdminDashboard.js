@@ -111,10 +111,10 @@ export default function AdminDashboard ( { history } ) {
 
     return(
         <>
-            <center><h1 style={ { fontSize: 20, fontWeight: 700 } }> Admin dashboard </h1></center>
-            <main className='mb-12'>
-                <h1> UsersListPage.js </h1>
+            {/*Page title*/}
+            <center><span style={{fontWeight: "bold", fontSize: "25px"}}>ADMIN DASHBOARD</span></center>
 
+            <main className='mb-12'>
                 <div className="container mx-auto">
                     <div className="py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10">
                         { loading ? (

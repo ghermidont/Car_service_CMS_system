@@ -148,9 +148,10 @@ const FinishRegisterAfterEmailCheckPage = ( { history } ) => {
 
     return (
         <>
-            <h1>FinishRegistrationAfterEmailCheck.js</h1>
-
             <main>
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>FINISH REGISTER</span></center>
+
                 <div className="container mx-auto h-screen flex justify-center items-center">
                     <form
                         action="#"

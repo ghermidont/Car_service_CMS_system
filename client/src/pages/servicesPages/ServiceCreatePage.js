@@ -86,11 +86,12 @@ export default function ServiceCreatePage( { history } ) {
     }, [] );
 
     return (
-        <>         
-            <h1>ServiceCreatePage.js</h1>
-
+        <>
             <main>
                 <div className="container mx-auto">
+                    {/*Page title*/}
+                    <center><span style={{fontWeight: "bold", fontSize: "25px"}}>ADD SERVICE</span></center>
+
                     <form onSubmit={ handleSubmit }>
                         <div className="my-20">
                             <table className="mx-auto">

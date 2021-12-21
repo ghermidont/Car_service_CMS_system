@@ -20,10 +20,12 @@ export default function UserPage() {
 
     return(     
         <main>
-            <h1>userPage.js</h1>
-
             <div className="container mx-auto py-20">
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>USER PAGE</span></center>
+
                 <div className='bg-grayL shadow-shadow rounded p-12'>
+
                     <div className='flex mb-20'>
                         <div className='w-400 h-auto border border-border rounded-md mr-6'>
                             { images.map( ( image ) => ( <img className='' src={ image.status==="default" ? ClientPhoto : image.url } alt=""/> )) }

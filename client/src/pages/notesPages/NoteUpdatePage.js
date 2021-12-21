@@ -48,9 +48,11 @@ export default function NoteUpdatePage( { match } ) {
 
     return (
         <main>
-            <h1>NoteUpdatePage.js</h1>
 
             <div className="container mx-auto py-20">
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>UPDATE NOTE</span></center>
+
                 <form onSubmit={ handleSubmit }>
                     <label className='block mb-8 text-xl max-w-600'>
                         TITLE

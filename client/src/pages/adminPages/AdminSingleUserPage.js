@@ -82,8 +82,10 @@ export default function AdminSingleUserPage( { history, match } ) {
 
     return(
         <main>
-            <h1>AdminSingleUserPage.js</h1>
             <div className="flex justify-end">
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>USER</span></center>
+
                 <Link to={ "/admin_dashboard" }>
                     <button className="text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70">
                         Admin Dashboard

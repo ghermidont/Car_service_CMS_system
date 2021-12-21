@@ -33,9 +33,10 @@ export default function NotePage( { match } ) {
 
     return (
         <main>
-            <h1>NotePage.js</h1>
 
             <div className="container mx-auto py-20">
+                {/*Page title*/}
+                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>NOTE</span></center>
 
                 <label className='block mb-8 text-xl max-w-600'> TITLE
                     <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>

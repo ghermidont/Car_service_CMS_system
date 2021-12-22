@@ -193,11 +193,11 @@ export default function UpdateUserPage() {
 
     return (
         <main>
-            <h1> UserUpdatePage.js </h1>
+
             { loading ? (
                 <LoadingOutlined className="text-danger h1" />
             ) : (
-                <h4>Edit user info:</h4>
+                <h4> </h4>
             )}
             <hr />
 

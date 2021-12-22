@@ -99,7 +99,7 @@ export default function CarsPrintList( { dbCars } ) {
                         <DataTableCell getContent={ (c) => c.brand } />
                         <DataTableCell getContent={ (c) => c.model } />
                         <DataTableCell getContent={ (c) => c.licensePlate } />
-                        <DataTableCell getContent={ (c) => c.revisions } />
+                        <DataTableCell getContent={ (c) => c.revisions.end } />
                         <DataTableCell getContent={ (c) => c.km } />
                         <DataTableCell getContent={ (c) => c.year } />
                         <DataTableCell getContent={ (c) => c.client } />

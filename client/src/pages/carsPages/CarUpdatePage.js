@@ -70,6 +70,13 @@ export default function CarUpdatePage( { match } ) {
         setCurrentCarParamsState( { ...currentCarParamsState, [event.target.name]: event.target.value } );
     };
 
+    const handleDateUserInput = ( event ) => {
+        // Dynamically update each of the initialState values by their name parameter.
+        setCurrentCarParamsState({ ...currentCarParamsState, revisions:{ ...currentCarParamsState.revisions, [ event.target.name ] : event.target.value }} );
+    };
+
+    const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
+
     return (
         <main>
             <div className="container mx-auto py-20">
@@ -77,9 +84,9 @@ export default function CarUpdatePage( { match } ) {
                 <center><span style={{fontWeight: "bold", fontSize: "25px"}}>UPDATE CAR INFO</span></center>
                 <form onSubmit={handleSubmit}>
                     {/*TODO Add here inputs from the database with cascader.*/}
-                    <label className='block mb-8 text-xl max-w-600'> MARCA
+                    <label className="block mb-8 text-xl max-w-600"> MARCA
                         <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="brand"
                             value={ brand }
@@ -87,19 +94,19 @@ export default function CarUpdatePage( { match } ) {
                         />
                     </label>
 
-                    <label className='block mb-8 text-xl max-w-600'> MODELLO
+                    <label className="block mb-8 text-xl max-w-600"> MODELLO
                         <input
                             type="text"
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             name="model"
                             value={ model }
                             onChange={ handleUserInput }
                         />
                     </label>
 
-                    <label className='block mb-8 text-xl max-w-600'> TARGA
+                    <label className="block mb-8 text-xl max-w-600"> TARGA
                         <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="licensePlate"
                             value={ licensePlate }
@@ -107,26 +114,30 @@ export default function CarUpdatePage( { match } ) {
                         />
                     </label>
 
-                    <label className='block mb-8 text-xl max-w-600'> REVISIONE
+                    <label className="block mb-8 text-xl max-w-600">
+                        REVISIONE: <br/>
+                        <span>start date: { new Date( revisions.start ).toLocaleString( "en-GB", dateOptions ) }</span>
                         <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                            type="text"
-                            name="revisions"
-                            value={ revisions }
-                            onChange={ handleUserInput }
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
+                            type="date"
+                            name="start"
+                            value={ revisions.start }
+                            onChange={ handleDateUserInput }
                         />
+                        <br/>
+                        <span>end date: { new Date( revisions.end ).toLocaleString( "en-GB", dateOptions ) }</span>
                         <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
-                            type="text"
-                            name="revisions"
-                            value={ revisions }
-                            onChange={ handleUserInput }
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
+                            type="date"
+                            name="end"
+                            value={ revisions.end }
+                            onChange={ handleDateUserInput }
                         />
                     </label>
 
-                    <label className='block mb-8 text-xl max-w-600'> KM
+                    <label className="block mb-8 text-xl max-w-600"> KM
                         <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="km"
                             value={ km }
@@ -134,10 +145,10 @@ export default function CarUpdatePage( { match } ) {
                         />
                     </label>
 
-                    <label className='block mb-8 text-xl max-w-600'> ANNO
+                    <label className="block mb-8 text-xl max-w-600"> ANNO
                         {/*TODO add here regular expression for year only input or replace with date type input*/}
                         <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="year"
                             value={ year }
@@ -145,10 +156,10 @@ export default function CarUpdatePage( { match } ) {
                         />
                     </label>
 
-                    <label className='block mb-8 text-xl max-w-600'>CLIENTE
+                    <label className="block mb-8 text-xl max-w-600">CLIENTE
                         {/*TODO consider adding live search algorithm from the clients database.*/}
                         <input
-                            className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
+                            className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="client"
                             value={ client }
@@ -156,9 +167,9 @@ export default function CarUpdatePage( { match } ) {
                         />
                     </label>
 
-                    <div className='flex justify-end'>
+                    <div className="flex justify-end">
 
-                        <button className='flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                        <button className="flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70">
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"> </path>
                             </svg>

@@ -51,6 +51,9 @@ export default function CarUpdatePage( { match } ) {
         } );
     };
 
+    const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
+
+
     //Start here. Finish the individual car info page with link to the car update page.
     return (
         <main>
@@ -58,51 +61,55 @@ export default function CarUpdatePage( { match } ) {
                 {/*Page title*/}
                 <center><span style={{fontWeight: "bold", fontSize: "25px"}}>VEICOLO</span></center>
 
-                <label className='block mb-8 text-xl max-w-600'> MARCA
-                    <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                        <span className='font-normal text-text text-lg'>{brand}</span>
+                <label className="block mb-8 text-xl max-w-600"> MARCA
+                    <div className="text-xl text-black font-bold uppercase mb-4 bg-white px-2">
+                        <span className="font-normal text-text text-lg">{brand}</span>
                     </div>                      
                 </label>
 
-                <label className='block mb-8 text-xl max-w-600'> MODELLO
-                    <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                        <span className='font-normal text-text text-lg'>{ model }</span>
+                <label className="block mb-8 text-xl max-w-600"> MODELLO
+                    <div className="text-xl text-black font-bold uppercase mb-4 bg-white px-2">
+                        <span className="font-normal text-text text-lg">{ model }</span>
                     </div>
                 </label>
 
-                <label className='block mb-8 text-xl max-w-600'> TARGA
-                    <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                        <span className='font-normal text-text text-lg'>{ registrationPlate }</span>
+                <label className="block mb-8 text-xl max-w-600"> TARGA
+                    <div className="text-xl text-black font-bold uppercase mb-4 bg-white px-2">
+                        <span className="font-normal text-text text-lg">{ registrationPlate }</span>
                     </div>                  
                 </label>
 
-                <label className='block mb-8 text-xl max-w-600'> REVISIONE
-                    <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                        <span className='font-normal text-text text-lg'>{ revisions }</span>
+                <label className="block mb-8 text-xl max-w-600"> REVISIONE
+                    <div className="text-xl text-black font-bold uppercase mb-4 bg-white px-2">
+                        <span className="font-normal text-text text-lg">
+                            start: { new Date( revisions.start ).toLocaleString( "en-GB", dateOptions ) }
+                            { "\n" }
+                            end: { new Date( revisions.end ).toLocaleString( "en-GB", dateOptions ) }
+                        </span>
                     </div>                   
                 </label>
 
-                <label className='block mb-8 text-xl max-w-600'> KM
-                    <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                        <span className='font-normal text-text text-lg'>{ km }</span>
+                <label className="block mb-8 text-xl max-w-600"> KM
+                    <div className="text-xl text-black font-bold uppercase mb-4 bg-white px-2">
+                        <span className="font-normal text-text text-lg">{ km }</span>
                     </div>                  
                 </label>
 
-                <label className='block mb-8 text-xl max-w-600'> ANNO
-                    <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                        <span className='font-normal text-text text-lg'>{ year }</span>
+                <label className="block mb-8 text-xl max-w-600"> ANNO
+                    <div className="text-xl text-black font-bold uppercase mb-4 bg-white px-2">
+                        <span className="font-normal text-text text-lg">{ year }</span>
                     </div>                         
                 </label>
 
-                <label className='block mb-8 text-xl max-w-600'>CLIENTE
-                    <div className='text-xl text-black font-bold uppercase mb-4 bg-white px-2'>
-                        <span className='font-normal text-text text-lg'>{ client }</span>
+                <label className="block mb-8 text-xl max-w-600">CLIENTE
+                    <div className="text-xl text-black font-bold uppercase mb-4 bg-white px-2">
+                        <span className="font-normal text-text text-lg">{ client }</span>
                     </div>                  
                 </label>
 
-                <div className='flex justify-end'>
+                <div className="flex justify-end">
                     <Link to={`/car/update/${slug}`}>
-                        <button className='flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                        <button className="flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70">
                             Edit
                         </button>
                     </Link>

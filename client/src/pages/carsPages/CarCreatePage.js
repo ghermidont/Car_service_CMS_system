@@ -4,8 +4,7 @@ import { useSelector } from "react-redux";
 import { mongoDBCreateCarFunction } from "../../functions/callsToCarRoutes";
 import { mongoDBGetCurrentUserFunction } from "../../functions/callsToAuthRoutes";
 import { mongoDBGetAllClientsFunctionNoPag } from "../../functions/callsToClientRoutes";
-//import schedule from "node-schedule";
-
+const cron = require("node-cron");
 
 // TODO implement the cascader.
 /* Use the Ant cascader for cars select. https://ant.design/components/cascader/ */
@@ -46,6 +45,10 @@ export default function CarCreatePage( { history } ){
     //     toast.success( "ALERT!");
     // });
 
+    let task = cron.schedule('* * * * *', () =>  {
+        console.log('will not execute anymore, nor be able to restart');
+    });
+
     const loadAllClients = async () => {
         // sort, order
         await mongoDBGetAllClientsFunctionNoPag( "createdAt", "desc", reduxStoreUser._id )
@@ -83,8 +86,12 @@ export default function CarCreatePage( { history } ){
         event.preventDefault();
         console.log( "CarCreatePage() handleSubmit() worked!" );
 
+        if( carParamsState.revisions.end!=="" ){
+
+        }
+
         try {
-            console.log( "carParamsState: ", carParamsState );
+            console.log( "handleSubmit() carParamsState: ", carParamsState );
             await mongoDBCreateCarFunction( reduxStoreUser.token, carParamsState )
                 .then( () => {
                     console.log( "mongoDBCreateCarFunction() worked in CarCreatePage.js" );
@@ -109,8 +116,9 @@ export default function CarCreatePage( { history } ){
 
     const handleDateUserInput = ( event ) => {
         // Dynamically update each of the initialState values by their name parameter.
-        setCarParamsState({ ...carParamsState, revisions:{[ event.target.name ] : event.target.value }} );
+        setCarParamsState({ ...carParamsState, revisions:{ ...carParamsState.revisions, [ event.target.name ] : event.target.value }} );
     };
+
 
     return (
         <main>

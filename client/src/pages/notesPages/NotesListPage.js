@@ -93,27 +93,20 @@ export default function NotesListPage( { history } ) {
         setDbNotes( [] );
     }, [ page ] );
 
+    const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
+
     return (
         <main className='mb-12'>
 
+            { loading && <h1>Loading... </h1> }
 
-            { loading ? (
-                <h1>Loading... </h1>
-            ) : (
-                <h1> </h1>
-            ) }
             <div className="container mx-auto">
                 <center><span style={{fontWeight: "bold", fontSize: "25px"}}>NOTES LIST</span></center>
                 <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
                     <List
                         itemLayout="vertical"
                         size="large"
-                        pagination={ {
-                            onChange: page => {
-                                console.log( page );
-                            },
-                            pageSize: 8
-                        }}
+
                         dataSource={ dbNotes }
 
                         renderItem={ item => (
@@ -122,27 +115,29 @@ export default function NotesListPage( { history } ) {
                             >
                                 <List.Item.Meta
                                     title={ <Link to={ `/note/${ item.id }`}><strong>{ item.title }</strong></Link> }
-                                    description={ item.createdAt }
+                                    description={ new Date( item.createdAt ).toLocaleString( "en-GB", dateOptions ) }
                                 />
                                 { item.content }
                                 {
                                     <div>
                                         <Link to={`/note/update/${item.id}`}>
                                             <button className='flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
-                                        Edit
+                                                Edit
                                             </button>
                                         </Link>
                                         <button
                                             className='w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'
                                             onClick={ ()=>deleteNoteFunction( item.id ) }
                                         >
-                                    Delete
+                                            Delete
                                         </button>
+                                        <hr />
                                     </div>
                                 }
                             </List.Item>
                         )}
                     />
+
 
                     { dbNotes.length === 0 && <center><h1> No notes info loaded... </h1></center>}
                     {/* Pagination */}
@@ -156,24 +151,26 @@ export default function NotesListPage( { history } ) {
                             />
                         </nav>
                     </div>
-                </div>
 
-                {/*Bottom buttons section*/}
-                <div className='flex justify-between mx-8'>
-                    <div className='flex'>
-                        {/*Add vehicle button*/}
-                        <button className='flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
-                            <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"> </path>
-                            </svg>
-                            <Link to="/add_note">
-                                Add note
-                            </Link>
-                        </button>
+                    {/*Bottom buttons section*/}
+                    <div className='flex justify-between mx-8'>
+                        <div className='flex'>
+                            {/*Add vehicle button*/}
+                            <button className='flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                                <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"> </path>
+                                </svg>
+                                <Link to="/add_note">
+                                    Add note
+                                </Link>
+                            </button>
+
+                        </div>
 
                     </div>
-
                 </div>
+
+
             </div>
         </main>
     );

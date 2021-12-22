@@ -87,13 +87,7 @@ const FinishRegisterAfterEmailCheckPage = ( { history } ) => {
                         official_city: "Official city",
                         official_province: "Official province",
                         fiscal_code: "Fiscal code",
-                        images: [
-                            {
-                                public_id: "",
-                                url: "",
-                                status: "default"
-                            },
-                        ],
+                        images: [],
                         email: user.email,
                         role: "b%dDHM*SDKS-Jl5kjs",
 

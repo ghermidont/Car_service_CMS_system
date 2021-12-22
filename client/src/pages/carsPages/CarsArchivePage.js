@@ -154,50 +154,48 @@ export default function CarArchivePage( { history } ) {
         setDbCars( [] );
     }, [ page ] );
 
+    const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
+
     return (
-        <main className='mb-12'>
-            { loading ? (
-                <h1>Loading... </h1>
-            ) : (
-                <h1> </h1>
-            ) }
+        <main className="mb-12">
+            { loading && <h1>Loading... </h1> }
             <div className="container mx-auto">
                 {/*Page title*/}
                 <center><span style={{fontWeight: "bold", fontSize: "25px"}}>ARCHIVIO VETTURE</span></center>
 
-                <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
+                <div className="py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10">
 
-                    <table className='mx-auto mb-8'>
+                    <table className="mx-auto mb-8">
 
                         <thead>
                             <tr>
                                 <th> </th>
                                 <th> </th>
-                                <th className='px-1 py-1.5 w-75 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                <th className="px-1 py-1.5 w-75 bg-blue border border-border text-2xl text-white font-normal uppercase">
                                     ID
                                 </th>
-                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                <th className="px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase">
                                     Marca
                                 </th>
-                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                <th className="px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase">
                                     MODELLO
                                 </th>
-                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                <th className="px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase">
                                     TARGA
                                 </th>
-                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                <th className="px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase">
                                     REVISIONE
                                 </th>
-                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                <th className="px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase">
                                     KM
                                 </th>
-                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase'>
+                                <th className="px-6 py-1.5 w-200 bg-blue border border-border text-2xl text-white font-normal uppercase">
                                     ANNO
                                 </th>
-                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-xl text-white font-normal uppercase'>
+                                <th className="px-6 py-1.5 w-200 bg-blue border border-border text-xl text-white font-normal uppercase">
                                     Cliente
                                 </th>
-                                <th className='px-6 py-1.5 w-200 bg-blue border border-border text-xl text-white font-normal uppercase'>
+                                <th className="px-6 py-1.5 w-200 bg-blue border border-border text-xl text-white font-normal uppercase">
                                     user ID
                                 </th>
                             </tr>
@@ -209,37 +207,40 @@ export default function CarArchivePage( { history } ) {
                                 <tr key={ car.slug }>
                                     <td>
                                         <Link to={ `/car/${ car.slug }` }>
-                                            <button className='w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'>
+                                            <button className="w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase">
                                                 Open
                                             </button>
                                         </Link>
                                     </td>
 
-                                    <td className='pr-3'>
+                                    <td className="pr-3">
                                         <button
-                                            className='w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'
+                                            className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"
                                             onClick={ ()=>deleteCarFunction( car.slug ) }
                                         >
                                             Delete
                                         </button>
                                     </td>
                                     {/*ID*/}
-                                    <td className='border border-border px-3'>{ car._id }</td>
+                                    <td className="border border-border px-3">{ car._id }</td>
                                     {/*MARCA*/}
-                                    <td className='border border-border px-3'>{ car.brand }</td>
+                                    <td className="border border-border px-3">{ car.brand }</td>
                                     {/*MODELLO*/}
-                                    <td className='border border-border px-3'>{ car.model }</td>
+                                    <td className="border border-border px-3">{ car.model }</td>
                                     {/*TARGA*/}
-                                    <td className='border border-border px-3'>{ car.licensePlate }</td>
+                                    <td className="border border-border px-3">{ car.licensePlate }</td>
                                     {/*REVISIONE*/}
-                                    <td className='border border-border px-3'>{ car.revisions }</td>
+                                    <td className="border border-border px-3">
+                                        start: { new Date( car.revisions.start ).toLocaleString( "en-GB", dateOptions ) + "\n" }
+                                        end: { new Date( car.revisions.end ).toLocaleString( "en-GB", dateOptions ) }
+                                    </td>
                                     {/*KM*/}
-                                    <td className='border border-border px-3'>{ car.km }</td>
+                                    <td className="border border-border px-3">{ car.km }</td>
                                     {/*ANNO*/}
-                                    <td className='border border-border px-3'>{ car.year }</td>
+                                    <td className="border border-border px-3">{ car.year }</td>
                                     {/*CLIENTE*/}
-                                    <td className='border border-border px-3'>{ car.client }</td>
-                                    <td className='border border-border px-3'>{ car.user }</td>
+                                    <td className="border border-border px-3">{ car.client }</td>
+                                    <td className="border border-border px-3">{ car.user }</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -259,14 +260,14 @@ export default function CarArchivePage( { history } ) {
                 </div>
 
                 {/*Bottom buttons section*/}
-                <div className='flex justify-between mx-8'>
-                    <div className='flex'>
+                <div className="flex justify-between mx-8">
+                    <div className="flex">
                         {/*Add vehicle button*/}
-                        <button className='flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                        <button className="flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70">
                             <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"> </path>
                             </svg>
-                            <Link to='/add_car'>
+                            <Link to="/add_car">
                                 Aggiungi Veicolo
                             </Link>
                         </button>
@@ -274,9 +275,9 @@ export default function CarArchivePage( { history } ) {
                         { dbCars.length !== 0 &&
                             <>
                                 <button
-                                    className='flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                                    className="flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70">
                                     <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"> </path>
                                     </svg>
 
                                     <PDFDownloadLink
@@ -303,11 +304,11 @@ export default function CarArchivePage( { history } ) {
                             </svg>
                         </button>
                         <input
-                            className='w-100% h-10 border border-border rounded-r-full border-l-0 outline-none' type="text"
+                            className="w-100% h-10 border border-border rounded-r-full border-l-0 outline-none" type="text"
                             value={ searchQuery }
                             onChange={ handleUserInput }
                         />
-                        <span className='text-sm text-red block absolute right-0 -bottom-8'> </span>
+                        <span className="text-sm text-red block absolute right-0 -bottom-8"> </span>
                     </form>
                     {/*Search bar END*/}
 

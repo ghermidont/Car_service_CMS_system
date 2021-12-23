@@ -13,6 +13,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import ClientsPrintList from "./ClientsPrintList";
+import { mongoDBGetCarsByFilterFunction } from "../../functions/callsToCarRoutes";
 
 export default function ClientsListPage( { history } ) {
     console.log( "ClientsListPage() worked" );
@@ -53,22 +54,41 @@ export default function ClientsListPage( { history } ) {
             logout();
             return toast.error( "reduxStoreUser._id is undefined please re-login." );
         } else {
-            setLoading( true );
+            console.log( "loadAllClients() ELSE worked");
             // sort, order, limit
             mongoDBGetAllClientsFunction( "createdAt", "desc", page, reduxStoreUser._id )
                 .then( ( res ) => {
-                    setDbClients( res.data );
-                    console.log( "mongoDBGetAllClientsFunction res.data: ", res.data );
-                    // res.data.map( ( c )=> {
-                    //     console.log( "c._id: ", c._id );
-                    //     getClientCars( c._id );
-                    // });
+                    console.log( "mongoDBGetAllClientsFunction() THEN worked " );
+                    console.log( "mongoDBGetAllClientsFunction() THEN res.data: ", res.data );
+                    setLoading( true );
+                    let clientsWithCars = [];
+                    //console.log( "dbClients", dbClients );
+                    res.data.map( ( client ) => {
+                        mongoDBGetCarsByFilterFunction( "createdAt", "desc", client._id, reduxStoreUser._id )
+                            .then( ( carResponse ) => {
+                                //console.log( "mongoDBGetCarsByFilterFunction() res.data: ", client._id, " has cars: ", carResponse.data);
+                                clientsWithCars = ([...clientsWithCars, {...client, cars: carResponse.data}]);
+                                setDbClients( clientsWithCars );
+                                console.log("clientsWithCars: ", clientsWithCars);
+                            } )
+                            .catch( ( error ) => {
+                                console.log( "mongoDBGetCarsByFilterFunction() error: ", error );
+                                setLoading( false );
+                            } );
+                    } );
+                    //clientsWithCars.length!==0&&setDbClients( clientsWithCars );
+                    //console.log( "clientsCars: ", clientsCars );
                     setLoading( false );
                 } )
                 .catch( ( error ) => {
                     toast.error( "Error getting all clients: ", error );
                     console.log( "Error getting all clients", error );
+                    setLoading( false );
                 } );
+
+            console.log( "loadAllClients dbClients with cars: ", dbClients );
+
+
         }
     };
 
@@ -113,11 +133,8 @@ export default function ClientsListPage( { history } ) {
 
     return (   
         <main className='mb-12'>
-            { loading ? (
-                <h1> Loading... </h1>
-            ) : (
-                <h1> </h1>
-            ) }
+            { loading && <h1> Loading... </h1> }
+
             <div className="container mx-auto">
                 {/*Page title*/}
                 <center><span style={{fontWeight: "bold", fontSize: "25px"}}>ELENCO CLIENTI</span></center>
@@ -176,12 +193,14 @@ export default function ClientsListPage( { history } ) {
                                         <td className='border border-border px-3'>{ client.surname }</td>
                                         <td className='border border-border px-3'>{ client.mobile }</td>
                                         <td className='border border-border px-3'>
-                                            <ol>
-                                                {/*TODO After implementing the db docs relationships change the clientCars with the info from the database related to the current client.*/}
-                                                {
-                                                    // console.log("carsListState", carsListState)
-                                                }
-                                            </ol>
+                                            { client.cars && client.cars.length!==0 && client.cars.map( car => {
+                                                return(
+                                                    <ol key={ car._id }>
+                                                        targa: { car.licensePlate }
+                                                    </ol>
+                                                );
+                                            } )
+                                            }
                                         </td>
                                         <td className='border border-border px-3'> { client.user } </td>
 

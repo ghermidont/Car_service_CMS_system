@@ -78,3 +78,5 @@ use this one:
 
 iFrame problem solution:
 <https://github.com/facebook/create-react-app/issues/11771>
+
+https://stackoverflow.com/questions/47103028/how-to-use-object-spread-with-nested-properties

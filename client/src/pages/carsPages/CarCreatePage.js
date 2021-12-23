@@ -45,9 +45,9 @@ export default function CarCreatePage( { history } ){
     //     toast.success( "ALERT!");
     // });
 
-    let task = cron.schedule('* * * * *', () =>  {
-        console.log('will not execute anymore, nor be able to restart');
-    });
+    // let task = cron.schedule('* * * * *', () =>  {
+    //     console.log('will not execute anymore, nor be able to restart');
+    // });
 
     const loadAllClients = async () => {
         // sort, order

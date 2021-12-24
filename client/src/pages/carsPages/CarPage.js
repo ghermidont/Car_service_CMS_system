@@ -53,7 +53,6 @@ export default function CarUpdatePage( { match } ) {
 
     const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
 
-
     //Start here. Finish the individual car info page with link to the car update page.
     return (
         <main>

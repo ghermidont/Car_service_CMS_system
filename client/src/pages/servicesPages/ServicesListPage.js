@@ -69,6 +69,8 @@ export default function ServicesListPage( { history } ) {
         }
     };
 
+    const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
+
     return (
         <main className='mb-12'>
             { loading ? (
@@ -137,7 +139,7 @@ export default function ServicesListPage( { history } ) {
                                         </Link>
                                     </td>
                                     <td className='border border-border px-3'>{ service._id }</td>
-                                    <td className='border border-border px-3'>{ service.date }</td>
+                                    <td className='border border-border px-3'>{ new Date( service.date ).toLocaleString( "en-GB", dateOptions ) }</td>
                                     <td className='border border-border px-3'>{ service.license_plate }</td>
                                     <td className='border border-border px-3'>{ service.brand }</td>
                                     <td className='border border-border px-3'>{ service.model }</td>

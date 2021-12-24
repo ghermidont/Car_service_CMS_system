@@ -5,13 +5,7 @@ const mongoose = require("mongoose");
 const serviceSchema= new mongoose.Schema(
     {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "userModel" },
-        date: {
-            type: String,
-            trim: true,
-            required: true,
-            //maxlength: 32,
-            text: true,
-        },
+        date: Date,
         license_plate: {
             type: String,
             trim: true,

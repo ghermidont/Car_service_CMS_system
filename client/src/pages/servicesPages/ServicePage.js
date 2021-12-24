@@ -61,6 +61,8 @@ export default function ServicePage( { match } ) {
             );
     };
 
+    const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
+
     return (
         <main>
 
@@ -95,7 +97,7 @@ export default function ServicePage( { match } ) {
                         <tbody>
                             <tr>
                                 <td className="border border-border px-3">
-                                    <span className='font-normal text-text text-lg'>{ date }</span>
+                                    <span className='font-normal text-text text-lg'>{ new Date( date ).toLocaleString( "en-GB", dateOptions ) }</span>
                                 </td>
                                 <td className='border border-border px-3'>
                                     <span className='font-normal text-text text-lg'>{ license_plate }</span>

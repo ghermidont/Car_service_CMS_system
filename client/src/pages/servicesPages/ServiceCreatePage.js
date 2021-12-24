@@ -122,7 +122,7 @@ export default function ServiceCreatePage( { history } ) {
                                         <td className="border border-border px-3">
                                             <input
                                                 className="block container px-2 py-1 outline-none mt-1.5"
-                                                type="text"
+                                                type="date"
                                                 name="date"
                                                 value={ date }
                                                 onChange={ handleUserInput }

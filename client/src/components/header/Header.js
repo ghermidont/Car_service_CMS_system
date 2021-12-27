@@ -108,8 +108,11 @@ export default function Header() {
                                 <div className='flex items-center mx-14'>
                                     <Link to="/user_page" >
                                         <div className='w-60 h-14 rounded-full overflow-hidden mr-4'>
-                                            { reduxStoreUser.images && reduxStoreUser.images.map( ( image ) => ( <img key={image._id} src={ image.status==="default" ? ClientPhoto : image.url } alt=""/> )) }
-                                            {/*<h1>{ClientPhoto}</h1>*/}
+                                            { reduxStoreUser.images.length!==0 ?
+                                                reduxStoreUser.images.map(
+                                                    ( image ) => ( <img src={ image.url } alt=""/> )
+                                                ) :  <img src={ ClientPhoto } alt=""/>
+                                            }
                                         </div>
                                         <span className='font-normal uppercase hover:opacity-70 focus:opacity-70'>
                                             { reduxStoreUser ? reduxStoreUser.company_name : "User Data"}

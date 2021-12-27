@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 import {
     mongoDBGetAllUsersFunction,
     mongoDBGetUsersCountFunction,
-    mongoDBDeleteUserFunction,
     mongoDBToggleUserAccessFunction,
     mongoDBToggleUserStatusFunction
 } from "../../functions/callsToAdminRoutes";
@@ -15,6 +14,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import UsersPrintTable from "./UsersPrintTable";
+//const cron = require( "node-cron" );
 
 export default function AdminDashboard ( { history } ) {
 
@@ -29,6 +29,14 @@ export default function AdminDashboard ( { history } ) {
     const statusList = [ "active", "suspended" ];
 
     const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
+
+    // const scheduledAlert = schedule.scheduleJob("59 * * * *", function(){
+    //     toast.success( "ALERT!");
+    // });
+
+    // let task = cron.schedule('* * * * *', () =>  {
+    //     console.log('will not execute anymore, nor be able to restart');
+    // });
 
     const getUsersFromDb = async () => {
         console.log( "getUsersFromDb() worked!" );
@@ -83,6 +91,7 @@ export default function AdminDashboard ( { history } ) {
         if( reduxStoreUser._id ) {
             mongoDBToggleUserAccessFunction( userId, role, reduxStoreUser.authToken )
                 .then( ( res ) => {
+                    window.location.reload();
                     toast.success( "User role changed", res );
                 } )
                 .catch( ( err ) => {
@@ -98,6 +107,7 @@ export default function AdminDashboard ( { history } ) {
         if( reduxStoreUser._id ) {
             mongoDBToggleUserStatusFunction( userId, status, reduxStoreUser.authToken )
                 .then( ( res ) => {
+                    window.location.reload();
                     toast.success( "User status changed", res );
                 } )
                 .catch( ( err ) => {
@@ -108,6 +118,8 @@ export default function AdminDashboard ( { history } ) {
             logout();
         }
     };
+
+    const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
 
     return(
         <>
@@ -162,7 +174,7 @@ export default function AdminDashboard ( { history } ) {
                                         <td className="border border-border px-3"> { userInfo.company_name } </td>
                                         <td className="border border-border px-3"> { userInfo.email } </td>
                                         <td className="border border-border px-3"> { userInfo.fiscal_code } </td>
-                                        <td className="border border-border px-3"> { userInfo.createdAt.toLocaleString() } </td>
+                                        <td className="border border-border px-3"> { new Date( userInfo.createdAt ).toLocaleString( "en-GB", dateOptions ) } </td>
                                         <td className="border border-border px-3">
                                             {/*//TODO Fix here the defaultValue error */}
                                             <select

@@ -25,10 +25,9 @@ const UserRegisterPage = ({ history }) => {
             // save user email in local storage
             window.localStorage.setItem("emailForRegistration", email);
             toast.success(`Email is sent to ${email}. Click the link to complete your registration.`);
+            setEmail("");
             history.push("/");
         });
-        // clear state
-        setEmail("");
     };
 
     return (

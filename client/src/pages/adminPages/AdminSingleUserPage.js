@@ -1,7 +1,6 @@
 //TODO Finish the page.
 import React, {useEffect, useState} from "react";
 import ClientPhoto from "../../images/usr_avatar.png";
-import { Link } from "react-router-dom";
 import { mongoDBGetCurrentUserFunction } from "../../functions/callsToAuthRoutes";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -69,8 +68,8 @@ export default function AdminSingleUserPage( { history, match } ) {
         console.log("deleteUserFromDB() worked");
         mongoDBDeleteUserFunction( id, email, reduxStoreUser.token )
             .then( () => {
-                toast.success( `User with ${email} removed successfully.` );
-                history.push("admin_dashboard");
+                toast.success( `User with ${email} removed successfully. Do not forget to delete the user from the Firebase admin dashboard.` );
+                //history.push("admin_dashboard");
             } )
             .catch( err => toast.error( "deleteUserFromDB() err: ",  err ) );
     };
@@ -82,17 +81,9 @@ export default function AdminSingleUserPage( { history, match } ) {
 
     return(
         <main>
-            <div className="flex justify-end">
-                {/*Page title*/}
+            <div className="container mx-auto py-20">
                 <center><span style={{fontWeight: "bold", fontSize: "25px"}}>USER</span></center>
 
-                <Link to={ "/admin_dashboard" }>
-                    <button className="text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70">
-                        Admin Dashboard
-                    </button>
-                </Link>
-            </div>
-            <div className="container mx-auto py-20">
                 <div className="bg-grayL shadow-shadow rounded p-12">
                     <div className="flex mb-20">
                         <div className="w-400 h-auto border border-border rounded-md mr-6">

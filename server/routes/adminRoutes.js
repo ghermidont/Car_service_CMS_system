@@ -21,7 +21,6 @@ const {
 router.delete(
     "/admin/user/delete",
     //fireBaseAuthCheckMiddleware,
-    //mongoDbAdminCheckMiddleware,
     mongoDBFireBaseDeleteUserController
 );
 

@@ -1,7 +1,8 @@
 /** Functions that trigger the calls to the authentication related backend routes. */
 import axios from "axios";
 
-export const mongoDBCreateUserFunction = async (authToken, user) => {
+export const mongoDBCreateUserFunction = async ( authToken, user ) => {
+    console.log("mongoDBCreateUserFunction() worked");
     return await axios
         .post(
             `${process.env.REACT_APP_API}/auth/user/create`, 

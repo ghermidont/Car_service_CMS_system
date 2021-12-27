@@ -3,7 +3,7 @@ import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { mongoDBCreateUserFunction } from "../../functions/callsToAuthRoutes";
-import {getIdTokenResult, signInWithEmailLink, isSignInWithEmailLink, updatePassword, signOut} from "firebase/auth";
+import { getIdTokenResult, signInWithEmailLink, isSignInWithEmailLink, updatePassword, signOut } from "firebase/auth";
 
 //Since the whole app is wrapped in <BrowserRouter> we can do destructuring {history} its the same thing as using (props) >>> props.history.
 const FinishRegisterAfterEmailCheckPage = ( { history } ) => {
@@ -73,56 +73,56 @@ const FinishRegisterAfterEmailCheckPage = ( { history } ) => {
                         console.log("Error updating the password: ", err);
                     });
 
-                await getIdTokenResult(user, false).then( async (idTokenResult) => {
+                await getIdTokenResult( user, false)
+                    .then( async ( idTokenResult ) => {
                     // redux store
-                    console.log( "FinishRegisterAfterEmailCheckPage handleSubmit user: ", user, "idTokenResult", idTokenResult.token);
+                        console.log( "FinishRegisterAfterEmailCheckPage handleSubmit user: ", user, "idTokenResult", idTokenResult.token );
 
-                    const userInfoForMongoDB = {
-                        status: "active",
-                        company_name: "Company name",
-                        current_residence: "Current residence",
-                        current_city: "Current city",
-                        current_province: "Current province",
-                        official_residence: "Official residence",
-                        official_city: "Official city",
-                        official_province: "Official province",
-                        fiscal_code: "Fiscal code",
-                        images: [],
-                        email: user.email,
-                        role: "b%dDHM*SDKS-Jl5kjs",
+                        const userInfoForMongoDB = {
+                            status: "active",
+                            company_name: "Company name",
+                            current_residence: "Current residence",
+                            current_city: "Current city",
+                            current_province: "Current province",
+                            official_residence: "Official residence",
+                            official_city: "Official city",
+                            official_province: "Official province",
+                            fiscal_code: "Fiscal code",
+                            images: [],
+                            email: user.email,
+                            role: "b%dDHM*SDKS-Jl5kjs",
+                        };
 
-                    };
-
-                    // On this stage the new user is created and in Mongo DB and then the data is also written in the redux store with dispatch function.
-                    await mongoDBCreateUserFunction( idTokenResult.token, userInfoForMongoDB ).then( ( res) => {
-                        console.log( "mongoDBCreateUserFunction() worked in FinishRegisterAfterEmailCheckPage.js" );
-                        dispatch({
-                            type: "LOGGED_IN_USER",
-                            payload: {
-                                status: res.data.status,
-                                company_name: res.data.company_name,
-                                current_residence: res.data.current_residence,
-                                current_city: res.data.current_city,
-                                current_province: res.data.current_province,
-                                official_residence: res.data.official_residence,
-                                official_city: res.data.official_city,
-                                official_province: res.data.official_province,
-                                fiscal_code: res.data.fiscal_code,
-                                images: res.data.images,
-                                email: res.data.email,
-                                token: res.data.token,
-                                role: res.data.role,
-                            },
-                        });
-                        logout();
-                    })
-                        .catch( ( err ) =>
-                        {
-                            toast.error( "Error in mongoDBCreateUserFunction() in FinishRegisterAfterEmailCheckPage.js" );
-                            console.log( "mongoDBCreateUserFunction() error: ", err );
-                        });
+                        // On this stage the new user is created and in Mongo DB and then the data is also written in the redux store with dispatch function.
+                        await mongoDBCreateUserFunction( idTokenResult.token, userInfoForMongoDB ).then( ( res) => {
+                            console.log( "mongoDBCreateUserFunction() worked in FinishRegisterAfterEmailCheckPage.js" );
+                            dispatch({
+                                type: "LOGGED_IN_USER",
+                                payload: {
+                                    status: res.data.status,
+                                    company_name: res.data.company_name,
+                                    current_residence: res.data.current_residence,
+                                    current_city: res.data.current_city,
+                                    current_province: res.data.current_province,
+                                    official_residence: res.data.official_residence,
+                                    official_city: res.data.official_city,
+                                    official_province: res.data.official_province,
+                                    fiscal_code: res.data.fiscal_code,
+                                    images: res.data.images,
+                                    email: res.data.email,
+                                    token: res.data.token,
+                                    role: res.data.role,
+                                },
+                            });
+                            logout();
+                        })
+                            .catch( ( err ) =>
+                            {
+                                toast.error( "Error in mongoDBCreateUserFunction() in FinishRegisterAfterEmailCheckPage.js" );
+                                console.log( "mongoDBCreateUserFunction() error: ", err );
+                            });
                     //Logging out the user to sign in with the new password.
-                });
+                    });
 
             }else{
                 throw( "isSignInWithEmailLink() is: ", isSignInWithEmailLink( auth, window.location.href ));

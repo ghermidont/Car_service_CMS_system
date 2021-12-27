@@ -7,9 +7,11 @@ import { Avatar, Badge } from "antd";
 import Resizer from "react-image-file-resizer";
 import axios from "axios";
 import { mongoDBGetCurrentUserFunction } from "../../functions/callsToAuthRoutes";
+import { mongoDBDeleteUserFunction } from "../../functions/callsToAdminRoutes";
+import {deleteUser, signOut} from "firebase/auth";
+import { auth } from "../../firebase";
 
-export default function UpdateUserPage() {
-
+export default function UpdateUserPage( { history } ) {
     const { reduxStoreUser } = useSelector(( state ) => ( { ...state } ) );
     const dispatch = useDispatch();
 
@@ -34,6 +36,7 @@ export default function UpdateUserPage() {
     const [ loading, setLoading ] = useState( false );
 
     const {
+        _id,
         company_name,
         current_residence,
         current_city,
@@ -43,6 +46,7 @@ export default function UpdateUserPage() {
         official_province,
         fiscal_code,
         images,
+        email
     } = currentUserInfoState;
 
     //const { slug } = match.params;
@@ -88,9 +92,9 @@ export default function UpdateUserPage() {
                                     current_residence: res.data.current_residence,
                                     current_city: res.data.current_city,
                                     current_province: res.data.current_province,
-                                    official_residence: res.data.current_residence,
-                                    official_city: res.data.current_city,
-                                    official_province: res.data.current_province,
+                                    official_residence: res.data.official_residence,
+                                    official_city: res.data.official_city,
+                                    official_province: res.data.official_province,
                                     fiscal_code: res.data.fiscal_code,
                                     images: res.data.images,
                                     email: res.data.email,
@@ -157,6 +161,43 @@ export default function UpdateUserPage() {
                 );
             }
         }
+    };
+
+    const logout = () => {
+        signOut( auth ).then( () => {
+            toast.success("User signed out." );
+        }).catch(( error ) => {
+            toast.error("Error signing out.", error );
+        });
+        // old version --> firebase.auth().signOut();
+        dispatch({
+            type: "LOGOUT",
+            payload: null,
+        });
+        history.push("/" );
+    };
+
+    const deleteUserFromDB = ( id, email ) => {
+        console.log("deleteUserFromDB() worked");
+        const user = auth.currentUser;
+        console.log("user: ", user);
+        console.log("id ", id);
+        console.log("email: ", email);
+
+        mongoDBDeleteUserFunction( id, email, reduxStoreUser.token )
+            .then( () => {
+                deleteUser( user )
+                    .then( () => {
+                        toast.success( "User deleted from FireBase successfully." );
+                        logout();
+                    } )
+                    .catch( ( error ) => {
+                        toast.error( "Could not delete user from the FireBase: ", error.message);
+                    } );
+                toast.success( `User with ${email} removed successfully.` );
+                //history.push("admin_dashboard");
+            } )
+            .catch( err => toast.error( "deleteUserFromMongoDB() err: ",  err ) );
     };
 
     const handleImageRemove = async ( public_id ) => {
@@ -345,8 +386,15 @@ export default function UpdateUserPage() {
                                     </svg>
                                     Salva
                                 </button>
+
                             </div>
                         </form>
+                        <button
+                            className='h-10 flex items-center text-xl text-white bg-red uppercase py-1 px-4 mr-4 mt-auto rounded transition hover:opacity-70 focus:opacity-70'
+                            onClick={ () => deleteUserFromDB( _id, email ) }
+                        >
+                            Delete Account
+                        </button>
                     </div>
                 </main>
             </div>

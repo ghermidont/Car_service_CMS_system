@@ -1,9 +1,7 @@
 const userModel = require("../models/userModel");
-const Slugify = require("slugify");
 
 //This function checks the database for the user with current credentials. If no user found it creates a new user with the credentials.
 exports.mongoDBCreateNewUserController = async (req, res) => {
-
     console.log("mongoDBCreateNewUserController() worked");
 
     const {

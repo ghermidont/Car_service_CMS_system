@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { mongoDBCreateCarFunction } from "../../functions/callsToCarRoutes";
 import { mongoDBGetCurrentUserFunction } from "../../functions/callsToAuthRoutes";
 import { mongoDBGetAllClientsFunctionNoPag } from "../../functions/callsToClientRoutes";
-const cron = require( "node-cron" );
 
 // TODO implement the cascader.
 /* Use the Ant cascader for cars select. https://ant.design/components/cascader/ */
@@ -41,13 +40,7 @@ export default function CarCreatePage( { history } ){
         year,
     } = carParamsState;
 
-    // const scheduledAlert = schedule.scheduleJob("59 * * * *", function(){
-    //     toast.success( "ALERT!");
-    // });
 
-    // let task = cron.schedule('* * * * *', () =>  {
-    //     console.log('will not execute anymore, nor be able to restart');
-    // });
 
     const loadAllClients = async () => {
         // sort, order

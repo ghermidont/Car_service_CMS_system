@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { mongoDBGetCurrentUserFunction } from "../../functions/callsToAuthRoutes";
 import { auth } from "../../firebase";
+import { signOut } from "firebase/auth";
 
 export default function LoginPage( { history } ){
     const [ email, setEmail ] = useState( "" );
@@ -34,6 +35,20 @@ export default function LoginPage( { history } ){
 
     const dispatch = useDispatch();
 
+    const logout = () => {
+        signOut( auth ).then( () => {
+            toast.success("User signed out." );
+        }).catch(( error ) => {
+            toast.error("Error signing out.", error );
+        });
+        // old version --> firebase.auth().signOut();
+        dispatch({
+            type: "LOGOUT",
+            payload: null,
+        });
+        history.push("/" );
+    };
+
     const roleBasedRedirect = ( role, status ) => {
         console.log( "LoginPage.js roleBasedRedirect() worked" );
         // check if intended
@@ -41,17 +56,23 @@ export default function LoginPage( { history } ){
         if ( intended ) {
             history.push( intended.from );
         } else {
-            if( status === "active" ){
-                if ( role === "a%tDHM*54fgS-rl55kfg" ) {
-                    history.push( "/admin_dashboard" );
-                } else if ( role === "b%dDHM*SDKS-Jl5kjs" ) {
-                    history.push( "/main_menu" );
-                }else{
-                    toast.error( "Your role could not be established. Please register or try to re-login.");
-                    history.push( "/" );
+            if ( status ) {
+                if ( status === "active" ) {
+                    if (role === "a%tDHM*54fgS-rl55kfg") {
+                        history.push( "/admin_dashboard" );
+                    } else if ( role === "b%dDHM*SDKS-Jl5kjs" ) {
+                        history.push( "/main_menu" );
+                    } else {
+                        toast.error( "Your role could not be established. Please register or try to re-login." );
+                        history.push( "/" );
+                    }
+                } else {
+                    logout();
+                    toast.error("Your account is inactive please contact the admin.");
                 }
             } else {
-                toast.error( "Your account is inactive please contact the administrator." );
+                logout();
+                toast.error( "Could not find account." );
             }
         }
     };
@@ -80,9 +101,9 @@ export default function LoginPage( { history } ){
                                 current_residence: res.data.current_residence,
                                 current_city: res.data.current_city,
                                 current_province: res.data.current_province,
-                                official_residence: res.data.current_residence,
-                                official_city: res.data.current_city,
-                                official_province: res.data.current_province,
+                                official_residence: res.data.official_residence,
+                                official_city: res.data.official_city,
+                                official_province: res.data.official_province,
                                 fiscal_code: res.data.fiscal_code,
                                 images: res.data.images,
                                 email: res.data.email,

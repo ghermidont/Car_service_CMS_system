@@ -3,38 +3,16 @@ const getAuth = require( "firebase/auth" );
 const userModel = require( "../models/userModel" );
 
 exports.mongoDBFireBaseDeleteUserController = async ( req, res ) => {
-    console.log("mongoDBFireBaseDeleteUserController(). req", req );
+    console.log("mongoDBFireBaseDeleteUserController() worked" );
     console.log("mongoDBFireBaseDeleteUserController(). req.query.email", req.query.email );
     console.log("mongoDBFireBaseDeleteUserController(). req.query._id", req.query.id );
-    console.log("mongoDBFireBaseDeleteUserController(). req.headers.authtoken", req.headers.authtoken );
+
     try {
         const deleted = await userModel
-            .findOneAndRemove( { slug: req.params.slug } )
+            .findOneAndRemove( { email: req.query.email, _id: req.query.id} )
             .exec();
+        console.log( "mongoDBFireBaseDeleteUserController(). deleted", deleted );
         res.json( deleted );
-        try {
-            // Write the current user from the Firebase to the request object.
-            //TODO see if the token is extracted (use console.log).
-            const firebaseUser = await admin
-                .auth()
-                .verifyIdToken( req.headers.authtoken );
-
-            console.log( "mongoDBFireBaseDeleteUserController firebaseUser", firebaseUser );
-            req.user = firebaseUser;
-
-            await getAuth()
-                .deleteUser( firebaseUser.uid )
-                .then( () => {
-                    console.log( "Successfully deleted user from firebase." );
-                } )
-                .catch( ( error ) => {
-                    console.log( "Error deleting user from Firebase:", error );
-                } );
-        } catch ( err ) {
-            res.status( 401 ).json( {
-                err: "Invalid or expired token",
-            } );
-        }
     } catch ( err ) {
         console.log("mongoDBFireBaseDeleteUserController() catch() err: ", err );
         return res.status( 400 ).send( "mongoDBFireBaseDeleteUserController error deleting user", err );

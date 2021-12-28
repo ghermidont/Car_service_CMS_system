@@ -37,6 +37,14 @@ const carSchema = new mongoose.Schema({
             type: Date,
         }
     },
+    alerts: {
+        read: {
+            type: Boolean,
+        },
+        show: {
+            type: Boolean,
+        }
+    },
     km: {
         type: String,
         trim: true,

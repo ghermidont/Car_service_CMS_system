@@ -27,7 +27,7 @@ const UserRegisterPage = lazy( () => import( "./pages/authPages/UserRegisterPage
 const MainMenuPage = lazy( () => import( "./pages/MainMenuPage" ) );
 const UserPage = lazy( () => import( "./pages/usersPages/UserPage" ) );
 const UserUpdatePage = lazy( () => import( "./pages/usersPages/UserUpdatePage" ) );
-const NotificationsPage = lazy( () => import( "./pages/usersPages/NotificationsPage" ) );
+const AlertsListPage = lazy( () => import( "./pages/usersPages/AlertsListPage" ) );
 //Cars pages
 const CarsArchivePage = lazy( () => import( "./pages/carsPages/CarsArchivePage" ) );
 const CarCreatePage = lazy( () => import( "./pages/carsPages/CarCreatePage" ) );
@@ -144,9 +144,7 @@ export default function App() {
                 <UserRoute exact path="/notes_list" component={ NotesListPage }/>
                 <UserRoute exact path="/note/:slug" component={ NotePage }/>
                 {/* User Routes --> Notifications */}
-                <UserRoute exact path="/notifications_list" component={ NotificationsPage }/>
-
-
+                <UserRoute exact path="/alerts_list" component={ AlertsListPage }/>
             </Switch>
             <Footer />
         </Suspense>

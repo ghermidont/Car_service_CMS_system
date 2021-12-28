@@ -18,6 +18,10 @@ const initialState = {
         start: "",
         end: "" 
     },
+    alerts: {
+        read: false,
+        show: false,
+    },
     km: "",
     year: "",
     client: "",

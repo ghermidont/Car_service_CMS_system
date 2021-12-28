@@ -7,10 +7,20 @@ export const mongoDBCreateCarFunction = async ( authToken, car ) => {
         .post(
             `${process.env.REACT_APP_API}/car/new`, 
             car, 
-            { headers: {authToken} } 
+            { headers: { authToken } }
         );
 };
 
+export const mongoDBToggleAlertParamsFunction = async ( email, status, authToken ) => {
+    return await axios
+        .put(
+            `${process.env.REACT_APP_API}/admin/user/status`,
+            { status, email },
+            {
+                headers: { authToken },
+            }
+        );
+};
 // Not used anywhere. For just in case.
 // export const mongoDBGetCarsByCountFunction = async (count) => {
 //     return await axios.get(`${process.env.REACT_APP_API}/cars/${count}`);
@@ -67,6 +77,24 @@ export const mongoDBGetCarsByFilterFunction = async ( sort, order, clientId, use
 
 //Calling the backend end point for total number of products.
 export const mongoDBGetCarsCountFunction = async ( userId ) => {
+    console.log( "mongoDBGetCarsCountFunction() worked" );
+    return await axios
+        .get(
+            `${process.env.REACT_APP_API}/cars/total`,
+            { params: { userId } }
+        );
+};
+
+export const mongoDBGetAlertsFunction = async ( sort, order, page, userId ) => {
+    console.log( "mongoDBGetAlertsFunction() worked" );
+    return await axios
+        .post(
+            `${process.env.REACT_APP_API}/alerts`,
+            { sort, order, page, userId }
+        );
+};
+
+export const mongoDBGetAlertsCountFunction = async ( userId ) => {
     console.log( "mongoDBGetCarsCountFunction() worked" );
     return await axios
         .get(

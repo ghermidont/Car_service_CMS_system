@@ -87,7 +87,7 @@ export default function Header() {
                         { reduxStoreUser.token &&
                             <>
                                 <div>
-                                    <Link to="/user_notifications">
+                                    <Link to="/alerts_list">
                                         <svg
                                             className="w-6 h-6"
                                             fill="none"

@@ -21,6 +21,10 @@ const initialState = {
         start: "",
         end: "",
     },
+    alerts: {
+        read: false,
+        show: false,
+    },
     km: "99999",
     year: "9999",
     client: "Client",

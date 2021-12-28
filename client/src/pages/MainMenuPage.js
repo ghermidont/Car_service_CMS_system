@@ -24,7 +24,7 @@ export default function MainMenuPage() {
                             SCHEDE DI LAVORO
                         </Link>
 
-                        <Link to="/notifications_list" className="text-2xl text-center font-bold bg-grayL uppercase max-w-600 w-100% py-16 rounded shadow-shadow focus:outline-none transition duration-300 hover:bg-border hover:text-white focus:text-white focus:bg-border">
+                        <Link to="/alerts_list" className="text-2xl text-center font-bold bg-grayL uppercase max-w-600 w-100% py-16 rounded shadow-shadow focus:outline-none transition duration-300 hover:bg-border hover:text-white focus:text-white focus:bg-border">
                             GESTIONE TALIANDI
                         </Link>
 

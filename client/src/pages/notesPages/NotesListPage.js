@@ -96,19 +96,17 @@ export default function NotesListPage( { history } ) {
     const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
 
     return (
-        <main className='mb-12'>
+        <main className="mb-12">
 
             { loading && <h1>Loading... </h1> }
 
             <div className="container mx-auto">
                 <center><span style={{fontWeight: "bold", fontSize: "25px"}}>NOTES LIST</span></center>
-                <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
+                <div className="py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10">
                     <List
                         itemLayout="vertical"
                         size="large"
-
                         dataSource={ dbNotes }
-
                         renderItem={ item => (
                             <List.Item
                                 key={ item.title }
@@ -121,12 +119,12 @@ export default function NotesListPage( { history } ) {
                                 {
                                     <div>
                                         <Link to={`/note/update/${item.id}`}>
-                                            <button className='flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                                            <button className="flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70">
                                                 Edit
                                             </button>
                                         </Link>
                                         <button
-                                            className='w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase'
+                                            className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"
                                             onClick={ ()=>deleteNoteFunction( item.id ) }
                                         >
                                             Delete
@@ -153,10 +151,10 @@ export default function NotesListPage( { history } ) {
                     </div>
 
                     {/*Bottom buttons section*/}
-                    <div className='flex justify-between mx-8'>
-                        <div className='flex'>
+                    <div className="flex justify-between mx-8">
+                        <div className="flex">
                             {/*Add vehicle button*/}
-                            <button className='flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                            <button className="flex items-center text-xl text-white bg-blue uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70">
                                 <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"> </path>
                                 </svg>

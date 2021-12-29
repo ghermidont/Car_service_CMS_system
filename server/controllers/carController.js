@@ -1,6 +1,7 @@
 // noinspection DuplicatedCode
 const carModel = require("../models/carModel");
 const slugify = require("slugify");
+const userModel = require("../models/userModel");
 //const ObjectId = require("mongoose").Types.ObjectId;
 
 exports.mongoDBCreateCarController = async ( req, res ) => {
@@ -165,5 +166,63 @@ exports.mongoDBSearchCarByFilterController = async ( req, res ) => {
         res.json( cars );
         // $text: { $search: req.body.query },
         // user: req.body.userId
+    }
+};
+
+exports.mongoDBGetAlertsCountController = async ( req, res ) => {
+    console.log("mongoDBGetAlertsCountController() userId", req.query.userId );
+    let total = await carModel
+        .find( {/* req.query.currentDate compare dates logic here*/} )
+        .countDocuments( { user: req.query.userId } )
+        .exec();
+    console.log( "mongoDBGetAlertsCountController() total: ", total );
+    res.json( total );
+};
+
+// WITH PAGINATION
+exports.mongoDBGetAlertsController = async ( req, res ) => {
+    try {
+        // createdAt/updatedAt, desc/asc, 3
+        const { sort, order, page, currentDate, userId } = req.body;
+        //the page number the user clicks on.
+        const currentPage = page || 1;
+        //The number of items per page.
+        const perPage = 8;
+        console.log( "mongoDBGetAlertsController() userId", userId );
+
+        const alerts = await carModel
+            .find( { user: req.body.userId /* date compare callback currentDate*/} )
+        //.populate( "user" )
+        //.populate("client")
+        //In order not to get the whole user object, but only some parameters use this syntax:
+        // .populate({"user", select: ["name", "email"]})
+        //skipping the number of products from the page previous to the chosen page.
+            .skip(( currentPage - 1 ) * perPage )
+            .sort([ [ sort, order ] ] )
+            .limit( perPage )
+            .exec();
+        res.json( alerts );
+    } catch ( err ) {
+        console.log( "mongoDBGetAlertsController() err: ", err );
+    }
+};
+
+exports.mongoDBToggleAlertParamsController = async ( req, res ) => {
+    console.log( "mongoDBToggleAlertParamsController() req.body: ", req.body );
+    try {
+        const updated = await carModel
+            .findOneAndUpdate(
+                { slug: req.body.slug },
+                { [req.body.field]: req.body.value },
+                { new: true }
+            )
+            .exec();
+        console.log( "mongoDBToggleAlertParamsController() updated: ", updated );
+        res.json( updated );
+    } catch ( err ) {
+        console.log( "ALERT PARAM TOGGLE ERROR --> ", err );
+        res.status( 400 ).json( {
+            err: err.message,
+        } );
     }
 };

@@ -8,8 +8,8 @@ import {
     mongoDBGetAlertsCountFunction,
     mongoDBToggleAlertParamsFunction
 } from "../../functions/callsToCarRoutes";
-import {signOut} from "firebase/auth";
-import {auth} from "../../firebase";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
 
 export default function AlertsListPage( { history } ) {
     console.log( "AlertsListPage() worked" );
@@ -23,6 +23,7 @@ export default function AlertsListPage( { history } ) {
     const [ loading, setLoading ] = useState( false );
 
     const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
+
     const currentDate = new Date();
     console.log( "AlertsListPage() currentDate: ", currentDate );
 
@@ -30,9 +31,9 @@ export default function AlertsListPage( { history } ) {
         console.log( "CarArchivePage logout() worked." );
         signOut( auth ).then( () => {
             toast.success( "User signed out." );
-        }).catch(( error ) => {
+        } ).catch( ( error ) => {
             toast.error( "Error signing out.", error );
-        });
+        } );
         // old version --> firebase.auth().signOut();
         dispatch( {
             type: "LOGOUT",
@@ -41,24 +42,24 @@ export default function AlertsListPage( { history } ) {
         history.push( "/" );
     };
 
-    useEffect(() => {
+    useEffect( () => {
         console.log( "AlertsPage() useEffect() [] worked." );
         mongoDBGetAlertsCountFunction( reduxStoreUser._id, currentDate )
-            .then( ( res) => {
+            .then( ( res ) => {
                 setAlertsCount( res.data );
                 console.log( "mongoDBGetAlertsCountFunction() res.data: ", res.data );
             } )
             .catch( ( error ) => {
                 toast.error( "Error loading alerts count", error );
             } );
-        console.log( "Alerts count: ", alertsCount );
+        console.log( "useEffect() alertsCount: ", alertsCount );
     }, [] );
 
     const toggleAlertsParams = ( slug, field, value ) => {      
         mongoDBToggleAlertParamsFunction( slug, field, value, reduxStoreUser.authToken )
             .then( ( res ) => {
-                window.location.reload();
                 toast.success( "Alert state changed changed", res );
+                window.location.reload();
             } )
             .catch( ( err ) => {
                 console.log( "Error changing alert state: ", err );
@@ -73,7 +74,6 @@ export default function AlertsListPage( { history } ) {
         if ( reduxStoreUser._id === undefined ){
             logout();
             return toast.error( "reduxStoreUser._id is undefined please re-login." );
-
         } else {
             mongoDBGetAlertsFunction( "createdAt", "desc", page, currentDate, reduxStoreUser._id )
                 .then( ( res ) => {
@@ -87,7 +87,7 @@ export default function AlertsListPage( { history } ) {
         }
     };
 
-    useEffect(() => {
+    useEffect( () => {
         console.log( "AlertsListPage useEffect() [page] useEffect worked." );
         getAlerts();
         setDbAlerts( [] );
@@ -95,11 +95,9 @@ export default function AlertsListPage( { history } ) {
 
     return (
         <main className="mb-12">
-
             { loading && <h1>Loading... </h1> }
-
             <div className="container mx-auto">
-                <center><span style={{fontWeight: "bold", fontSize: "25px"}}>Revision expiry alerts</span></center>
+                <center><span style={ {fontWeight: "bold", fontSize: "25px"} }>Revision expiry alerts</span></center>
                 <div className="py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10">
                     <List
                         itemLayout="vertical"
@@ -108,13 +106,13 @@ export default function AlertsListPage( { history } ) {
                         renderItem={ item => (
                             <List.Item key={ item._id } >
                                 <List.Item.Meta
-                                    title={ <strong><span style={{ color: item.alerts.read===false?"red":"black" }}>ALERT</span> car: { item.licensePlate } </strong> }
+                                    title={ <strong><span style={ { color: item.alerts.read===false?"red":"black" } }>ALERT</span> car: { item.licensePlate } </strong> }
                                     description={ item.createdAt }
                                 />
                                 {
                                     <div>
                                         <div>
-                                            {new Date(item.revisions.end).toLocaleString( "en-GB", dateOptions )}
+                                            { new Date( item.revisions.end ).toLocaleString( "en-GB", dateOptions ) }
                                         </div>
                                         <div>
                                             <button

@@ -14,7 +14,10 @@ const {
     mongoDBUpdateCarController,
     mongoDBGetAllCarsController,
     mongoDBSearchCarByFilterController,
-    mongoDBGetCarsByFilterController
+    mongoDBGetCarsByFilterController,
+    mongoDBGetAlertsCountController,
+    mongoDBGetAlertsController,
+    mongoDBToggleAlertParamsController,
 } = require( "../controllers/carController" );
 
 // routesController
@@ -61,6 +64,22 @@ router.post(
 router.post(
     "/car/search",
     mongoDBSearchCarByFilterController
+);
+
+router.get(
+    "/alerts/total",
+    mongoDBGetAlertsCountController
+);
+
+router.post(
+    "/alerts",
+    mongoDBGetAlertsController
+);
+
+router.put(
+    "/alert/toggle",
+    //fireBaseAuthCheckMiddleware,
+    mongoDBToggleAlertParamsController
 );
 
 module.exports = router;

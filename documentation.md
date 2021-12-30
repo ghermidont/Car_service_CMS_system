@@ -81,4 +81,16 @@ iFrame problem solution:
 
 https://stackoverflow.com/questions/47103028/how-to-use-object-spread-with-nested-properties
 
-https://www.rabbitmq.com/queues.html
+Scheduled alerts:
+<https://www.rabbitmq.com/queues.html>
+
+Comparing dates in mongoDB:
+<https://www.codegrepper.com/code-examples/javascript/how+to+compare+date+in+mongoose>
+<https://www.tutorialspoint.com/How-to-subtract-days-from-a-date-in-JavaScript>
+
+populate examples:
+#.populate( "user" )
+#.populate("client")
+# In order not to get the whole user object, but only some parameters use this syntax:
+# .populate({"user", select: ["name", "email"]})
+# skipping the number of products from the page previous to the chosen page.

@@ -170,10 +170,13 @@ exports.mongoDBSearchCarByFilterController = async ( req, res ) => {
 };
 
 exports.mongoDBGetAlertsCountController = async ( req, res ) => {
-    console.log("mongoDBGetAlertsCountController() userId", req.query.userId );
+    console.log( "mongoDBGetAlertsCountController() userId", req.query.userId );
+    const currentDate = new Date( req.query.currentDate );
+    currentDate.setDate( currentDate.getDate() - 3 );
+
     let total = await carModel
         .find( {/* req.query.currentDate compare dates logic here*/} )
-        .countDocuments( { user: req.query.userId } )
+        .countDocuments( { user: req.query.userId, revisions: { end: currentDate } } )
         .exec();
     console.log( "mongoDBGetAlertsCountController() total: ", total );
     res.json( total );
@@ -183,7 +186,9 @@ exports.mongoDBGetAlertsCountController = async ( req, res ) => {
 exports.mongoDBGetAlertsController = async ( req, res ) => {
     try {
         // createdAt/updatedAt, desc/asc, 3
-        const { sort, order, page, currentDate, userId } = req.body;
+        const { sort, order, page, userId } = req.body;
+        const currentDate = new Date(req.body.currentDate);
+        currentDate.setDate( currentDate.getDate() - 3 );
         //the page number the user clicks on.
         const currentPage = page || 1;
         //The number of items per page.
@@ -191,7 +196,7 @@ exports.mongoDBGetAlertsController = async ( req, res ) => {
         console.log( "mongoDBGetAlertsController() userId", userId );
 
         const alerts = await carModel
-            .find( { user: req.body.userId /* date compare callback currentDate*/} )
+            .find( { user: req.body.userId,  revisions: { end: currentDate } } )
         //.populate( "user" )
         //.populate("client")
         //In order not to get the whole user object, but only some parameters use this syntax:

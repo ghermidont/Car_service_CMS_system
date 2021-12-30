@@ -8,16 +8,34 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import ClientPhoto from "../../images/usr_avatar.png";
+import NotificationOn from "../../images/notificationOn.png";
+import { mongoDBGetAlertsCountFunction } from "../../functions/callsToCarRoutes";
 
 export default function Header() {
     const [ admin, setAdmin ] = useState( false );
+    const [ alertsCount, setAlertsCount ] = useState( 0 );
     const history = useHistory();
     const dispatch = useDispatch();
     const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
 
+    const currentDate = new Date();
+
+    const checkAlerts = () => {
+        mongoDBGetAlertsCountFunction( reduxStoreUser._id, currentDate )
+            .then( ( res ) => {
+                setAlertsCount( res.data );
+                console.log( "Header() mongoDBGetAlertsCountFunction() res.data: ", res.data );
+            } )
+            .catch( ( error ) => {
+                console.log( "LoginPage() mongoDBGetAlertsCountFunction() error ", error );
+                toast.error( "LoginPage() mongoDBGetAlertsCountFunction() error ", error );
+            } );
+    };
+
     useEffect(() => {
         return () => {
             if ( reduxStoreUser ) {
+                checkAlerts();
                 reduxStoreUser.role === "a%tDHM*54fgS-rl55kfg" ? setAdmin( true ) : setAdmin( false );
                 console.log("Header.js The user form the Redux Store:", reduxStoreUser);
             }else{
@@ -88,20 +106,23 @@ export default function Header() {
                             <>
                                 <div>
                                     <Link to="/alerts_list">
-                                        <svg
-                                            className="w-6 h-6"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth="2"
-                                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
-                                            </path>
-                                        </svg>
+                                        { alertsCount ?
+                                            NotificationOn
+                                            : <svg
+                                                className="w-6 h-6"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth="2"
+                                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                                </path>
+                                            </svg>
+                                        }
                                     </Link>
                                 </div>
 
@@ -123,12 +144,12 @@ export default function Header() {
                                 <div>
                                     <button
                                         className='flex items-center text-xl text-white bg-red uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'
-                                        onClick={logout}
+                                        onClick={ logout }
                                     >
                                         <LogoutOutlined/> Log Out
                                     </button>
                                     { admin &&
-                                        <Link to="/admin_dashboard" style={{marginTop: "10px"}}  >
+                                        <Link to="/admin_dashboard" style={ {marginTop: "10px"} }  >
                                             <button className='flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
                                                 Admin Panel
                                             </button>

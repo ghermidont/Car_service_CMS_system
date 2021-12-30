@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { getIdTokenResult, signInWithEmailAndPassword } from "firebase/auth";
 //import { auth /*googleAuthProvider*/ } from "../firebase";
 import { toast } from "react-toastify";
-
 //useSelector is used to get the data from the state.
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -19,7 +18,8 @@ export default function LoginPage( { history } ){
     // user is the name of the userReduces
     const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
     //const info = {name: "Mike"};
-
+    const dispatch = useDispatch();
+    
     useEffect( () => {
         const intended = history.location.state;
         console.log( "history.location.state", history.location.state );
@@ -32,8 +32,6 @@ export default function LoginPage( { history } ){
             }
         }
     }, [ reduxStoreUser, history ] );
-
-    const dispatch = useDispatch();
 
     const logout = () => {
         signOut( auth ).then( () => {
@@ -115,7 +113,7 @@ export default function LoginPage( { history } ){
                         roleBasedRedirect( res.data.role, res.data.status );
                     } else {
                         toast.error( "Could not get/find user info in the mongoDB database. Unable to proceed" );
-                    };
+                    }
                 } ).catch( ( err ) => {
                     console.log( "Login page get user info error: ", err );
                     toast.error( `Login page get user info error: ${ err }` );
@@ -173,7 +171,6 @@ export default function LoginPage( { history } ){
                     <div className='max-w-600 w-100% bg-grayL px-12 pt-8 pb-14 shadow-shadow rounded'>
                         <form
                             action="#"
-                            required
                             autoComplete="off"
                             onSubmit={ handleSubmit }
                         >
@@ -182,7 +179,8 @@ export default function LoginPage( { history } ){
                                 <input
                                     className='block container px-2 py-1 border outline-none rounded border-border mt-1.5'
                                     type="email"
-                                    value={email}
+                                    required
+                                    value={ email }
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Your email"
                                     autoFocus

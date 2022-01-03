@@ -24,7 +24,7 @@ export default function AlertsListPage( { history } ) {
 
     const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
 
-    const currentDate = new Date();
+    const currentDate = new Date().toDateString();
     console.log( "AlertsListPage() currentDate: ", currentDate );
 
     const logout = () => {
@@ -88,7 +88,7 @@ export default function AlertsListPage( { history } ) {
     };
 
     useEffect( () => {
-        console.log( "AlertsListPage useEffect() [page] useEffect worked." );
+        console.log( "AlertsListPage() useEffect() [page] useEffect worked." );
         getAlerts();
         setDbAlerts( [] );
     }, [ page ] );

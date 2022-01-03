@@ -12,15 +12,19 @@ import NotificationOn from "../../images/notificationOn.png";
 import { mongoDBGetAlertsCountFunction } from "../../functions/callsToCarRoutes";
 
 export default function Header() {
+    console.log("Header worked()");
     const [ admin, setAdmin ] = useState( false );
     const [ alertsCount, setAlertsCount ] = useState( 0 );
     const history = useHistory();
     const dispatch = useDispatch();
     const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
 
-    const currentDate = new Date();
+    const currentDate = new Date().toDateString();
+    console.log( "Header() currentDate", currentDate );
 
     const checkAlerts = () => {
+        console.log("checkAlerts() worked.");
+
         mongoDBGetAlertsCountFunction( reduxStoreUser._id, currentDate )
             .then( ( res ) => {
                 setAlertsCount( res.data );
@@ -43,6 +47,10 @@ export default function Header() {
             }
         };
     }, [ reduxStoreUser ] );
+
+    useEffect(() => {
+        checkAlerts();
+    });
 
     const logout = () => {
         signOut( auth ).then( () => {

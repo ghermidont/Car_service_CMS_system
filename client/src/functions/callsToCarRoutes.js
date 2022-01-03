@@ -75,12 +75,12 @@ export const mongoDBGetCarsByFilterFunction = async ( sort, order, clientId, use
 };
 
 //Calling the backend end point for total number of products.
-export const mongoDBGetCarsCountFunction = async ( userId ) => {
+export const mongoDBGetCarsCountFunction = async ( userId, currentDate ) => {
     console.log( "mongoDBGetCarsCountFunction() worked" );
     return await axios
         .get(
             `${process.env.REACT_APP_API}/cars/total`,
-            { params: { userId } }
+            { params: { userId, currentDate } }
         );
 };
 

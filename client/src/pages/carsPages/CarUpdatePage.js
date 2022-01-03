@@ -76,7 +76,7 @@ export default function CarUpdatePage( { match } ) {
 
     const handleDateUserInput = ( event ) => {
         // Dynamically update each of the initialState values by their name parameter.
-        setCurrentCarParamsState({ ...currentCarParamsState, revisions:{ ...currentCarParamsState.revisions, [ event.target.name ] : event.target.value }} );
+        setCurrentCarParamsState({ ...currentCarParamsState, revisions:{ ...currentCarParamsState.revisions, [ event.target.name ] : new Date( event.target.value ).toDateString() }} );
     };
 
     const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };

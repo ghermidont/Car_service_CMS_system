@@ -143,7 +143,7 @@ export default function App() {
                 <UserRoute exact path="/note/update/:slug" component={ NoteUpdatePage }/>
                 <UserRoute exact path="/notes_list" component={ NotesListPage }/>
                 <UserRoute exact path="/note/:slug" component={ NotePage }/>
-                {/* User Routes --> Notifications */}
+                {/* User Routes --> Alerts */}
                 <UserRoute exact path="/alerts_list" component={ AlertsListPage }/>
             </Switch>
             <Footer />

@@ -31,10 +31,10 @@ const carSchema = new mongoose.Schema({
     },
     revisions: {
         start: {
-            type: Date,
+            type: String,
         },
         end: {
-            type: Date,
+            type: String,
         }
     },
     alerts: {

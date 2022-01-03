@@ -169,14 +169,17 @@ exports.mongoDBSearchCarByFilterController = async ( req, res ) => {
     }
 };
 
-exports.mongoDBGetAlertsCountController = async ( req, res ) => {
-    console.log( "mongoDBGetAlertsCountController() userId", req.query.userId );
-    const currentDate = new Date( req.query.currentDate );
-    currentDate.setDate( currentDate.getDate() - 3 );
+// revisions: { end: req.query.currentDate }
 
+exports.mongoDBGetAlertsCountController = async ( req, res ) => {
+    console.log( "mongoDBGetAlertsCountController() req.query.userId: ", req.query.userId );
+    //const currentDate = new Date( req.query.currentDate );
+    //currentDate.setDate( currentDate.getDate() - 3 );
+    console.log( "mongoDBGetAlertsCountController() req.query.currentDate: ", req.query.currentDate );
+    // user: req.query.userId
     let total = await carModel
-        .find( {/* req.query.currentDate compare dates logic here*/} )
-        .countDocuments( { user: req.query.userId, revisions: { end: currentDate } } )
+        .find()
+        .countDocuments( { user: req.query.userId, "revisions.end": req.body.currentDate } )
         .exec();
     console.log( "mongoDBGetAlertsCountController() total: ", total );
     res.json( total );
@@ -187,17 +190,22 @@ exports.mongoDBGetAlertsController = async ( req, res ) => {
     try {
         // createdAt/updatedAt, desc/asc, 3
         const { sort, order, page, userId } = req.body;
-        const currentDate = new Date(req.body.currentDate);
-        currentDate.setDate( currentDate.getDate() - 3 );
+        //const currentDate = new Date(req.body.currentDate);
+        //currentDate.setDate( currentDate.getDate() - 3 );
+        console.log( "mongoDBGetAlertsController() req.body.currentDate: ", req.body.currentDate );
         //the page number the user clicks on.
         const currentPage = page || 1;
         //The number of items per page.
         const perPage = 8;
-        console.log( "mongoDBGetAlertsController() userId", userId );
-
+        console.log( "mongoDBGetAlertsController() userId: ", userId );
+        //revisions: { end: new Date(req.body.currentDate).toDateString()
         const alerts = await carModel
-            .find( { user: req.body.userId,  revisions: { end: currentDate } } )
-        //.populate( "user" )
+            .find( {
+                user: req.body.userId,
+                "revisions.end": req.body.currentDate
+            } )
+        // user: req.body.userId,
+        //.populate( "user" )w
         //.populate("client")
         //In order not to get the whole user object, but only some parameters use this syntax:
         // .populate({"user", select: ["name", "email"]})
@@ -206,6 +214,7 @@ exports.mongoDBGetAlertsController = async ( req, res ) => {
             .sort([ [ sort, order ] ] )
             .limit( perPage )
             .exec();
+        console.log( "mongoDBGetAlertsController() alerts: ", alerts );
         res.json( alerts );
     } catch ( err ) {
         console.log( "mongoDBGetAlertsController() err: ", err );

@@ -113,9 +113,9 @@ export default function CarCreatePage( { history } ){
 
     const handleDateUserInput = ( event ) => {
         // Dynamically update each of the initialState values by their name parameter.
-        setCarParamsState({ ...carParamsState, revisions:{ ...carParamsState.revisions, [ event.target.name ] : event.target.value }} );
+        setCarParamsState({ ...carParamsState, revisions:{ ...carParamsState.revisions, [ event.target.name ] : new Date( event.target.value ).toDateString() }} );
+        console.log(carParamsState);
     };
-
 
     return (
         <main>

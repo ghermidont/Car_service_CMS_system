@@ -106,13 +106,18 @@ export default function AlertsListPage( { history } ) {
                         renderItem={ item => (
                             <List.Item key={ item._id } >
                                 <List.Item.Meta
-                                    title={ <strong><span style={ { color: item.alerts.read===false?"red":"black" } }>ALERT</span> car: { item.licensePlate } </strong> }
-                                    description={ item.createdAt }
+                                    title={ 
+                                        <strong>
+                                            <span style={ { color: item.alerts.read===false?"red":"black" } }>ALERT</span> <br></br>
+                                        Car with license plate: { item.licensePlate }
+                                        </strong> 
+                                    }
+                                    //description={   }
                                 />
                                 {
                                     <div>
                                         <div>
-                                            { new Date( item.revisions.end ).toLocaleString( "en-GB", dateOptions ) }
+                                            revision expires at: { new Date( item.revisions.end ).toLocaleString( "en-GB", dateOptions ) }
                                         </div>
                                         <div>
                                             <button

@@ -44,7 +44,7 @@ export default function AlertsListPage( { history } ) {
 
     useEffect( () => {
         console.log( "AlertsPage() useEffect() [] worked." );
-        mongoDBGetAlertsCountFunction( reduxStoreUser._id, currentDate )
+        mongoDBGetAlertsCountFunction( reduxStoreUser._id )
             .then( ( res ) => {
                 setAlertsCount( res.data );
                 console.log( "mongoDBGetAlertsCountFunction() res.data: ", res.data );
@@ -75,7 +75,7 @@ export default function AlertsListPage( { history } ) {
             logout();
             return toast.error( "reduxStoreUser._id is undefined please re-login." );
         } else {
-            mongoDBGetAlertsFunction( "createdAt", "desc", page, currentDate, reduxStoreUser._id )
+            mongoDBGetAlertsFunction( "createdAt", "desc", page, reduxStoreUser._id )
                 .then( ( res ) => {
                     setDbAlerts( res.data );
                     setLoading( false );

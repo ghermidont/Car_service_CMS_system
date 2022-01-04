@@ -13,8 +13,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Modal } from "antd";
-
 import CarsPrintList from "./CarsPrinList";
+import SignaturePad from "react-signature-canvas";
 
 export default function CarArchivePage( { history } ) {
     console.log( "CarsArchivePage() worked" );
@@ -29,6 +29,18 @@ export default function CarArchivePage( { history } ) {
     const [ searchResults, setSearchResults ] = useState( [] );
     const [ searchQuery, setSearchQuery ] = useState( "" );
     const [ isModalVisible, setIsModalVisible ] = useState( false );
+    const [ trimmedDataURL, setTrimmedDataURL ] = useState( null );
+
+    let sigPad = {};
+
+    const clear = () => {
+        sigPad.clear();
+        setTrimmedDataURL(null);
+    };
+
+    const trim = () => {
+        setTrimmedDataURL( sigPad.getTrimmedCanvas().toDataURL("image/png") );
+    };
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -158,8 +170,29 @@ export default function CarArchivePage( { history } ) {
 
     return (
         <main className="mb-12">
+            <div>
+                <SignaturePad               
+                    ref={(ref) => { sigPad = ref; }}
+                />
+            </div>
+            <div>
+                <button
+                    className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"
+                    onClick={clear}
+                >
+                    Clear
+                </button>
+                <button
+                    className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"
+                    onClick={trim}
+                >
+                    Trim
+                </button>
+            </div>
+            { trimmedDataURL ? <><span>{trimmedDataURL}</span><img src={ trimmedDataURL } /></> : null }
             { loading && <h1>Loading... </h1> }
             <div className="container mx-auto">
+
                 {/*Page title*/}
                 <center><span style={{fontWeight: "bold", fontSize: "25px"}}>ARCHIVIO VETTURE</span></center>
 
@@ -273,22 +306,28 @@ export default function CarArchivePage( { history } ) {
                         </button>
                         {/*Print list button*/}
                         { dbCars.length !== 0 &&
-                            <>
-                                <button
-                                    className="flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70">
-                                    <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"> </path>
-                                    </svg>
+                                <>
+                                    {trimmedDataURL &&
+                                        <button
+                                            className="flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70">
+                                            <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                            </svg>
 
-                                    <PDFDownloadLink
-                                        document={ <CarsPrintList dbCars={ dbCars }/> }
-                                        fileName={`carsTable-${ new Date().toLocaleString() }.pdf` }
-                                        className="btn btn-sm btn-block btn-outline-primary"
-                                    >
-                                        Stampa Lista
-                                    </PDFDownloadLink>
-                                </button>
-                            </>
+                                            <PDFDownloadLink
+                                                document={<CarsPrintList dbCars={dbCars}
+                                                    trimmedDataURL={trimmedDataURL}/>}
+                                                fileName={`carsTable-${new Date().toLocaleString()}.pdf`}
+                                                className="btn btn-sm btn-block btn-outline-primary"
+                                            >
+                                                Stampa Lista
+                                            </PDFDownloadLink>
+                                        </button>
+                                    }
+                                </>
                         }
                     </div>
 

@@ -18,6 +18,8 @@ const {
     mongoDBGetAlertsCountController,
     mongoDBGetAlertsController,
     mongoDBToggleAlertParamsController,
+    mongoDBActivateAlertsController,
+    mongoDBCheckForActiveAlertsController
 } = require( "../controllers/carController" );
 
 // routesController
@@ -71,6 +73,11 @@ router.get(
     mongoDBGetAlertsCountController
 );
 
+router.get(
+    "/alerts/check",
+    mongoDBCheckForActiveAlertsController
+);
+
 router.post(
     "/alerts",
     mongoDBGetAlertsController
@@ -80,6 +87,12 @@ router.put(
     "/alert/toggle",
     //fireBaseAuthCheckMiddleware,
     mongoDBToggleAlertParamsController
+);
+
+router.put(
+    "/alert/activate",
+    //fireBaseAuthCheckMiddleware,
+    mongoDBActivateAlertsController
 );
 
 module.exports = router;

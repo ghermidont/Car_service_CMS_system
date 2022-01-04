@@ -1,9 +1,11 @@
 import React from "react";
+
 import {
     Document,
     Page,
     Text,
-    StyleSheet
+    StyleSheet,
+    Image
 } from "@react-pdf/renderer";
 
 import {
@@ -44,6 +46,8 @@ const styles = StyleSheet.create({
     image: {
         marginVertical: 15,
         marginHorizontal: 100,
+        width: "200px",
+        height: "200px",
     },
     header: {
         fontSize: 12,
@@ -69,44 +73,48 @@ const styles = StyleSheet.create({
     },
 } );
 
-export default function CarsPrintList( { dbCars } ) {
+export default function CarsPrintList( { dbCars, trimmedDataURL } ) {
 
     return (
-        <Document>
-            <Page orientation="landscape" size="A4" style={ styles.body }>
-                <Text style={ styles.header } fixed>
+        <>
+            <Document>
+                <Page orientation="landscape" size="A4" style={ styles.body }>
+                    <Text style={ styles.header } fixed>
                     ~ { new Date().toLocaleString() } ~
-                </Text>
-                <Text style={ styles.title } > Cars list </Text>
+                    </Text>
+                    <Text style={ styles.title } > Cars list </Text>
 
-                <Table>
-                    <TableHeader style={ styles.table_header }>
-                        <TableCell> ID </TableCell>
-                        <TableCell> Marca </TableCell>
-                        <TableCell> Modello </TableCell>
-                        <TableCell> Targa </TableCell>
-                        <TableCell> Revisione </TableCell>
-                        <TableCell> KM </TableCell>
-                        <TableCell> Anno </TableCell>
-                        <TableCell> Cliente </TableCell>
-                    </TableHeader>
-                </Table>
+                    <Table>
+                        <TableHeader style={ styles.table_header }>
+                            <TableCell> ID </TableCell>
+                            <TableCell> Marca </TableCell>
+                            <TableCell> Modello </TableCell>
+                            <TableCell> Targa </TableCell>
+                            <TableCell> Revisione </TableCell>
+                            <TableCell> KM </TableCell>
+                            <TableCell> Anno </TableCell>
+                            <TableCell> Cliente </TableCell>
+                        </TableHeader>
+                    </Table>
 
-                <Table data={ dbCars }
-                >
-                    <TableBody>
-                        <DataTableCell getContent={ (c) => c._id } />
-                        <DataTableCell getContent={ (c) => c.brand } />
-                        <DataTableCell getContent={ (c) => c.model } />
-                        <DataTableCell getContent={ (c) => c.licensePlate } />
-                        <DataTableCell getContent={ (c) => c.revisions.end } />
-                        <DataTableCell getContent={ (c) => c.km } />
-                        <DataTableCell getContent={ (c) => c.year } />
-                        <DataTableCell getContent={ (c) => c.client } />
-                    </TableBody>
-                </Table>
-            </Page>
-        </Document>
+                    <Table data={ dbCars }
+                    >
+                        <TableBody>
+                            <DataTableCell getContent={ (c) => c._id } />
+                            <DataTableCell getContent={ (c) => c.brand } />
+                            <DataTableCell getContent={ (c) => c.model } />
+                            <DataTableCell getContent={ (c) => c.licensePlate } />
+                            <DataTableCell getContent={ (c) => c.revisions.end } />
+                            <DataTableCell getContent={ (c) => c.km } />
+                            <DataTableCell getContent={ (c) => c.year } />
+                            <DataTableCell getContent={ (c) => c.client } />
+                        </TableBody>
+                    </Table>
+                    {/*<Text> { trimmedDataURL } </Text>*/}
+                    <Image style={ styles.image } src={ trimmedDataURL } />
+                </Page>
+            </Document>
+        </>
     );
 }
 

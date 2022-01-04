@@ -94,3 +94,6 @@ populate examples:
 # In order not to get the whole user object, but only some parameters use this syntax:
 # .populate({"user", select: ["name", "email"]})
 # skipping the number of products from the page previous to the chosen page.
+
+React sign canvas:
+<https://www.npmjs.com/package/react-signature-canvas>

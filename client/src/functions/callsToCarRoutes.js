@@ -84,21 +84,30 @@ export const mongoDBGetCarsCountFunction = async ( userId, currentDate ) => {
         );
 };
 
-export const mongoDBGetAlertsFunction = async ( sort, order, page, currentDate, userId ) => {
+export const mongoDBGetAlertsFunction = async ( sort, order, page, userId ) => {
     console.log( "mongoDBGetAlertsFunction() worked" );
     return await axios
         .post(
             `${process.env.REACT_APP_API}/alerts`,
-            { sort, order, page, currentDate, userId }
+            { sort, order, page, userId }
         );
 };
 
-export const mongoDBGetAlertsCountFunction = async ( userId, currentDate ) => {
+export const mongoDBGetAlertsCountFunction = async ( userId ) => {
     console.log( "mongoDBGetAlertsCountFunction() worked" );
     return await axios
         .get(
             `${process.env.REACT_APP_API}/alerts/total`,
-            { params: { userId, currentDate } }
+            { params: { userId } }
+        );
+};
+
+export const mongoDBCheckForActiveAlertsFunction = async ( userId ) => {
+    console.log( "mongoDBCheckForActiveAlertsFunction() worked" );
+    return await axios
+        .get(
+            `${process.env.REACT_APP_API}/alerts/check`,
+            { params: { userId } }
         );
 };
 
@@ -110,6 +119,17 @@ export const mongoDBToggleAlertParamsFunction = async ( slug, field, value, auth
             {
                 headers: { authToken },
             }
+        );
+};
+
+export const mongoDBActivateAlertsFunction = async ( currentDate ) => {
+    return await axios
+        .put(
+            `${process.env.REACT_APP_API}/alert/activate`,
+            { currentDate },
+            // {
+            //     headers: { authToken },
+            // }
         );
 };
 

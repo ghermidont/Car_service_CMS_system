@@ -9,37 +9,53 @@ import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import ClientPhoto from "../../images/usr_avatar.png";
 import NotificationOn from "../../images/notificationOn.png";
-import { mongoDBGetAlertsCountFunction } from "../../functions/callsToCarRoutes";
+import { mongoDBActivateAlertsFunction, mongoDBCheckForActiveAlertsFunction } from "../../functions/callsToCarRoutes";
 
 export default function Header() {
-    console.log("Header worked()");
+    console.log( "Header worked()" );
     const [ admin, setAdmin ] = useState( false );
-    const [ alertsCount, setAlertsCount ] = useState( 0 );
+    const [ alerts, setAlerts ] = useState( false );
     const history = useHistory();
     const dispatch = useDispatch();
     const { reduxStoreUser } = useSelector( ( state ) => ( { ...state } ) );
 
-    const currentDate = new Date().toDateString();
+    const currentDate = new Date();
     console.log( "Header() currentDate", currentDate );
+    currentDate.setDate( currentDate.getDate() + 3 );
+    console.log( "Header() deducedDate", currentDate.toDateString() );
 
-    const checkAlerts = () => {
+    //const currentDate = new Date(req.body.currentDate);
+    //currentDate.setDate( currentDate.getDate() - 3 );
+
+    const activateAlerts = () => {
         console.log("checkAlerts() worked.");
-
-        mongoDBGetAlertsCountFunction( reduxStoreUser._id, currentDate )
-            .then( ( res ) => {
-                setAlertsCount( res.data );
-                console.log( "Header() mongoDBGetAlertsCountFunction() res.data: ", res.data );
+        mongoDBActivateAlertsFunction( currentDate.toDateString() )
+            .then( ( query ) => {
+                console.log( "Header() mongoDBActivateAlertsFunction() query.data: ", query.data.n );
             } )
             .catch( ( error ) => {
-                console.log( "LoginPage() mongoDBGetAlertsCountFunction() error ", error );
-                toast.error( "LoginPage() mongoDBGetAlertsCountFunction() error ", error );
+                console.log( "Header() mongoDBActivateAlertsFunction() error ", error );
+                toast.error( "Header() mongoDBActivateAlertsFunction() error ", error );
+            } );
+    };
+
+    const checkForActiveAlerts = () => {
+        console.log( "checkForActiveAlerts() worked." );
+        mongoDBCheckForActiveAlertsFunction( reduxStoreUser._id )
+            .then( ( res ) => {
+                setAlerts( res.data );
+                console.log( "Header() mongoDBCheckForActiveAlertsFunction() res.data: ", res.data );
+            } )
+            .catch( ( error ) => {
+                console.log( "Header() mongoDBCheckForActiveAlertsFunction() error ", error );
+                toast.error( "Header() mongoDBCheckForActiveAlertsFunction() error ", error );
             } );
     };
 
     useEffect(() => {
         return () => {
             if ( reduxStoreUser ) {
-                checkAlerts();
+                checkForActiveAlerts();
                 reduxStoreUser.role === "a%tDHM*54fgS-rl55kfg" ? setAdmin( true ) : setAdmin( false );
                 console.log("Header.js The user form the Redux Store:", reduxStoreUser);
             }else{
@@ -49,7 +65,7 @@ export default function Header() {
     }, [ reduxStoreUser ] );
 
     useEffect(() => {
-        checkAlerts();
+        activateAlerts();
     });
 
     const logout = () => {
@@ -114,8 +130,8 @@ export default function Header() {
                             <>
                                 <div>
                                     <Link to="/alerts_list">
-                                        { alertsCount ?
-                                            NotificationOn
+                                        { alerts>0 ?
+                                            <img style={{width: "5%", float: "right"}} src={ NotificationOn } alt=""/>
                                             : <svg
                                                 className="w-6 h-6"
                                                 fill="none"

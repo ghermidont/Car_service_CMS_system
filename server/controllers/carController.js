@@ -154,7 +154,9 @@ exports.mongoDBSearchCarByFilterController = async ( req, res ) => {
         // You should make string 'param' as ObjectId type. To avoid exception,
         // the 'param' must consist of more than 12 characters.
         const cars = await carModel
-            .find({ user: req.body.userId } )
+            .find({
+                user: req.body.userId,
+            } )
             .or([
                 { _id: searchQuery },
                 { brand: searchQuery },
@@ -179,10 +181,28 @@ exports.mongoDBGetAlertsCountController = async ( req, res ) => {
     // user: req.query.userId
     let total = await carModel
         .find()
-        .countDocuments( { user: req.query.userId, "revisions.end": req.body.currentDate } )
+        .countDocuments( {
+            user: req.query.userId,
+            "alerts.show": true
+        } )
         .exec();
     console.log( "mongoDBGetAlertsCountController() total: ", total );
     res.json( total );
+};
+
+exports.mongoDBCheckForActiveAlertsController = async ( req, res ) => {
+    console.log( "mongoDBCheckForActiveAlertsController() worked!" );
+    console.log( "mongoDBCheckForActiveAlertsController() req.query.userId: ", req.query.userId );
+
+    let active = await carModel
+        .find()
+        .countDocuments( {
+            user: req.query.userId,
+            "alerts.show": true
+        } )
+        .exec();
+    console.log( "mongoDBCheckForActiveAlertsController() total: ", active );
+    res.json( active );
 };
 
 // WITH PAGINATION
@@ -190,9 +210,14 @@ exports.mongoDBGetAlertsController = async ( req, res ) => {
     try {
         // createdAt/updatedAt, desc/asc, 3
         const { sort, order, page, userId } = req.body;
+        console.log( "mongoDBGetAlertsController() sort: ", sort );
+        console.log( "mongoDBGetAlertsController() order: ", order );
+        console.log( "mongoDBGetAlertsController() page: ", page );
+        console.log( "mongoDBGetAlertsController() userId: ", userId );
+        sort, order, page, userId
         //const currentDate = new Date(req.body.currentDate);
         //currentDate.setDate( currentDate.getDate() - 3 );
-        console.log( "mongoDBGetAlertsController() req.body.currentDate: ", req.body.currentDate );
+
         //the page number the user clicks on.
         const currentPage = page || 1;
         //The number of items per page.
@@ -202,7 +227,7 @@ exports.mongoDBGetAlertsController = async ( req, res ) => {
         const alerts = await carModel
             .find( {
                 user: req.body.userId,
-                // "revisions.end": req.body.currentDate
+                "alerts.show": true
             } )
         // user: req.body.userId,
         //.populate( "user" )w
@@ -238,6 +263,26 @@ exports.mongoDBToggleAlertParamsController = async ( req, res ) => {
         res.json( updated );
     } catch ( err ) {
         console.log( "ALERT PARAM TOGGLE ERROR --> ", err );
+        res.status( 400 ).json( { err: err.message, } );
+    }
+};
+
+exports.mongoDBActivateAlertsController = async ( req, res ) => {
+    console.log( "mongoDBActivateAlertsController() worked!" );
+    console.log( "mongoDBActivateAlertsController() req.body.currentDate: ", req.body.currentDate);
+
+    try {
+        const activated = await carModel
+            .updateMany(
+                { "revisions.end": req.body.currentDate },
+                { "alerts.show": true },
+                { new: true }
+            )
+            .exec();
+        console.log( "mongoDBActivateAlertsController() activated: ", activated );
+        res.json( activated );
+    } catch ( err ) {
+        console.log( "ALERTS activation ERROR --> ", err );
         res.status( 400 ).json( { err: err.message, } );
     }
 };

@@ -1,7 +1,7 @@
 // noinspection DuplicatedCode
-const carModel = require("../models/carModel");
-const slugify = require("slugify");
-const userModel = require("../models/userModel");
+const carModel = require( "../models/carModel" );
+const slugify = require( "slugify" );
+const userModel = require( "../models/userModel" );
 //const ObjectId = require("mongoose").Types.ObjectId;
 
 exports.mongoDBCreateCarController = async ( req, res ) => {
@@ -202,7 +202,7 @@ exports.mongoDBGetAlertsController = async ( req, res ) => {
         const alerts = await carModel
             .find( {
                 user: req.body.userId,
-                "revisions.end": req.body.currentDate
+                // "revisions.end": req.body.currentDate
             } )
         // user: req.body.userId,
         //.populate( "user" )w
@@ -222,7 +222,10 @@ exports.mongoDBGetAlertsController = async ( req, res ) => {
 };
 
 exports.mongoDBToggleAlertParamsController = async ( req, res ) => {
-    console.log( "mongoDBToggleAlertParamsController() req.body: ", req.body );
+    //console.log( "mongoDBToggleAlertParamsController() req.body: ", req.body );
+    console.log( "mongoDBToggleAlertParamsController() req.body.value: ", req.body.value );
+    console.log( "mongoDBToggleAlertParamsController() req.body.field: ", req.body.field );
+
     try {
         const updated = await carModel
             .findOneAndUpdate(
@@ -235,8 +238,6 @@ exports.mongoDBToggleAlertParamsController = async ( req, res ) => {
         res.json( updated );
     } catch ( err ) {
         console.log( "ALERT PARAM TOGGLE ERROR --> ", err );
-        res.status( 400 ).json( {
-            err: err.message,
-        } );
+        res.status( 400 ).json( { err: err.message, } );
     }
 };

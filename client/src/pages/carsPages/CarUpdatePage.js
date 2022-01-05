@@ -71,8 +71,7 @@ export default function CarUpdatePage( { match } ) {
     };
 
     const handleUserInput = ( event ) => {
-        console.log( "handleUserInput: " );
-        console.log( "currentCarParamsState: ", currentCarParamsState );
+        alert(event.target.value);
         // Dynamically update each of the initialState values by their name parameter.
         setCurrentCarParamsState( { ...currentCarParamsState, [event.target.name]: event.target.value } );
     };

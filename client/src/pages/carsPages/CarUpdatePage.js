@@ -29,6 +29,7 @@ const initialState = {
 };
 
 export default function CarUpdatePage( { match } ) {
+    console.log( "CarUpdatePage() worked!" );
     const [ currentCarParamsState, setCurrentCarParamsState ] = useState( initialState );
 
     const {
@@ -70,6 +71,8 @@ export default function CarUpdatePage( { match } ) {
     };
 
     const handleUserInput = ( event ) => {
+        console.log( "handleUserInput: " );
+        console.log( "currentCarParamsState: ", currentCarParamsState );
         // Dynamically update each of the initialState values by their name parameter.
         setCurrentCarParamsState( { ...currentCarParamsState, [event.target.name]: event.target.value } );
     };
@@ -115,6 +118,7 @@ export default function CarUpdatePage( { match } ) {
                             name="licensePlate"
                             value={ licensePlate }
                             onChange={ handleUserInput }
+
                         />
                     </label>
 

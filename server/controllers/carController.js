@@ -171,14 +171,10 @@ exports.mongoDBSearchCarByFilterController = async ( req, res ) => {
     }
 };
 
-// revisions: { end: req.query.currentDate }
-
 exports.mongoDBGetAlertsCountController = async ( req, res ) => {
+    console.log( "mongoDBGetAlertsCountController() worked!" );
     console.log( "mongoDBGetAlertsCountController() req.query.userId: ", req.query.userId );
-    //const currentDate = new Date( req.query.currentDate );
-    //currentDate.setDate( currentDate.getDate() - 3 );
-    console.log( "mongoDBGetAlertsCountController() req.query.currentDate: ", req.query.currentDate );
-    // user: req.query.userId
+
     let total = await carModel
         .find()
         .countDocuments( {
@@ -198,7 +194,8 @@ exports.mongoDBCheckForActiveAlertsController = async ( req, res ) => {
         .find()
         .countDocuments( {
             user: req.query.userId,
-            "alerts.show": true
+            "alerts.show": true,
+            "alerts.read": false
         } )
         .exec();
     console.log( "mongoDBCheckForActiveAlertsController() total: ", active );
@@ -214,7 +211,6 @@ exports.mongoDBGetAlertsController = async ( req, res ) => {
         console.log( "mongoDBGetAlertsController() order: ", order );
         console.log( "mongoDBGetAlertsController() page: ", page );
         console.log( "mongoDBGetAlertsController() userId: ", userId );
-        sort, order, page, userId
         //const currentDate = new Date(req.body.currentDate);
         //currentDate.setDate( currentDate.getDate() - 3 );
 
@@ -247,15 +243,16 @@ exports.mongoDBGetAlertsController = async ( req, res ) => {
 };
 
 exports.mongoDBToggleAlertParamsController = async ( req, res ) => {
-    //console.log( "mongoDBToggleAlertParamsController() req.body: ", req.body );
+    console.log( "mongoDBToggleAlertParamsController() worked!" );
     console.log( "mongoDBToggleAlertParamsController() req.body.value: ", req.body.value );
+    console.log( "mongoDBToggleAlertParamsController() req.body.slug: ", req.body.slug );
     console.log( "mongoDBToggleAlertParamsController() req.body.field: ", req.body.field );
-
+    //req.body.field
     try {
         const updated = await carModel
             .findOneAndUpdate(
-                { slug: req.body.slug },
-                { [req.body.field]: req.body.value },
+                { slug: req.body.slug, "alerts.show": true },
+                { [req.body.field==="show"?"alerts.show":"alerts.read"]: req.body.value },
                 { new: true }
             )
             .exec();

@@ -307,7 +307,7 @@ export default function CarArchivePage( { history } ) {
                         {/*Print list button*/}
                         { dbCars.length !== 0 &&
                                 <>
-                                    {trimmedDataURL &&
+                                    { trimmedDataURL &&
                                         <button
                                             className="flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70">
                                             <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor"
@@ -336,7 +336,7 @@ export default function CarArchivePage( { history } ) {
                         <button
                             type="submit"
                             className="w-40 h-10 px-2 border border-border rounded-l-full transition hover:opacity-70 focus:opacity-70"
-                            onClick={()=>showModal()}
+                            onClick={ ()=>showModal() }
                         >
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"> </path>
@@ -353,8 +353,10 @@ export default function CarArchivePage( { history } ) {
 
                     <Modal title="SEARCH RESULTS" visible={ isModalVisible } onOk={ handleOk } onCancel={ handleCancel }>
                         { searchResults.length!==0&&searchResults.map( ( car )=>
-                            <Card  style={ { backgroundColor: "rgba(74, 164, 225, 1)", borderRadius: "25px"} }>
-                               
+                            <Card
+                                key={ car.createdAt }
+                                style={ { backgroundColor: "rgba(74, 164, 225, 1)", borderRadius: "25px"} }
+                            >
                                 <Card type="inner" >
                                     <span style={ { fontWeight: "bold" } }>Marca</span>: { car.brand }
                                 </Card>

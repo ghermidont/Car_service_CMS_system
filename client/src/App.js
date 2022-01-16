@@ -100,53 +100,56 @@ export default function App() {
     }, [ dispatch ] );
 
     return (
-        <Suspense
-            fallback={
-                <div className="col text-center p-5">
-                    Car service CMS is Loading...
-                    <LoadingOutlined />
-                </div>
-            }
-        >
-            <Header />
-            <ToastContainer />
-            <Switch>
-                {/* Auth Routes */}
-                <Route exact path="/" component={ LoginPage }/>
-                <Route exact path="/register_user" component={ UserRegisterPage }/>
-                <Route exact path="/finish_register" component={ FinishRegisterAfterEmailCheckPage }/>
-                <Route exact path="/psw_recover" component={ PswRecoverPage }/>
-                {/* Admin Routes */}
-                <AdminRoute exact path="/admin_dashboard" component={ AdminDashboard }/>
-                <AdminRoute exact path="/admin/user/:slug" component={ AdminSingleUserPage }/>
-                {/* User Routes */}
-                <UserRoute exact path="/user_page" component={ UserPage }/>
-                <UserRoute exact path="/user_update_page" component={ UserUpdatePage }/>
-                <UserRoute exact path="/main_menu" component={ MainMenuPage }/>
-                {/* User Routes --> Client */}
-                <UserRoute exact path="/add_client" component={ ClientCreatePage }/>
-                <UserRoute exact path="/client/update/:slug" component={ ClientUpdatePage }/>
-                <UserRoute exact path="/clients_list" component={ ClientsListPage }/>
-                <UserRoute exact path="/client/:slug" component={ ClientPage }/>
-                {/* User Routes --> Cars */}
-                <UserRoute exact path="/add_car" component={ CarCreatePage }/>
-                <UserRoute exact path="/car/update/:slug" component={ CarUpdatePage }/>
-                <UserRoute exact path="/cars_archive" component={ CarsArchivePage }/>
-                <UserRoute exact path="/car/:slug" component={ CarPage }/>
-                {/* User Routes --> Services */}
-                <UserRoute exact path="/add_service" component={ ServiceCreatePage }/>
-                <UserRoute exact path="/service/update/:slug" component={ ServiceUpdatePage }/>
-                <UserRoute exact path="/services_list" component={ ServicesListPage }/>
-                <UserRoute exact path="/service/:slug" component={ ServicePage }/>
-                {/* User Routes --> Notes */}
-                <UserRoute exact path="/add_note" component={ NoteCreatePage }/>
-                <UserRoute exact path="/note/update/:slug" component={ NoteUpdatePage }/>
-                <UserRoute exact path="/notes_list" component={ NotesListPage }/>
-                <UserRoute exact path="/note/:slug" component={ NotePage }/>
-                {/* User Routes --> Alerts */}
-                <UserRoute exact path="/alerts_list" component={ AlertsListPage }/>
-            </Switch>
-            <Footer />
-        </Suspense>
+        <div className="h-screen flex flex-col justify-between">
+            <Suspense
+                fallback={
+                    <div className="col text-center p-5">
+                        Car service CMS is Loading...
+                        <LoadingOutlined />
+                    </div>
+                }
+            >
+                <Header />
+                <ToastContainer />
+                <Switch>
+                    {/* Auth Routes */}
+                    <Route exact path="/" component={ LoginPage }/>
+                    <Route exact path="/register_user" component={ UserRegisterPage }/>
+                    <Route exact path="/finish_register" component={ FinishRegisterAfterEmailCheckPage }/>
+                    <Route exact path="/psw_recover" component={ PswRecoverPage }/>
+                    {/* Admin Routes */}
+                    <AdminRoute exact path="/admin_dashboard" component={ AdminDashboard }/>
+                    <AdminRoute exact path="/admin/user/:slug" component={ AdminSingleUserPage }/>
+                    {/* User Routes */}
+                    <UserRoute exact path="/user_page" component={ UserPage }/>
+                    <UserRoute exact path="/user_update_page" component={ UserUpdatePage }/>
+                    <UserRoute exact path="/main_menu" component={ MainMenuPage }/>
+                    {/* User Routes --> Client */}
+                    <UserRoute exact path="/add_client" component={ ClientCreatePage }/>
+                    <UserRoute exact path="/client/update/:slug" component={ ClientUpdatePage }/>
+                    <UserRoute exact path="/clients_list" component={ ClientsListPage }/>
+                    <UserRoute exact path="/client/:slug" component={ ClientPage }/>
+                    {/* User Routes --> Cars */}
+                    <UserRoute exact path="/add_car" component={ CarCreatePage }/>
+                    <UserRoute exact path="/car/update/:slug" component={ CarUpdatePage }/>
+                    <UserRoute exact path="/cars_archive" component={ CarsArchivePage }/>
+                    <UserRoute exact path="/car/:slug" component={ CarPage }/>
+                    {/* User Routes --> Services */}
+                    <UserRoute exact path="/add_service" component={ ServiceCreatePage }/>
+                    <UserRoute exact path="/service/update/:slug" component={ ServiceUpdatePage }/>
+                    <UserRoute exact path="/services_list" component={ ServicesListPage }/>
+                    <UserRoute exact path="/service/:slug" component={ ServicePage }/>
+                    {/* User Routes --> Notes */}
+                    <UserRoute exact path="/add_note" component={ NoteCreatePage }/>
+                    <UserRoute exact path="/note/update/:slug" component={ NoteUpdatePage }/>
+                    <UserRoute exact path="/notes_list" component={ NotesListPage }/>
+                    <UserRoute exact path="/note/:slug" component={ NotePage }/>
+                    {/* User Routes --> Alerts */}
+                    <UserRoute exact path="/alerts_list" component={ AlertsListPage }/>
+                </Switch>
+                <Footer />
+            </Suspense>
+        </div>
+
     );
 }

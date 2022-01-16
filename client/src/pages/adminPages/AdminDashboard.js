@@ -126,9 +126,9 @@ export default function AdminDashboard ( { history } ) {
             {/*Page title*/}
             <center><span style={{fontWeight: "bold", fontSize: "25px"}}>ADMIN DASHBOARD</span></center>
 
-            <main className='mb-12'>
+            <main>
                 <div className="container mx-auto">
-                    <div className="py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10">
+                    <div className="py-20 px-10 rounded-3xl bg-grayL shadow-shadow overflow-x-auto mt-16 mb-10">
                         { loading ? (
                             <center> <h3 style={ { fontSize: 20, fontWeight: 700 } }> Loading users info... </h3> </center>
                         ) : (
@@ -164,8 +164,8 @@ export default function AdminDashboard ( { history } ) {
                                 { mongoDbUsersList.length !== 0 ? mongoDbUsersList.map( userInfo => (
                                     <tr key={ userInfo._id }>
                                         <td>
-                                            <button className="w-75 h-8 m-1 bg-green flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase">
-                                                <Link to={ `admin/user/${ userInfo.email }` }>
+                                            <button className="w-75 h-8 m-1 bg-green flex justify-center items-center uppercase rounded hover:opacity-80 uppercase">
+                                                <Link className="text-white hover:opacity-80 hover:text-white" to={ `admin/user/${ userInfo.email }` }>
                                                         Open
                                                 </Link>
                                             </button>
@@ -198,7 +198,7 @@ export default function AdminDashboard ( { history } ) {
                                                 }
                                             </select>
                                             <button
-                                                className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"
+                                                className="m-2 px-1.5 py-0.5 bg-red flex justify-center items-center text-white rounded hover:opacity-80"
                                                 onClick={ () => toggleUserRole( userInfo.email, userInfo.role ) }
                                             >
                                                 Change
@@ -227,7 +227,7 @@ export default function AdminDashboard ( { history } ) {
                                                 }
                                             </select>
                                             <button
-                                                className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"
+                                                className="m-2 px-1.5 py-0.5 bg-red flex justify-center items-center text-white rounded hover:opacity-80"
                                                 onClick={ () => toggleUserStatus( userInfo.email, userInfo.status ) }
                                             >
                                                 Change
@@ -259,15 +259,15 @@ export default function AdminDashboard ( { history } ) {
                             { mongoDbUsersList.length !== 0 &&
                                 <>
                                     <button
-                                        className="flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70">
-                                        <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        className="flex items-center text-xl bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70">
+                                        <svg className="w-6 h-6 mr-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
                                         </svg>
     
                                         <PDFDownloadLink
                                             document={ <UsersPrintTable mongoDbUsersList={ mongoDbUsersList }/> }
                                             fileName={`usersTable-${ new Date().toLocaleString() }.pdf` }
-                                            className="btn btn-sm btn-block btn-outline-primary"
+                                            className="btn btn-sm btn-block btn-outline-primary text-white hover:text-white"
                                         >
                                             Stampa Lista
                                         </PDFDownloadLink>

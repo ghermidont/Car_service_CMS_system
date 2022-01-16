@@ -72,7 +72,7 @@ export default function ServicesListPage( { history } ) {
     const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
 
     return (
-        <main className='mb-12'>
+        <main>
             { loading ? (
                 <h1>Loading... </h1>
             ) : (
@@ -82,7 +82,7 @@ export default function ServicesListPage( { history } ) {
                 {/*Page title*/}
                 <center><span style={{fontWeight: "bold", fontSize: "25px"}}>SERVICES LIST</span></center>
 
-                <div className='py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10'>
+                <div className='py-20 px-10 rounded-3xl bg-grayL shadow-shadow overflow-auto mt-16 mb-10'>
                     <table className='mx-auto mb-8'>
                         <thead>
                             <tr>
@@ -152,6 +152,7 @@ export default function ServicesListPage( { history } ) {
                     <div className="row">
                         <nav className="col-md-4 offset-md-4 text-center pt-5 p-3">
                             <Pagination
+                                className="flex justify-center items-center"
                                 defaultCurrent={ 1 }
                                 current={ page }
                                 total={ servicesCount }

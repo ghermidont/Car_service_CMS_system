@@ -3,7 +3,7 @@ const carModel = require( "../models/carModel" );
 const slugify = require( "slugify" );
 const userModel = require( "../models/userModel" );
 //const ObjectId = require("mongoose").Types.ObjectId;
-const ObjectId = require('mongoose').Types.ObjectId;
+const ObjectId = require("mongoose").Types.ObjectId;
 
 exports.mongoDBCreateCarController = async ( req, res ) => {
     try {

@@ -75,8 +75,8 @@ export default function ClientCreatePage( { match } ) {
                 {/*Page title*/}
                 <center><span style={{fontWeight: "bold", fontSize: "25px"}}>CLIENT</span></center>
 
-                <main className="flex items-center">
-                    <div className="container mx-auto py-10">                       
+                <main>
+                    <div className="container mx-auto py-10">
                         <div className="flex flex-col">
                             <label className="font-normal uppercase mb-3">
                                 Nome

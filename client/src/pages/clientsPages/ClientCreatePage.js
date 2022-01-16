@@ -92,8 +92,9 @@ export default function ClientCreatePage( { history } ) {
                                         className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block"
                                         type="text"
                                         name="name"
-                                        value={ name }
+                                        //value={ name }
                                         onChange={ handleUserInput }
+                                        placeholder="Name"
                                     />
                                 </label>
 
@@ -103,8 +104,9 @@ export default function ClientCreatePage( { history } ) {
                                         className='text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block'
                                         type="text"
                                         name="surname"
-                                        value={ surname }
+                                        //value={ surname }
                                         onChange={ handleUserInput }
+                                        placeholder="Surname"
                                     />
                                 </label>
 
@@ -114,8 +116,9 @@ export default function ClientCreatePage( { history } ) {
                                         className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block"
                                         type="text"
                                         name="date"
-                                        value={ date }
+                                        //value={ date }
                                         onChange={ handleUserInput }
+                                        placeholder="Date"
                                     />
                                 </label>
 
@@ -125,20 +128,22 @@ export default function ClientCreatePage( { history } ) {
                                         className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block"
                                         type="text"
                                         name="fiscal_code"
-                                        value={ fiscal_code }
+                                        //value={ fiscal_code }
                                         onChange={ handleUserInput }
+                                        placeholder="Fical Code"
                                     />
                                 </label>
 
-                                <div className="flex justify-between mb-6">
+                                <div className="flex flex-wrap justify-between mb-6">
                                     <label className="font-normal uppercase mb-3 max-w-400 w-100%">
                                         Indirizzo
                                         <input
                                             className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL w-100% block"
                                             type="text"
                                             name="address"
-                                            value={ address }
+                                            //value={ address }
                                             onChange={ handleUserInput }
+                                            placeholder="Address"
                                         />
                                     </label>
 
@@ -148,8 +153,9 @@ export default function ClientCreatePage( { history } ) {
                                             className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL w-100% block"
                                             type="text"
                                             name="city"
-                                            value={ city }
+                                            //value={ city }
                                             onChange={ handleUserInput }
+                                            placeholder="City"
                                         />
                                     </label>
 
@@ -158,8 +164,9 @@ export default function ClientCreatePage( { history } ) {
                                             className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL w-100% block"
                                             type="text"
                                             name="province"
-                                            value={ province }
+                                            //value={ province }
                                             onChange={ handleUserInput }
+                                            placeholder="Province"
                                         />
                                     </label>
 
@@ -172,8 +179,9 @@ export default function ClientCreatePage( { history } ) {
                                         name="notes"
                                         rows="4"
                                         maxLength="1000"
-                                        value={ notes }
+                                        //value={ notes }
                                         onChange={ handleUserInput }
+                                        placeholder="Notes"
                                     >
                                     </textarea>
                                 </label>
@@ -186,8 +194,9 @@ export default function ClientCreatePage( { history } ) {
                                                 type="text"
                                                 name="mobile"
                                                 //pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-                                                value={mobile}
+                                                //value={mobile}
                                                 onChange={handleUserInput}
+                                                placeholder="Mobile"
                                             />
                                         </label>
 
@@ -196,8 +205,9 @@ export default function ClientCreatePage( { history } ) {
                                                 className="text-xl h-9 px-4 mt-1 border border-border rounded-lg focus:outline-none bg-grayL max-w-400 w-100% block"
                                                 type="email"
                                                 name="email"
-                                                value={ email }
+                                                //value={ email }
                                                 onChange={ handleUserInput }
+                                                placeholder="Email"
                                             />
                                         </label>
                                     </div>

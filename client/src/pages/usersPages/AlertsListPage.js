@@ -94,21 +94,22 @@ export default function AlertsListPage( { history } ) {
     }, [ page ] );
 
     return (
-        <main className="mb-12">
+        <main>
             { loading && <h1>Loading... </h1> }
             <div className="container mx-auto">
                 <center><span style={ {fontWeight: "bold", fontSize: "25px"} }>Revision expiry alerts</span></center>
-                <div className="py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10">
+                <div className="py-20 px-10 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10">
                     <List
+                        className="overflow-y-auto"
                         itemLayout="vertical"
                         size="large"
                         dataSource={ dbAlerts }
                         renderItem={ item => (
-                            <List.Item key={ item._id } >
+                            <List.Item className="mb-5 pb-5 border border-border border-l-0 border-r-0 border-t-0" key={ item._id } >
                                 <List.Item.Meta
                                     title={ 
                                         <strong>
-                                            <span style={ { color: item.alerts.read===false?"red":"black" } }>ALERT</span> <br></br>
+                                            <h3 className="text-2xl" style={ { color: item.alerts.read===false?"red":"black" } }>ALERT</h3> <br></br>
                                         Car with license plate: { item.licensePlate }
                                         </strong> 
                                     }
@@ -119,9 +120,9 @@ export default function AlertsListPage( { history } ) {
                                         <div>
                                             revision expires at: { new Date( item.revisions.end ).toLocaleString( "en-GB", dateOptions ) }
                                         </div>
-                                        <div>
+                                        <div className="flex mt-4">
                                             <button
-                                                className="flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70"
+                                                className="flex items-center text-base text-white bg-green uppercase py-1 px-2 mr-4 rounded transition hover:opacity-70 focus:opacity-70"
                                                 onClick={
                                                     ()=>{
                                                         toggleAlertsParams( item.slug, "show", false );
@@ -131,7 +132,7 @@ export default function AlertsListPage( { history } ) {
                                                 Delete
                                             </button>
                                             <button
-                                                className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"
+                                                className="flex items-center text-base text-white bg-red uppercase py-1 px-2 rounded transition hover:opacity-70 focus:opacity-70"
                                                 onClick={
                                                     ()=>{
                                                         toggleAlertsParams( item.slug, "read", true );
@@ -152,6 +153,7 @@ export default function AlertsListPage( { history } ) {
                     <div className="row">
                         <nav className="col-md-4 offset-md-4 text-center pt-5 p-3">
                             <Pagination
+                                className="flex justify-center items-center"
                                 defaultCurrent={ 1 }
                                 current={ page }
                                 total={ alertsCount }

@@ -96,35 +96,40 @@ export default function NotesListPage( { history } ) {
     const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
 
     return (
-        <main className="mb-12">
+        <main>
 
             { loading && <h1>Loading... </h1> }
 
             <div className="container mx-auto">
                 <center><span style={{fontWeight: "bold", fontSize: "25px"}}>NOTES LIST</span></center>
-                <div className="py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10">
+                <div className="py-20 px-10 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10">
                     <List
+                        className="overflow-y-auto"
                         itemLayout="vertical"
                         size="large"
                         dataSource={ dbNotes }
                         renderItem={ item => (
                             <List.Item
+                                className="mb-5 pb-5 border border-border border-l-0 border-r-0 border-t-0"
                                 key={ item.title }
                             >
                                 <List.Item.Meta
-                                    title={ <Link to={ `/note/${ item.id }`}><strong>{ item.title }</strong></Link> }
+                                    title={ 
+                                        <Link className="text-2xl mb-6" to={ `/note/${ item.id }`}>
+                                            <strong>{ item.title }</strong>
+                                        </Link> }
                                     description={ new Date( item.createdAt ).toLocaleString( "en-GB", dateOptions ) }
                                 />
                                 { item.content }
                                 {
-                                    <div>
+                                    <div className="flex mt-4">
                                         <Link to={`/note/update/${item.id}`}>
-                                            <button className="flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70">
+                                            <button className="flex items-center text-base text-white bg-green uppercase py-1 px-2 mr-4 rounded transition hover:opacity-70 focus:opacity-70">
                                                 Edit
                                             </button>
                                         </Link>
                                         <button
-                                            className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"
+                                            className="flex items-center text-base text-white bg-red uppercase py-1 px-2 rounded transition hover:opacity-70 focus:opacity-70"
                                             onClick={ ()=>deleteNoteFunction( item.id ) }
                                         >
                                             Delete
@@ -142,6 +147,7 @@ export default function NotesListPage( { history } ) {
                     <div className="row">
                         <nav className="col-md-4 offset-md-4 text-center pt-5 p-3">
                             <Pagination
+                                className="flex justify-center items-center"
                                 defaultCurrent={ 1 }
                                 current={ page }
                                 total={ notesCount }

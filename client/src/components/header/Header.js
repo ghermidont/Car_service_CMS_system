@@ -84,7 +84,7 @@ export default function Header() {
 
     return (
         <>
-            <header className="h-32 px-4 border-b border-border bg-white dark:bg-blue">
+            <header className="px-4 border-b border-border bg-white dark:bg-blue">
                 <div className="container mx-auto h-32 flex justify-between items-center">
                     <div className='flex bg-gray-100 rounded-full shadow-md overflow-hidden shadow-shadow'>
                         <button className='px-1.5 py-0.5 bg-gray'>
@@ -128,10 +128,10 @@ export default function Header() {
                     <div className='flex items-center'>
                         { reduxStoreUser.token &&
                             <>
-                                <div>
-                                    <Link to="/alerts_list">
+                                <div className="w-8">
+                                    <Link  className="w-8" to="/alerts_list">
                                         { alerts>0 ?
-                                            <img style={{width: "5%", float: "right"}} src={ NotificationOn } alt=""/>
+                                            <img className="w-6 h-6" src={ NotificationOn } alt=""/>
                                             : <svg
                                                 className="w-6 h-6"
                                                 fill="none"
@@ -150,16 +150,16 @@ export default function Header() {
                                     </Link>
                                 </div>
 
-                                <div className='flex items-center mx-14'>
+                                <div className='mx-8'>
                                     <Link to="/user_page" >
-                                        <div className='w-60 h-14 rounded-full overflow-hidden mr-4'>
+                                        <div className='w-60 h-14 mx-auto mb-1.5 rounded-full overflow-hidden mr-4'>
                                             { reduxStoreUser.images.length!==0 ?
                                                 reduxStoreUser.images.map(
                                                     ( image ) => ( <img src={ image.url } alt=""/> )
                                                 ) :  <img src={ ClientPhoto } alt=""/>
                                             }
                                         </div>
-                                        <span className='font-normal uppercase hover:opacity-70 focus:opacity-70'>
+                                        <span className='font-normal font-semibold text-gray uppercase hover:opacity-70 focus:opacity-70'>
                                             { reduxStoreUser ? reduxStoreUser.company_name : "User Data"}
                                         </span>
                                     </Link>
@@ -167,14 +167,14 @@ export default function Header() {
 
                                 <div>
                                     <button
-                                        className='flex items-center text-xl text-white bg-red uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'
+                                        className='flex items-center text-base text-white bg-red uppercase py-0.5 px-2 mr-4 rounded transition hover:opacity-70 focus:opacity-70'
                                         onClick={ logout }
                                     >
-                                        <LogoutOutlined/> Log Out
+                                        <LogoutOutlined/>Log Out
                                     </button>
                                     { admin &&
                                         <Link to="/admin_dashboard" style={ {marginTop: "10px"} }  >
-                                            <button className='flex items-center text-xl text-white bg-green uppercase py-1 px-4 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
+                                            <button className='flex items-center text-base text-white bg-green uppercase py-0.5 px-2 mr-4 rounded transition hover:opacity-70 focus:opacity-70'>
                                                 Admin Panel
                                             </button>
                                         </Link>

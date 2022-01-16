@@ -169,34 +169,35 @@ export default function CarArchivePage( { history } ) {
     const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
 
     return (
-        <main className="mb-12">
-            <div>
-                <SignaturePad               
-                    ref={(ref) => { sigPad = ref; }}
-                />
-            </div>
-            <div>
-                <button
-                    className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"
-                    onClick={clear}
-                >
-                    Clear
-                </button>
-                <button
-                    className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"
-                    onClick={trim}
-                >
-                    Trim
-                </button>
-            </div>
-            { trimmedDataURL ? <><span>{trimmedDataURL}</span><img src={ trimmedDataURL } /></> : null }
+        <main>
+            {/*<div>*/}
+            {/*    <SignaturePad               */}
+            {/*        ref={(ref) => { sigPad = ref; }}*/}
+            {/*    />*/}
+            {/*</div>*/}
+            {/*<div>*/}
+            {/*    <button*/}
+            {/*        className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"*/}
+            {/*        onClick={clear}*/}
+            {/*    >*/}
+            {/*        Clear*/}
+            {/*    </button>*/}
+            {/*    <button*/}
+            {/*        className="w-75 h-8 m-1 bg-red flex justify-center items-center text-white uppercase rounded hover:opacity-80 uppercase"*/}
+            {/*        onClick={trim}*/}
+            {/*    >*/}
+            {/*        Trim*/}
+            {/*    </button>*/}
+            {/*</div>*/}
+            {/*{ trimmedDataURL ? <><span>{trimmedDataURL}</span><img src={ trimmedDataURL } /></> : null }*/}
+
             { loading && <h1>Loading... </h1> }
             <div className="container mx-auto">
 
                 {/*Page title*/}
                 <center><span style={{fontWeight: "bold", fontSize: "25px"}}>ARCHIVIO VETTURE</span></center>
 
-                <div className="py-20 rounded-3xl bg-grayL shadow-shadow  mt-16 mb-10">
+                <div className="py-20 px-10 rounded-3xl bg-grayL shadow-shadow overflow-auto  mt-16 mb-10">
 
                     <table className="mx-auto mb-8">
 
@@ -283,6 +284,7 @@ export default function CarArchivePage( { history } ) {
                     <div className="row">
                         <nav className="col-md-4 offset-md-4 text-center pt-5 p-3">
                             <Pagination
+                                className="flex justify-center items-center"
                                 defaultCurrent={ 1 }
                                 current={ page }
                                 total={ carsCount }
@@ -332,7 +334,7 @@ export default function CarArchivePage( { history } ) {
                     </div>
 
                     {/*Search bar START*/}
-                    <form className="w-300 flex items-center relative" onSubmit={ handleSearch }>
+                    <form className="w-300 flex items-center relative border border-border rounded-full overflow-hidden" onSubmit={ handleSearch }>
                         <button
                             type="submit"
                             className="w-40 h-10 px-2 border border-border rounded-l-full transition hover:opacity-70 focus:opacity-70"
@@ -343,7 +345,7 @@ export default function CarArchivePage( { history } ) {
                             </svg>
                         </button>
                         <input
-                            className="w-100% h-10 border border-border rounded-r-full border-l-0 outline-none" type="text"
+                            className="w-100% h-10 pl-2 border border-border border-r-0 border-b-0 border-t-0 border-l-1 outline-none" type="text"
                             value={ searchQuery }
                             onChange={ handleUserInput }
                         />

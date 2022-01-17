@@ -19,7 +19,7 @@ exports.mongoDBCreateNewUserController = async (req, res) => {
         role
     } = req.body;
 
-    console.log("mongoDBCreateNewUserController() email", email);
+    console.log( "mongoDBCreateNewUserController() email", email );
 
     //console.log("req.data.role", req.data.role);
     //Find and update the user in the database.

@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "build": "cd ../client && npm install",
+    "start": "concurrently --kill-others-on-fail \"node server.js\" \"cd ../client && npm install && npm start\""
   },
   "keywords": [],
   "author": "",
@@ -53,6 +54,7 @@
     }
   },
   "devDependencies": {
+    "concurrently": "^4.0.1",
     "eslint": "^8.2.0"
   }
 }

@@ -97,3 +97,5 @@ populate examples:
 
 React sign canvas:
 <https://www.npmjs.com/package/react-signature-canvas>
+
+"start": "concurrently --kill-others-on-fail \"npm server\" \"npm client\""

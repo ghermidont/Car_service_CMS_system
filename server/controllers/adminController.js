@@ -1,5 +1,5 @@
-const admin = require( "../firebase/fireBaseSettings" );
-const getAuth = require( "firebase/auth" );
+//const admin = require( "../firebase/fireBaseSettings" );
+//const getAuth = require( "firebase/auth" );
 const userModel = require( "../models/userModel" );
 
 exports.mongoDBFireBaseDeleteUserController = async ( req, res ) => {

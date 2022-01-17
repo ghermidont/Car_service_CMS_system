@@ -5,7 +5,7 @@ import {
     Page,
     Text,
     StyleSheet,
-    Image
+    // Image
 } from "@react-pdf/renderer";
 
 import {
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     },
 } );
 
-export default function CarsPrintList( { dbCars, trimmedDataURL } ) {
+export default function CarsPrintList( { dbCars } ) {
 
     return (
         <>
@@ -111,7 +111,7 @@ export default function CarsPrintList( { dbCars, trimmedDataURL } ) {
                         </TableBody>
                     </Table>
                     {/*<Text> { trimmedDataURL } </Text>*/}
-                    <Image style={ styles.image } src={ trimmedDataURL } />
+                    {/*<Image style={ styles.image } src={ trimmedDataURL } />*/}
                 </Page>
             </Document>
         </>

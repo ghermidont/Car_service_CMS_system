@@ -22,18 +22,18 @@ export default function ClientCreatePage( { history } ) {
 
     const [ clientInfoState, setClientInfoState ] = useState( initialState );
 
-    const {
-        name,
-        surname,
-        date,
-        fiscal_code,
-        address,
-        city,
-        province,
-        notes,
-        mobile,
-        email
-    } = clientInfoState;
+    // const {
+    //     name,
+    //     surname,
+    //     date,
+    //     fiscal_code,
+    //     address,
+    //     city,
+    //     province,
+    //     notes,
+    //     mobile,
+    //     email
+    // } = clientInfoState;
 
     //For implementing the date:
     //   const formattedDate = (rawDate)=>{
@@ -95,6 +95,7 @@ export default function ClientCreatePage( { history } ) {
                                         //value={ name }
                                         onChange={ handleUserInput }
                                         placeholder="Name"
+                                        required
                                     />
                                 </label>
 
@@ -107,6 +108,7 @@ export default function ClientCreatePage( { history } ) {
                                         //value={ surname }
                                         onChange={ handleUserInput }
                                         placeholder="Surname"
+                                        required
                                     />
                                 </label>
 
@@ -119,6 +121,7 @@ export default function ClientCreatePage( { history } ) {
                                         //value={ date }
                                         onChange={ handleUserInput }
                                         placeholder="Date"
+                                        required
                                     />
                                 </label>
 
@@ -130,7 +133,8 @@ export default function ClientCreatePage( { history } ) {
                                         name="fiscal_code"
                                         //value={ fiscal_code }
                                         onChange={ handleUserInput }
-                                        placeholder="Fical Code"
+                                        placeholder="Fiscal Code"
+                                        required
                                     />
                                 </label>
 
@@ -144,6 +148,7 @@ export default function ClientCreatePage( { history } ) {
                                             //value={ address }
                                             onChange={ handleUserInput }
                                             placeholder="Address"
+                                            required
                                         />
                                     </label>
 
@@ -156,6 +161,7 @@ export default function ClientCreatePage( { history } ) {
                                             //value={ city }
                                             onChange={ handleUserInput }
                                             placeholder="City"
+                                            required
                                         />
                                     </label>
 
@@ -167,6 +173,7 @@ export default function ClientCreatePage( { history } ) {
                                             //value={ province }
                                             onChange={ handleUserInput }
                                             placeholder="Province"
+                                            required
                                         />
                                     </label>
 
@@ -182,6 +189,7 @@ export default function ClientCreatePage( { history } ) {
                                         //value={ notes }
                                         onChange={ handleUserInput }
                                         placeholder="Notes"
+                                        required
                                     >
                                     </textarea>
                                 </label>
@@ -197,6 +205,7 @@ export default function ClientCreatePage( { history } ) {
                                                 //value={mobile}
                                                 onChange={handleUserInput}
                                                 placeholder="Mobile"
+                                                required
                                             />
                                         </label>
 
@@ -208,6 +217,7 @@ export default function ClientCreatePage( { history } ) {
                                                 //value={ email }
                                                 onChange={ handleUserInput }
                                                 placeholder="Email"
+                                                required
                                             />
                                         </label>
                                     </div>

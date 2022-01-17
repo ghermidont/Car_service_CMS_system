@@ -16,10 +16,10 @@ export default function NoteCreatePage( { history } ){
 
     const [ notesParamsState, setNotesParamsState ] = useState( initialState );
 
-    const {
-        title,
-        content
-    } = notesParamsState;
+    // const {
+    //     title,
+    //     content
+    // } = notesParamsState;
 
     const handleSubmit = async ( event ) => {
         event.preventDefault();
@@ -62,8 +62,10 @@ export default function NoteCreatePage( { history } ){
                             className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="title"
-                            value={ title }
+                            //value={ title }
                             onChange={ handleUserInput }
+                            placeholder="Title"
+                            required
                         />
                     </label>
 
@@ -74,8 +76,10 @@ export default function NoteCreatePage( { history } ){
                             name="content"
                             rows="4"
                             maxLength="1000"
-                            value={ content }
+                            //value={ content }
+                            placeholder="Content"
                             onChange={ handleUserInput }
+                            required
                         />
                     </label>
 

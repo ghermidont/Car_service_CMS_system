@@ -12,6 +12,11 @@ import { mongoDBGetAllClientsFunctionNoPag } from "../../functions/callsToClient
 //https://www.back4app.com/docs/react/quickstart
 
 //TODO consider implementing here the ReduxStore user id extraction instead of mongoDBGetCurrentUserFunction().
+
+//TODO implement here the year only picker:
+//???https://ant.design/components/date-picker/
+//https://www.npmjs.com/package/react-year-picker
+
 const initialState = {
     user: "user",
     brand: "brand",
@@ -36,15 +41,8 @@ export default function CarCreatePage( { history } ){
     const { reduxStoreUser } = useSelector(( state) => ( { ...state } ) );
 
     const {
-        brand,
-        model,
-        licensePlate,
         revisions,
-        km,
-        year,
     } = carParamsState;
-
-
 
     const loadAllClients = async () => {
         // sort, order
@@ -83,9 +81,9 @@ export default function CarCreatePage( { history } ){
         event.preventDefault();
         console.log( "CarCreatePage() handleSubmit() worked!" );
 
-        if( carParamsState.revisions.end!=="" ){
-
-        }
+        // if( carParamsState.revisions.end!=="" ){
+        //
+        // }
 
         try {
             console.log( "handleSubmit() carParamsState: ", carParamsState );
@@ -108,12 +106,21 @@ export default function CarCreatePage( { history } ){
 
     const handleUserInput = ( event ) => {
         // Dynamically update each of the initialState values by their name parameter.
-        setCarParamsState({ ...carParamsState, [ event.target.name ]:event.target.value } );
+        setCarParamsState({
+            ...carParamsState,
+            [ event.target.name ]:event.target.value
+        } );
     };
 
     const handleDateUserInput = ( event ) => {
         // Dynamically update each of the initialState values by their name parameter.
-        setCarParamsState({ ...carParamsState, revisions:{ ...carParamsState.revisions, [ event.target.name ] : new Date( event.target.value ).toDateString() }} );
+        setCarParamsState({
+            ...carParamsState,
+            revisions:{
+                ...carParamsState.revisions,
+                [ event.target.name ] : new Date( event.target.value ).toDateString()
+            }
+        } );
         console.log(carParamsState);
     };
 
@@ -131,7 +138,9 @@ export default function CarCreatePage( { history } ){
                             className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="brand"
-                            value={ brand }
+                            //value={ brand }
+                            placeholder="Brand"
+                            required
                             onChange={ handleUserInput }
                         />
                     </label>
@@ -142,7 +151,9 @@ export default function CarCreatePage( { history } ){
                             type="text"
                             className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             name="model"
-                            value={ model }
+                            //value={ model }
+                            placeholder="Model"
+                            required
                             onChange={ handleUserInput }
                         />
                     </label>
@@ -153,7 +164,9 @@ export default function CarCreatePage( { history } ){
                             className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="licensePlate"
-                            value={ licensePlate }
+                            //value={ licensePlate }
+                            placeholder="License plate"
+                            required
                             onChange={ handleUserInput }
                         />
                     </label>
@@ -165,7 +178,8 @@ export default function CarCreatePage( { history } ){
                             className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="date"
                             name="start"
-                            value={ revisions.start }
+                            //value={ revisions.start }
+                            required
                             onChange={ handleDateUserInput }
                         />
                         <span>revisions.start: { revisions.start }</span> <br/>
@@ -174,7 +188,8 @@ export default function CarCreatePage( { history } ){
                             className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="date"
                             name="end"
-                            value={ revisions.end }
+                            //value={ revisions.end }
+                            required
                             onChange={ handleDateUserInput }
                         />
                         <span>revisions.end: {revisions.end}</span>
@@ -186,7 +201,9 @@ export default function CarCreatePage( { history } ){
                             className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="km"
-                            value={ km }
+                            //value={ km }
+                            placeholder="KM"
+                            required
                             onChange={ handleUserInput }
                         />
                     </label>
@@ -197,7 +214,9 @@ export default function CarCreatePage( { history } ){
                             className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                             type="text"
                             name="year"
-                            value={ year }
+                            //value={ year }
+                            placeholder="Year"
+                            required
                             onChange={ handleUserInput }
                         />
                     </label>

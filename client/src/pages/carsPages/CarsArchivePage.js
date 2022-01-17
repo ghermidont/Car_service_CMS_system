@@ -14,7 +14,7 @@ import { auth } from "../../firebase";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Modal } from "antd";
 import CarsPrintList from "./CarsPrinList";
-import SignaturePad from "react-signature-canvas";
+//import SignaturePad from "react-signature-canvas";
 
 export default function CarArchivePage( { history } ) {
     console.log( "CarsArchivePage() worked" );
@@ -29,18 +29,18 @@ export default function CarArchivePage( { history } ) {
     const [ searchResults, setSearchResults ] = useState( [] );
     const [ searchQuery, setSearchQuery ] = useState( "" );
     const [ isModalVisible, setIsModalVisible ] = useState( false );
-    const [ trimmedDataURL, setTrimmedDataURL ] = useState( null );
+    // const [ trimmedDataURL, setTrimmedDataURL ] = useState( null );
 
-    let sigPad = {};
+    //let sigPad = {};
 
-    const clear = () => {
-        sigPad.clear();
-        setTrimmedDataURL(null);
-    };
+    // const clear = () => {
+    //     sigPad.clear();
+    //     setTrimmedDataURL(null);
+    // };
 
-    const trim = () => {
-        setTrimmedDataURL( sigPad.getTrimmedCanvas().toDataURL("image/png") );
-    };
+    // const trim = () => {
+    //     setTrimmedDataURL( sigPad.getTrimmedCanvas().toDataURL("image/png") );
+    // };
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -229,9 +229,9 @@ export default function CarArchivePage( { history } ) {
                                 <th className="px-6 py-1.5 w-200 bg-blue border border-border text-xl text-white font-normal uppercase">
                                     Cliente
                                 </th>
-                                <th className="px-6 py-1.5 w-200 bg-blue border border-border text-xl text-white font-normal uppercase">
-                                    user ID
-                                </th>
+                                {/*<th className="px-6 py-1.5 w-200 bg-blue border border-border text-xl text-white font-normal uppercase">*/}
+                                {/*    user ID*/}
+                                {/*</th>*/}
                             </tr>
                         </thead>
 
@@ -274,7 +274,7 @@ export default function CarArchivePage( { history } ) {
                                     <td className="border border-border px-3">{ car.year }</td>
                                     {/*CLIENTE*/}
                                     <td className="border border-border px-3">{ car.client }</td>
-                                    <td className="border border-border px-3">{ car.user }</td>
+                                    {/*<td className="border border-border px-3">{ car.user }</td>*/}
                                 </tr>
                             ))}
                         </tbody>
@@ -309,26 +309,30 @@ export default function CarArchivePage( { history } ) {
                         {/*Print list button*/}
                         { dbCars.length !== 0 &&
                                 <>
-                                    { trimmedDataURL &&
-                                        <button
-                                            className="flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70">
-                                            <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
-                                            </svg>
+                                    {/*{ trimmedDataURL &&*/}
+                                    <button
+                                        className="flex items-center text-xl text-white  bg-blueDark uppercase py-1 px-4 rounded transition hover:opacity-70 focus:opacity-70">
+                                        <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                        </svg>
 
-                                            <PDFDownloadLink
-                                                document={<CarsPrintList dbCars={dbCars}
-                                                    trimmedDataURL={trimmedDataURL}/>}
-                                                fileName={`carsTable-${new Date().toLocaleString()}.pdf`}
-                                                className="btn btn-sm btn-block btn-outline-primary"
-                                            >
+                                        <PDFDownloadLink
+                                            document={
+                                                <CarsPrintList
+                                                    dbCars={dbCars}
+                                                //trimmedDataURL={trimmedDataURL}
+                                                />
+                                            }
+                                            fileName={`carsTable-${new Date().toLocaleString()}.pdf`}
+                                            className="btn btn-sm btn-block btn-outline-primary"
+                                        >
                                                 Stampa Lista
-                                            </PDFDownloadLink>
-                                        </button>
-                                    }
+                                        </PDFDownloadLink>
+                                    </button>
+                                    {/*}*/}
                                 </>
                         }
                     </div>

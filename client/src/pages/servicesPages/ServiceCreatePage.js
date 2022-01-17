@@ -124,8 +124,9 @@ export default function ServiceCreatePage( { history } ) {
                                                 className="block container px-2 py-1 outline-none mt-1.5"
                                                 type="date"
                                                 name="date"
-                                                value={ date }
+                                                //value={ date }
                                                 onChange={ handleUserInput }
+                                                required
                                             />
                                         </td>
                                         <td className="border border-border px-3">
@@ -133,8 +134,10 @@ export default function ServiceCreatePage( { history } ) {
                                                 className="block container px-2 py-1 outline-none mt-1.5"
                                                 type="text"
                                                 name="license_plate"
-                                                value={ license_plate }
+                                                //value={ license_plate }
+                                                placeholder="Targa"
                                                 onChange={ handleUserInput }
+                                                required
                                             />
                                         </td>
                                         <td className="border border-border px-3">
@@ -142,8 +145,10 @@ export default function ServiceCreatePage( { history } ) {
                                                 className="block container px-2 py-1 outline-none mt-1.5"
                                                 type="text"
                                                 name="brand"
-                                                value={ brand }
+                                                //value={ brand }
+                                                placeholder="Marca"
                                                 onChange={ handleUserInput }
+                                                required
                                             />
                                         </td>
                                         <td className="border border-border px-3">
@@ -151,8 +156,10 @@ export default function ServiceCreatePage( { history } ) {
                                                 className="block container px-2 py-1 outline-none mt-1.5"
                                                 type="text"
                                                 name="model"
-                                                value={ model }
+                                                //value={ model }
+                                                placeholder="Modello"
                                                 onChange={ handleUserInput }
+                                                required
                                             />
                                         </td>
                                         <td className="border border-border px-3">
@@ -160,8 +167,10 @@ export default function ServiceCreatePage( { history } ) {
                                                 className="block container px-2 py-1 outline-none mt-1.5"
                                                 type="text"
                                                 name="state"
-                                                value={ state }
+                                                //value={ state }
+                                                placeholder="Stato"
                                                 onChange={ handleUserInput }
+                                                required
                                             />
                                         </td>
                                         <td className="border border-border px-3">
@@ -169,8 +178,10 @@ export default function ServiceCreatePage( { history } ) {
                                                 className="block container px-2 py-1 outline-none mt-1.5"
                                                 type="text"
                                                 name="operator"
-                                                value={ operator }
+                                                //value={ operator }
+                                                placeholder="Operatore"
                                                 onChange={ handleUserInput }
+                                                required
                                             />
                                         </td>
                                     </tr>
@@ -184,9 +195,11 @@ export default function ServiceCreatePage( { history } ) {
                                 <textarea
                                     className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                                     name="anomalies"
-                                    value={ anomalies }
+                                    //value={ anomalies }
+                                    placeholder="Anomalie"
                                     onChange={ handleUserInput }
                                     rows="4"
+                                    required
                                 >
                                 </textarea>
                             </label>
@@ -195,9 +208,11 @@ export default function ServiceCreatePage( { history } ) {
                                 <textarea
                                     className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                                     name="checks"
-                                    value={ checks }
+                                    //value={ checks }
+                                    placeholder="Controlli"
                                     onChange={ handleUserInput }
                                     rows="2"
+                                    required
                                 >
                                 </textarea>
                             </label>
@@ -206,9 +221,11 @@ export default function ServiceCreatePage( { history } ) {
                                 <textarea
                                     className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                                     name="actions"
-                                    value={ actions }
+                                    //value={ actions }
+                                    placeholder="Lavori Fatti"
                                     onChange={ handleUserInput }
                                     rows="2"
+                                    required
                                 >
                                 </textarea>
                             </label>
@@ -219,9 +236,11 @@ export default function ServiceCreatePage( { history } ) {
                                         <textarea
                                             className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                                             name="notes"
-                                            value={ notes }
+                                            //value={ notes }
+                                            placeholder="Note"
                                             onChange={ handleUserInput }
                                             rows="8"
+                                            required
                                         >
                                         </textarea>
                                     </label>
@@ -232,9 +251,11 @@ export default function ServiceCreatePage( { history } ) {
                                         <textarea
                                             className="block container px-2 py-1 border outline-none rounded border-border mt-1.5"
                                             name="damage"
-                                            value={ damage }
+                                            //value={ damage }
+                                            placeholder="Danni"
                                             onChange={ handleUserInput }
                                             rows="8"
+                                            required
                                         >
                                         </textarea>
                                     </label>

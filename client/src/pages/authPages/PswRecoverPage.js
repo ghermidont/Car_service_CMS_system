@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
 const PswRecoverPage = ({ history }) => {
+    console.log("PswRecoverPage");
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
 

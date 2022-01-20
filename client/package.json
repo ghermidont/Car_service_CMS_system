@@ -2,6 +2,7 @@
   "name": "cars",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://www.mydomainfortesting.a2hosted.com:30003/cars/client1",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@craco/craco": "^6.1.2",

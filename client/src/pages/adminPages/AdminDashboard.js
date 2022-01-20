@@ -165,7 +165,7 @@ export default function AdminDashboard ( { history } ) {
                                     <tr key={ userInfo._id }>
                                         <td>
                                             <button className="w-75 h-8 m-1 bg-green flex justify-center items-center uppercase rounded hover:opacity-80 uppercase">
-                                                <Link className="text-white hover:opacity-80 hover:text-white" to={ `admin/user/${ userInfo.email }` }>
+                                                <Link className="text-white hover:opacity-80 hover:text-white" to={ `/admin/user/${ userInfo.email }` }>
                                                         Open
                                                 </Link>
                                             </button>

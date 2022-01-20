@@ -11,6 +11,8 @@ import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
 
 export default function LoginPage( { history } ){
+    console.log( "LoginPage()" );
+
     const [ email, setEmail ] = useState( "" );
     const [ password, setPassword ] = useState( "" );
     const [ passwordShown, setPasswordShown ] = useState( false );
@@ -44,7 +46,7 @@ export default function LoginPage( { history } ){
             type: "LOGOUT",
             payload: null,
         });
-        history.push("/" );
+        history.push( "/" );
     };
 
     const roleBasedRedirect = ( role, status ) => {

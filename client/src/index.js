@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 // On release replace BrowserRouter with HashRouter
 //import {HashRouter} from "react-router-dom";
 import "./index.css";
@@ -31,9 +31,9 @@ ReactDOM.render(
     // <React.StrictMode>
     <Provider store={ store }>
         <PersistGate loading={ <h1> Redux Persist loading... </h1> } persistor={ persistor }>
-            <BrowserRouter>
+            <HashRouter>
                 <App />
-            </BrowserRouter>
+            </HashRouter>
         </PersistGate>
     </Provider>,
     // </React.StrictMode>,

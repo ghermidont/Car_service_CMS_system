@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
 const UserRegisterPage = ({ history }) => {
+    console.log("UserRegisterPage()");
     const [email, setEmail] = useState("");
 
     const { reduxStoreUser } = useSelector((state) => ({ ...state }));
@@ -17,7 +18,7 @@ const UserRegisterPage = ({ history }) => {
         //prevent page reload
         e.preventDefault();
         const config = {
-            url: "http://localhost:3000/finish_register", //process.env.REACT_APP_REGISTER_REDIRECT_URL,
+            url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
             handleCodeInApp: true,
         };
         console.log(process.env.REACT_APP_REGISTER_REDIRECT_URL);

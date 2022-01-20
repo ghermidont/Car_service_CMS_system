@@ -29,7 +29,7 @@ export default function Header() {
 
     const activateAlerts = () => {
         console.log("checkAlerts() worked.");
-        mongoDBActivateAlertsFunction( currentDate.toDateString() )
+        mongoDBActivateAlertsFunction( currentDate.toDateString(), reduxStoreUser.token )
             .then( ( query ) => {
                 console.log( "Header() mongoDBActivateAlertsFunction() query.data: ", query.data.n );
             } )
@@ -65,7 +65,9 @@ export default function Header() {
     }, [ reduxStoreUser ] );
 
     useEffect(() => {
-        activateAlerts();
+        if(reduxStoreUser) {
+            activateAlerts();
+        }
     });
 
     const logout = () => {

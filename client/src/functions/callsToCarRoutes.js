@@ -122,14 +122,14 @@ export const mongoDBToggleAlertParamsFunction = async ( slug, field, value, auth
         );
 };
 
-export const mongoDBActivateAlertsFunction = async ( currentDate ) => {
+export const mongoDBActivateAlertsFunction = async ( currentDate, authToken ) => {
     return await axios
         .put(
             `${process.env.REACT_APP_API}/alert/activate`,
             { currentDate },
-            // {
-            //     headers: { authToken },
-            // }
+            {
+                headers: { authToken },
+            }
         );
 };
 

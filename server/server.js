@@ -41,9 +41,9 @@ app.use(cors());
 
 // routes middleware
 //Instead of calling every route separately we use this syntax. Read the routes' directory. Prefix with "/api".
-readdirSync("./routes").map((route) => app.use("/api", require("./routes/" + route)));
+readdirSync("./routes").map((route) => app.use("/cars/server", require("./routes/" + route)));
 
 // port
-const port = process.env.PORT || 8001;
+//const port = process.env.PORT || 30002;
 
-app.listen(port, () => console.log(`Server is running on port ${port}`));
+app.listen( () => console.log("Server is running"));
